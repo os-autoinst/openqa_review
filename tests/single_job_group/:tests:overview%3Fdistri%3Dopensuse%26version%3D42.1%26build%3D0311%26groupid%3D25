@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="d07e9d87249aea3ff602091d47e2a841b0eaa61a" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/packed/bootstrap-b6b76ae10bad7385589ba46194411148.min.css" rel="stylesheet">
+      <script src="/packed/bootstrap-a1612e2266ce0d38390f50ea5218cb1b.min.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+      
+      $(document).ready(function() {
+          setupOverview();
+
+      } );
+
+//]]></script>
+      <link rel="icon" href="/favicon.ico">
+
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class='container-fluid navbar navbar-default navbar-static-top'>
+<div class='navbar-inner'>
+    <div class='container'>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+        <img alt="Brand" src="/images/header-logo.png" />
+        </a>
+    </div>
+    <div class='collapse navbar-collapse'>
+        <ul class='nav navbar-nav' id='global-navigation'>
+        <li id='item-downloads'><a href="http://en.opensuse.org/openSUSE:Browse#Downloads">Downloads</a></li>
+        <li id='item-support'><a href="http://en.opensuse.org/openSUSE:Browse#Support">Support</a></li>
+        <li id='item-community'><a href="http://en.opensuse.org/openSUSE:Browse#Community">Community</a></li>
+        <li id='item-development'><a href="http://en.opensuse.org/openSUSE:Browse#Development">Development</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+</nav>
+
+      <div class='container'>
+      <div class='row' id='subheader'>
+          <div class='col-md-7'>
+          <div id="breadcrump" class="breadcrumb grid_10 alpha"><a href="/"><img alt="Home" src="/images/home_grey.png"><b>openQA</b></a> > <a href="/tests">Test results</a> > Build overview</div>
+          </div>
+          <div class='col-md-5 text-right'>
+          <div id="user-info">
+              <a href="/login">Login</a>
+          </div>
+          </div>
+      </div>
+      
+
+<div class="container">
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-danger">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/25">openSUSE Tumbleweed Gnome</a></b>
+            build 0311
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">33</span>
+
+                Soft Failure:
+                <span class="badge">6</span>
+            Failed: <span class="badge">20</span>
+
+                None:
+                <span class="badge">1</span>
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD</h3>
+        <table id="results_Gnome-DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th width="10%" id="flavor_Gnome-DVD_arch_i586">i586</th>
+                        <th width="10%" id="flavor_Gnome-DVD_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td width="10%" class="name">RAID0</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID0">
+
+                                        <span id="res-169630">
+                                            <a href="/tests/169630">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID1</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID1">
+
+                                        <span id="res-169631">
+                                            <a href="/tests/169631">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID10</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID10">
+
+                                        <span id="res-169590">
+                                            <a href="/tests/169590">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID5</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID5">
+
+                                        <span id="res-169591">
+                                            <a href="/tests/169591">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID6</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID6">
+
+                                        <span id="res-169592">
+                                            <a href="/tests/169592">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">USBinstall</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall">
+
+                                        <span id="res-169593">
+                                            <a href="/tests/169593">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169593/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">USBinstall@uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall@uefi">
+
+                                        <span id="res-169594">
+                                            <a href="/tests/169594">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169594/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>GNOME-20140701</li><li>GNOME-20141210</li><li>GNOME-20150716</li><li>GNOME-smartneedle-20150803</li><li>ICEWM-minimal-20150512</li><li>xterm-minimal-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169594/modules/yast2_snapper/steps/56">
+                                                    yast2_snapper
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">allpatterns</td>
+
+                            <td id="res_Gnome-DVD_i586_allpatterns">
+
+                                        <span id="res-169572">
+                                            <a href="/tests/169572">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169572/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_allpatterns">
+
+                                        <span id="res-169595">
+                                            <a href="/tests/169595">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoupgrade_13.1</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoupgrade_13.1">
+
+                                        <span id="res-169596">
+                                            <a href="/tests/169596">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoyast_13.2_ext4</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_ext4">
+
+                                        <span id="res-169597">
+                                            <a href="/tests/169597">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoyast_13.2_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_gnome">
+
+                                        <span id="res-169598">
+                                            <a href="/tests/169598">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">boot_to_snapshot</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_boot_to_snapshot">
+
+                                        <span id="res-169599">
+                                            <a href="/tests/169599">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs">
+
+                                        <span id="res-169739">
+                                            <a href="/tests/169739">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169739/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_btrfs">
+
+                                        <span id="res-169600">
+                                            <a href="/tests/169600">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--ctc</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--ctc">
+
+                                        <span id="res-169573">
+                                            <a href="/tests/169573">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169573/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l2</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l2">
+
+                                        <span id="res-169737">
+                                            <a href="/tests/169737">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169737/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l3</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+                                        <span id="res-169740">
+                                            <a href="/tests/169740">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169740/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l3</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+                                        <span id="res-169738">
+                                            <a href="/tests/169738">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169738/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">cryptlvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm">
+
+                                        <span id="res-169601">
+                                            <a href="/tests/169601">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">cryptlvm_minimal_x</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm_minimal_x">
+
+                                        <span id="res-169602">
+                                            <a href="/tests/169602">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">ext4</td>
+
+                            <td id="res_Gnome-DVD_i586_ext4">
+
+                                        <span id="res-169578">
+                                            <a href="/tests/169578">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169578/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_ext4">
+
+                                        <span id="res-169603">
+                                            <a href="/tests/169603">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD_i586_gnome">
+
+                                        <span id="res-169579">
+                                            <a href="/tests/169579">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169579/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome">
+
+                                        <span id="res-169604">
+                                            <a href="/tests/169604">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome@64bit-smp</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@64bit-smp">
+
+                                        <span id="res-169605">
+                                            <a href="/tests/169605">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome@uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@uefi">
+
+                                        <span id="res-169606">
+                                            <a href="/tests/169606">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">lvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm">
+
+                                        <span id="res-169607">
+                                            <a href="/tests/169607">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">lvm+RAID1</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm+RAID1">
+
+                                        <span id="res-169608">
+                                            <a href="/tests/169608">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/169608/modules/partitioning_raid/steps/118">
+                                                    partitioning_raid
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">mediacheck</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_mediacheck">
+
+                                        <span id="res-169609">
+                                            <a href="/tests/169609">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">memtest</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_memtest">
+
+                                        <span id="res-169610">
+                                            <a href="/tests/169610">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1">
+
+                                        <span id="res-169611">
+                                            <a href="/tests/169611">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1+gcc5_64bit</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+gcc5_64bit">
+
+                                        <span id="res-169612">
+                                            <a href="/tests/169612">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169612/modules/addon_products_sle/steps/10">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1">
+
+                                        <span id="res-169613">
+                                            <a href="/tests/169613">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1_allpatterns</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1_allpatterns">
+
+                                        <span id="res-169614">
+                                            <a href="/tests/169614">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2">
+
+                                        <span id="res-169615">
+                                            <a href="/tests/169615">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_allpatterns</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_allpatterns">
+
+                                        <span id="res-169616">
+                                            <a href="/tests/169616">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_gcc5</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_gcc5">
+
+                                        <span id="res-169617">
+                                            <a href="/tests/169617">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169617/modules/addon_products_sle/steps/10">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga">
+
+                                        <span id="res-169618">
+                                            <a href="/tests/169618">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>reboot-auth-typed-20151002</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169618/modules/reboot_gnome/steps/4">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_allpatterns</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns">
+
+                                        <span id="res-169619">
+                                            <a href="/tests/169619">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169619/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps">
+
+                                        <span id="res-169620">
+                                            <a href="/tests/169620">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>bootmenu-20141112</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169620/modules/bootloader/steps/2">
+                                                    bootloader
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_online_13.2_ga</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_online_13.2_ga">
+
+                                        <span id="res-169621">
+                                            <a href="/tests/169621">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base">
+
+                                        <span id="res-169580">
+                                            <a href="/tests/169580">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li><li>welcome-20150812</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169580/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base">
+
+                                        <span id="res-169622">
+                                            <a href="/tests/169622">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base+awesome</td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base+awesome">
+
+                                        <span id="res-169581">
+                                            <a href="/tests/169581">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li><li>welcome-20150812</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169581/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base+awesome">
+
+                                        <span id="res-169623">
+                                            <a href="/tests/169623">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base@zkvm</td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base@zkvm">
+
+                                        <a href="/tests/169589">
+                                            <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+                                        </a>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal_x</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x">
+
+                                        <span id="res-169624">
+                                            <a href="/tests/169624">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal_x+uefi@uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x+uefi@uefi">
+
+                                        <span id="res-169625">
+                                            <a href="/tests/169625">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">multipath</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_multipath">
+
+                                        <span id="res-169626">
+                                            <a href="/tests/169626">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">rescue_system</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_rescue_system">
+
+                                        <span id="res-169627">
+                                            <a href="/tests/169627">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gcc5</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5">
+
+                                        <span id="res-169628">
+                                            <a href="/tests/169628">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169628/modules/addon_products_sle/steps/10">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gcc5+allpatterns</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5+allpatterns">
+
+                                        <span id="res-169629">
+                                            <a href="/tests/169629">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169629/modules/addon_products_sle/steps/10">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode">
+
+                                        <span id="res-169632">
+                                            <a href="/tests/169632">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode+awesome</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode+awesome">
+
+                                        <span id="res-169633">
+                                            <a href="/tests/169633">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">toolchain_zypper</td>
+
+                            <td id="res_Gnome-DVD_i586_toolchain_zypper">
+
+                                        <span id="res-169582">
+                                            <a href="/tests/169582">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169582/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_toolchain_zypper">
+
+                                        <span id="res-169634">
+                                            <a href="/tests/169634">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-addon-20141204</li><li>inst-addon-yast2-20151210</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169634/modules/addon_products_sle/steps/1">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">xen</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_xen">
+
+                                        <span id="res-169635">
+                                            <a href="/tests/169635">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">xfs</td>
+
+                            <td id="res_Gnome-DVD_i586_xfs">
+
+                                        <span id="res-169583">
+                                            <a href="/tests/169583">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-betawarning-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/169583/modules/welcome/steps/2">
+                                                    welcome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_xfs">
+
+                                        <span id="res-169636">
+                                            <a href="/tests/169636">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+      <div class='container'>
+          <div id='footer-content'>
+                 
+              </div>
+          <div id='footer-legal'>
+                  openQA is licensed <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+      </div>
+      </footer>
+    </div>
+  </body>
+</html>

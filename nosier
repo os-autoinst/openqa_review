@@ -1,0 +1,1 @@
+nosier -p openqa_review -p tests "tox"

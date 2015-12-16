@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="d07e9d87249aea3ff602091d47e2a841b0eaa61a" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/packed/bootstrap-b6b76ae10bad7385589ba46194411148.min.css" rel="stylesheet">
+      <script src="/packed/bootstrap-a1612e2266ce0d38390f50ea5218cb1b.min.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+      
+      $(document).ready(function() {
+            $('.timeago').timeago();
+
+      } );
+
+//]]></script>
+      <link rel="icon" href="/favicon.ico">
+
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class='container-fluid navbar navbar-default navbar-static-top'>
+<div class='navbar-inner'>
+    <div class='container'>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+        <img alt="Brand" src="/images/header-logo.png" />
+        </a>
+    </div>
+    <div class='collapse navbar-collapse'>
+        <ul class='nav navbar-nav' id='global-navigation'>
+        <li id='item-downloads'><a href="http://en.opensuse.org/openSUSE:Browse#Downloads">Downloads</a></li>
+        <li id='item-support'><a href="http://en.opensuse.org/openSUSE:Browse#Support">Support</a></li>
+        <li id='item-community'><a href="http://en.opensuse.org/openSUSE:Browse#Community">Community</a></li>
+        <li id='item-development'><a href="http://en.opensuse.org/openSUSE:Browse#Development">Development</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+</nav>
+
+      <div class='container'>
+      <div class='row' id='subheader'>
+          <div class='col-md-7'>
+          <div id="breadcrump" class="breadcrumb grid_10 alpha"><a href="/"><img alt="Home" src="/images/home_grey.png"><b>openQA</b></a></div>
+          </div>
+          <div class='col-md-5 text-right'>
+          <div id="user-info">
+              <a href="/login">Login</a>
+          </div>
+          </div>
+      </div>
+      
+
+
+
+<h1>Last Builds for Group openSUSE Tumbleweed Gnome</h1>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0318&amp;groupid=25">Build0318</a>
+                (<abbr class="timeago" title="2015-12-18T21:37:48Z">
+                2015-12-18T21:37:48
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 40.6593406593407%">
+                        37 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 36.2637362637363%">
+                        33 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 23.0769230769231%">
+                        21 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0313&amp;groupid=25">Build0313</a>
+                (<abbr class="timeago" title="2015-12-18T18:02:07Z">
+                2015-12-18T18:02:07
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 41.7582417582418%">
+                        38 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 9.89010989010989%">
+                        9 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0311&amp;groupid=25">Build0311</a>
+                (<abbr class="timeago" title="2015-12-18T14:22:21Z">
+                2015-12-18T14:22:21
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 42.8571428571429%">
+                        39 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 21.978021978022%">
+                        20 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0308&amp;groupid=25">Build0308</a>
+                (<abbr class="timeago" title="2015-12-18T11:46:37Z">
+                2015-12-18T11:46:37
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 37.3626373626374%">
+                        34 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 14.2857142857143%">
+                        13 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0307&amp;groupid=25">Build0307</a>
+                (<abbr class="timeago" title="2015-12-17T17:23:35Z">
+                2015-12-17T17:23:35
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 65.9340659340659%">
+                        60 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 18.6813186813187%">
+                        17 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0306&amp;groupid=25">Build0306</a>
+                (<abbr class="timeago" title="2015-12-17T15:18:32Z">
+                2015-12-17T15:18:32
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 68.1318681318681%">
+                        62 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 30.7692307692308%">
+                        28 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0305&amp;groupid=25">Build0305</a>
+                (<abbr class="timeago" title="2015-12-17T12:57:30Z">
+                2015-12-17T12:57:30
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 45.0549450549451%">
+                        41 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 5.49450549450549%">
+                        5 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0304&amp;groupid=25">Build0304</a>
+                (<abbr class="timeago" title="2015-12-16T20:56:52Z">
+                2015-12-16T20:56:52
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 78.021978021978%">
+                        71 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 21.978021978022%">
+                        20 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0300&amp;groupid=25">Build0300</a>
+                (<abbr class="timeago" title="2015-12-16T15:22:07Z">
+                2015-12-16T15:22:07
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 70.3296703296703%">
+                        64 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 28.5714285714286%">
+                        26 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0299&amp;groupid=25">Build0299</a>
+                (<abbr class="timeago" title="2015-12-16T12:36:44Z">
+                2015-12-16T12:36:44
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 71.4285714285714%">
+                        65 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 27.4725274725275%">
+                        25 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+<h1>Comments</h1>
+
+    <div class="row">
+        <div class="col-sm-1">
+            <img class="media-object img-circle" src="" alt="profile">
+        </div>
+        <div class="col-sm-11">
+            <div class="media-body comment-body">
+                <div class="well well-lg">
+                    <h4 class="media-heading">foo wrote <abbr class="timeago" title="2015-12-18T13:28:20Z">2015-12-18 13:28:20 +0000</abbr></h4>
+                    <div class="media-comment">
+                      <p><strong>Date: 2015-12-18 - 11:16</strong>
+<strong>Build: 0307</strong></p>
+
+<p><strong>Common issues:</strong></p>
+
+...
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1">
+            <img class="media-object img-circle" src="//" alt="profile">
+        </div>
+        <div class="col-sm-11">
+            <div class="media-body comment-body">
+                <div class="well well-lg">
+                    <h4 class="media-heading">bar wrote <abbr class="timeago" title="2015-12-17T15:46:59Z">2015-12-17 15:46:59 +0000</abbr></h4>
+                    <div class="media-comment">
+                      <h4><b>Date:</b> <2015-12-17 - 16:45><br />
+<b>Build:</b> 0305<bir /></h4>
+
+<p><b>Common issues:</b> baz
+<hr>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      <footer class='footer'>
+      <div class='container'>
+          <div id='footer-content'>
+                 
+              </div>
+          <div id='footer-legal'>
+                  openQA is licensed <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+      </div>
+      </footer>
+    </div>
+  </body>
+</html>

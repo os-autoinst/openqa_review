@@ -1,0 +1,23 @@
+# see http://coverage.readthedocs.org/en/latest/config.html
+# and https://pypi.python.org/pypi/pytest-cov (e.g. changelog section)
+[run]
+branch = True
+omit = tests/*
+
+[report]
+fail_under = 100
+show_missing = True
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # defensive assertion code
+    raise NotImplementedError
+    raise NotEnoughBuildsError
+    TODO implement
+
+    # Don't complain if non-runnable code isn't run:
+    if __name__ == .__main__.:
+
+[html]
+directory = coverage_html

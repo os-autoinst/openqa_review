@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+
+<div class="container">
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-danger">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/25">openSUSE Tumbleweed  1.Gnome</a></b>
+            build 0389
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">41</span>
+
+                Soft Failure:
+                <span class="badge">1</span>
+            Failed: <span class="badge">49</span>
+
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD</h3>
+        <table id="results_Gnome-DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th width="10%" id="flavor_Gnome-DVD_arch_arm">arm</th>
+                        <th width="10%" id="flavor_Gnome-DVD_arch_i586">i586</th>
+                        <th width="10%" id="flavor_Gnome-DVD_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td width="10%" class="name">RAID0</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID0">
+
+                                        <span id="res-179873">
+                                            <a href="/tests/179873">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID0">
+
+                                        <span id="res-179938">
+                                            <a href="/tests/179938">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID1</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID1">
+
+                                        <span id="res-179874">
+                                            <a href="/tests/179874">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID1">
+
+                                        <span id="res-179939">
+                                            <a href="/tests/179939">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID10</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID10">
+
+                                        <span id="res-179875">
+                                            <a href="/tests/179875">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID10">
+
+                                        <span id="res-179898">
+                                            <a href="/tests/179898">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179898/modules/partitioning_raid/steps/100">
+                                                    partitioning_raid
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID5</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID5">
+
+                                        <span id="res-179849">
+                                            <a href="/tests/179849">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179849/modules/partitioning_raid/steps/108">
+                                                    partitioning_raid
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID5">
+
+                                        <span id="res-179899">
+                                            <a href="/tests/179899">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">RAID6</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID6">
+
+                                        <span id="res-179848">
+                                            <a href="/tests/179848">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID6">
+
+                                        <span id="res-179900">
+                                            <a href="/tests/179900">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">USBinstall</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall">
+
+                                        <span id="res-179901">
+                                            <a href="/tests/179901">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179901/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179901/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">USBinstall@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall@uefi">
+
+                                        <span id="res-179902">
+                                            <a href="/tests/179902">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179902/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179902/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_allpatterns">
+
+                                        <span id="res-179850">
+                                            <a href="/tests/179850">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179850/modules/reboot_gnome/steps/13">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_allpatterns">
+
+                                        <span id="res-179880">
+                                            <a href="/tests/179880">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179880/modules/consoletest_setup/steps/4">
+                                                    consoletest_setup
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_allpatterns">
+
+                                        <span id="res-179903">
+                                            <a href="/tests/179903">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179903/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179903/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoupgrade_13.1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoupgrade_13.1">
+
+                                        <span id="res-179904">
+                                            <a href="/tests/179904">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179904/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoyast_13.2_ext4</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_ext4">
+
+                                        <span id="res-179905">
+                                            <a href="/tests/179905">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179905/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179905/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">autoyast_13.2_gnome</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_gnome">
+
+                                        <span id="res-179906">
+                                            <a href="/tests/179906">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179906/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179906/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">boot_to_snapshot</td>
+
+                            <td id="res_Gnome-DVD_arm_boot_to_snapshot">
+
+                                        <span id="res-179851">
+                                            <a href="/tests/179851">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>boot-menu-snapshot-menu-20151117</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179851/modules/livecdreboot/steps/14">
+                                                    livecdreboot
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_boot_to_snapshot">
+
+                                        <span id="res-179907">
+                                            <a href="/tests/179907">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs</td>
+
+                            <td id="res_Gnome-DVD_arm_btrfs">
+
+                                        <span id="res-179852">
+                                            <a href="/tests/179852">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs">
+
+                                        <span id="res-179884">
+                                            <a href="/tests/179884">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_btrfs">
+
+                                        <span id="res-179908">
+                                            <a href="/tests/179908">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--ctc</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--ctc">
+
+                                        <span id="res-179881">
+                                            <a href="/tests/179881">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179881/modules/bootloader_i586/steps/1">
+                                                    bootloader_i586
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l2">
+
+                                        <span id="res-179882">
+                                            <a href="/tests/179882">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+                                        <span id="res-179883">
+                                            <a href="/tests/179883">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">btrfs@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+                                        <span id="res-179885">
+                                            <a href="/tests/179885">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">cryptlvm</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm">
+
+                                        <span id="res-179853">
+                                            <a href="/tests/179853">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>tty2-selected-20151201</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179853/modules/first_boot/steps/4">
+                                                    first_boot
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm">
+
+                                        <span id="res-179909">
+                                            <a href="/tests/179909">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179909/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179909/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179909/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">cryptlvm_minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm_minimal_x">
+
+                                        <span id="res-179854">
+                                            <a href="/tests/179854">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20150506</li><li>gdm-20150218</li><li>tty2-selected-20151201</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179854/modules/first_boot/steps/4">
+                                                    first_boot
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm_minimal_x">
+
+                                        <span id="res-179910">
+                                            <a href="/tests/179910">
+                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">ext4</td>
+
+                            <td id="res_Gnome-DVD_arm_ext4">
+
+                                        <span id="res-179855">
+                                            <a href="/tests/179855">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_ext4">
+
+                                        <span id="res-180061">
+                                            <a href="/tests/180061">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_ext4">
+
+                                        <span id="res-179911">
+                                            <a href="/tests/179911">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome">
+
+                                        <span id="res-179856">
+                                            <a href="/tests/179856">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>mtab-20140319</li><li>mtab-20141204</li><li>mtab-20151205</li><li>mtab-20151214</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179856/modules/mtab/steps/1">
+                                                    mtab
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179856/modules/reboot_gnome/steps/12">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179856/modules/shutdown/steps/3">
+                                                    shutdown
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_gnome">
+
+                                        <span id="res-179887">
+                                            <a href="/tests/179887">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179887/modules/consoletest_setup/steps/4">
+                                                    consoletest_setup
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome">
+
+                                        <span id="res-179912">
+                                            <a href="/tests/179912">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179912/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179912/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome@64bit-smp</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@64bit-smp">
+
+                                        <span id="res-179913">
+                                            <a href="/tests/179913">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179913/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179913/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome@arm-smp</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome@arm-smp">
+
+                                        <span id="res-179858">
+                                            <a href="/tests/179858">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179858/modules/reboot_gnome/steps/12">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179858/modules/shutdown/steps/3">
+                                                    shutdown
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179858/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gnome@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@uefi">
+
+                                        <span id="res-179914">
+                                            <a href="/tests/179914">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179914/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179914/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gpt</td>
+
+                            <td id="res_Gnome-DVD_arm_gpt">
+
+                                        <span id="res-179857">
+                                            <a href="/tests/179857">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">lvm</td>
+
+                            <td id="res_Gnome-DVD_arm_lvm">
+
+                                        <span id="res-179859">
+                                            <a href="/tests/179859">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179859/modules/reboot_gnome/steps/13">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179859/modules/shutdown/steps/3">
+                                                    shutdown
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm">
+
+                                        <span id="res-179915">
+                                            <a href="/tests/179915">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179915/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179915/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">lvm+RAID1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm+RAID1">
+
+                                        <span id="res-179916">
+                                            <a href="/tests/179916">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">mediacheck</td>
+
+                            <td id="res_Gnome-DVD_arm_mediacheck">
+
+                                        <span id="res-179860">
+                                            <a href="/tests/179860">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_mediacheck">
+
+                                        <span id="res-179917">
+                                            <a href="/tests/179917">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">memtest</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_memtest">
+
+                                        <span id="res-179918">
+                                            <a href="/tests/179918">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1">
+
+                                        <span id="res-179919">
+                                            <a href="/tests/179919">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>tty1-selected-20140729</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179919/modules/consoletest_setup/steps/2">
+                                                    consoletest_setup
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1+gcc5_64bit</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+gcc5_64bit">
+
+                                        <span id="res-179920">
+                                            <a href="/tests/179920">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179920/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1">
+
+                                        <span id="res-179921">
+                                            <a href="/tests/179921">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179921/modules/reboot_gnome/steps/12">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.1_allpatterns</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1_allpatterns">
+
+                                        <span id="res-179922">
+                                            <a href="/tests/179922">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179922/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2">
+
+                                        <span id="res-179923">
+                                            <a href="/tests/179923">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179923/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179923/modules/reboot_gnome/steps/12">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_allpatterns</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_allpatterns">
+
+                                        <span id="res-179924">
+                                            <a href="/tests/179924">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179924/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179924/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_allpatterns_arm</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2_allpatterns_arm">
+
+                                        <span id="res-179861">
+                                            <a href="/tests/179861">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179861/modules/reboot_gnome/steps/13">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_arm</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2_arm">
+
+                                        <span id="res-179862">
+                                            <a href="/tests/179862">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179862/modules/livecdreboot/steps/3">
+                                                    livecdreboot
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_offline_13.2_gcc5</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_gcc5">
+
+                                        <span id="res-179925">
+                                            <a href="/tests/179925">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179925/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga">
+
+                                        <span id="res-179926">
+                                            <a href="/tests/179926">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179926/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_allpatterns</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns">
+
+                                        <span id="res-179927">
+                                            <a href="/tests/179927">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179927/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps">
+
+                                        <span id="res-179928">
+                                            <a href="/tests/179928">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179928/modules/reboot_gnome/steps/10">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_allpatterns_arm</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga_allpatterns_arm">
+
+                                        <span id="res-179863">
+                                            <a href="/tests/179863">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179863/modules/reboot_gnome/steps/13">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179863/modules/shutdown/steps/3">
+                                                    shutdown
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_offline_13.2_ga_arm</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga_arm">
+
+                                        <span id="res-179864">
+                                            <a href="/tests/179864">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179864/modules/reboot_gnome/steps/14">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179864/modules/snapper_undochange/steps/4">
+                                                    snapper_undochange
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>yast2_snapper-snapshots-20150818</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179864/modules/yast2_snapper/steps/13">
+                                                    yast2_snapper
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">upgrade_zdup_online_13.2_ga</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_online_13.2_ga">
+
+                                        <span id="res-179929">
+                                            <a href="/tests/179929">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>DTMF-159D-20151214</li><li>DTMF-159D-slightly-slower-20151217</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179929/modules/firefox_audio/steps/5">
+                                                    firefox_audio
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179929/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal+base">
+
+                                        <span id="res-179865">
+                                            <a href="/tests/179865">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base">
+
+                                        <span id="res-180057">
+                                            <a href="/tests/180057">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>autoyast-system-login-console-20150529</li><li>autoyast-system-login-console-minimal-20160113</li><li>linux-login-20150120</li><li>linux-login-20150922</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/180057/modules/first_boot/steps/1">
+                                                    first_boot
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base">
+
+                                        <span id="res-179930">
+                                            <a href="/tests/179930">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base+awesome</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal+base+awesome">
+
+                                        <span id="res-179866">
+                                            <a href="/tests/179866">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base+awesome">
+
+                                        <span id="res-179889">
+                                            <a href="/tests/179889">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>inst-addon-20141204</li><li>inst-addon-yast2-20151210</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179889/modules/addon_products_sle/steps/1">
+                                                    addon_products_sle
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base+awesome">
+
+                                        <span id="res-179931">
+                                            <a href="/tests/179931">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal+base@zkvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base@zkvm">
+
+                                        <span id="res-179897">
+                                            <a href="/tests/179897">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179897/modules/livecdreboot/steps/2">
+                                                    livecdreboot
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal_x">
+
+                                        <span id="res-179867">
+                                            <a href="/tests/179867">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x">
+
+                                        <span id="res-179932">
+                                            <a href="/tests/179932">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">minimal_x+uefi@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x+uefi@uefi">
+
+                                        <span id="res-179933">
+                                            <a href="/tests/179933">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">multipath</td>
+
+                            <td id="res_Gnome-DVD_arm_multipath">
+
+                                        <span id="res-179868">
+                                            <a href="/tests/179868">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_multipath">
+
+                                        <span id="res-179934">
+                                            <a href="/tests/179934">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">rescue_system</td>
+
+                            <td id="res_Gnome-DVD_arm_rescue_system">
+
+                                        <span id="res-179869">
+                                            <a href="/tests/179869">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_rescue_system">
+
+                                        <span id="res-179935">
+                                            <a href="/tests/179935">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gcc5</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5">
+
+                                        <span id="res-179870">
+                                            <a href="/tests/179870">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179870/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5">
+
+                                        <span id="res-179936">
+                                            <a href="/tests/179936">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179936/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">gcc5+allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5+allpatterns">
+
+                                        <span id="res-179871">
+                                            <a href="/tests/179871">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179871/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5+allpatterns">
+
+                                        <span id="res-179937">
+                                            <a href="/tests/179937">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/179937/modules/releasenotes/steps/23">
+                                                    releasenotes
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode</td>
+
+                            <td id="res_Gnome-DVD_arm_textmode">
+
+                                        <span id="res-179872">
+                                            <a href="/tests/179872">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode">
+
+                                        <span id="res-179940">
+                                            <a href="/tests/179940">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode+awesome</td>
+
+                            <td id="res_Gnome-DVD_arm_textmode+awesome">
+
+                                        <span id="res-179876">
+                                            <a href="/tests/179876">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode+awesome">
+
+                                        <span id="res-179941">
+                                            <a href="/tests/179941">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">toolchain_zypper</td>
+
+                            <td id="res_Gnome-DVD_arm_toolchain_zypper">
+
+                                        <span id="res-179877">
+                                            <a href="/tests/179877">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>pool-and-update-channel-20150909</li><li>pool-and-update-channel-20150911</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179877/modules/install/steps/6">
+                                                    install
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_toolchain_zypper">
+
+                                        <span id="res-180058">
+                                            <a href="/tests/180058">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>pool-and-update-channel-20150911</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/180058/modules/install/steps/3">
+                                                    install
+                                                </a>
+                                            </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_toolchain_zypper">
+
+                                        <span id="res-179942">
+                                            <a href="/tests/179942">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>pool-and-update-channel-20150911</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179942/modules/install/steps/6">
+                                                    install
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">xen</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_xen">
+
+                                        <span id="res-179943">
+                                            <a href="/tests/179943">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20141113</li><li>displaymanager-20141206</li><li>displaymanager-20150506</li><li>gdm-20150218</li><li>xdm-20150429</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179943/modules/reboot_gnome/steps/11">
+                                                    reboot_gnome
+                                                </a>
+                                            </span>
+
+                                            <span title='<p>Failed needles:</p><ul><li>sshxterm-20141205</li></ul>' data-toggle='tooltip' class="failedmodule" >
+                                                <a href="/tests/179943/modules/sshxterm/steps/3">
+                                                    sshxterm
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">xfs</td>
+
+                            <td id="res_Gnome-DVD_arm_xfs">
+
+                                        <span id="res-179878">
+                                            <a href="/tests/179878">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_i586_xfs">
+
+                                        <span id="res-179891">
+                                            <a href="/tests/179891">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+
+                            <td id="res_Gnome-DVD_x86_64_xfs">
+
+                                        <span id="res-179944">
+                                            <a href="/tests/179944">
+                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+      <div class='container'>
+          <div id='footer-content'>
+
+              </div>
+          <div id='footer-legal'>
+                  openQA is licensed <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+      </div>
+      </footer>
+    </div>
+  </body>
+</html>

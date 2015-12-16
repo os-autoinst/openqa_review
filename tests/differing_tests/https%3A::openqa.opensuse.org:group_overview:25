@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+
+<h1>Last Builds for Group openSUSE Tumbleweed  1.Gnome</h1>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0405&amp;groupid=25">Build0405</a>
+                (<abbr class="timeago" title="2016-01-18T23:39:19Z">
+                2016-01-18T23:39:19
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 43.4782608695652%">
+                        40 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 4.34782608695652%">
+                        4 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 52.1739130434783%">
+                        48 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=0389&amp;groupid=25">Build0389</a>
+                (<abbr class="timeago" title="2016-01-14T11:53:21Z">
+                2016-01-14T11:53:21
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 45.6521739130435%">
+                        42 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 53.2608695652174%">
+                        49 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+  </body>
+</html>

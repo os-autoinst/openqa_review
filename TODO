@@ -1,0 +1,81 @@
+ - use test verbosity to also add more details to existing issues but always
+   one level less verbose than for new tests
+
+ - check install error when cloned from gitlab w/o tags maybe based on pylibrary cookiecutter template? missing tag is causing version to fail
+  - tags added but should also work without, try "bumpversion"? see cookiecutter-pylibrary template
+
+ - offer to automatically post comment on webpage
+
+ - for new issues,
+  - offer hints what to do, e.g 'fix the needle', etc.
+  - parse and show link (clickable) for browser OR auto-open in browser
+  - show detailed fail reason (failed needles are always shown, easy)
+
+ - for fixed issues,
+  - also offer link to crosscheck
+  - offer to close bug
+
+
+ - compare architectures against each other, if same test fails for all
+   architectures, report as "common issues"
+
+
+ - consider "build number drift", e.g. some builds have
+   i586 and x86_64 and some the corresponding 'arm' tests
+
+ - for further investigation of failed issues
+  - compare list of needle candidates for failed needles
+   - empty list
+   - less needles
+   - more needles
+   - changed names
+
+
+ - search for open bugs in bugzilla
+
+  - how to find bugs which only have a test_url which does not specify the
+    test module? e.g. if someone only mentions
+    https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt
+
+
+  - diff os-autoinst.txt logfiles, e.g. download and offer wizard like in
+    desired user diff editor
+   - can skip differing timestamps and near matches, maybe python difflib can
+     do this?
+
+
+  - offer links to
+   - autoinst.txt (should be easy, it is the test-url + '/file/autoinst-log.txt', e.g. https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt')
+   - the test source code
+   - the git changelog of test + openQA + os-autoinst
+   - the OBS packages changed during period
+
+
+ - redirect report to file
+ - offer to open urls to failed tests in browser
+ - offer to open bugs in bugzilla or just text template (could enter new bugs
+   but don't submit yet for review), e.g. based on
+   https://bugzilla.suse.com/show_bug.cgi?id=959694
+ - template for failed openqa product bugs in wiki
+ - improve detection about "new product issue" or "new openqa issue".
+   Assumption: If the source code of the test did not change
+   (previous->current) AND the needle candidates (or tags) did not change (AND
+   maybe the test one step in before also did not change and not fail) THEN a
+   failed test is a new product issue
+ - compare log output, e.g. see
+  - http://stackoverflow.com/questions/6486450/python-compute-list-difference
+  - http://stackoverflow.com/questions/3462143/get-difference-between-two-lists
+  - https://pypi.python.org/pypi/fuzzywuzzy
+  - http://streamhacker.com/2011/10/31/fuzzy-string-matching-python/
+  - http://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/
+  - http://marcobonzanini.com/2015/02/25/fuzzy-string-matching-in-python/
+    - http://stackoverflow.com/questions/2923420/what-is-a-simple-fuzzy-string-matching-algorithm-in-python
+
+
+ - package for openSUSE distributions
+  - make open soure
+  - use osc to create OBS project
+  - build spec file with "python setup.py bdist_rpm --force-arch x86_64"
+  - build with "osc build"
+  - upload
+  - add SR

@@ -1,0 +1,1 @@
+PYTHONPATH=.:$PYTHONPATH nosier -p openqa_review -p tests/ "py.test -vvvv tests/test_openqa_review.py $@"
