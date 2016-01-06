@@ -1,0 +1,5 @@
+Debug: /var/lib/openqa/share/tests/sle/tests/x11/desktop_mainmenu.pm:22 called testapi::assert_screen
+<<< mydie(cause_of_death=[
+  'needle(s) \'test-desktop_mainmenu-1\' not found'
+])
+test desktop_mainmenu died: mydie at /usr/lib/os-autoinst/testapi.pm line 164.

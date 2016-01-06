@@ -1,0 +1,7 @@
+>>> assert_screen: match=inst-bootmenu timed out after 15
+Debug: /var/lib/openqa/share/tests/sle/tests/installation/bootloader.pm:24 called testapi::assert_screen
+<<< mydie(cause_of_death=[
+  'needle(s) \'inst-bootmenu\' not found'
+])
+test bootloader died: mydie at /usr/lib/os-autoinst/testapi.pm line 164.
+test bootloader died: mydie at /usr/lib/os-autoinst/testapi.pm line 164.

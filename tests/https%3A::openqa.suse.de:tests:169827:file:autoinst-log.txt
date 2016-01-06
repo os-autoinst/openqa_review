@@ -1,0 +1,5 @@
+Debug: /var/lib/openqa/share/tests/sle/tests/console/snapper_undochange.pm:12 called testapi::script_output
+<<< wait_serial(regex='SCRIPT_FINISHED', timeout=10)
+>>> wait_serial: SCRIPT_FINISHED: fail
+test snapper_undochange died: script failed at /usr/lib/os-autoinst/testapi.pm line 936.
+test snapper_undochange died: script failed at /usr/lib/os-autoinst/testapi.pm line 936.

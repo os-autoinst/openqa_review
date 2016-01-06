@@ -1,0 +1,6 @@
+>>> assert_screen: match=languagepicked timed out after 2
+Debug: /var/lib/openqa/share/tests/sle/tests/installation/welcome.pm:25 called testapi::assert_screen
+<<< mydie(cause_of_death=[
+  'needle(s) \'languagepicked\' not found'
+])
+test welcome died: mydie at /usr/lib/os-autoinst/testapi.pm line 164.

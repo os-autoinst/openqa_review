@@ -164,9 +164,18 @@ def test_builds_can_be_specified_and_appear_in_report():
     assert '**Build:** {} (reference {})'.format(*args.builds.split(',')) in report
 
 
-def test_too_high_verbosity_selection_yields_still_valid_selection():
+def test_more_verbose_report_shows_logfile_entries():
     args = cache_test_args_factory()
     args.verbose_test = 5
+    report = str(openqa_review.generate_report(args))
+    report = str(openqa_review.generate_report(args))
+    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TTTT.md')).read()
+    compare_report(report, ref_report)
+
+
+def test_too_high_verbosity_selection_yields_still_valid_selection():
+    args = cache_test_args_factory()
+    args.verbose_test = 6
     report = str(openqa_review.generate_report(args))
     assert report != ''
 

@@ -54,7 +54,6 @@
 
 
  - offer links to
-  - autoinst.txt (should be easy, it is the test-url + '/file/autoinst-log.txt', e.g. https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt')
   - the test source code
   - the git changelog of test + openQA + os-autoinst
   - the OBS packages changed during period

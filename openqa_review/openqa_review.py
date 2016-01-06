@@ -702,6 +702,15 @@ class IssueEntry(object):
         """Yield a report entry for one new issue based on verbosity."""
         failure_modules_str = ' "Failed modules: %s"' % self._format_failure_modules(f['failedmodules']) if f['failedmodules'] else ''
         report_str = issue_report_link(self.args, self.root_url, f, self.test_browser) if (self.args.report_links and self.test_browser) else ''
+        if self.args.verbose_test >= 4 and 'prev' in f:
+            return '[%s](%s%s) [(ref)](%s "Previous test")\n *%s' % (
+                f['name'], self._url(f),
+                failure_modules_str,
+                self._url(f['prev']),
+                # in case of no bug referenced we can add more information here, e.g. log file output
+                # TODO here use data from previously downloaded and parsed log file (to be added) and insert content here, see test data
+                'logfile: %(url)s: "%(report)s"' % self.log_report
+            )
         if self.args.verbose_test >= 3 and 'prev' in f:
             return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
                 f['name'], self._url(f),
