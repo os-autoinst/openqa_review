@@ -103,7 +103,7 @@ import sys
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
 from string import Template
-from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
+from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs, urlparse
 
 from bs4 import BeautifulSoup
 from sortedcontainers import SortedDict
@@ -198,6 +198,16 @@ status_badge_str = {
 class NotEnoughBuildsError(Exception):
     """Not enough finished builds found."""
     pass
+
+
+def issue_tracker_query_url(query_url, search_term):
+    """
+    Combine issue tracker query URL and search term.
+
+    >>> str(issue_tracker_query_url('https://bugzilla.suse.com/buglist.cgi?quicksearch=', 'https://openqa.suse.de/tests/180243'))
+    'https://bugzilla.suse.com/buglist.cgi?quicksearch="https%3A%2F%2Fopenqa.suse.de%2Ftests%2F180243"'
+    """
+    return query_url + '"%s"' % quote_plus(search_term)
 
 
 def parse_summary(details):
@@ -351,6 +361,20 @@ def get_results_by_bugref(results, args):
         results_by_bugref[new_key].append(v)
 
     return results_by_bugref
+
+
+def retrieve_issues(browser, url, issue_system=''):
+    # how to find issues/bugs on each issue trackers result pages
+    issue_class = {
+        'bugzilla': re.compile('bz_bugitem'),
+        'redmine': 'issue',
+    }
+    # TODO maybe it makes sense to use urllib.parse.parse_qs here to parse query strings
+    soup = browser.get_soup(url)
+    root_url = '{u.scheme}://{u.hostname}'.format(u=urlparse(url))
+    issues = [issue for issue in soup.find_all(class_=issue_class[issue_system])]
+    issue_urls = [absolute_url(root_url, issue.find('a')) for issue in issues]
+    return issue_urls
 
 
 def set_status_badge(states):

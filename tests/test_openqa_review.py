@@ -336,6 +336,40 @@ def test_get_job_groups_yields_job_groups_in_page():
         'openSUSE Tumbleweed PowerPC'])
 
 
+def test_query_of_bugs_will_retrieve_urls():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'issue_tracker')
+    root_url = urljoin(args.host, args.base_url)
+    browser = openqa_review.Browser(args, root_url)
+    query_url = 'https://bugzilla.suse.com/buglist.cgi?quicksearch='
+    search_term = 'https://openqa.suse.de/tests/180243'
+    url = openqa_review.issue_tracker_query_url(query_url, search_term)
+    assert url == 'https://bugzilla.suse.com/buglist.cgi?quicksearch="https%3A%2F%2Fopenqa.suse.de%2Ftests%2F180243"'
+    # For querying we use the API url
+    query_url = 'https://user:password@apibugzilla.novell.com/buglist.cgi?quicksearch='
+    root_url = 'https://apibugzilla.novell.com/'
+    url = openqa_review.issue_tracker_query_url(query_url, search_term)
+    bugs_on_bugzilla = openqa_review.retrieve_issues(browser, url, issue_system='bugzilla')
+    assert len(bugs_on_bugzilla) == 1
+    assert bugs_on_bugzilla[0] == root_url + 'show_bug.cgi?id=962095'
+
+
+def test_query_of_test_issues_will_retrieve_urls():
+    # and now try the "openQA issue tracker"
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'issue_tracker')
+    root_url = urljoin(args.host, args.base_url)
+    browser = openqa_review.Browser(args, root_url)
+    test_issue_tracker_query_url = 'https://progress.opensuse.org/projects/openqatests/search?utf8=%E2%9C%93&all_words=1&issues=1&q='
+    search_term = 'https://openqa.suse.de/tests/175725'
+    url = openqa_review.issue_tracker_query_url(test_issue_tracker_query_url, search_term)
+    assert url == \
+        'https://progress.opensuse.org/projects/openqatests/search?utf8=%E2%9C%93&all_words=1&issues=1&q="https%3A%2F%2Fopenqa.suse.de%2Ftests%2F175725"'
+    issues_in_progress = openqa_review.retrieve_issues(browser, url, issue_system='redmine')
+    assert len(issues_in_progress) == 2
+    assert issues_in_progress[0] == 'https://progress.opensuse.org/issues/10136'
+
+
 # TODO should be covered by doctest already but I can not get coverage analysis to work with doctests in py.test
 def test_filename_to_url_encodes_valid_url():
     url_object = urlparse(filename_to_url('https%3A::openqa.opensuse.org:group_overview:25'))
