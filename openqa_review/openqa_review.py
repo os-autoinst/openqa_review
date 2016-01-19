@@ -129,6 +129,7 @@ MIN_DAYS_UNCHANGED = 14
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
+
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
 
 config = None
@@ -146,6 +147,8 @@ system = bugzilla
 #password = secret
 base_url = https://apibugzilla.suse.com
 report_url = https://bugzilla.suse.com
+# username and password can be referenced with '{username}' and '{password}'
+query_url = https://{username}:{password}@apibugzilla.suse.com/buglist.cgi?quicksearch=
 
 # for correct generation of issue reporting links add mappings from openQA
 # group IDs to product names in the corresponding issue tracker, e.g.
@@ -367,12 +370,14 @@ def retrieve_issues(browser, url, issue_system=''):
     # how to find issues/bugs on each issue trackers result pages
     issue_class = {
         'bugzilla': re.compile('bz_bugitem'),
-        'redmine': 'issue',
+        'redmine': 'issue',  # TODO use JSON REST instead
     }
-    # TODO maybe it makes sense to use urllib.parse.parse_qs here to parse query strings
+    log.debug("Querying issues using {url} ({issue_system})".format(url=url, issue_system=issue_system))
     soup = browser.get_soup(url)
     root_url = '{u.scheme}://{u.hostname}'.format(u=urlparse(url))
     issues = [issue for issue in soup.find_all(class_=issue_class[issue_system])]
+    for i in issues:
+        log.debug("Found issue {}".format(i.text))
     issue_urls = [absolute_url(root_url, issue.find('a')) for issue in issues]
     return issue_urls
 
@@ -867,6 +872,43 @@ class ProductReport(object):
             results = get_arch_state_results(arch, current_details, previous_details, args.output_state_results)
             self.reports[arch] = ArchReport(arch, results, args, root_url, progress_browser, bugzilla_browser, browser)
 
+
+    if args.retrieve_issues:
+        config = ConfigParser(interpolation=None)
+        config_entries = config.read(CONFIG_PATH)
+        if not config_entries:  # pragma: no cover
+            print("Need configuration file '{}' for issue retrieval credentials".format(CONFIG_PATH))
+            print(CONFIG_USAGE)
+            sys.exit(1)
+
+        def all_issues(config):
+            # TODO check if username and password are replaced, if not ask "python-keyring" or fail
+            query_url = config['query_url'].format(**config)
+            search_url = issue_tracker_query_url(query_url, urljoin(root_url, 'tests/'))
+            issues = retrieve_issues(browser, search_url, config['system'])
+            return issues
+        # instead of conducting expensive queries for every test, retrieve all bugs once and filter later
+        # TODO better search for test module name and architecture and not the test URL as too many tests are run so it is unlikely the same test was already
+        # referenced in a bug report
+        # FIXME this also does not work as we have a list of all issues which have tests at all but for each test we still don't know the current issue
+        # TODO Maybe conduct an OR query
+        # TODO at least for redmine we can use JSON REST API call which should be faster so first experiment with bugzilla stuff
+        product_issues = all_issues(config['product_issues'])
+        test_issues = all_issues(config['test_issues'])
+        for arch, result in iteritems(arch_state_results):
+            for test, test_result in iteritems(result):
+                test_result.update({'product_issues': retrieve_issues(browser, url, product_config['system'])})
+                url = issue_tracker_query_url(test_query_url, absolute_url(root_url, test_result))
+                test_result.update({'test_issues': retrieve_issues(browser, url, test_config['system'])})
+# TODO test issues
+    #{'x86_64': {'RAID0': {'failedmodules': [],
+    #                      'href': '/tests/169825',
+    #                      'prev': {'href': '/tests/169630'},
+    #                      'state': 'STABLE'},
+    import ipdb
+    ipdb.set_trace()
+
+
     def __str__(self):
         """Return report for product."""
         now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
@@ -931,6 +973,11 @@ def parse_args():
     parser.add_argument('-R', '--query-issue-status', action='store_true',
                         help="""Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs" and
                         needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
+    parser.add_argument('--retrieve-issues', action='store_true',
+                        help="""Try to retrieve product and test issues from issue tracker. Needs configuration
+                        file {} with credentials, see '--retrieve-issues-help'.""".format(CONFIG_PATH))
+    parser.add_argument('--retrieve-issues-help', action='store_true',
+                        help="""Shows help how to setup '--retrieve-issues' configuration file.""")
     parser.add_argument('--query-issue-status-help', action='store_true',
                         help="""Shows help how to setup '--query-issue-status' configuration file.""")
     parser.add_argument('--report-links', action='store_true',
