@@ -13,7 +13,7 @@ try:
     # that is not on the tag itself. setuptools/dist will give a warning.
     # Still, this is good enough for now. A (big) alternative would be
     # gh:warner/python-versioneer
-    version_git = check_output(["git", "describe", "--tags"]).rstrip()
+    version_git = check_output(["git", "describe", "--tags"]).rstrip().decode('ascii')
 except:
     version_git = open(version_py).read().strip().split('=')[-1].replace('"', '')
 
