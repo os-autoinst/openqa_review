@@ -1,5 +1,2 @@
-beautifulsoup4
-future
-sortedcontainers
-humanfriendly
-requests
+# see https://caremad.io/2013/07/setup-vs-requirement/
+-e .

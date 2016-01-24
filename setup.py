@@ -26,6 +26,13 @@ open(version_py, 'w').write(version_msg + os.linesep + "__version__ = '" + str(v
 setup(
     name="openqa_review_script",
     version="{ver}".format(ver=version_git),
+    install_requires=[
+        "beautifulsoup4",
+        "future",
+        "sortedcontainers",
+        "humanfriendly",
+        "requests",
+    ],
     author="Oliver kurz",
     author_email="okurz@suse.com",
     description="review helper script for openQA",
