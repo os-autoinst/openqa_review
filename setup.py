@@ -31,7 +31,7 @@ setup(
     url="https://github.com/okurz/openqa_review",
     packages=['openqa_review'],
     py_modules=['version'],
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README')).read(),
+    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
