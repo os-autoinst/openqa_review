@@ -105,9 +105,17 @@ from urllib.parse import quote, unquote, urljoin
 
 import requests
 from bs4 import BeautifulSoup
-from humanfriendly import AutomaticSpinner
-from humanfriendly.text import pluralize
 from sortedcontainers import SortedDict
+
+# treat humanfriendly as optional dependency
+humanfriendly_available = False
+try:
+    from humanfriendly import AutomaticSpinner
+    from humanfriendly.text import pluralize
+    humanfriendly_available = True
+except ImportError:  # pragma: no cover
+    def pluralize(_1, _2, plural):
+        return plural
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
@@ -500,7 +508,7 @@ def get_job_groups(browser, root_url, args):
         log.info("Acting on specified job group URL(s): %s" % ', '.join(job_group_urls))
         job_groups = {i: url for i, url in enumerate(job_group_urls)}
     else:
-        if args.no_progress:
+        if args.no_progress or not humanfriendly_available:
             soup = browser.get_soup(root_url)
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
@@ -550,7 +558,7 @@ def generate_report(args):
         return '%s %s %%' % (label, progress * 100 / len(job_groups.keys()))
 
     for k, v in iteritems(job_groups):
-        if args.no_progress:
+        if args.no_progress or not humanfriendly_available:
             report += '# %s\n\n%s' % (k, one_report(v)) + '\n---\n'
         else:
             with AutomaticSpinner(label=next_label(progress)):
