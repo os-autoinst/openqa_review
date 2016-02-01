@@ -29,6 +29,20 @@ Feel free to add issues in gitlab or send pull requests.
 
 TODOs and ideas are tracked in the file `TODO` as well as gitlab issues.
 
+### Rules for commits
+
+* Every commit is checked by https://travis-ci.org/travis[Travis CI] as soon as
+  you create a pull request but you *should* run `tox` locally,
+
+* Make sure to keep the 100% test coverage, e.g. by adding test reference data
+  for new scenarios. TDD is advised :-)
+
+* For git commit messages use the rules stated on
+  http://chris.beams.io/posts/git-commit/[How to Write a Git Commit Message] as
+  a reference
+
+If this is too much hassle for you feel free to provide incomplete pull
+requests for consideration or create an issue with a code change proposal.
 
 ## License
 
