@@ -1,4 +1,4 @@
-# openqa_review_script
+# openqa_review_script [![Build Status](https://travis-ci.org/okurz/openqa_review.svg?branch=master)](https://travis-ci.org/okurz/openqa_review)
 
 A review helper script for openQA.
 
