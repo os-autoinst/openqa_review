@@ -182,7 +182,6 @@ openqa_review_report_arch_template = Template("""
 
 $new_product_issues
 
-
 **Existing Product bugs:**
 
 $existing_product_issues
@@ -194,6 +193,16 @@ $new_openqa_issues
 **Existing openQA-issues:**
 
 $existing_openqa_issues
+
+**TODO: review**
+
+***new issues***
+
+$new_issues
+
+***existing issues***
+
+$existing_issues
 """)
 
 status_badge_str = {
@@ -335,17 +344,21 @@ def generate_arch_report(arch, results, root_url, verbose_test=1):
         verbose_test = min(verbose_test, max(report.keys()))
         return report[verbose_test](k, v)
 
-    new_product_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
-    new_product_issues += '\n'
-    new_product_issues += '* soft fails: ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
-    existing_product_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+    new_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+    new_issues += '\n'
+    new_issues += '* soft fails: ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
+    existing_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
     return openqa_review_report_arch_template.substitute({
         'arch': arch,
         'status_badge': status_badge,
-        'new_product_issues': '',  # TODO everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
+        # TODO everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
+        # For now we can just not easily decide
+        'new_issues': new_issues,
+        'existing_issues': existing_issues,
+        'new_openqa_issues': '',
+        'existing_openqa_issues': '',
+        'new_product_issues': '',
         'existing_product_issues': '',
-        'new_openqa_issues': new_product_issues,
-        'existing_openqa_issues': existing_product_issues,
     })
 
 
