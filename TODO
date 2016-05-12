@@ -1,3 +1,16 @@
+ - As labels are working now use this in the script, e.g.
+  - also parse labels and show them in report
+  - IF label is bugref
+   - THEN IF bugref is poo
+    - THEN order as "openqa issue"
+   - ELSE
+    - THEN order as "product bug"
+   - ELSEIF (normal label)
+    - THEN add in extra section or keep in TODO
+
+  - read bug/issue subject line and put into report
+
+
  - use test verbosity to also add more details to existing issues but always
    one level less verbose than for new tests
 
