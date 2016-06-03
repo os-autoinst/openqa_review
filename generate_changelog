@@ -1,0 +1,4 @@
+#!/bin/sh -e
+old="${1:?"provide old version"}"
+new="${2:?"provide new version"}"
+(echo "Changelog ($old..$new):" && git log --pretty=' * '%s $old..$new) | mutt -s "openqa_review: New version available on github: $new" $@
