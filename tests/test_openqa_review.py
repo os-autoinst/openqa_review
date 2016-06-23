@@ -51,6 +51,8 @@ def args_factory():
     args.query_issue_status = False
     args.query_issue_status_help = True
     args.report_links = False
+    args.retrieve_issues = False
+    args.retrieve_issues_help = True
     return args
 
 
