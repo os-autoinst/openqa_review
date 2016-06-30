@@ -50,5 +50,6 @@ setup(
     ],
     entry_points={
         'console_scripts': ['openqa-review=openqa_review.openqa_review:main'],
+        'console_scripts': ['tumblesle-release=openqa_review.tumblesle_release:main'],
     }
 )
