@@ -224,15 +224,8 @@ class TumblesleRelease(object):
         # if len(new_passed < released_passed):
         #     return skip_release (cause: test coverage regression) -> notify stats, e.g. which scenario missing
 
-    def release(self):
-        """Release new version of TumbleSLE by syncing from openQA instance to TumbleSLE server."""
-        log.debug("Releasing new TumbleSLE: Build %s" % self.release_build)
-        # # do release
-        # TODO in openQA as soon as there is comment access over API:
-        #   - tag new build
-        #   - remove last tag (or update)
-        #
-        # sync repo/iso/hdd to pre_release on tumblesle archive
+    def sync(self, build_dest):
+        """sync repo/iso/hdd to pre_release on tumblesle archive."""
         rsync_opts = ['-aHP']
         # rsync supports a dry-run option so we can also select a dry-run there. This only works if the directory structure exists
         if self.args.dry_run_rsync:
@@ -240,7 +233,6 @@ class TumblesleRelease(object):
 
         if not self.args.src.endswith('/') or not self.args.dest.endswith('/'):
             raise UnsupportedRsyncArgsError()
-        build_dest = os.path.join(self.args.dest, self.release_build) + '/'
         rsync_opts += ["--include=**/%s%s*" % (self.args.match, self.release_build)]
         if self.args.match_hdds:
             rsync_opts += ["--include=**/%s%s*" % (self.args.match_hdds, self.release_build)]
@@ -251,6 +243,18 @@ class TumblesleRelease(object):
         log.debug("Calling '%s'" % ' '.join(cmd))
         if not self.args.dry_run or self.args.dry_run_rsync:
             check_call(cmd)
+
+    def update_release_info(self):
+        """Update release info file on destination."""
+        log.debug("Updating release_info file")
+        release_info = {self.args.product: {'build': self.release_build}}
+        release_info_dump = yaml.safe_dump(release_info)
+        log.debug("New release info as yaml: %s" % release_info_dump)
+        if not self.args.dry_run:
+            open(self.release_info_path, 'w').write(release_info_dump)
+
+    def update_symlinks(self, build_dest):
+        """Update symlinks to 'current' and 'release' on destination."""
         log.debug("Updating symlinks within %s/ for each asset (Build%s->current)" % (self.release_build, self.release_build))
         for i in glob.glob(build_dest + '*/*'):
             tgt = os.path.join(os.path.dirname(i), os.path.basename(i).replace(self.release_build, 'CURRENT'))
@@ -264,14 +268,23 @@ class TumblesleRelease(object):
             if os.path.exists(release_tgt):
                 os.remove(release_tgt)
             os.symlink(self.release_build, release_tgt)
-        log.debug("Updating release_info file")
-        release_info = {self.args.product: {'build': self.release_build}}
-        release_info_dump = yaml.safe_dump(release_info)
-        log.debug("New release info as yaml: %s" % release_info_dump)
-        if not self.args.dry_run:
-            open(self.release_info_path, 'w').write(release_info_dump)
+
+    def release(self):
+        """Release new version of TumbleSLE by syncing from openQA instance to TumbleSLE server."""
+        log.debug("Releasing new TumbleSLE: Build %s" % self.release_build)
+        # # do release
+        # TODO in openQA as soon as there is comment access over API:
+        #   - tag new build
+        #   - remove last tag (or update)
+        #
+        build_dest = os.path.join(self.args.dest, self.release_build) + '/'
+        self.sync(build_dest)
+        self.update_symlinks(build_dest)
+        self.update_release_info()
         log.debug("Release DONE")
-        # This could be a place where to send further notifications
+        if self.args.post_release_hook:
+            log.debug("Calling post_release_hook '%s'" % self.args.post_release_hook)
+            check_call(self.args.post_release_hook)
 
 
 def parse_args():
@@ -329,6 +342,9 @@ def parse_args():
     parser.add_argument('--sleeptime',
                         help="Time to sleep between runs in seconds. Has no effect with '--run-once'",
                         default=240)
+    parser.add_argument('--post-release-hook',
+                        help="Specify application path for a post-release hook which is called after every successful release",
+                        default=None)
     add_load_save_args(parser)
     return parser.parse_args()
 

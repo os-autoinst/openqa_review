@@ -72,6 +72,7 @@ def args():
     args.load = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
     args.dest = '/tmp/'
+    args.post_release_hook = None
     # Enable saving and disable loading if you want to add new test data downloaded from hosts
     #  args.save = True
     #  args.save_dir = args.load_dir
@@ -101,6 +102,7 @@ def test_compare_old_bad_against_new_good_yields_release(args):
         tr = tumblesle_release.TumblesleRelease(args)
         tr.one_run()
         assert tr.release_build == '0056'
+        args.post_release_hook = '/bin/true'
         # subsequent call with same build has same effect
         tr = tumblesle_release.TumblesleRelease(args)
         tr.one_run()
