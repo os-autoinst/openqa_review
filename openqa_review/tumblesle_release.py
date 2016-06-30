@@ -112,6 +112,7 @@ class TumblesleRelease(object):
                 do_run = False
             self.one_run()
             if not self.args.run_once:  # pragma: no cover
+                log.debug("Waiting for new check %s seconds" % self.args.sleeptime)
                 time.sleep(self.args.sleeptime)
         log.debug("Stopping")
 
