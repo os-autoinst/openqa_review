@@ -245,6 +245,8 @@ class TumblesleRelease(object):
             raise UnsupportedRsyncArgsError()
         build_dest = os.path.join(self.args.dest, self.release_build) + '/'
         rsync_opts += ["--include=**/%s%s*" % (self.args.match, self.release_build)]
+        if self.args.match_hdds:
+            rsync_opts += ["--include=**/%s%s*" % (self.args.match_hdds, self.release_build)]
         rsync_opts += ["--include=iso/", "--include=hdd/", "--exclude=*"]
         cmd = ["rsync"] + rsync_opts + [self.args.src, build_dest]
         log.debug("Calling '%s'" % ' '.join(cmd))
@@ -312,6 +314,9 @@ def parse_args():
     parser.add_argument('--match',
                         help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
                         default='open*-42.2*x86_64*')
+    parser.add_argument('--match-hdds',
+                        help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
+                        default=None)
     parser.add_argument('--release-file',
                         help="""Name of release file including the build number. This file is read from the path specified by '--dest'
                         and is written back to it.""",

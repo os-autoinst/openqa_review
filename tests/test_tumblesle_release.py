@@ -64,6 +64,7 @@ def args():
     args.check_against_build = '0046'
     args.whitelist = ''
     args.match = 'open*-42.2*x86_64*'
+    args.match_hdds = '*leap-42.2*x86_64*'
     args.check_build = 'last'
     args.run_once = True
     args.release_file = '.release_info'
@@ -83,6 +84,7 @@ def test_help():
 
 
 def test_compare_old_bad_against_new_good_yields_release(args):
+    args.match_hdds = None
     with TumblesleDirectory(args):
         tr = tumblesle_release.TumblesleRelease(args)
         tr.one_run()
