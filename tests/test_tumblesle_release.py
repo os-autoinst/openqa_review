@@ -67,6 +67,7 @@ def args():
     args.check_build = 'last'
     args.run_once = True
     args.release_file = '.release_info'
+    args.sleeptime = 0
     args.load = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
     # Enable saving and disable loading if you want to add new test data downloaded from hosts

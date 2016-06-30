@@ -31,6 +31,7 @@ import logging
 import os.path
 import re
 import sys
+import time
 from collections import defaultdict
 from configparser import ConfigParser
 from subprocess import check_call
@@ -109,6 +110,7 @@ class TumblesleRelease(object):
                 log.debug("Requested to run only once")
                 do_run = False
             self.one_run()
+            time.sleep(self.args.sleeptime)
         log.debug("Stopping")
 
     def one_run(self):
@@ -309,6 +311,9 @@ def parse_args():
                         help="""Name of release file including the build number. This file is read from the path specified by '--dest'
                         and is written back to it.""",
                         default='.release_info')
+    parser.add_argument('--sleeptime',
+                        help="Time to sleep between runs in seconds. Has no effect with '--run-once'",
+                        default=240)
     add_load_save_args(parser)
     return parser.parse_args()
 
