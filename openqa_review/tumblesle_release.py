@@ -137,16 +137,11 @@ class TumblesleRelease(object):
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
         group_id = int(self.args.group_id)
         log.debug("Getting jobs in build %s ..." % build)
-        jobs_build = self.browser.get_json('/api/v1/jobs?state=done&build=%s&group_id=%s' % (build, group_id))['jobs']
+        jobs_build = self.browser.get_json('/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s' % (build, group_id))['jobs']
         jobs_in_build_product = [i for i in jobs_build if i['group_id'] == group_id]
-        # sorting list by job id then create dict and just keep most recent job in each scenario
-        jobs_in_build_product.sort(key=lambda j: j['id'], reverse=True)
-        jobs_by_scenario = {scenario(j): j for j in jobs_in_build_product}
-        # TODO this can be improved, first converting list to dict, then back to list in dict argument
         jobs_by_result = defaultdict(list)
-        for k, v in iteritems(jobs_by_scenario):
-            # discarding scenario key. Would be nicer to preserve it
-            jobs_by_result[v['result']].append(v)
+        for job in jobs_in_build_product:
+            jobs_by_result[job['result']].append(job)
         return jobs_by_result
 
     def _filter_whitelisted_fails(self, failed_jobs):
