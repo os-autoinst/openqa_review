@@ -243,7 +243,9 @@ class TumblesleRelease(object):
         rsync_opts += ["--include=**/%s%s*" % (self.args.match, self.release_build)]
         if self.args.match_hdds:
             rsync_opts += ["--include=**/%s%s*" % (self.args.match_hdds, self.release_build)]
-        rsync_opts += ["--include=iso/", "--include=hdd/", "--exclude=*"]
+        rsync_opts += ["--include=iso/", "--include=hdd/", "--include=repo/"]
+        rsync_opts += ["--filter=+ repo/%s%s*/**" % (self.args.match, self.release_build)]
+        rsync_opts += ["--exclude=*"]
         cmd = ["rsync"] + rsync_opts + [self.args.src, build_dest]
         log.debug("Calling '%s'" % ' '.join(cmd))
         if not self.args.dry_run or self.args.dry_run_rsync:
