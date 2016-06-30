@@ -101,6 +101,7 @@ class TumblesleRelease(object):
         # does not look so nice, can be improved. Removing empty string entries.
         self.whitelist = [i for i in self.whitelist if i]
         log.info("Whitelist content for %s: %s" % (self.args.product, self.whitelist))
+        self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
         self.browser = Browser(args, args.openqa_host)
 
     def run(self, do_run=True):
@@ -182,7 +183,6 @@ class TumblesleRelease(object):
         if self.args.check_against_build == 'tagged':
             raise NotImplementedError("tag check not implemented")
         elif self.args.check_against_build == 'release_info':
-            self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
             with open(self.release_info_path, 'r') as release_info_file:
                 release_info = yaml.load(release_info_file)
                 build['released'] = release_info[self.args.product]['build']
@@ -265,6 +265,11 @@ class TumblesleRelease(object):
             if os.path.exists(release_tgt):
                 os.remove(release_tgt)
             os.symlink(self.release_build, release_tgt)
+        log.debug("Updating release_info file")
+        release_info = {self.args.product: {'build': self.release_build}}
+        log.debug("New release info as yaml: %s" % yaml.dump(release_info))
+        if not self.args.dry_run:
+            yaml.dump(release_info, open(self.release_info_path, 'w'))
         log.debug("Release DONE")
         # This could be a place where to send further notifications
 

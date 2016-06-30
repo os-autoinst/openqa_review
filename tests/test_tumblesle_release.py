@@ -71,6 +71,7 @@ def args():
     args.sleeptime = 0
     args.load = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
+    args.dest = '/tmp/'
     # Enable saving and disable loading if you want to add new test data downloaded from hosts
     #  args.save = True
     #  args.save_dir = args.load_dir
