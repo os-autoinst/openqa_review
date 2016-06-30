@@ -133,7 +133,7 @@ class TumblesleRelease(object):
 
     def retrieve_jobs_by_result(self, build):
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
-        group_id = self.args.group_id
+        group_id = int(self.args.group_id)
         log.debug("Getting jobs in build %s ..." % build)
         jobs_build = self.browser.get_json('/api/v1/jobs?state=done&build=%s&group_id=%s' % (build, group_id))['jobs']
         jobs_in_build_server = [i for i in jobs_build if i['group_id'] == group_id]
