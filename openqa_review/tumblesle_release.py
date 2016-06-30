@@ -111,7 +111,8 @@ class TumblesleRelease(object):
                 log.debug("Requested to run only once")
                 do_run = False
             self.one_run()
-            time.sleep(self.args.sleeptime)
+            if not self.args.run_once:  # pragma: no cover
+                time.sleep(self.args.sleeptime)
         log.debug("Stopping")
 
     def one_run(self):
