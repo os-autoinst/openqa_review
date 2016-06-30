@@ -35,6 +35,8 @@ from collections import defaultdict
 from configparser import ConfigParser
 from subprocess import check_call
 
+import yaml
+
 try:
     from openqa_review import Browser, add_load_save_args
 except ImportError:
@@ -91,7 +93,7 @@ class TumblesleRelease(object):
         config_entries = config.read(self.args.config_path)
         self.whitelist = [i.strip() for i in args.whitelist.split(',')]
         if config_entries:
-            self.whitelist += [i.strip() for i in config[self.args.product]['whitelist'].split(',')]
+            self.whitelist += [i.strip() for i in config.get(self.args.product, 'whitelist').split(',')]
         else:
             log.info("No configuration file '{}' for whitelist, only using optionally specified command line whitelist".format(self.args.config_path))
             log.debug(CONFIG_USAGE)
@@ -165,13 +167,18 @@ class TumblesleRelease(object):
         passed['last'] = len(jobs_by_result['last']['passed'])
         failed['last'] = len(jobs_by_result['last']['failed'])
         log.info('Most recent build %s: passed: %s, failed: %s' % (build['last'], passed['last'], failed['last']))
-        # TODO
+
         # IF NOT last_stored_finish_build
         #    read tumblesle repo, find last tumblesle build
         #    last_stored_finish_build = last tumblesle build aka. "released"
         #
         if self.args.check_against_build == 'tagged':
             raise NotImplementedError("tag check not implemented")
+        elif self.args.check_against_build == 'release_info':
+            self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
+            with open(self.release_info_path, 'r') as release_info_file:
+                release_info = yaml.load(release_info_file)
+                build['released'] = release_info[self.args.product]['build']
         else:
             build['released'] = self.args.check_against_build
         # IF NOT finished build newer than last_stored_finished_build
@@ -276,8 +283,9 @@ def parse_args():
                         default='last')
     parser.add_argument('--check-against-build',
                         help="""If specified, checks against specified build number (integer).
+                        Specify 'release_info' for reading release info file from destination folder, see '--release-file' and '--dest'.
                         Specify 'tagged' for last tagged on group overview page within openQA""",
-                        default='tagged')
+                        default='release_info')
     parser.add_argument('--run-once', action='store_true',
                         help="Only run once, not continuously")
     parser.add_argument('--config-path',
@@ -297,6 +305,10 @@ def parse_args():
     parser.add_argument('--match',
                         help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
                         default='open*-42.2*x86_64*')
+    parser.add_argument('--release-file',
+                        help="""Name of release file including the build number. This file is read from the path specified by '--dest'
+                        and is written back to it.""",
+                        default='.release_info')
     add_load_save_args(parser)
     return parser.parse_args()
 

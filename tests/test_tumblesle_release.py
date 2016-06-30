@@ -11,6 +11,7 @@ import tempfile
 from argparse import Namespace
 
 import pytest
+import yaml
 from openqa_review import tumblesle_release  # SUT
 from openqa_review.tumblesle_release import UnsupportedRsyncArgsError
 
@@ -26,36 +27,8 @@ def TemporaryDirectory():  # noqa
     shutil.rmtree(temp_dir)
 
 
-@pytest.fixture
-def args():
-    args = Namespace()
-    args.verbose = 5
-    args.dry_run = True
-    args.dry_run_rsync = False
-    args.config_path = '/tmp/this/file/does/not/exist'
-    args.openqa_host = 'https://openqa.opensuse.org'
-    args.product = 'Leap 42.2'
-    args.group_id = 19
-    args.check_against_build = '0046'
-    args.whitelist = ''
-    args.match = 'open*-42.2*x86_64*'
-    args.check_build = 'last'
-    args.run_once = True
-    args.load = True
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
-    # Enable saving and disable loading if you want to add new test data downloaded from hosts
-    #  args.save = True
-    #  args.save_dir = args.load_dir
-    return args
-
-
-def test_help():
-    sys.argv += '--help'.split()
-    with pytest.raises(SystemExit):
-        tumblesle_release.main()
-
-
-def test_compare_old_bad_against_new_good_yields_release(args):
+@contextlib.contextmanager
+def TumblesleDirectory(args):  # noqa
     with TemporaryDirectory() as tmp_dir:
         args.src = os.path.join(tmp_dir, 'src') + '/'
         args.dest = os.path.join(tmp_dir, 'dest') + '/'
@@ -75,6 +48,41 @@ whitelist = arm7l-foo,bar@uefi""")
             open(os.path.join(args.src, asset), 'w').close()
         # The destination folder must exist
         os.mkdir(args.dest)
+        yield tmp_dir
+
+
+@pytest.fixture
+def args():
+    args = Namespace()
+    args.verbose = 5
+    args.dry_run = True
+    args.dry_run_rsync = False
+    args.config_path = '/tmp/this/file/does/not/exist'
+    args.openqa_host = 'https://openqa.opensuse.org'
+    args.product = 'Leap 42.2'
+    args.group_id = 19
+    args.check_against_build = '0046'
+    args.whitelist = ''
+    args.match = 'open*-42.2*x86_64*'
+    args.check_build = 'last'
+    args.run_once = True
+    args.release_file = '.release_info'
+    args.load = True
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
+    # Enable saving and disable loading if you want to add new test data downloaded from hosts
+    #  args.save = True
+    #  args.save_dir = args.load_dir
+    return args
+
+
+def test_help():
+    sys.argv += '--help'.split()
+    with pytest.raises(SystemExit):
+        tumblesle_release.main()
+
+
+def test_compare_old_bad_against_new_good_yields_release(args):
+    with TumblesleDirectory(args):
         tr = tumblesle_release.TumblesleRelease(args)
         tr.one_run()
         assert tr.release_build == '0056'
@@ -142,3 +150,13 @@ def test_unsafe_rsync_args_are_catched(args):
     args.src = '/tmp/foo'
     with pytest.raises(UnsupportedRsyncArgsError):
         tumblesle_release.TumblesleRelease(args).run()
+
+
+def test_compare_old_released_with_release_info_against_new_good_yields_release(args):
+    args.check_against_build = 'release_info'
+    with TumblesleDirectory(args):
+        with open(os.path.join(args.dest, '.release_info'), 'w') as release_info:
+            yaml.dump({args.product: {'build': '0046'}}, release_info)
+            tr = tumblesle_release.TumblesleRelease(args)
+            tr.one_run()
+            assert tr.release_build == '0056'

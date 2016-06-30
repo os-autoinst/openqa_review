@@ -32,6 +32,7 @@ setup(
         "sortedcontainers",
         "humanfriendly",
         "requests",
+        "PyYAML",
     ],
     author="Oliver kurz",
     author_email="okurz@suse.com",
