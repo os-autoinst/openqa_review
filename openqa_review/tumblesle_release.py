@@ -266,9 +266,10 @@ class TumblesleRelease(object):
             os.symlink(self.release_build, release_tgt)
         log.debug("Updating release_info file")
         release_info = {self.args.product: {'build': self.release_build}}
-        log.debug("New release info as yaml: %s" % yaml.dump(release_info))
+        release_info_dump = yaml.safe_dump(release_info)
+        log.debug("New release info as yaml: %s" % release_info_dump)
         if not self.args.dry_run:
-            yaml.dump(release_info, open(self.release_info_path, 'w'))
+            open(self.release_info_path, 'w').write(release_info_dump)
         log.debug("Release DONE")
         # This could be a place where to send further notifications
 
