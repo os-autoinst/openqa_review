@@ -322,7 +322,7 @@ def absolute_url(root, v):
     return urljoin(root, str(v['href']))
 
 
-def generate_arch_report(arch, results, root_url, verbose_test=1):
+def generate_arch_report(arch, results, root_url, verbose_test=1, verbose_test_existing=1):
     states = [i['state'] for i in results.values()]
     # TODO pretty arbitrary
     if states.count('NEW_ISSUE') == 0 and states.count('STILL_FAILING') <= 1:
@@ -336,7 +336,7 @@ def generate_arch_report(arch, results, root_url, verbose_test=1):
     def url(v, root=root_url):
         return urljoin(root, str(v['href']))
 
-    def new_issue_report(k, v, verbose_test=1):
+    def issue_report(k, v, verbose_test=1):
         report = {1: lambda k, v: '%s' % k,
                   2: lambda k, v: '***%s***: %s' % (k, url(v)),
                   3: lambda k, v: '***%s***: %s, failed modules:\n%s\n' % (k, url(v),
@@ -351,10 +351,10 @@ def generate_arch_report(arch, results, root_url, verbose_test=1):
         verbose_test = min(verbose_test, max(report.keys()))
         return report[verbose_test](k, v)
 
-    new_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+    new_issues = '\n'.join('* %s' % issue_report(k, v, verbose_test) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
     new_issues += '\n'
     new_issues += '* soft fails: ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
-    existing_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+    existing_issues = '\n'.join('* %s' % issue_report(k, v, verbose_test_existing) for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
     return openqa_review_report_arch_template.substitute({
         'arch': arch,
         'status_badge': status_badge,
@@ -369,8 +369,8 @@ def generate_arch_report(arch, results, root_url, verbose_test=1):
     })
 
 
-def generate_arch_reports(arch_state_results, root_url, verbose_test=1):
-    return '<hr>'.join(generate_arch_report(k, v, root_url, verbose_test) for k, v in iteritems(arch_state_results))
+def generate_arch_reports(arch_state_results, root_url, verbose_test=1, verbose_test_existing=1):
+    return '<hr>'.join(generate_arch_report(k, v, root_url, verbose_test, verbose_test_existing) for k, v in iteritems(arch_state_results))
 
 
 def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None):
@@ -423,6 +423,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
     """
     output_state_results = args.output_state_results if args.output_state_results else False
     verbose_test = args.verbose_test if args.verbose_test else False
+    verbose_test_existing = args.verbose_test_existing if args.verbose_test_existing else False
     try:
         current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed)
     except ValueError:
@@ -462,7 +463,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
         'build': build,
         # TODO Missing architectures should probably be moved into the arch report, not as "common issue", e.g. by adding missing archs to arch_state_results
         'common_issues': ' * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else 'None',  # reserved for manual entries for now
-        'arch_report': generate_arch_reports(arch_state_results, root_url, verbose_test),
+        'arch_report': generate_arch_reports(arch_state_results, root_url, verbose_test, verbose_test_existing),
     })
     return openqa_review_report_product
 
@@ -520,6 +521,9 @@ def parse_args():
     parser.add_argument('-T', '--verbose-test',
                         help='Increase test result verbosity level, specify multiple times to increase verbosity',
                         action='count', default=1)
+    parser.add_argument('--verbose-test-existing',
+                        help='Like \'--verbose-test\' but for existing issues',
+                        action='count')
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
     add_load_save_args(parser)

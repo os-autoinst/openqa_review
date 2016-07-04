@@ -34,6 +34,7 @@ def args_factory():
     args.output_state_results = False
     args.base_url = '/'
     args.verbose_test = 4
+    args.verbose_test_existing = 1
     args.arch = 'x86_64'
     args.save = False
     args.load = False

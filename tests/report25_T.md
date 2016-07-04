@@ -39,7 +39,15 @@
 
 ***existing issues***
 
-* autoupgrade_13.1, cryptlvm, cryptlvm_minimal_x, gcc5, gcc5+allpatterns, textmode+awesome, toolchain_zypper, upgrade_offline_13.1+gcc5_64bit, upgrade_offline_13.2_gcc5
+* autoupgrade_13.1
+* cryptlvm
+* cryptlvm_minimal_x
+* gcc5
+* gcc5+allpatterns
+* textmode+awesome
+* toolchain_zypper
+* upgrade_offline_13.1+gcc5_64bit
+* upgrade_offline_13.2_gcc5
 
 
 ---
