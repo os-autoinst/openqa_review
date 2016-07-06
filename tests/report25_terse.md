@@ -1,8 +1,8 @@
 # 0
 
 
-**Date: 2016-01-04 - 22:52**
-**Build: 0313**
+**Date:** 2016-01-04 - 22:52  
+**Build:** 0313  
 
 **Common issues:**
  * **Missing architectures**: i586
