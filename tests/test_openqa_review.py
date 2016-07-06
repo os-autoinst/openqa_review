@@ -124,7 +124,7 @@ def test_builds_can_be_specified_and_appear_in_report():
     args = cache_test_args_factory()
     args.builds = '0313,0308'
     report = openqa_review.generate_report(args)
-    assert '**Build: {}** (reference {})'.format(*args.builds.split(',')) in report
+    assert '**Build:** {} (reference {})'.format(*args.builds.split(',')) in report
 
 
 def test_too_high_verbosity_selection_yields_still_valid_selection():

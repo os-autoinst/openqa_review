@@ -171,14 +171,14 @@ class Browser(object):
 
 
 openqa_review_report_product_template = Template("""
-**Date: $now**
-**Build: $build
+**Date:** $now  
+**Build:** $build  
 
 **Common issues:**
 $common_issues
 <hr>
 $arch_report
-""")
+""")  # noqa: W291  # ignore trailing whitespace for forced line breaks
 
 # TODO don't display sections if empty
 openqa_review_report_arch_template = Template("""
@@ -442,7 +442,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
 
     def get_build_nr(url):
         return unquote(re.search('build=([^&]*)', url).groups()[0])
-    build = get_build_nr(current_url) + '**'
+    build = get_build_nr(current_url)
     if args.verbose_test and args.verbose_test > 1:
         build += ' (reference %s)' % get_build_nr(previous_url)
     # for each architecture iterate over all
