@@ -40,6 +40,7 @@ def args_factory():
     args.load_dir = '.'
     args.builds = None
     args.against_reviewed = None
+    args.running_threshold = 0
     return args
 
 
@@ -192,6 +193,16 @@ def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
 
     # If '--against-reviewed' is 'last', search for the latest finished
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
+    assert '=0313' in current
+    assert '=0307' in reviewed
+
+    # Also accept still running if threshold is increased
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last', running_threshold=45)
+    assert '=0318' in current
+    assert '=0307' in reviewed
+
+    # Not accepted if slightly below threshold
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last', running_threshold=36)
     assert '=0313' in current
     assert '=0307' in reviewed
 

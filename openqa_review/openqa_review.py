@@ -377,10 +377,13 @@ def build_id(build_tag):
     return build_tag.text.lstrip('Build')
 
 
-def find_builds(soup):
+def find_builds(soup, running_threshold=0):
     """Find finished builds, ignore still running or empty."""
     # TODO also support newer openQA versions with 'progress-bar-(passed|failed|softfailed|running)
-    finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped"), style="width: 0%")]
+
+    def below_threshold(bar):
+        return float(bar['style'].lstrip('width: ').rstrip('%')) <= running_threshold
+    finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
     def not_empty_build(bar):
         passed = re.compile("progress-bar-success")
@@ -392,9 +395,19 @@ def find_builds(soup):
     return builds
 
 
-def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None):
+def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None, running_threshold=0):
+    """
+    From the job group page get URLs for the builds to compare.
+
+    @param browser: A browser instance
+    @param job_group_url: forwarded to browser instance
+    @param builds: Builds for which URLs should be retrieved as comma-separated pair, w/o the word 'Build'
+    @param against_reviewed: Alternative to 'builds', which build to retrieve for comparison with last reviewed, can be 'last' to automatically select the last
+           finished
+    @param running_threshold: Threshold of which percentage of jobs may still be running for the build to be considered 'finished' anyway
+    """
     soup = browser.get_soup(job_group_url)
-    finished_builds = find_builds(soup)
+    finished_builds = find_builds(soup, running_threshold)
     build_url_pattern = re.compile('(?<=build=)([^&]*)')
     if builds:
         build_list = builds.split(',')
@@ -447,7 +460,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
     output_state_results = args.output_state_results if args.output_state_results else False
     verbose_test = args.verbose_test if args.verbose_test else False
     try:
-        current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed)
+        current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
     except ValueError:
         raise NotEnoughBuildsError()
 
@@ -545,6 +558,8 @@ def parse_args():
                         action='count', default=1)
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
+    parser.add_argument('--running-threshold',
+                        help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
     add_load_save_args(parser)
     return parser.parse_args()
 
