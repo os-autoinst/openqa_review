@@ -54,13 +54,6 @@ def TemporaryDirectory():  # noqa
     shutil.rmtree(temp_dir)
 
 
-def test_doctest():
-    import doctest
-    import openqa_review
-    # TODO this should have tested e.g. line 'return unquote...' in filename_to_url but coverage report does not show it
-    assert doctest.testmod(openqa_review, raise_on_error=True)
-
-
 def test_help():
     sys.argv += '--help'.split()
     with pytest.raises(SystemExit):
