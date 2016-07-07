@@ -478,7 +478,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
     if missing_archs:
         log.info("%s missing completely from current run: %s" %
                  (pluralize(len(missing_archs), "architecture is", "architectures are"), ', '.join(missing_archs)))
-    arch_state_results = {arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs}
+    arch_state_results = SortedDict({arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs})
     now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
     openqa_review_report_product = openqa_review_report_product_template.substitute({
         'now': now_str,
@@ -566,7 +566,7 @@ def get_job_groups(browser, root_url, args):
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
             log.info("Job group URL for %s: %s" % (args.job_groups, job_groups))
-    return job_groups
+    return SortedDict(job_groups)
 
 
 def generate_report(args):
