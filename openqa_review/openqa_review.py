@@ -556,7 +556,7 @@ def parse_args():
                         action='count', default=1)
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
-    parser.add_argument('--running-threshold',
+    parser.add_argument('--running-threshold', default=0,
                         help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
     add_load_save_args(parser)
     return parser.parse_args()
