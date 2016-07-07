@@ -1,5 +1,4 @@
  - Add mode to count bug occurences (e.g. parse previous)
- - Add option to configure threshold for running jobs to also catch "98% completed builds"
  - As labels are working now use this in the script, e.g.
   - also parse labels and show them in report
   - IF label is bugref

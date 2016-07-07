@@ -379,15 +379,13 @@ def build_id(build_tag):
 
 def find_builds(soup, running_threshold=0):
     """Find finished builds, ignore still running or empty."""
-    # TODO also support newer openQA versions with 'progress-bar-(passed|failed|softfailed|running)
-
     def below_threshold(bar):
         return float(bar['style'].lstrip('width: ').rstrip('%')) <= running_threshold
     finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
     def not_empty_build(bar):
-        passed = re.compile("progress-bar-success")
-        failed = re.compile("progress-bar-danger")
+        passed = re.compile("progress-bar-(success|passed|softfailed)")
+        failed = re.compile("progress-bar-(danger|failed)")
         return not bar.find(class_=passed, style="width: 0%") or not bar.find(class_=failed, style="width: 0%")
     # filter out empty builds
     builds = [bar.find('a') for bar in finished if not_empty_build(bar)]
