@@ -393,7 +393,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         # Assuming the most recent with a build number also has the most recent review
         try:
             last_reviewed = [build_re.search(i.text) for i in soup.find_all(class_='media-comment')][0].groups()[1]
-        except AttributeError:
+        except (AttributeError, IndexError):
             log.info("No last reviewed build found for URL {}, reverting to two last finished".format(job_group_url))
             against_reviewed = None
         else:

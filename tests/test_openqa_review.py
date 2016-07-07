@@ -203,7 +203,14 @@ def test_non_number_build_nr_also_finds_valid_review_build_urls():
     browser = openqa_review.Browser(args, urljoin(args.host, args.base_url))
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
     assert '=0104%400351' in current  # i.e. escaped '0104@0351'
-    assert '=0104%400350' in reviewed  # not available anymore, reverting to last two finished
+    assert '=0097%400305' in reviewed
+
+    # if no review comments are found we revert to the last two finished
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live_no_review')
+    browser = openqa_review.Browser(args, urljoin(args.host, args.base_url))
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
+    assert '=0104%400351' in current  # i.e. escaped '0104@0351'
+    assert '=0104%400350' in reviewed  # no review comments found, reverting to last two finished
 
 
 def test_generate_report_with_progress_notification_does_not_fail():

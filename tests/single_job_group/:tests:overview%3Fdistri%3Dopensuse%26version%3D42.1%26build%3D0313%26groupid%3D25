@@ -423,8 +423,8 @@
                                         </span>
 
                                             <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169807/modules/addon_products_sle/steps/10">
-                                                    addon_products_sle
+                                                <a href="/tests/169807/modules/addon_products_leap/steps/10">
+                                                    addon_products_leap
                                                 </a>
                                             </span>
                             </td>
@@ -489,8 +489,8 @@
                                         </span>
 
                                             <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169812/modules/addon_products_sle/steps/10">
-                                                    addon_products_sle
+                                                <a href="/tests/169812/modules/addon_products_leap/steps/10">
+                                                    addon_products_leap
                                                 </a>
                                             </span>
                             </td>
@@ -633,8 +633,8 @@
                                         </span>
 
                                             <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169823/modules/addon_products_sle/steps/10">
-                                                    addon_products_sle
+                                                <a href="/tests/169823/modules/addon_products_leap/steps/10">
+                                                    addon_products_leap
                                                 </a>
                                             </span>
                             </td>
@@ -651,8 +651,8 @@
                                         </span>
 
                                             <span title='<p>Failed needles:</p><ul><li>addon-betawarning-gcc5-20150714</li><li>addon-betawarning-gcc5-20150803</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169824/modules/addon_products_sle/steps/10">
-                                                    addon_products_sle
+                                                <a href="/tests/169824/modules/addon_products_leap/steps/10">
+                                                    addon_products_leap
                                                 </a>
                                             </span>
                             </td>
@@ -699,8 +699,8 @@
                                         </span>
 
                                             <span title='<p>Failed needles:</p><ul><li>inst-addon-20141204</li><li>inst-addon-yast2-20151210</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169829/modules/addon_products_sle/steps/1">
-                                                    addon_products_sle
+                                                <a href="/tests/169829/modules/addon_products_leap/steps/1">
+                                                    addon_products_leap
                                                 </a>
                                             </span>
                             </td>
