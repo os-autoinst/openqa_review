@@ -373,10 +373,28 @@ def generate_arch_reports(arch_state_results, root_url, verbose_test=1):
     return '<hr>'.join(generate_arch_report(k, v, root_url, verbose_test) for k, v in iteritems(arch_state_results))
 
 
+def build_id(build_tag):
+    return build_tag.text.lstrip('Build')
+
+
+def find_builds(soup):
+    """Find finished builds, ignore still running or empty."""
+    # TODO also support newer openQA versions with 'progress-bar-(passed|failed|softfailed|running)
+    finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped"), style="width: 0%")]
+
+    def not_empty_build(bar):
+        passed = re.compile("progress-bar-success")
+        failed = re.compile("progress-bar-danger")
+        return not bar.find(class_=passed, style="width: 0%") or not bar.find(class_=failed, style="width: 0%")
+    # filter out empty builds
+    builds = [bar.find('a') for bar in finished if not_empty_build(bar)]
+    log.debug("Found the following finished non-empty builds: %s" % ', '.join(build_id(b) for b in builds))
+    return builds
+
+
 def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None):
     soup = browser.get_soup(job_group_url)
-    # find finished builds (ignore still running)
-    finished_builds = [bar.parent.parent.parent.find('a') for bar in soup.find_all(class_=re.compile("progress-bar-striped"), style="width: 0%")]
+    finished_builds = find_builds(soup)
     build_url_pattern = re.compile('(?<=build=)([^&]*)')
     if builds:
         build_list = builds.split(',')
@@ -398,17 +416,22 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
             against_reviewed = None
         else:
             log.debug("Comparing specified build {} against last reviewed {}".format(against_reviewed, last_reviewed))
-            build_to_review = finished_builds[0].text.lstrip('Build') if against_reviewed == 'last' else against_reviewed
+            build_to_review = build_id(finished_builds[0]) if against_reviewed == 'last' else against_reviewed
             assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
             build_list = build_to_review, last_reviewed
 
     if builds or against_reviewed:
+        assert len(finished_builds) > 0, "no finished builds found"
         current_url, previous_url = [build_url_pattern.sub(quote(i), finished_builds[0]['href']) for i in build_list]
     else:
         # find last finished and previous one
+        if len(finished_builds) <= 1:
+            raise NotEnoughBuildsError("not enough finished builds found")
+
         builds_to_compare = finished_builds[0:2]
-        log.debug("Comparing build {} against {}".format(*[b.text for b in builds_to_compare]))
+        log.debug("Comparing build {} against {}".format(*[build_id(b) for b in builds_to_compare]))
         current_url, previous_url = [build.get('href') for build in builds_to_compare]
+    log.debug("Found two build URLS, current: {} previous: {}".format(current_url, previous_url))
     return current_url, previous_url
 
 

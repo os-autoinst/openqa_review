@@ -96,6 +96,29 @@
     <div class="row">
         <div class="col-md-4 text-nowrap">
             <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1-Live&amp;build=0104%400352&amp;groupid=27">Build0104@0352</a>
+                (<abbr class="timeago" title="2016-01-04T16:57:31Z">
+                2016-01-04T16:57:31
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 0%">
+                        0 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 0%">
+                        0 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
                 <a href="/tests/overview?distri=opensuse&amp;version=42.1-Live&amp;build=0104%400351&amp;groupid=27">Build0104@0351</a>
                 (<abbr class="timeago" title="2016-01-04T16:56:31Z">
                 2016-01-04T16:56:31
