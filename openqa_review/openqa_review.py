@@ -101,6 +101,7 @@ import logging
 import os.path
 import re
 import sys
+from collections import defaultdict
 from string import Template
 from urllib.parse import quote, unquote, urljoin
 
@@ -173,44 +174,20 @@ class Browser(object):
 openqa_review_report_product_template = Template("""
 **Date:** $now
 **Build:** $build
-
-**Common issues:**
 $common_issues
 <hr>
 $arch_report
 """)  # noqa: W291  # ignore trailing whitespace for forced line breaks
 
+todo_review_template = Template("""
+**TODO: review**
+$new_issues$existing_issues""")
+
 # TODO don't display sections if empty
 openqa_review_report_arch_template = Template("""
 **Arch:** $arch
 **Status: $status_badge**
-
-**New Product bugs:**
-
-$new_product_issues
-
-**Existing Product bugs:**
-
-$existing_product_issues
-
-**New openQA-issues:**
-
-$new_openqa_issues
-
-**Existing openQA-issues:**
-
-$existing_openqa_issues
-
-**TODO: review**
-
-***new issues***
-
-$new_issues
-
-***existing issues***
-
-$existing_issues
-""")
+$new_product_issues$existing_product_issues$new_openqa_issues$existing_openqa_issues$todo_issues""")
 
 status_badge_str = {
     'GREEN': '<font color="green">Green</font>',
@@ -285,6 +262,15 @@ def get_test_details(entry):
             }
 
 
+def get_test_bugref(entry):
+    bugref = entry.find(id=re.compile('^bug-'))
+    if not bugref:
+        return {}
+    return {'bugref': re.sub('Bug\(s\) referenced: ', '', bugref.i['title']),
+            'bugref_href': bugref.a['href']
+            }
+
+
 def get_state(cur, prev_dict):
     """Return change_state for 'previous' and 'current' test status html-td entries."""
     # TODO instead of just comparing the overall state we could check if
@@ -298,6 +284,7 @@ def get_state(cur, prev_dict):
         # if there is no previous we assume passed to mark new failing test as 'NEW_ISSUE'
         state_dict = {'state': change_state.get(('result_passed', status(cur)), 'INCOMPLETE')}
     state_dict.update(get_test_details(cur))
+    state_dict.update(get_test_bugref(cur))
     return (cur['id'], state_dict)
 
 
@@ -322,7 +309,78 @@ def absolute_url(root, v):
     return urljoin(root, str(v['href']))
 
 
-def generate_arch_report(arch, results, root_url, verbose_test=1):
+def bugref_str(v):
+    return '[%s](%s)' % (v.get('bugref', 'NONE'), v.get('bugref_href', 'NONE'))
+
+
+def new_issue_report(k, v, verbose_test, root_url):
+    def url(v, root=root_url):
+        return urljoin(root, str(v['href']))
+
+    report = {1: lambda k, v: '%s' % k,
+              2: lambda k, v: '***%s***: %s' % (k, url(v)),
+              3: lambda k, v: '***%s***: %s, failed modules:\n%s\n' % (k, url(v),
+                                                                       '\n'.join(' * %s: %s' % (i['name'], url(i)) for i in v['failedmodules'])),
+              # separate 'reference URL' with space to prevent openQA comment parser to pickup ')' as part of URL
+              4: lambda k, v: '***%s***: %s (reference %s ), failed modules:\n%s\n' % (
+                  k, url(v), url(v['prev']) if 'prev' in v.keys() else 'NONE',
+                  '\n'.join(' * %s: %s %s' % (
+                      i['name'], url(i), '(needles: %s)' % ', '.join(i['needles']) if i['needles'] else '')
+                      for i in v['failedmodules'])),
+              }
+    verbose_test = min(verbose_test, max(report.keys()))
+    return report[verbose_test](k, v)
+
+
+def all_failures_one_bug(result_list):
+    return '* %s -> %s' % (', '.join([i['name'] for i in result_list]), bugref_str(result_list[-1])) + '\n'
+
+
+def issue_listing(header, issues, show_empty=True):
+    r"""
+    Generate one issue listing section.
+
+    @param header: Header string for section
+    @param issues: Issues string, e.g. comma separated, may be an empty string
+    @param show_empty: show empty sections if True and issues are an empty string
+
+    >>> issue_listing('***new issues:***', 'None')
+    '\n***new issues:***\n\nNone\n'
+    >>> issue_listing('***Common issues:***', '')
+    '\n***Common issues:***\n\n\n'
+    >>> issue_listing('***no issues***', '', show_empty=False)
+    ''
+    """
+    if not show_empty and issues == '':
+        return ''
+    return '\n' + header + '\n\n' + issues + '\n'
+
+
+def common_issues(issues, show_empty=True):
+    if not show_empty and issues == '':
+        return ''
+    return '\n' + '**Common issues:**' + '\n' + issues
+
+
+def simple_joined_issues(results_by_bugref, state):
+    issues = [i['name'] for i in results_by_bugref['TODO'] if i['state'] == state]
+    if not issues:
+        return ''
+    return '* %s' % '\n* '.join(issues) + '\n'
+
+
+def issue_type(bugref):
+    return 'openqa' if re.match('poo#', bugref) else 'product'
+
+
+def issue_state(result_list):
+    # if any result was still failing the issue is regarded as existing
+    return 'existing' if [i for i in result_list if i['state'] == 'STILL_FAILING'] else 'new'
+
+
+def generate_arch_report(arch, results, root_url, args):
+    verbose_test = args.verbose_test
+    show_empty = args.show_empty
     states = [i['state'] for i in results.values()]
     # TODO pretty arbitrary
     if states.count('NEW_ISSUE') == 0 and states.count('STILL_FAILING') <= 1:
@@ -333,44 +391,52 @@ def generate_arch_report(arch, results, root_url, verbose_test=1):
     else:
         status_badge = status_badge_str['RED']
 
-    def url(v, root=root_url):
-        return urljoin(root, str(v['href']))
+    results_by_bugref = defaultdict(list)
+    for k, v in iteritems(results):
+        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'TODO'
+        v.update({'name': k})
+        results_by_bugref[new_key].append(v)
 
-    def new_issue_report(k, v, verbose_test=1):
-        report = {1: lambda k, v: '%s' % k,
-                  2: lambda k, v: '***%s***: %s' % (k, url(v)),
-                  3: lambda k, v: '***%s***: %s, failed modules:\n%s\n' % (k, url(v),
-                                                                           '\n'.join(' * %s: %s' % (i['name'], url(i)) for i in v['failedmodules'])),
-                  # separate 'reference URL' with space to prevent openQA comment parser to pickup ')' as part of URL
-                  4: lambda k, v: '***%s***: %s (reference %s ), failed modules:\n%s\n' % (
-                      k, url(v), url(v['prev']) if 'prev' in v.keys() else 'NONE',
-                      '\n'.join(' * %s: %s %s' % (
-                          i['name'], url(i), '(needles: %s)' % ', '.join(i['needles']) if i['needles'] else '')
-                          for i in v['failedmodules'])),
-                  }
-        verbose_test = min(verbose_test, max(report.keys()))
-        return report[verbose_test](k, v)
+    issues = defaultdict(lambda: defaultdict(str))
+    for bugref, result_list in iteritems(results_by_bugref):
+        # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
+        # scenarios, ...
+        # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
+        if not re.match('(poo|bsc)#', bugref):
+            continue
+        # if any result was still failing the issue is regarded as existing
+        issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list)
 
-    new_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
-    new_issues += '\n'
-    new_issues += '* soft fails: ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
-    existing_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+    # left do handle are the issues marked with 'TODO'
+    if args.bugrefs:
+        new_issues = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
+        existing_issues = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
+    else:
+        new_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test, root_url) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+        existing_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+    soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
+    if soft_fails_str:
+        new_issues += '\n* soft fails: ' + soft_fails_str
+
+    todo_issues = todo_review_template.substitute({
+        'new_issues': issue_listing('***new issues***', new_issues, show_empty),
+        'existing_issues': issue_listing('***existing issues***', existing_issues, show_empty),
+    })
     return openqa_review_report_arch_template.substitute({
         'arch': arch,
         'status_badge': status_badge,
-        # TODO everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
-        # For now we can just not easily decide
-        'new_issues': new_issues,
-        'existing_issues': existing_issues,
-        'new_openqa_issues': '',
-        'existing_openqa_issues': '',
-        'new_product_issues': '',
-        'existing_product_issues': '',
+        # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
+        # For now we can just not easily decide unless we use the 'bugrefs' mode
+        'new_openqa_issues': issue_listing('**New openQA-issues:**', issues['new']['openqa'], show_empty),
+        'existing_openqa_issues': issue_listing('**Existing openQA-issues:**', issues['existing']['openqa'], show_empty),
+        'new_product_issues': issue_listing('**New Product bugs:**', issues['new']['product'], show_empty),
+        'existing_product_issues': issue_listing('**Existing Product bugs:**', issues['existing']['product'], show_empty),
+        'todo_issues': todo_issues if (new_issues or existing_issues) else '',
     })
 
 
-def generate_arch_reports(arch_state_results, root_url, verbose_test=1):
-    return '<hr>'.join(generate_arch_report(k, v, root_url, verbose_test) for k, v in iteritems(arch_state_results))
+def generate_arch_reports(arch_state_results, root_url, args):
+    return '<hr>'.join(generate_arch_report(k, v, root_url, args) for k, v in iteritems(arch_state_results))
 
 
 def build_id(build_tag):
@@ -456,7 +522,6 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
     >>> report = generate_product_report(browser, 'https://openqa.opensuse.org/group_overview/25', 'https://openqa.opensuse.org') # doctest: +SKIP
     """
     output_state_results = args.output_state_results if args.output_state_results else False
-    verbose_test = args.verbose_test if args.verbose_test else False
     try:
         current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
     except ValueError:
@@ -491,12 +556,12 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
                  (pluralize(len(missing_archs), "architecture is", "architectures are"), ', '.join(missing_archs)))
     arch_state_results = SortedDict({arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs})
     now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
+    missing_archs_str = ' * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
     openqa_review_report_product = openqa_review_report_product_template.substitute({
         'now': now_str,
         'build': build,
-        # TODO Missing architectures should probably be moved into the arch report, not as "common issue", e.g. by adding missing archs to arch_state_results
-        'common_issues': ' * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else 'None',  # reserved for manual entries for now
-        'arch_report': generate_arch_reports(arch_state_results, root_url, verbose_test),
+        'common_issues': common_issues(missing_archs_str, args.show_empty),
+        'arch_report': generate_arch_reports(arch_state_results, root_url, args),
     })
     return openqa_review_report_product
 
@@ -551,13 +616,20 @@ def parse_args():
                         specify just '0128' and the last reviewed job is found from the comments section if the comment
                         is sticking to the template format for review comments.
                         Special argument 'last' will compare the last finished build against the last reviewed one.""")
-    parser.add_argument('-T', '--verbose-test',
-                        help='Increase test result verbosity level, specify multiple times to increase verbosity',
-                        action='count', default=1)
+    test_details = parser.add_mutually_exclusive_group()
+    test_details.add_argument('-T', '--verbose-test',
+                              help='Increase test result verbosity level, specify multiple times to increase verbosity',
+                              action='count', default=1)
+    test_details.add_argument('-r', '--bugrefs', action='store_true',
+                              help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
+                              See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
+                              for details about bugrefs in openQA""")
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
     parser.add_argument('--running-threshold', default=0,
                         help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
+    parser.add_argument('--no-empty-sections', action='store_false', default=True, dest='show_empty',
+                        help='Only show sections in report with content')
     add_load_save_args(parser)
     return parser.parse_args()
 

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="2339aa8a4b10b62e38b6426ea8674cc2b5ddc56a" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/packed/bootstrap-fa602e94cf94f5a7381026cbf851235c.min.css" rel="stylesheet">
+      <script src="/packed/bootstrap-a16e5e5a773802743036fa84c021314a.min.js"></script>
+
+
+
+      <script>//<![CDATA[
+
+
+      $(document).ready(function() {
+            $('.timeago').timeago();
+
+      } );
+
+//]]></script>
+      <link rel="icon" href="/favicon.ico">
+
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class='container-fluid navbar navbar-default navbar-static-top'>
+<div class='navbar-inner'>
+    <div class='container'>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+        <img alt="Brand" src="/images/header-logo.png" />
+        </a>
+    </div>
+    <div class='collapse navbar-collapse'>
+        <ul class='nav navbar-nav' id='global-navigation'>
+        <li id='item-downloads'><a href="http://en.opensuse.org/openSUSE:Browse#Downloads">Downloads</a></li>
+        <li id='item-support'><a href="http://en.opensuse.org/openSUSE:Browse#Support">Support</a></li>
+        <li id='item-community'><a href="http://en.opensuse.org/openSUSE:Browse#Community">Community</a></li>
+        <li id='item-development'><a href="http://en.opensuse.org/openSUSE:Browse#Development">Development</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+</nav>
+
+      <div class='container'>
+      <div class='row' id='subheader'>
+          <div class='col-md-7'>
+          <div id="breadcrump" class="breadcrumb grid_10 alpha"><a href="/"><img alt="Home" src="/images/home_grey.png"><b>openQA</b></a></div>
+          </div>
+          <div class='col-md-5 text-right'>
+          <div id="user-info">
+              <a href="/login">Login</a>
+          </div>
+          </div>
+      </div>
+
+
+
+
+<h1>Last Builds for Group Acceptance: openSUSE Tumbleweed  1.Gnome</h1>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1510&amp;groupid=25">Build1510</a>
+                (<abbr class="timeago" title="2016-05-12T00:59:22Z">
+                2016-05-12T00:59:22
+                </abbr>)
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 74.1176470588235%">
+                        126 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 1.76470588235294%">
+                        3 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 23.5294117647059%">
+                        40 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1509&amp;groupid=25">Build1509</a>
+                (<abbr class="timeago" title="2016-05-11T23:21:36Z">
+                2016-05-11T23:21:36
+                </abbr>)
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 55.2941176470588%">
+                        94 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 12.9411764705882%">
+                        22 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1508&amp;groupid=25">Build1508</a>
+                (<abbr class="timeago" title="2016-05-11T21:08:35Z">
+                2016-05-11T21:08:35
+                </abbr>)
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 48.8235294117647%">
+                        83 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 12.9411764705882%">
+                        22 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1507&amp;groupid=25">Build1507</a>
+                (<abbr class="timeago" title="2016-05-10T17:45:22Z">
+                2016-05-10T17:45:22
+                </abbr>)
+                <span id="tag-25-1507">
+                    <i class="tag fa fa-tag" title="Beta1-Candidate"></i>
+                </span>
+                <span id="review-25-1507">
+                    <i class="review fa fa-certificate" title="Reviewed (31 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 80.5882352941177%">
+                        137 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0.588235294117647%">
+                        1 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 18.2352941176471%">
+                        31 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1506&amp;groupid=25">Build1506</a>
+                (<abbr class="timeago" title="2016-05-10T14:45:46Z">
+                2016-05-10T14:45:46
+                </abbr>)
+                <span id="review-25-1506">
+                    <i class="review fa fa-certificate" title="Reviewed (16 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 41.7647058823529%">
+                        71 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 9.41176470588235%">
+                        16 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1505&amp;groupid=25">Build1505</a>
+                (<abbr class="timeago" title="2016-05-10T12:55:54Z">
+                2016-05-10T12:55:54
+                </abbr>)
+                <span id="review-25-1505">
+                    <i class="review fa fa-certificate" title="Reviewed (14 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 46.4705882352941%">
+                        79 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 8.23529411764706%">
+                        14 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1503&amp;groupid=25">Build1503</a>
+                (<abbr class="timeago" title="2016-05-10T08:27:58Z">
+                2016-05-10T08:27:58
+                </abbr>)
+                <span id="review-25-1503">
+                    <i class="review fa fa-certificate" title="Reviewed (9 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 19.4117647058824%">
+                        33 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 5.29411764705882%">
+                        9 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1502&amp;groupid=25">Build1502</a>
+                (<abbr class="timeago" title="2016-05-10T06:24:35Z">
+                2016-05-10T06:24:35
+                </abbr>)
+                <span id="review-25-1502">
+                    <i class="review fa fa-certificate" title="Reviewed (16 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 46.4705882352941%">
+                        79 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 9.41176470588235%">
+                        16 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1501&amp;groupid=25">Build1501</a>
+                (<abbr class="timeago" title="2016-05-10T03:21:29Z">
+                2016-05-10T03:21:29
+                </abbr>)
+                <span id="review-25-1501">
+                    <i class="review fa fa-certificate" title="Reviewed (17 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 44.7058823529412%">
+                        76 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 10%">
+                        17 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=42.1&amp;build=1500&amp;groupid=25">Build1500</a>
+                (<abbr class="timeago" title="2016-05-09T20:09:37Z">
+                2016-05-09T20:09:37
+                </abbr>)
+                <span id="review-25-1500">
+                    <i class="review fa fa-certificate" title="Reviewed (31 comments)"></i>
+                </span>
+
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 61.7647058823529%">
+                        105 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 18.2352941176471%">
+                        31 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+<h1>Comments</h1>
+
+      </div>
+
+      <footer class='footer'>
+      <div class='container'>
+          <div id='footer-content'>
+
+              </div>
+          <div id='footer-legal'>
+                  openQA is licensed <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+      </div>
+      </footer>
+    </div>
+  </body>
+</html>

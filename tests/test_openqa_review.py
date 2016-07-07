@@ -41,6 +41,8 @@ def args_factory():
     args.builds = None
     args.against_reviewed = None
     args.running_threshold = 0
+    args.show_empty = True
+    args.bugrefs = False
     return args
 
 
@@ -269,6 +271,25 @@ def test_new_tests_appearing_in_builds_are_supported():
     report = openqa_review.generate_report(args)
     # There should be one new test which is failing and has not been there in before
     assert '* ***btrfs@zkvm***: https://openqa.opensuse.org/tests/181148 (reference NONE )' in report
+
+
+def test_bugrefs_are_used_for_triaging():
+    # python openqa_review/openqa_review.py --load-dir tests/tags_labels --host https://openqa.opensuse.org -J https://openqa.opensuse.org/group_overview/25 -b
+    # 1507,1500 --load -n > tests/tags_labels/report25_bugrefs.md
+    args = cache_test_args_factory()
+    args.job_groups = None
+    args.bugrefs = True
+    args.builds = '1507,1500'
+    args.arch = 'i586'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
+    args.show_empty = False
+    report = openqa_review.generate_report(args)
+    # report should feature bug references
+    assert 'bsc#' in report
+    # and references to 'test issues'
+    assert 'poo#' in report
+    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report25_bugrefs.md')).read()
+    compare_report(report, ref_report)
 
 
 @pytest.mark.webtest

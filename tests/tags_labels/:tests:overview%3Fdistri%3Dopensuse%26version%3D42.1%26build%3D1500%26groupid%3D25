@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="c83ee0e35d3c906e5b0d02f1828a21e86a0f5894" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/packed/bootstrap-fa602e94cf94f5a7381026cbf851235c.min.css" rel="stylesheet">
+      <script src="/packed/bootstrap-a16e5e5a773802743036fa84c021314a.min.js"></script>
+
+
+
+      <script>//<![CDATA[
+
+
+      $(document).ready(function() {
+          setupOverview();
+
+      } );
+
+//]]></script>
+      <link rel="icon" href="/favicon.ico">
+
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class='container-fluid navbar navbar-default navbar-static-top'>
+<div class='navbar-inner'>
+    <div class='container'>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+        <img alt="Brand" src="/images/header-logo.png" />
+        </a>
+    </div>
+    <div class='collapse navbar-collapse'>
+        <ul class='nav navbar-nav' id='global-navigation'>
+        <li id='item-downloads'><a href="http://en.opensuse.org/openSUSE:Browse#Downloads">Downloads</a></li>
+        <li id='item-support'><a href="http://en.opensuse.org/openSUSE:Browse#Support">Support</a></li>
+        <li id='item-community'><a href="http://en.opensuse.org/openSUSE:Browse#Community">Community</a></li>
+        <li id='item-development'><a href="http://en.opensuse.org/openSUSE:Browse#Development">Development</a></li>
+        </ul>
+    </div>
+    </div>
+</div>
+</nav>
+
+      <div class='container'>
+      <div class='row' id='subheader'>
+          <div class='col-md-7'>
+          <div id="breadcrump" class="breadcrumb grid_10 alpha"><a href="/"><img alt="Home" src="/images/home_grey.png"><b>openQA</b></a> > <a href="/tests">Test results</a> > Build overview</div>
+          </div>
+          <div class='col-md-5 text-right'>
+          <div id="user-info">
+              <a href="/login">Login</a>
+          </div>
+          </div>
+      </div>
+
+
+<div class="container">
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-danger">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/25">Acceptance: openSUSE Tumbleweed  1.Gnome</a></b>
+            build 1500
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">30</span>
+
+                Soft Failure:
+                <span class="badge">75</span>
+            Failed: <span class="badge">31</span>
+
+                None:
+                <span class="badge">5</span>
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD</h3>
+        <table id="results_Gnome-DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_Gnome-DVD_arch_arm">arm</th>
+                        <th id="flavor_Gnome-DVD_arch_i586">i586</th>
+                        <th id="flavor_Gnome-DVD_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID0</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID0">
+
+             <span id="res-382476">
+                 <a href="/tests/382476">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID0">
+
+             <span id="res-382626">
+                 <a href="/tests/382626">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID1">
+
+             <span id="res-382477">
+                 <a href="/tests/382477">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID1">
+
+             <span id="res-382627">
+                 <a href="/tests/382627">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID10</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID10">
+
+             <span id="res-382478">
+                 <a href="/tests/382478">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID10">
+
+             <span id="res-382512">
+                 <a href="/tests/382512">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID5</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID5">
+
+             <span id="res-382444">
+                 <a href="/tests/382444">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID5">
+
+             <span id="res-382513">
+                 <a href="/tests/382513">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID6</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID6">
+
+             <span id="res-382443">
+                 <a href="/tests/382443">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_RAID6">
+
+             <span id="res-382528">
+                 <a href="/tests/382528">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">USBinstall</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall">
+
+             <span id="res-382529">
+                 <a href="/tests/382529">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">USBinstall@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_USBinstall@uefi">
+
+             <span id="res-382530">
+                 <a href="/tests/382530">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_allpatterns">
+
+             <span id="res-382452">
+                 <a href="/tests/382452">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382452/modules/yast2_bootloader/steps/6">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_allpatterns">
+
+             <span id="res-382498">
+                 <a href="/tests/382498">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop-runner-20140523</li><li>desktop-runner-20150730</li><li>desktop-runner-20160502</li><li>desktop-runner-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382498/modules/xterm/steps/7">
+            xterm
+        </a>
+    </span>
+
+             <span id="bug-382498">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_allpatterns">
+
+             <span id="res-382531">
+                 <a href="/tests/382531">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="allpatterns@i586--l2">allpatterns@i586--vswi ...</span></td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_allpatterns@i586--l2">
+
+             <span id="res-382500">
+                 <a href="/tests/382500">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">autoupgrade_13.1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoupgrade_13.1">
+
+             <span id="res-382532">
+                 <a href="/tests/382532">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>text-login-20140219</li><li>text-login-20160416</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382532/modules/console/steps/6">
+            console
+        </a>
+    </span>
+
+    <span  class="failedmodule" >
+        <a href="/tests/382532/modules/installation/steps/1">
+            installation
+        </a>
+    </span>
+
+             <span id="test-label-382532">
+        <i class="test-label label_dependency_issue fa fa-bookmark" title="dependency_issue"></i>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">autoupgrade_13.2_ga</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoupgrade_13.2_ga">
+
+             <span id="res-382603">
+                 <a href="/tests/382603">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">autoupgrade_13.2</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoupgrade_13.2">
+
+             <span id="res-382604">
+                 <a href="/tests/382604">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">autoyast_13.2_ext4</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_ext4">
+
+             <span id="res-382533">
+                 <a href="/tests/382533">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">autoyast_13.2_gnome</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_autoyast_13.2_gnome">
+
+             <span id="res-382534">
+                 <a href="/tests/382534">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">boot_to_snapshot</td>
+
+                            <td id="res_Gnome-DVD_arm_boot_to_snapshot">
+
+             <span id="res-382453">
+                 <a href="/tests/382453">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>autoyast-system-login-console-20150529</li><li>autoyast-system-login-console-minimal-20160113</li><li>linux-login-20150120</li><li>linux-login-20150922</li><li>tty2-selected-20151201</li><li>tty2-selected-20160508</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382453/modules/boot_into_snapshot/steps/3">
+            boot_into_snapshot
+        </a>
+    </span>
+
+             <span id="test-label-382453">
+        <i class="test-label label_race_cond fa fa-bookmark" title="race_cond"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_boot_to_snapshot">
+
+             <span id="res-382535">
+                 <a href="/tests/382535">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs</td>
+
+                            <td id="res_Gnome-DVD_arm_btrfs">
+
+             <span id="res-382454">
+                 <a href="/tests/382454">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_btrfs">
+
+             <span id="res-382495">
+                 <a href="/tests/382495">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_btrfs">
+
+             <span id="res-382536">
+                 <a href="/tests/382536">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l2">
+
+             <span id="res-382784">
+                 <a href="/tests/382784">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+             <span id="res-382503">
+                 <a href="/tests/382503">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l2">
+
+             <span id="res-382504">
+                 <a href="/tests/382504">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_btrfs@i586--l3">
+
+             <span id="res-382496">
+                 <a href="/tests/382496">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm">
+
+             <span id="res-382455">
+                 <a href="/tests/382455">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382455/modules/install_and_reboot/steps/21">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382455">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm">
+
+             <span id="res-382537">
+                 <a href="/tests/382537">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm_minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm_minimal_x">
+
+             <span id="res-382456">
+                 <a href="/tests/382456">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382456/modules/install_and_reboot/steps/21">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382456">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_cryptlvm_minimal_x">
+
+             <span id="res-382538">
+                 <a href="/tests/382538">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4</td>
+
+                            <td id="res_Gnome-DVD_arm_ext4">
+
+             <span id="res-382457">
+                 <a href="/tests/382457">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_ext4">
+
+             <span id="res-382505">
+                 <a href="/tests/382505">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_ext4">
+
+             <span id="res-382571">
+                 <a href="/tests/382571">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_ext4@i586--l2">
+
+             <span id="res-382497">
+                 <a href="/tests/382497">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li><li>rebootnow-390x-20150709</li><li>rebootnow-390x-20160225</li><li>rebootnow-390x-20160502</li><li>rebootnow-390x-20160506</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382497/modules/install_and_reboot/steps/3">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382497">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome">
+
+             <span id="res-382458">
+                 <a href="/tests/382458">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382458/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_gnome">
+
+             <span id="res-382509">
+                 <a href="/tests/382509">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop-runner-20140523</li><li>desktop-runner-20150730</li><li>desktop-runner-20160502</li><li>desktop-runner-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382509/modules/xterm/steps/7">
+            xterm
+        </a>
+    </span>
+
+             <span id="bug-382509">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_gnome">
+
+             <span id="res-382572">
+                 <a href="/tests/382572">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@64bit-ipmi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@64bit-ipmi">
+
+             <a href="/tests/382612">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@64bit-smp</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@64bit-smp">
+
+             <span id="res-382573">
+                 <a href="/tests/382573">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>shutdown-gnome-20140605</li><li>shutdown-gnome-20160502</li><li>shutdown-gnome-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382573/modules/reboot_gnome/steps/2">
+            reboot_gnome
+        </a>
+    </span>
+         +1
+
+             <span id="bug-382573">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@arm-smp</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome@arm-smp">
+
+             <span id="res-382460">
+                 <a href="/tests/382460">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382460/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_gnome@i586--l2">
+
+             <span id="res-382491">
+                 <a href="/tests/382491">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gnome@uefi">
+
+             <span id="res-382574">
+                 <a href="/tests/382574">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>license-not-accepted-20160420</li><li>license-not-accepted-20160429</li><li>license-not-accepted-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382574/modules/welcome/steps/4">
+            welcome
+        </a>
+    </span>
+
+             <span id="bug-382574">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gpt</td>
+
+                            <td id="res_Gnome-DVD_arm_gpt">
+
+             <span id="res-382459">
+                 <a href="/tests/382459">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">installcheck</td>
+
+                            <td id="res_Gnome-DVD_arm_installcheck">
+
+             <span id="res-382448">
+                 <a href="/tests/382448">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382448/modules/installcheck/steps/17">
+            installcheck
+        </a>
+    </span>
+
+             <span id="test-label-382448">
+        <i class="test-label label_fixed_Build1503 fa fa-bookmark" title="fixed_Build1503"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_installcheck">
+
+             <span id="res-382518">
+                 <a href="/tests/382518">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382518/modules/installcheck/steps/17">
+            installcheck
+        </a>
+    </span>
+
+             <span id="test-label-382518">
+        <i class="test-label label_fixed_Build1501 fa fa-bookmark" title="fixed_Build1501"></i>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">iscsi_client</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_iscsi_client">
+
+             <a href="/tests/382680">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">iscsi_ibft</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_iscsi_ibft">
+
+             <span id="res-382634">
+                 <a href="/tests/382634">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>preparing-disk-overview-20160304</li><li>preparing-disk-overview-20160504</li><li>preparing-disk-overview-existing-partitions-20160304</li><li>preparing-disk-overview-existing-partitions-20160508</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382634/modules/partitioning_iscsi/steps/4">
+            partitioning_iscsi
+        </a>
+    </span>
+
+             <span id="bug-382634">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">iscsi_server</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_iscsi_server">
+
+             <a href="/tests/382539">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm</td>
+
+                            <td id="res_Gnome-DVD_arm_lvm">
+
+             <span id="res-382461">
+                 <a href="/tests/382461">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382461/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm">
+
+             <span id="res-382575">
+                 <a href="/tests/382575">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382575/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm+RAID1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_lvm+RAID1">
+
+             <span id="res-382576">
+                 <a href="/tests/382576">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                            <td id="res_Gnome-DVD_arm_mediacheck">
+
+             <span id="res-382462">
+                 <a href="/tests/382462">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_mediacheck">
+
+             <span id="res-382577">
+                 <a href="/tests/382577">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_memtest">
+
+             <span id="res-382578">
+                 <a href="/tests/382578">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1">
+
+             <span id="res-382608">
+                 <a href="/tests/382608">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382608/modules/install_and_reboot/steps/10">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382608">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.1+gcc5">upgrade_offline_13.1_sp ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+gcc5">
+
+             <span id="res-382523">
+                 <a href="/tests/382523">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382523/modules/installation_overview/steps/13">
+            installation_overview
+        </a>
+    </span>
+
+             <span id="bug-382523">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.1_allpatterns">upgrade_offline_13.1_sp ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1_allpatterns">
+
+             <span id="res-382609">
+                 <a href="/tests/382609">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382609/modules/install_and_reboot/steps/11">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382609">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2">
+
+             <span id="res-382610">
+                 <a href="/tests/382610">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2_allpatterns">upgrade_offline_13.2_al ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_allpatterns">
+
+             <span id="res-382611">
+                 <a href="/tests/382611">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2_allpatterns_arm">upgrade_offline_13.2_al ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2_allpatterns_arm">
+
+             <span id="res-382465">
+                 <a href="/tests/382465">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382465/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+         +2
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2_arm</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2_arm">
+
+             <span id="res-382466">
+                 <a href="/tests/382466">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382466/modules/snapper_undochange/steps/8">
+            snapper_undochange
+        </a>
+    </span>
+         +3
+
+             <span id="bug-382466">
+        <a href="9580">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9714, poo#9580"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2_gcc5</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_gcc5">
+
+             <span id="res-382613">
+                 <a href="/tests/382613">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2sp1</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2sp1">
+
+             <span id="res-382632">
+                 <a href="/tests/382632">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2sp1_allpatterns">upgrade_offline_13.2sp1 ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2sp1_allpatterns">
+
+             <span id="res-382633">
+                 <a href="/tests/382633">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>GNOME-20140701</li><li>GNOME-20141210</li><li>GNOME-smartneedle-20150803</li><li>GNOME-smartneedle-20160211</li><li>GNOME-workaround-BSC978076-20160502</li><li>GNOME-workaround-BSC978076-20160504</li><li>GNOME-workaround-BSC978076-20160505</li><li>GNOME-workaround-BSC978076-20160506</li><li>GNOME-workaround-BSC978076-20160508</li><li>GNOME-workaround-BSC979072-20160509</li><li>first_boot-generic-desktop-20160503</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382633/modules/gnome_control_center/steps/11">
+            gnome_control_center
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2sp1_allpatterns_arm">upgrade_offline_13.2sp1 ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2sp1_allpatterns_arm">
+
+             <span id="res-382464">
+                 <a href="/tests/382464">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>rebootnow-20131217</li><li>rebootnow-20150409</li><li>rebootnow-20160430</li><li>rebootnow-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382464/modules/install_and_reboot/steps/12">
+            install_and_reboot
+        </a>
+    </span>
+
+             <span id="bug-382464">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2sp1_arm">upgrade_offline_13.2sp1 ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2sp1_arm">
+
+             <span id="res-382463">
+                 <a href="/tests/382463">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382463/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga">
+
+             <span id="res-382614">
+                 <a href="/tests/382614">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga_allpatterns">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns">
+
+             <span id="res-382615">
+                 <a href="/tests/382615">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2_ga_allpatterns+workaround_deps">
+
+             <span id="res-382616">
+                 <a href="/tests/382616">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga_allpatterns_arm">upgrade_zdup_offline_sle ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga_allpatterns_arm">
+
+             <span id="res-382467">
+                 <a href="/tests/382467">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382467/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga_arm">upgrade_zdup_offline_sle ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga_arm">
+
+             <span id="res-382468">
+                 <a href="/tests/382468">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382468/modules/snapper_undochange/steps/8">
+            snapper_undochange
+        </a>
+    </span>
+         +2
+
+             <span id="bug-382468">
+        <a href="9580">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9714, poo#9580"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2sp1">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2sp1">
+
+             <span id="res-382601">
+                 <a href="/tests/382601">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2sp1_allpatterns">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2sp1_allpatterns">
+
+             <span id="res-382600">
+                 <a href="/tests/382600">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2sp1_allpatterns+workaround_deps">upgrade_zdup_offline_sle ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_offline_13.2sp1_allpatterns+workaround_deps">
+
+             <span id="res-382602">
+                 <a href="/tests/382602">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_online_13.2_ga">upgrade_zdup_online_sle1 ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_upgrade_zdup_online_13.2_ga">
+
+             <span id="res-382617">
+                 <a href="/tests/382617">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal+base">
+
+             <span id="res-382469">
+                 <a href="/tests/382469">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382469/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382469/modules/yast2_bootloader/steps/7">
+            <span title="yast2_bootloader">yast2_bootlo ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_minimal+base">
+
+             <span id="res-382494">
+                 <a href="/tests/382494">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382494/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+             <span id="bug-382494">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base">
+
+             <span id="res-382618">
+                 <a href="/tests/382618">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382618/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>yast2_nfs_server-conf-20160128</li><li>yast2_nfs_server-nfs-firewall-20160128</li><li>yast2_nfs_server-nfs-server-not-installed-20160303</li><li>yast2_nfs_server-nfs-server-not-installed-20160405</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382618/modules/yast2_nfs_server/steps/9">
+            <span title="yast2_nfs_server">yast2_nfs_se ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal+base+awesome</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal+base+awesome">
+
+             <span id="res-382470">
+                 <a href="/tests/382470">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382470/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382470/modules/yast2_bootloader/steps/5">
+            <span title="yast2_bootloader">yast2_bootlo ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal+base+awesome">
+
+             <span id="res-382619">
+                 <a href="/tests/382619">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382619/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>yast2_nfs_server-conf-20160128</li><li>yast2_nfs_server-nfs-firewall-20160128</li><li>yast2_nfs_server-nfs-server-not-installed-20160303</li><li>yast2_nfs_server-nfs-server-not-installed-20160405</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382619/modules/yast2_nfs_server/steps/9">
+            <span title="yast2_nfs_server">yast2_nfs_se ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="minimal+base@i586--l2">minimal+base@i586--vsw ...</span></td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_minimal+base@i586--l2">
+
+             <span id="res-382492">
+                 <a href="/tests/382492">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal_x">
+
+             <span id="res-382471">
+                 <a href="/tests/382471">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382471/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x">
+
+             <span id="res-382620">
+                 <a href="/tests/382620">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal_x+uefi@uefi</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_minimal_x+uefi@uefi">
+
+             <span id="res-382621">
+                 <a href="/tests/382621">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">multipath</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_multipath">
+
+             <span id="res-382622">
+                 <a href="/tests/382622">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system_13.1sp4</td>
+
+                            <td id="res_Gnome-DVD_arm_rescue_system_13.1sp4">
+
+             <span id="res-382472">
+                 <a href="/tests/382472">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_rescue_system_13.1sp4">
+
+             <span id="res-382623">
+                 <a href="/tests/382623">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_rollback_upgrade_offline_13.2">
+
+             <span id="res-382638">
+                 <a href="/tests/382638">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>GNOME-20140701</li><li>GNOME-20141210</li><li>GNOME-smartneedle-20150803</li><li>GNOME-smartneedle-20160211</li><li>GNOME-workaround-BSC978076-20160502</li><li>GNOME-workaround-BSC978076-20160504</li><li>GNOME-workaround-BSC978076-20160505</li><li>GNOME-workaround-BSC978076-20160506</li><li>GNOME-workaround-BSC978076-20160508</li><li>GNOME-workaround-BSC979072-20160509</li><li>first_boot-generic-desktop-20160503</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382638/modules/snapper_rollback/steps/14">
+            snapper_rollback
+        </a>
+    </span>
+
+             <span id="bug-382638">
+        <a href="https://progress.opensuse.org/issues/9580">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9580"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2_arm">rollback_upgrade_offline ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2_arm">
+
+             <a href="/tests/382485">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_rollback_upgrade_offline_13.2sp1">
+
+             <span id="res-382671">
+                 <a href="/tests/382671">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>snap-before-update-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382671/modules/grub_test_snapshot/steps/48">
+            grub_test_snapshot
+        </a>
+    </span>
+
+             <span id="test-label-382671">
+        <i class="test-label label_broken_test fa fa-bookmark" title="broken_test"></i>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1_arm">rollback_upgrade_offline ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2sp1_arm">
+
+             <span id="res-382486">
+                 <a href="/tests/382486">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootmenu-SLES-12-20160311</li><li>bootmenu-SLES-42.1-20160216</li><li>bootmenu-SLES-42.1-20160314</li><li>grub2-20151117</li><li>grub2-ofw-20160225</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382486/modules/grub_test_snapshot/steps/4">
+            grub_test_snapshot
+        </a>
+    </span>
+
+             <span id="test-label-382486">
+        <i class="test-label label_broken_test fa fa-bookmark" title="broken_test"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5">
+
+             <span id="res-382473">
+                 <a href="/tests/382473">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382473/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5">
+
+             <span id="res-382624">
+                 <a href="/tests/382624">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5+allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5+allpatterns">
+
+             <span id="res-382474">
+                 <a href="/tests/382474">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382474/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5+allpatterns">
+
+             <span id="res-382625">
+                 <a href="/tests/382625">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5-ftp</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5-ftp">
+
+             <span id="res-382445">
+                 <a href="/tests/382445">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382445/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5-ftp">
+
+             <span id="res-382514">
+                 <a href="/tests/382514">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5-ftp@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_gcc5-ftp@i586--l3">
+
+             <span id="res-382488">
+                 <a href="/tests/382488">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5-http</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5-http">
+
+             <span id="res-382446">
+                 <a href="/tests/382446">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382446/modules/yast2_bootloader/steps/5">
+            yast2_bootloader
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_gcc5-http">
+
+             <span id="res-382515">
+                 <a href="/tests/382515">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>gnome_terminal-20140319</li><li>gnome_terminal-20140604</li><li>gnome_terminal-20140729</li><li>gnome_terminal-20160502</li><li>gnome_terminal-20160509</li><li>gnome_terminal-workaround-bsc962806-20160126</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382515/modules/gnome_terminal/steps/4">
+            gnome_terminal
+        </a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">leap+extratests</td>
+
+                            <td id="res_Gnome-DVD_arm_leap+extratests">
+
+             <span id="res-382481">
+                 <a href="/tests/382481">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>displaymanager-20140621</li><li>displaymanager-20160502</li><li>displaymanager-20160506</li><li>gdm-workaround-bsc962806-20160125</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382481/modules/boot_to_desktop/steps/5">
+            boot_to_desktop
+        </a>
+    </span>
+
+             <span id="test-label-382481">
+        <i class="test-label label_zluo fa fa-bookmark" title="zluo"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap+extratests">
+
+             <a href="/tests/382644">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">leap12_gnome_create_hdd</td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_gnome_create_hdd">
+
+             <span id="res-382450">
+                 <a href="/tests/382450">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap12_gnome_create_hdd">
+
+             <span id="res-382526">
+                 <a href="/tests/382526">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>tty2-selected-20151201</li><li>tty2-selected-20160508</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382526/modules/hostname/steps/2">
+            hostname
+        </a>
+    </span>
+
+             <span id="bug-382526">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_minimal_base+gcc5_create_hdd">leap12_minimal_base+gcc5_cr ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_minimal_base+gcc5_create_hdd">
+
+             <span id="res-382451">
+                 <a href="/tests/382451">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap12_minimal_base+gcc5_create_hdd">
+
+             <span id="res-382527">
+                 <a href="/tests/382527">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_fs_stress">leap12_qa_acceptance_fs_st ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_fs_stress">
+
+             <span id="res-382482">
+                 <a href="/tests/382482">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap12_qa_acceptance_fs_stress">
+
+             <span id="res-382645">
+                 <a href="/tests/382645">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_process_stress">leap12_qa_acceptance_proce ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_process_stress">
+
+             <span id="res-382483">
+                 <a href="/tests/382483">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap12_qa_acceptance_process_stress">
+
+             <span id="res-382646">
+                 <a href="/tests/382646">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_sched_stress">leap12_qa_acceptance_sched ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_sched_stress">
+
+             <span id="res-382484">
+                 <a href="/tests/382484">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_leap12_qa_acceptance_sched_stress">
+
+             <span id="res-382647">
+                 <a href="/tests/382647">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ssh-X@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_ssh-X@i586--l3">
+
+             <span id="res-382797">
+                 <a href="/tests/382797">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382797/modules/bootloader_i586/steps/11">
+            bootloader_i586
+        </a>
+    </span>
+
+             <span id="test-label-382797">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">textmode</td>
+
+                            <td id="res_Gnome-DVD_arm_textmode">
+
+             <span id="res-382475">
+                 <a href="/tests/382475">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382475/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382475/modules/yast2_bootloader/steps/5">
+            <span title="yast2_bootloader">yast2_bootlo ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_textmode">
+
+             <span id="res-382507">
+                 <a href="/tests/382507">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382507/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+             <span id="bug-382507">
+        <a href="https://progress.opensuse.org/issues/11074">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#11074"></i>
+        </a>
+    </span>
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_textmode">
+
+             <span id="res-382628">
+                 <a href="/tests/382628">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382628/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>yast2_nfs_server-conf-20160128</li><li>yast2_nfs_server-nfs-firewall-20160128</li><li>yast2_nfs_server-nfs-server-not-installed-20160303</li><li>yast2_nfs_server-nfs-server-not-installed-20160405</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382628/modules/yast2_nfs_server/steps/9">
+            <span title="yast2_nfs_server">yast2_nfs_se ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode+awesome</td>
+
+                            <td id="res_Gnome-DVD_arm_textmode+awesome">
+
+             <span id="res-382479">
+                 <a href="/tests/382479">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382479/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>yast2_bootloader-20150122</li><li>yast2_bootloader-20150410</li><li>yast2_bootloader-20150923</li><li>yast2_bootloader-20160404</li><li>yast2_bootloader-20160420</li><li>yast2_bootloader-IPMI-20160411</li><li>yast2_bootloader-UEFI-20140930</li><li>yast2_bootloader-UEFI-20160420</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382479/modules/yast2_bootloader/steps/5">
+            <span title="yast2_bootloader">yast2_bootlo ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode+awesome">
+
+             <span id="res-382629">
+                 <a href="/tests/382629">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/382629/modules/dns_srv/steps/10">
+            dns_srv
+        </a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>yast2_nfs_server-conf-20160128</li><li>yast2_nfs_server-nfs-firewall-20160128</li><li>yast2_nfs_server-nfs-server-not-installed-20160303</li><li>yast2_nfs_server-nfs-server-not-installed-20160405</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382629/modules/yast2_nfs_server/steps/9">
+            <span title="yast2_nfs_server">yast2_nfs_se ...</span>
+        </a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode@i586--l3</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_textmode@i586--l3">
+
+             <span id="res-382785">
+                 <a href="/tests/382785">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">toolchain_zypper</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_toolchain_zypper">
+
+             <span id="res-383540">
+                 <a href="/tests/383540">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">toolchain_zypper@64bit-smp</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_toolchain_zypper@64bit-smp">
+
+             <span id="res-382522">
+                 <a href="/tests/382522">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">toolchain_zypper@arm-smp</td>
+
+                            <td id="res_Gnome-DVD_arm_toolchain_zypper@arm-smp">
+
+             <span id="res-382449">
+                 <a href="/tests/382449">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">we</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_we">
+
+             <span id="res-382524">
+                 <a href="/tests/382524">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">we+allpatterns</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_we+allpatterns">
+
+             <span id="res-382525">
+                 <a href="/tests/382525">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop_mainmenu-1-20160411</li><li>desktop_mainmenu-gnome-20140813</li><li>desktop_mainmenu-gnomesled-20141205</li><li>desktop_mainmenu-ipmi-20160419</li><li>desktop_mainmenu-sled-20160503</li><li>desktop_mainmenu-sled-20160504</li><li>desktop_mainmenu-sled-20160506</li><li>desktop_mainmenu-leap_we-20160509</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382525/modules/desktop_mainmenu/steps/4">
+            desktop_mainmenu
+        </a>
+    </span>
+         +2
+
+             <span id="bug-382525">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">we-ftp</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_we-ftp">
+
+             <span id="res-382516">
+                 <a href="/tests/382516">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop_mainmenu-1-20160411</li><li>desktop_mainmenu-gnome-20140813</li><li>desktop_mainmenu-gnomesled-20141205</li><li>desktop_mainmenu-ipmi-20160419</li><li>desktop_mainmenu-sled-20160503</li><li>desktop_mainmenu-sled-20160504</li><li>desktop_mainmenu-sled-20160506</li><li>desktop_mainmenu-leap_we-20160509</li><li>tty2-selected-20151201</li><li>tty2-selected-20160508</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382516/modules/desktop_mainmenu/steps/3">
+            desktop_mainmenu
+        </a>
+    </span>
+
+             <span id="bug-382516">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">we-http</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_we-http">
+
+             <span id="res-382517">
+                 <a href="/tests/382517">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop_mainmenu-1-20160411</li><li>desktop_mainmenu-gnome-20140813</li><li>desktop_mainmenu-gnomesled-20141205</li><li>desktop_mainmenu-ipmi-20160419</li><li>desktop_mainmenu-sled-20160503</li><li>desktop_mainmenu-sled-20160504</li><li>desktop_mainmenu-sled-20160506</li><li>desktop_mainmenu-leap_we-20160509</li><li>tty2-selected-20151201</li><li>tty2-selected-20160508</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382517/modules/desktop_mainmenu/steps/3">
+            desktop_mainmenu
+        </a>
+    </span>
+
+             <span id="bug-382517">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xen</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_xen">
+
+             <span id="res-382630">
+                 <a href="/tests/382630">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfs</td>
+
+                            <td id="res_Gnome-DVD_arm_xfs">
+
+             <span id="res-382480">
+                 <a href="/tests/382480">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_i586_xfs">
+
+             <span id="res-382506">
+                 <a href="/tests/382506">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_Gnome-DVD_x86_64_xfs">
+
+             <span id="res-382631">
+                 <a href="/tests/382631">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfs@i586--l2</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_xfs@i586--l2">
+
+             <span id="res-382493">
+                 <a href="/tests/382493">
+                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">zfcp@i586-zfcp</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_zfcp@i586-zfcp">
+
+             <span id="res-382501">
+                 <a href="/tests/382501">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li></li><li>osc-registration-20150626</li><li>osc-registration-localregserver1-20140728</li><li>osc-registration-localregserver1-20160429</li><li>osc-registration-localregserver1-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382501/modules/skip_registration/steps/2">
+            skip_registration
+        </a>
+    </span>
+
+             <span id="test-label-382501">
+        <i class="test-label label_hardware_issue fa fa-bookmark" title="hardware_issue"></i>
+    </span>
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+      <div class='container'>
+          <div id='footer-content'>
+
+              </div>
+          <div id='footer-legal'>
+                  openQA is licensed <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+      </div>
+      </footer>
+    </div>
+  </body>
+</html>
