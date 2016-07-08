@@ -451,7 +451,8 @@ def build_id(build_tag):
 def find_builds(soup, running_threshold=0):
     """Find finished builds, ignore still running or empty."""
     def below_threshold(bar):
-        return float(bar['style'].lstrip('width: ').rstrip('%')) <= running_threshold
+        threshold = float(running_threshold) if running_threshold is not None else 0
+        return float(bar['style'].lstrip('width: ').rstrip('%')) <= threshold
     finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
     def not_empty_build(bar):
