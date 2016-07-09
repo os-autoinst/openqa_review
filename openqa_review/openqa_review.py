@@ -232,7 +232,7 @@ change_state = {
     ('result_failed', 'result_passed'): 'FIXED',  # fixed, maybe spurious, false positive
     ('result_softfail', 'result_passed'): 'FIXED',
     ('result_failed', 'result_failed'): 'STILL_FAILING',  # still failing or partial improve, partial degrade
-    ('result_softfail', 'result_softfail'): 'STILL_FAILING',
+    ('result_softfail', 'result_softfail'): 'STILL_SOFT_FAILING',
     ('result_failed', 'result_softfail'): 'IMPROVED',
     ('result_passed', 'result_passed'): 'STABLE',  # ignore or crosscheck if not fals positive
 }
@@ -409,18 +409,23 @@ def generate_arch_report(arch, results, root_url, args):
 
     # left do handle are the issues marked with 'TODO'
     if args.bugrefs:
-        new_issues = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
-        existing_issues = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
+        issues['new']['todo'] = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
+        issues['existing']['todo'] = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
     else:
-        new_issues = '\n'.join('* %s' % new_issue_report(k, v, verbose_test, root_url) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
-        existing_issues = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
-    soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
-    if soft_fails_str:
-        new_issues += '\n* soft fails: ' + soft_fails_str
+        issues['new']['todo'] = '\n'.join('* %s' % new_issue_report(k, v, verbose_test, root_url) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+        issues['existing']['todo'] = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+
+    if args.include_softfails:
+        new_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
+        if new_soft_fails_str:
+            issues['new']['product'] += '\n* soft fails: ' + new_soft_fails_str + '\n'
+        existing_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_SOFT_FAILING')
+        if existing_soft_fails_str:
+            issues['existing']['product'] += '\n* soft fails: ' + existing_soft_fails_str + '\n'
 
     todo_issues = todo_review_template.substitute({
-        'new_issues': issue_listing('***new issues***', new_issues, show_empty),
-        'existing_issues': issue_listing('***existing issues***', existing_issues, show_empty),
+        'new_issues': issue_listing('***new issues***', issues['new']['todo'], show_empty),
+        'existing_issues': issue_listing('***existing issues***', issues['existing']['todo'], show_empty),
     })
     return openqa_review_report_arch_template.substitute({
         'arch': arch,
@@ -431,7 +436,7 @@ def generate_arch_report(arch, results, root_url, args):
         'existing_openqa_issues': issue_listing('**Existing openQA-issues:**', issues['existing']['openqa'], show_empty),
         'new_product_issues': issue_listing('**New Product bugs:**', issues['new']['product'], show_empty),
         'existing_product_issues': issue_listing('**Existing Product bugs:**', issues['existing']['product'], show_empty),
-        'todo_issues': todo_issues if (new_issues or existing_issues) else '',
+        'todo_issues': todo_issues if (issues['new']['todo'] or issues['existing']['todo']) else '',
     })
 
 
@@ -630,6 +635,13 @@ def parse_args():
                         help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
     parser.add_argument('--no-empty-sections', action='store_false', default=True, dest='show_empty',
                         help='Only show sections in report with content')
+    parser.add_argument('--include-softfails', action='store_true', default=False,
+                        help="""Also include softfails in reports.
+                        Not included by default as less important and there is
+                        no carry over for soft fails, i.e. there are no
+                        bugrefs attached to these failures in most cases but
+                        they should already carry bug references by other
+                        means anyway.""")
     add_load_save_args(parser)
     return parser.parse_args()
 

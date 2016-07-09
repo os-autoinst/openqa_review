@@ -28,11 +28,7 @@
 
 ***existing issues***
 
-* btrfs
-* gcc5-ftp@i586--l3
 * ssh-X@i586--l3
-* xfs
-* xfs@i586--l2
 
 
 

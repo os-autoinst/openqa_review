@@ -43,6 +43,7 @@ def args_factory():
     args.running_threshold = 0
     args.show_empty = True
     args.bugrefs = False
+    args.include_softfails = True
     return args
 
 
@@ -283,6 +284,7 @@ def test_bugrefs_are_used_for_triaging():
     args.arch = 'i586'
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.show_empty = False
+    args.include_softfails = False
     report = openqa_review.generate_report(args)
     # report should feature bug references
     assert 'bsc#' in report
