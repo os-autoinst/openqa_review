@@ -6,3 +6,11 @@ python:
 install: pip install tox-travis
 script: tox
 
+deploy:
+  provider: pypi
+  user: okurz.myopenid.com
+  password:
+    secure: GVA9BZ/3HteaR1UaDzhRMS3lfnysIpSJv7wp8tlVC7ShzUP7pQcv6ar47IABo/icgu9IvPv6733cT5z/vHREA6hasactpfT2OFM/CG12uW8q1GC8ikIqQF8jY/S63IPS3c2cdlHcqnq0W+zADmhjwGgR1iAXabbusRdyAKq1rmY6QdUXRqKoZPQfe91Kai+MBsFlHU4la4X2yAky2xGfonp2s+MDDPNlyLEKbTLOGkUNqCldEwIeixIXoasQvQFs4ht/alotckMy8jrh277c1V6feF+5tBOaObYW5loq558TfTCjFX0+KaQTTrYXKIVL18V+etJ0Pw363eJSn35r59ON6OCBPFQmL9wtq6opHSmTg/fZnwjhNJlU588URwoECRTqosvz4cIhJ0RvtTcAfJ1jWDosBLB7rjgQxR60XG1xTeCNg5QtmtvQKTIaGAGpzsPKpUAQIKrws5nq9jMqPp/9pSK1y+tgwOC9rmFnTZookV2TXvUJdOk+SJGHzDBF0+IWBLpKT7/6Qat5IBspzd5UPXBEu+Y3bDvqJym1FIwCu/3kxGGGHdxktLtWztR6j2Z0pIoH7wmFIKR/Zt1nUmsbEhJa/7yPaY/VyjRXBo/oyjap5W9LkBHBdxFDlcoL386iUl9ADu4+VPmiz6PdR1iy7b8C++tzBlYreqNbeUY=
+  on:
+    tags: true
+    branch: master
