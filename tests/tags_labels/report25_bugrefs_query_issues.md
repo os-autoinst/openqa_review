@@ -21,8 +21,8 @@
 
 **Existing openQA-issues:**
 
-* textmode -> [poo#11948](https://progress.opensuse.org/issues/11948)
-* allpatterns@i586--l2 -> [poo#9772](https://progress.opensuse.org/issues/9772)
+* textmode -> [poo#11948](https://progress.opensuse.org/issues/11948) (Ticket status: New, assignee: user1)
+* allpatterns@i586--l2 -> [poo#9772](https://progress.opensuse.org/issues/9772) (Ticket status: New, assignee: None)
 
 
 **TODO: review**

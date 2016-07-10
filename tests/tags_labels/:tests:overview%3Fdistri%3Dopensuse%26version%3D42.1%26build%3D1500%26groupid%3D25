@@ -360,7 +360,7 @@
 
              <span id="res-382500">
                  <a href="/tests/382500">
-                     <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
                  </a>
              </span>
 
@@ -2575,7 +2575,7 @@
 
              <span id="res-382628">
                  <a href="/tests/382628">
-                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
                  </a>
              </span>
 

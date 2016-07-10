@@ -332,8 +332,15 @@ def new_issue_report(k, v, verbose_test, root_url):
     return report[verbose_test](k, v)
 
 
-def all_failures_one_bug(result_list):
-    return '* %s -> %s' % (', '.join([i['name'] for i in result_list]), bugref_str(result_list[-1])) + '\n'
+def all_failures_one_bug(result_list, args, query_issue_status=False):
+    line = '* %s -> %s' % (', '.join([i['name'] for i in result_list]), bugref_str(result_list[-1]))
+    if query_issue_status:
+        b = Browser(args, '')
+        issue_json = b.get_json(result_list[0]['bugref_href'] + '.json')['issue']
+        issue_status = issue_json['status']['name']
+        issue_assignee = issue_json['assigned_to']['name'] if 'assigned_to' in issue_json else 'None'
+        line += " (Ticket status: {}, assignee: {})".format(issue_status, issue_assignee)
+    return line + '\n'
 
 
 def issue_listing(header, issues, show_empty=True):
@@ -397,6 +404,7 @@ def generate_arch_report(arch, results, root_url, args):
         v.update({'name': k})
         results_by_bugref[new_key].append(v)
 
+    results_by_bugref = SortedDict(results_by_bugref)
     issues = defaultdict(lambda: defaultdict(str))
     for bugref, result_list in iteritems(results_by_bugref):
         # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
@@ -405,7 +413,8 @@ def generate_arch_report(arch, results, root_url, args):
         if not re.match('(poo|bsc)#', bugref):
             continue
         # if any result was still failing the issue is regarded as existing
-        issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list)
+        query_issue_status = args.query_issue_status and re.match('poo#', bugref)
+        issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list, args, query_issue_status)
 
     # left do handle are the issues marked with 'TODO'
     if args.bugrefs:
@@ -630,6 +639,8 @@ def parse_args():
                               help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
                               See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
                               for details about bugrefs in openQA""")
+    parser.add_argument('--query-issue-status', action='store_true',
+                        help='Query issue trackers for the issues found and report on their status and assignee. Needs option "-r/--bugrefs"')
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
     parser.add_argument('--running-threshold', default=0,

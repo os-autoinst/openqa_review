@@ -455,10 +455,15 @@
 
              <span id="res-384335">
                  <a href="/tests/384335">
-                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
                  </a>
              </span>
 
+             <span id="bug-384335">
+        <a href="https://progress.opensuse.org/issues/9772">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9772"></i>
+        </a>
+    </span>
 
 
 </td>
@@ -3079,8 +3084,8 @@
     </span>
 
              <span id="bug-384342">
-        <a href="https://progress.opensuse.org/issues/11074">
-            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#11074"></i>
+        <a href="https://progress.opensuse.org/issues/11948">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#11948"></i>
         </a>
     </span>
 
@@ -3091,9 +3096,14 @@
 
              <span id="res-384463">
                  <a href="/tests/384463">
-                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
                  </a>
              </span>
+             <span id="bug-384463">
+        <a href="https://progress.opensuse.org/issues/9772">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9772"></i>
+        </a>
+    </span>
 
 
     <span  class="failedmodule" >

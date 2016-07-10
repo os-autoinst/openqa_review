@@ -44,6 +44,7 @@ def args_factory():
     args.show_empty = True
     args.bugrefs = False
     args.include_softfails = True
+    args.query_issue_status = False
     return args
 
 
@@ -290,7 +291,13 @@ def test_bugrefs_are_used_for_triaging():
     assert 'bsc#' in report
     # and references to 'test issues'
     assert 'poo#' in report
-    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report25_bugrefs.md')).read()
+    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs.md')).read()
+    compare_report(report, ref_report)
+
+    # now, with query issues
+    args.query_issue_status = True
+    report = openqa_review.generate_report(args)
+    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
     compare_report(report, ref_report)
 
 
