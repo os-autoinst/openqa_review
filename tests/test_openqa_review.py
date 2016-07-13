@@ -48,6 +48,12 @@ def args_factory():
     return args
 
 
+def browser_factory(args=None):
+    if not args:
+        args = cache_test_args_factory()
+    return openqa_review.Browser(args, urljoin(args.host, args.base_url))
+
+
 # similar to python3.2 TemporaryDirectory, not available on older versions
 # also see http://stackoverflow.com/a/13379969/5031322
 
@@ -190,7 +196,7 @@ def test_specified_job_group_yields_single_product_report():
 
 def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     args = cache_test_args_factory()
-    browser = openqa_review.Browser(args, urljoin(args.host, args.base_url))
+    browser = browser_factory(args)
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='0311')
     assert '=0311' in current
     assert '=0307' in reviewed
@@ -215,14 +221,14 @@ def test_non_number_build_nr_also_finds_valid_review_build_urls():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live')
     args.job_group_urls = args.host + '/group_overview/27'
-    browser = openqa_review.Browser(args, urljoin(args.host, args.base_url))
+    browser = browser_factory(args)
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
     assert '=0104%400351' in current  # i.e. escaped '0104@0351'
     assert '=0097%400305' in reviewed
 
     # if no review comments are found we revert to the last two finished
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live_no_review')
-    browser = openqa_review.Browser(args, urljoin(args.host, args.base_url))
+    browser = browser_factory(args)
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
     assert '=0104%400351' in current  # i.e. escaped '0104@0351'
     assert '=0104%400350' in reviewed  # no review comments found, reverting to last two finished
@@ -250,9 +256,27 @@ def test_get_job_groups_yields_job_groups_in_page():
     args.job_group_urls = None
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'single_job_group')
     root_url = urljoin(args.host, args.base_url)
-    browser = openqa_review.Browser(args, root_url)
+    browser = browser_factory(args)
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
     assert len(job_groups.keys()) == 8
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_4.4_dashboard')
+    browser = browser_factory(args)
+    job_groups = openqa_review.get_job_groups(browser, root_url, args)
+    assert sorted(job_groups.keys()) == sorted([
+        'Open Build Service',
+        'Staging Projects',
+        'openSUSE 13.2 Updates',
+        'openSUSE Leap 42.1 JeOS',
+        'openSUSE Leap 42.1 Maintenance',
+        'openSUSE Leap 42.1 Test Updates',
+        'openSUSE Leap 42.1 Updates',
+        'openSUSE Leap 42.2',
+        'openSUSE Leap 42.2 AArch64',
+        'openSUSE Leap 42.2 PowerPC',
+        'openSUSE Leap Staging Projects',
+        'openSUSE Tumbleweed',
+        'openSUSE Tumbleweed AArch64',
+        'openSUSE Tumbleweed PowerPC'])
 
 
 # TODO should be covered by doctest already but I can not get coverage analysis to work with doctests in py.test

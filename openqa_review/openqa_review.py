@@ -669,7 +669,7 @@ def get_job_groups(browser, root_url, args):
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
                 soup = browser.get_soup(root_url)
-        job_groups = {i.text: absolute_url(root_url, i) for i in soup.find_all('a', href=re.compile('group_overview'))}
+        job_groups = {i.text: absolute_url(root_url, i) for i in soup.select('h2 a[href^="/group_overview/"]')}
         log.debug("job groups found: %s" % job_groups.keys())
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
