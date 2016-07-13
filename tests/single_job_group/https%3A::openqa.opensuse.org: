@@ -200,14 +200,14 @@
         </div>
         <div class="col-md-8">
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 22.2222222222222%">
-                        2 passed
+                    <div class="progress-bar progress-bar-success" style="width: 0%">
+                        0 passed
                     </div>
                     <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
                         0 unfinished
                     </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 55.5555555555556%">
-                        5 failed
+                    <div class="progress-bar progress-bar-danger" style="width: 0%">
+                        0 failed
                     </div>
                 </div>
         </div>
@@ -623,52 +623,6 @@
                     </div>
                     <div class="progress-bar progress-bar-danger" style="width: 50%">
                         1 failed
-                    </div>
-                </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 text-nowrap">
-            <h4>
-                <a href="/tests/overview?distri=opensuse&amp;version=12&amp;build=1.63&amp;groupid=22">Build1.63</a>
-                (<abbr class="timeago" title="2016-01-06T09:27:32Z">
-                2016-01-06T09:27:32
-                </abbr>)
-            </h4>
-        </div>
-        <div class="col-md-8">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 50%">
-                        1 passed
-                    </div>
-                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
-                        0 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 50%">
-                        1 failed
-                    </div>
-                </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 text-nowrap">
-            <h4>
-                <a href="/tests/overview?distri=opensuse&amp;version=12&amp;build=1.62&amp;groupid=22">Build1.62</a>
-                (<abbr class="timeago" title="2016-01-05T12:20:11Z">
-                2016-01-05T12:20:11
-                </abbr>)
-            </h4>
-        </div>
-        <div class="col-md-8">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 0%">
-                        0 passed
-                    </div>
-                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
-                        0 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 100%">
-                        2 failed
                     </div>
                 </div>
         </div>

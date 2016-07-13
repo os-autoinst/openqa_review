@@ -703,9 +703,8 @@ def generate_report(args):
         try:
             log.info("Processing '%s'" % v)
             return generate_product_report(browser, job_group_url, root_url, args)
-        except (NotImplementedError, NotEnoughBuildsError) as e:
-            log.error("TODO implement: Catched error %s, continuing with next job group." % e)
-            return "TODO implement, report could not be generated"
+        except NotEnoughBuildsError:
+            return "Not enough finished builds found"
     label = 'Gathering data and processing report'
     progress = 0
     report = ''

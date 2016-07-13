@@ -180,6 +180,13 @@ def test_specified_job_group_yields_single_product_report():
         report = openqa_review.generate_report(args)
     assert 'group_overview:26' in str(e.value)
 
+    # job group with only a single recent build yields empty report
+    args.job_groups = 'x-released openSUSE Tumbleweed GA JeOS'
+    report = openqa_review.generate_report(args)
+    assert args.job_groups in report
+    # There must be only one job group tag
+    assert 'Not enough finished builds' in report
+
 
 def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     args = cache_test_args_factory()

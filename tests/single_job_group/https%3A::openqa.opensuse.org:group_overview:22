@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+<h1>Last Builds for Group x-released openSUSE Tumbleweed GA JeOS</h1>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=12&amp;build=1.64&amp;groupid=22">Build1.64</a>
+                (<abbr class="timeago" title="2016-01-06T17:30:12Z">
+                2016-01-06T17:30:12
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 50%">
+                        1 passed
+                    </div>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-danger" style="width: 50%">
+                        1 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+
+  </body>
+</html>
