@@ -38,11 +38,8 @@ from subprocess import check_call
 
 import yaml
 
-try:
-    from openqa_review import Browser, add_load_save_args
-except ImportError:
-    # why is this necessary from py.test? crosscheck if it works if called from tox
-    from openqa_review.openqa_review import Browser, add_load_save_args
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from openqa_review.browser import Browser, add_load_save_args
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
