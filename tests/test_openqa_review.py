@@ -17,6 +17,7 @@ import shutil
 import sys
 import tempfile
 from argparse import Namespace
+from openqa_review.browser import filename_to_url
 from urllib.parse import urljoin, urlparse
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
@@ -298,7 +299,7 @@ def test_get_job_groups_yields_job_groups_in_page():
 
 # TODO should be covered by doctest already but I can not get coverage analysis to work with doctests in py.test
 def test_filename_to_url_encodes_valid_url():
-    url_object = urlparse(openqa_review.filename_to_url('https%3A::openqa.opensuse.org:group_overview:25'))
+    url_object = urlparse(filename_to_url('https%3A::openqa.opensuse.org:group_overview:25'))
     assert url_object.scheme == 'https'
     assert url_object.netloc == 'openqa.opensuse.org'
 
