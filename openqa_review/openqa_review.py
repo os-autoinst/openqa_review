@@ -258,31 +258,42 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     return interesting_states
 
 
-def absolute_url(root, v):
-    return urljoin(root, str(v['href']))
-
-
 def bugref_str(v, subject=None):
     return '[%s](%s%s)' % (v.get('bugref', 'NONE'), v.get('bugref_href', 'NONE'), " \"%s\"" % subject if subject else "")
 
 
-def new_issue_report(k, v, verbose_test, root_url):
-    def url(v, root=root_url):
-        return urljoin(root, str(v['href']))
+def absolute_url(root, v):
+    return urljoin(root, str(v['href']))
 
-    report = {1: lambda k, v: '%s' % k,
-              2: lambda k, v: '***%s***: %s' % (k, url(v)),
-              3: lambda k, v: '***%s***: %s, failed modules:\n%s\n' % (k, url(v),
-                                                                       '\n'.join(' * %s: %s' % (i['name'], url(i)) for i in v['failedmodules'])),
-              # separate 'reference URL' with space to prevent openQA comment parser to pickup ')' as part of URL
-              4: lambda k, v: '***%s***: %s (reference %s ), failed modules:\n%s\n' % (
-                  k, url(v), url(v['prev']) if 'prev' in v.keys() else 'NONE',
-                  '\n'.join(' * %s: %s %s' % (
-                      i['name'], url(i), '(needles: %s)' % ', '.join(i['needles']) if i['needles'] else '')
-                      for i in v['failedmodules'])),
-              }
-    verbose_test = min(verbose_test, max(report.keys()))
-    return report[verbose_test](k, v)
+
+class Report(object):
+
+    """Report generator with verbose_test parameter."""
+
+    def __init__(self, root_url, verbose_test):
+        """Construct report object with options."""
+        self.root_url = root_url
+        self.verbose_test = verbose_test
+
+    def url(self, v):
+        """Absolute url e.g. for test references."""
+        return absolute_url(self.root_url, v)
+
+    def new_issue(self, k, v):
+        """Yield a report entry for one new issue based on verbosity."""
+        report = {1: lambda k, v: '%s' % k,
+                  2: lambda k, v: '***%s***: %s' % (k, self.url(v)),
+                  3: lambda k, v: '***%s***: %s, failed modules:\n%s\n' % (k, self.url(v),
+                                                                           '\n'.join(' * %s: %s' % (i['name'], self.url(i)) for i in v['failedmodules'])),
+                  # separate 'reference URL' with space to prevent openQA comment parser to pickup ')' as part of URL
+                  4: lambda k, v: '***%s***: %s (reference %s ), failed modules:\n%s\n' % (
+                      k, self.url(v), self.url(v['prev']) if 'prev' in v.keys() else 'NONE',
+                      '\n'.join(' * %s: %s %s' % (
+                          i['name'], self.url(i), '(needles: %s)' % ', '.join(i['needles']) if i['needles'] else '')
+                          for i in v['failedmodules'])),
+                  }
+        verbose_test = min(self.verbose_test, max(report.keys()))
+        return report[verbose_test](k, v)
 
 
 def query_issue(args, bugref, bugref_href):
@@ -416,7 +427,8 @@ def generate_arch_report(arch, results, root_url, args):
         issues['new']['todo'] = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
         issues['existing']['todo'] = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
     else:
-        issues['new']['todo'] = '\n'.join('* %s' % new_issue_report(k, v, verbose_test, root_url) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+        report = Report(root_url, verbose_test)
+        issues['new']['todo'] = '\n'.join('* %s' % report.new_issue(k, v) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
         issues['existing']['todo'] = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
 
     if args.include_softfails:
