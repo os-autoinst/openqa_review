@@ -8,13 +8,16 @@ For more details read the documentation within `openqa_review/openqa_review.py`.
 
 * Install requirements and package, e.g.
 
-    sudo pip install -r requirements.txt
-    sudo pip install .
+```
+sudo pip install -r requirements.txt
+sudo pip install .
+```
 
 * Call `openqa-review` from PATH, e.g. with `--help`
 
-    openqa-review --help
-
+```
+openqa-review --help
+```
 
 ## Communication
 
