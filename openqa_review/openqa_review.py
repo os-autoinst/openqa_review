@@ -174,7 +174,7 @@ class Browser(object):
                 raise DownloadError(msg)
             content = r.json() if as_json else r.content.decode('utf8')
         if self.save:
-            log.info("Saving content instead from URL %s from filename %s" % (url, filename))
+            log.info("Saving content from URL %s to filename %s" % (url, filename))
             raw = json.dumps(content) if as_json else content
             open(os.path.join(self.save_dir, filename), 'w').write(raw)
         return content
