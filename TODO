@@ -1,3 +1,8 @@
+
+ - Review https://gitlab.suse.de/security/tools/tree/master and
+   especially https://gitlab.suse.de/security/tools/blob/master/bzmass for
+   mass filing bugs
+
  - Add mode to count bug occurences (e.g. parse previous)
  - Using labels on openQA read bug/issue subject line and put into report
 
