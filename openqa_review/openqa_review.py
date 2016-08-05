@@ -124,6 +124,11 @@ log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
 
 
+class DownloadError(Exception):
+    """content could not be downloaded as requested."""
+    pass
+
+
 class Browser(object):
 
     """download relative or absolute url and return soup."""
@@ -163,6 +168,10 @@ class Browser(object):
             # Also, requests does not yet have a proper certificate storage, see
             # http://www.python-requests.org/en/latest/user/advanced/#ca-certificates
             r = requests.get(absolute_url, verify=False)
+            if r.status_code != 200:
+                msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
+                log.info(msg)
+                raise DownloadError(msg)
             content = r.json() if as_json else r.content.decode('utf8')
         if self.save:
             log.info("Saving content instead from URL %s from filename %s" % (url, filename))
@@ -336,7 +345,10 @@ def all_failures_one_bug(result_list, args, query_issue_status=False):
     line = '* %s -> %s' % (', '.join([i['name'] for i in result_list]), bugref_str(result_list[-1]))
     if query_issue_status:
         b = Browser(args, '')
-        issue_json = b.get_json(result_list[0]['bugref_href'] + '.json')['issue']
+        try:
+            issue_json = b.get_json(result_list[0]['bugref_href'] + '.json')['issue']
+        except DownloadError as e:  # pragma: no cover
+            return line + ' ' + str(e) + '\n'
         issue_status = issue_json['status']['name']
         issue_assignee = issue_json['assigned_to']['name'] if 'assigned_to' in issue_json else 'None'
         line += " (Ticket status: {}, assignee: {})".format(issue_status, issue_assignee)
