@@ -382,6 +382,8 @@ def common_issues(issues, show_empty=True):
 
 
 def simple_joined_issues(results_by_bugref, state):
+    if 'TODO' not in results_by_bugref:
+        return ''
     issues = [i['name'] for i in results_by_bugref['TODO'] if i['state'] == state]
     if not issues:
         return ''
@@ -397,6 +399,21 @@ def issue_state(result_list):
     return 'existing' if [i for i in result_list if i['state'] == 'STILL_FAILING'] else 'new'
 
 
+def get_results_by_bugref(results, args):
+    todo_ignore_tags = ['STILL_FAILING', 'NEW_ISSUE']
+    if args.include_softfails:
+        todo_ignore_tags += ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE']
+    results_by_bugref = defaultdict(list)
+    for k, v in iteritems(results):
+        if not re.match('(' + '|'.join(todo_ignore_tags) + ')', v['state']):
+            continue
+        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'TODO'
+        v.update({'name': k})
+        results_by_bugref[new_key].append(v)
+
+    return results_by_bugref
+
+
 def generate_arch_report(arch, results, root_url, args):
     verbose_test = args.verbose_test
     show_empty = args.show_empty
@@ -410,13 +427,7 @@ def generate_arch_report(arch, results, root_url, args):
     else:
         status_badge = status_badge_str['RED']
 
-    results_by_bugref = defaultdict(list)
-    for k, v in iteritems(results):
-        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'TODO'
-        v.update({'name': k})
-        results_by_bugref[new_key].append(v)
-
-    results_by_bugref = SortedDict(results_by_bugref)
+    results_by_bugref = SortedDict(get_results_by_bugref(results, args))
     issues = defaultdict(lambda: defaultdict(str))
     for bugref, result_list in iteritems(results_by_bugref):
         # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
