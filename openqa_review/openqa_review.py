@@ -368,7 +368,10 @@ def query_issue(args, bugref, bugref_href):
         issue['subject'] = issue_json['subject']
     # bugref.startswith('bsc#') or bugref.startswith('boo#')
     else:
-        b = Browser(args, config['product_issues']['base_url'] % config['product_issues'])
+        b = Browser(args, config.get('product_issues', 'base_url') % {
+            "username": config.get('product_issues', 'username'),
+            "password": config.get('product_issues', 'password'),
+        })
         bugid = int(bugref.replace('bsc#', '').replace('boo#', ''))
         issue_json = b.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
         issue['status'] = issue_json['status']
