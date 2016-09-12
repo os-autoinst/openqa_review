@@ -445,7 +445,7 @@ def get_results_by_bugref(results, args):
     for k, v in iteritems(results):
         if not re.match('(' + '|'.join(todo_ignore_tags) + ')', v['state']):
             continue
-        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'TODO'
+        new_key = v['bugref'] if ((args.bugrefs or args.query_issue_status) and 'bugref' in v) else 'TODO'
         v.update({'name': k})
         results_by_bugref[new_key].append(v)
 
@@ -478,7 +478,7 @@ def generate_arch_report(arch, results, root_url, args):
         issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list, args, query_issue_status)
 
     # left do handle are the issues marked with 'TODO'
-    if args.bugrefs:
+    if args.bugrefs or args.query_issue_status:
         issues['new']['todo'] = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
         issues['existing']['todo'] = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
     else:
@@ -701,9 +701,9 @@ def parse_args():
                               help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
                               See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
                               for details about bugrefs in openQA""")
-    parser.add_argument('--query-issue-status', action='store_true',
-                        help="""Query issue trackers for the issues found and report on their status and assignee. Needs option "-r/--bugrefs"
-                        and configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
+    parser.add_argument('-R', '--query-issue-status', action='store_true',
+                        help="""Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs" and
+                        needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
     parser.add_argument('--query-issue-status-help', action='store_true',
                         help="""Shows help how to setup '--query-issue-status' configuration file.""")
     parser.add_argument('-a', '--arch',
