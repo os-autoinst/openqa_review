@@ -18,6 +18,7 @@ import sys
 import tempfile
 from argparse import Namespace
 from urllib.parse import urljoin, urlparse
+from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
 
@@ -333,11 +334,11 @@ def test_bugrefs_are_used_for_triaging():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.show_empty = False
     args.include_softfails = False
-    openqa_review.config = {"product_issues": {
-        "base_url": "https://%(username)s:%(password)s@apibugzilla.suse.com",
-        "username": "user",
-        "password": "pass"
-    }}
+    openqa_review.config = ConfigParser()
+    openqa_review.config.add_section('product_issues')
+    openqa_review.config.set('product_issues', 'base_url', 'https://%(username)s:%(password)s@apibugzilla.suse.com')
+    openqa_review.config.set('product_issues', 'username', 'user')
+    openqa_review.config.set('product_issues', 'password', 'pass')
     report = openqa_review.generate_report(args)
     # report should feature bug references
     assert 'bsc#' in report
