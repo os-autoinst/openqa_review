@@ -167,10 +167,7 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(self.root_url, str(url))
             # TODO this is very slow at times but reading the same url in webbrowser does not take as long
-            # for now we ignore invalid certificates. It is for reading anyway.
-            # Also, requests does not yet have a proper certificate storage, see
-            # http://www.python-requests.org/en/latest/user/advanced/#ca-certificates
-            r = requests.get(absolute_url, verify=False)
+            r = requests.get(absolute_url)
             if r.status_code != 200:
                 msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
                 log.info(msg)
