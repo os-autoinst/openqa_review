@@ -90,6 +90,7 @@ Alternatives could have been and still are for further extensions or reworks:
 
 # Python 2 and 3: easiest option
 # see http://python-future.org/compatible_idioms.html
+from __future__ import absolute_import
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
 install_aliases()
 from future.utils import iteritems
