@@ -102,6 +102,7 @@ import os.path
 import re
 import sys
 from collections import defaultdict
+from configparser import ConfigParser  # isort:skip can not make isort happy here
 from string import Template
 from urllib.parse import quote, unquote, urljoin
 
@@ -122,6 +123,8 @@ except ImportError:  # pragma: no cover
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
+
+config = None
 
 
 class DownloadError(Exception):
@@ -178,6 +181,20 @@ class Browser(object):
             raw = json.dumps(content) if as_json else content
             open(os.path.join(self.save_dir, filename), 'w').write(raw)
         return content
+
+
+CONFIG_PATH = os.path.expanduser('~') + '/.openqa_reviewrc'
+CONFIG_USAGE = """
+You are missing the mandatory configuration file with the proper format.
+Example:
+[product_issues]
+system = bugzilla
+# if username and password are not defined here, they will be stored in your
+# local keyring if found
+#username = user
+#password = secret
+base_url = https://%(username)s:%(password)s@apibugzilla.suse.com
+"""
 
 
 openqa_review_report_product_template = Template("""
@@ -318,8 +335,8 @@ def absolute_url(root, v):
     return urljoin(root, str(v['href']))
 
 
-def bugref_str(v):
-    return '[%s](%s)' % (v.get('bugref', 'NONE'), v.get('bugref_href', 'NONE'))
+def bugref_str(v, subject=None):
+    return '[%s](%s%s)' % (v.get('bugref', 'NONE'), v.get('bugref_href', 'NONE'), " \"%s\"" % subject if subject else "")
 
 
 def new_issue_report(k, v, verbose_test, root_url):
@@ -341,17 +358,38 @@ def new_issue_report(k, v, verbose_test, root_url):
     return report[verbose_test](k, v)
 
 
-def all_failures_one_bug(result_list, args, query_issue_status=False):
-    line = '* %s -> %s' % (', '.join([i['name'] for i in result_list]), bugref_str(result_list[-1]))
-    if query_issue_status:
+def query_issue(args, bugref, bugref_href):
+    issue = {}
+    if bugref.startswith('poo#'):
         b = Browser(args, '')
+        issue_json = b.get_json(bugref_href + '.json')['issue']
+        issue['status'] = issue_json['status']['name']
+        issue['assignee'] = issue_json['assigned_to']['name'] if 'assigned_to' in issue_json else 'None'
+        issue['subject'] = issue_json['subject']
+    # bugref.startswith('bsc#') or bugref.startswith('boo#')
+    else:
+        b = Browser(args, config['product_issues']['base_url'] % config['product_issues'])
+        bugid = int(bugref.replace('bsc#', '').replace('boo#', ''))
+        issue_json = b.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
+        issue['status'] = issue_json['status']
+        if issue_json.get('resolution'):
+            issue['status'] += " (%s)" % issue_json['resolution']
+        issue['assignee'] = issue_json['assigned_to'] if 'assigned_to' in issue_json else 'None'
+        issue['subject'] = issue_json['summary']
+    return issue
+
+
+def all_failures_one_bug(result_list, args, query_issue_status=False):
+    line = '* %s -> ' % ', '.join([i['name'] for i in result_list])
+    bug = result_list[0]
+    if query_issue_status:
         try:
-            issue_json = b.get_json(result_list[0]['bugref_href'] + '.json')['issue']
+            issue = query_issue(args, bugref=bug['bugref'], bugref_href=bug['bugref_href'])
+            line += bugref_str(result_list[-1], issue['subject']) + " (Ticket status: %(status)s, assignee: %(assignee)s)" % issue
         except DownloadError as e:  # pragma: no cover
-            return line + ' ' + str(e) + '\n'
-        issue_status = issue_json['status']['name']
-        issue_assignee = issue_json['assigned_to']['name'] if 'assigned_to' in issue_json else 'None'
-        line += " (Ticket status: {}, assignee: {})".format(issue_status, issue_assignee)
+            return line + bugref_str(result_list[-1]) + ' ' + str(e) + '\n'
+    else:
+        line += bugref_str(result_list[-1])
     return line + '\n'
 
 
@@ -433,10 +471,10 @@ def generate_arch_report(arch, results, root_url, args):
         # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
         # scenarios, ...
         # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
-        if not re.match('(poo|bsc)#', bugref):
+        if not re.match('(poo|bsc|boo)#', bugref):
             continue
         # if any result was still failing the issue is regarded as existing
-        query_issue_status = args.query_issue_status and re.match('poo#', bugref)
+        query_issue_status = args.query_issue_status and re.match('(poo|bsc|boo)#', bugref)
         issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list, args, query_issue_status)
 
     # left do handle are the issues marked with 'TODO'
@@ -593,6 +631,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
         log.info("%s missing completely from current run: %s" %
                  (pluralize(len(missing_archs), "architecture is", "architectures are"), ', '.join(missing_archs)))
     arch_state_results = SortedDict({arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs})
+
     now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
     missing_archs_str = ' * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
     openqa_review_report_product = openqa_review_report_product_template.substitute({
@@ -663,7 +702,10 @@ def parse_args():
                               See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
                               for details about bugrefs in openQA""")
     parser.add_argument('--query-issue-status', action='store_true',
-                        help='Query issue trackers for the issues found and report on their status and assignee. Needs option "-r/--bugrefs"')
+                        help="""Query issue trackers for the issues found and report on their status and assignee. Needs option "-r/--bugrefs"
+                        and configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
+    parser.add_argument('--query-issue-status-help', action='store_true',
+                        help="""Shows help how to setup '--query-issue-status' configuration file.""")
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
     parser.add_argument('--running-threshold', default=0,
@@ -678,7 +720,12 @@ def parse_args():
                         they should already carry bug references by other
                         means anyway.""")
     add_load_save_args(parser)
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.query_issue_status_help:
+        print(CONFIG_USAGE)
+        print("Expected file path: {}".format(CONFIG_PATH))
+        sys.exit(0)
+    return args
 
 
 def get_job_groups(browser, root_url, args):
@@ -747,8 +794,20 @@ def generate_report(args):
     return report
 
 
+def load_config():
+    global config
+    config = ConfigParser()
+    config_entries = config.read(CONFIG_PATH)
+    if not config_entries:  # pragma: no cover
+        print("Need configuration file '{}' for issue retrieval credentials".format(CONFIG_PATH))
+        print(CONFIG_USAGE)
+        sys.exit(1)
+
+
 def main():  # pragma: no cover, only interactive
     args = parse_args()
+    if args.query_issue_status:
+        load_config()
     report = generate_report(args)
     print(report)
 
