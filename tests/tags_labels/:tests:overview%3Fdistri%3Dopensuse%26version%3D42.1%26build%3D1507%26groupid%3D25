@@ -3243,7 +3243,7 @@
 
              <span id="bug-384710">
         <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=931571">
-            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#931571"></i>
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: boo#931571"></i>
         </a>
     </span>
 
@@ -3269,7 +3269,7 @@
 
              <span id="bug-384324">
         <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=931571">
-            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#931571"></i>
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: boo#931571"></i>
         </a>
     </span>
 

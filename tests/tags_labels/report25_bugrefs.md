@@ -11,7 +11,7 @@
 
 **New Product bugs:**
 
-* toolchain_zypper -> [bsc#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571)
+* toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571)
 
 
 **Existing Product bugs:**

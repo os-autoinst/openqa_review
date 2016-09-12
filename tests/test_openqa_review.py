@@ -45,6 +45,7 @@ def args_factory():
     args.bugrefs = False
     args.include_softfails = True
     args.query_issue_status = False
+    args.query_issue_status_help = True
     return args
 
 
@@ -67,6 +68,21 @@ def TemporaryDirectory():  # noqa
 def test_help():
     sys.argv += '--help'.split()
     with pytest.raises(SystemExit):
+        openqa_review.main()
+
+
+def test_missing_config():
+    openqa_review.CONFIG_PATH = "/dev/null/.missing_file"
+    sys.argv[1:] = ['--query-issue-status']
+    with pytest.raises(SystemExit) as excinfo:
+        openqa_review.main()
+    assert excinfo.value.code == 1
+
+
+def test_query_issue_status_help_shows_config_help():
+    sys.argv[1:] = ['--query-issue-status-help']
+    with pytest.raises(SystemExit):
+        # we are not actually testing the content of help, just that it does not fail
         openqa_review.main()
 
 
@@ -317,6 +333,11 @@ def test_bugrefs_are_used_for_triaging():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.show_empty = False
     args.include_softfails = False
+    openqa_review.config = {"product_issues": {
+        "base_url": "https://%(username)s:%(password)s@apibugzilla.suse.com",
+        "username": "user",
+        "password": "pass"
+    }}
     report = openqa_review.generate_report(args)
     # report should feature bug references
     assert 'bsc#' in report
