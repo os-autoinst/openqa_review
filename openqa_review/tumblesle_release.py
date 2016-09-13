@@ -223,7 +223,7 @@ class TumblesleRelease(object):
         #     return skip_release (cause: test coverage regression) -> notify stats, e.g. which scenario missing
 
     def sync(self, build_dest):
-        """sync repo/iso/hdd to pre_release on tumblesle archive."""
+        """Sync repo/iso/hdd to pre_release on tumblesle archive."""
         rsync_opts = ['-aHP']
         # rsync supports a dry-run option so we can also select a dry-run there. This only works if the directory structure exists
         if self.args.dry_run_rsync:

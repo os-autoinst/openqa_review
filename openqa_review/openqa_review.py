@@ -176,7 +176,7 @@ class NotEnoughBuildsError(Exception):
 
 
 def parse_summary(details):
-    """parse and return build summary as dict."""
+    """Parse and return build summary as dict."""
     return {i.previous.strip().rstrip(':').lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")}
 
 change_state = {
@@ -195,7 +195,7 @@ interesting_states_names = [i for i in set(change_state.values()) if i != 'STABL
 
 
 def status(entry):
-    """return test status from entry, e.g. 'result_passed'."""
+    """Return test status from entry, e.g. 'result_passed'."""
     # TODO to also get URLs to tests:
     #  test_urls = [i.find('a').get('href') for i in entry.find_all(class_='failedmodule')]
     # returns something like '/tests/167330/modules/welcome/steps/8'
