@@ -580,7 +580,7 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
     arch_state_results = SortedDict({arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs})
 
     now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
-    missing_archs_str = ' * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
+    missing_archs_str = '\n * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
     openqa_review_report_product = openqa_review_report_product_template.substitute({
         'now': now_str,
         'build': build,

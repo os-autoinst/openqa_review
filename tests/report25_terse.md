@@ -5,6 +5,7 @@
 **Build:** 0313
 
 **Common issues:**
+
  * **Missing architectures**: i586
 <hr>
 
