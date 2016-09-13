@@ -78,11 +78,3 @@
   - http://marcobonzanini.com/2015/02/25/fuzzy-string-matching-in-python/
     - http://stackoverflow.com/questions/2923420/what-is-a-simple-fuzzy-string-matching-algorithm-in-python
 
-
- - package for openSUSE distributions
-  - make open soure
-  - use osc to create OBS project
-  - build spec file with "python setup.py bdist_rpm --force-arch x86_64"
-  - build with "osc build"
-  - upload
-  - add SR
