@@ -601,13 +601,11 @@ def parse_args():
                         help='Additional plain text output of arch-specific state results, e.g. all NEW_ISSUE; on for "verbose" mode')
     parser.add_argument('--host', default='https://openqa.opensuse.org',
                         help='openQA host to access')
-    parser.add_argument('--base-url', default='/',
-                        help='openQA base url')
     parser.add_argument('-j', '--job-groups',
                         help="""Only handle selected job group(s), comma separated, e.g. \'openSUSE Tumbleweed Gnome\'.
                         A regex also works, e.g. \'openSUSE Tumbleweed\' or \'(Gnome|KDE)\'.""")
     parser.add_argument('-J', '--job-group-urls',
-                        help="""Only handle selected job group(s) specified by URL, comma separated.
+                        help="""Only handle selected job group(s) specified by URL, comma separated. Overwrites "--host" argument.
                         Skips parsing on main page and can actually save some seconds.""")
     builds = parser.add_mutually_exclusive_group()
     builds.add_argument('-b', '--builds',
@@ -689,7 +687,10 @@ def generate_report(args):
     log.debug("args: %s" % args)
     args.output_state_results = True if args.verbose > 1 else args.output_state_results
 
-    root_url = urljoin(args.host, args.base_url)
+    if args.job_group_urls:
+        root_url = urljoin('/'.join(args.job_group_urls.split("/")[0:3]), '/')
+    else:
+        root_url = urljoin(args.host, '/')
 
     browser = Browser(args, root_url)
     job_groups = get_job_groups(browser, root_url, args)
