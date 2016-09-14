@@ -53,6 +53,7 @@ class Browser(object):
         self.load_dir = args.load_dir if hasattr(args, 'load_dir') else '.'
         self.save_dir = args.save_dir if hasattr(args, 'save_dir') else '.'
         self.root_url = root_url
+        self.cache = {}
 
     def get_soup(self, url):
         """Return content from URL as 'BeautifulSoup' output."""
@@ -69,6 +70,9 @@ class Browser(object):
         If object parameter 'load' was specified, the URL content is loaded
         from a file.
         """
+        if url in self.cache:
+            log.info("Loading content instead of URL %s from in-memory cache" % url)
+            return json.loads(self.cache[url]) if as_json else self.cache[url]
         filename = url_to_filename(url)
         if self.load:
             log.info("Loading content instead of URL %s from filename %s" % (url, filename))
@@ -82,10 +86,11 @@ class Browser(object):
                 log.info(msg)
                 raise DownloadError(msg)
             content = r.json() if as_json else r.content.decode('utf8')
+        raw = json.dumps(content) if as_json else content
         if self.save:
             log.info("Saving content instead from URL %s from filename %s" % (url, filename))
-            raw = json.dumps(content) if as_json else content
             open(os.path.join(self.save_dir, filename), 'w').write(raw)
+        self.cache[url] = raw
         return content
 
 
