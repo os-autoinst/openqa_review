@@ -3281,6 +3281,41 @@
                                 <td>-</td>
                     </tr>
                     <tr>
+                        <td class="name">toolchain_zypper@bar</td>
+
+
+                                <td>-</td>
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_toolchain_zypper@bar">
+
+             <span id="res-3843245">
+                 <a href="/tests/3843245">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/3843245/modules/install/steps/16">
+            install
+        </a>
+    </span>
+
+             <span id="bug-3843245">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=9315715">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: boo#9315715"></i>
+        </a>
+    </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
                         <td class="name">toolchain_zypper@64bit-smp</td>
 
                                 <td>-</td>

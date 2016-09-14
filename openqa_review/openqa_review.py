@@ -260,10 +260,6 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     return interesting_states
 
 
-def bugref_str(v, subject=None):
-    return '[%s](%s%s)' % (v.get('bugref', 'NONE'), v.get('bugref_href', 'NONE'), " \"%s\"" % subject if subject else "")
-
-
 def absolute_url(root, v):
     return urljoin(root, str(v['href']))
 
@@ -298,42 +294,16 @@ class Report(object):
         return report[verbose_test](k, v)
 
 
-def query_issue(args, bugref, bugref_href):
-    issue = {}
-    if bugref.startswith('poo#'):
-        b = Browser(args, '')
-        issue_json = b.get_json(bugref_href + '.json')['issue']
-        issue['status'] = issue_json['status']['name']
-        issue['assignee'] = issue_json['assigned_to']['name'] if 'assigned_to' in issue_json else 'None'
-        issue['subject'] = issue_json['subject']
-    # bugref.startswith('bsc#') or bugref.startswith('boo#')
-    else:
-        b = Browser(args, config.get('product_issues', 'base_url') % {
-            "username": config.get('product_issues', 'username'),
-            "password": config.get('product_issues', 'password'),
-        })
-        bugid = int(re.search('(?<=(bsc|boo)#)([0-9]+)', bugref).group())
-        issue_json = b.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
-        issue['status'] = issue_json['status']
-        if issue_json.get('resolution'):
-            issue['status'] += " (%s)" % issue_json['resolution']
-        issue['assignee'] = issue_json['assigned_to'] if 'assigned_to' in issue_json else 'None'
-        issue['subject'] = issue_json['summary']
-    return issue
+def progress_browser_factory(args):
+    return Browser(args, '')
 
 
-def all_failures_one_bug(result_list, args, query_issue_status=False):
-    line = '* %s -> ' % ', '.join([i['name'] for i in result_list])
-    bug = result_list[0]
-    if query_issue_status:
-        try:
-            issue = query_issue(args, bugref=bug['bugref'], bugref_href=bug['bugref_href'])
-            line += bugref_str(result_list[-1], issue['subject']) + " (Ticket status: %(status)s, assignee: %(assignee)s)" % issue
-        except DownloadError as e:  # pragma: no cover
-            return line + bugref_str(result_list[-1]) + ' ' + str(e) + '\n'
-    else:
-        line += bugref_str(result_list[-1])
-    return line + '\n'
+def bugzilla_browser_factory(args):
+    b = Browser(args, config.get('product_issues', 'base_url') % {
+        "username": config.get('product_issues', 'username'),
+        "password": config.get('product_issues', 'password'),
+    })
+    return b
 
 
 def issue_listing(header, issues, show_empty=True):
@@ -405,61 +375,6 @@ def set_status_badge(states):
     else:
         status_badge = status_badge_str['RED']
     return status_badge
-
-
-def generate_arch_report(arch, results, root_url, args):
-    verbose_test = args.verbose_test
-    show_empty = args.show_empty
-    status_badge = set_status_badge([i['state'] for i in results.values()])
-
-    results_by_bugref = SortedDict(get_results_by_bugref(results, args))
-    issues = defaultdict(lambda: defaultdict(str))
-    for bugref, result_list in iteritems(results_by_bugref):
-        # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
-        # scenarios, ...
-        # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
-        if not re.match('(poo|bsc|boo)#', bugref):
-            continue
-        # if any result was still failing the issue is regarded as existing
-        query_issue_status = args.query_issue_status and re.match('(poo|bsc|boo)#', bugref)
-        issues[issue_state(result_list)][issue_type(bugref)] += all_failures_one_bug(result_list, args, query_issue_status)
-
-    # left do handle are the issues marked with 'TODO'
-    if args.bugrefs or args.query_issue_status:
-        issues['new']['todo'] = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
-        issues['existing']['todo'] = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
-    else:
-        report = Report(root_url, verbose_test)
-        issues['new']['todo'] = '\n'.join('* %s' % report.new_issue(k, v) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
-        issues['existing']['todo'] = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
-
-    if args.include_softfails:
-        new_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
-        if new_soft_fails_str:
-            issues['new']['product'] += '\n* soft fails: ' + new_soft_fails_str + '\n'
-        existing_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_SOFT_FAILING')
-        if existing_soft_fails_str:
-            issues['existing']['product'] += '\n* soft fails: ' + existing_soft_fails_str + '\n'
-
-    todo_issues = todo_review_template.substitute({
-        'new_issues': issue_listing('***new issues***', issues['new']['todo'], show_empty),
-        'existing_issues': issue_listing('***existing issues***', issues['existing']['todo'], show_empty),
-    })
-    return openqa_review_report_arch_template.substitute({
-        'arch': arch,
-        'status_badge': status_badge,
-        # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
-        # For now we can just not easily decide unless we use the 'bugrefs' mode
-        'new_openqa_issues': issue_listing('**New openQA-issues:**', issues['new']['openqa'], show_empty),
-        'existing_openqa_issues': issue_listing('**Existing openQA-issues:**', issues['existing']['openqa'], show_empty),
-        'new_product_issues': issue_listing('**New Product bugs:**', issues['new']['product'], show_empty),
-        'existing_product_issues': issue_listing('**Existing Product bugs:**', issues['existing']['product'], show_empty),
-        'todo_issues': todo_issues if (issues['new']['todo'] or issues['existing']['todo']) else '',
-    })
-
-
-def generate_arch_reports(arch_state_results, root_url, args):
-    return '<hr>'.join(generate_arch_report(k, v, root_url, args) for k, v in iteritems(arch_state_results))
 
 
 def build_id(build_tag):
@@ -536,6 +451,133 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     return current_url, previous_url
 
 
+class Issue(object):
+
+    """Issue with extra status info from issue tracker."""
+
+    def __init__(self, bugref, bugref_href, query_issue_status=False, progress_browser=None, bugzilla_browser=None):
+        """Construct an issue object with options."""
+        self.bugref = bugref
+        self.bugref_href = bugref_href
+        self.msg = None
+        self.json = None
+        self.subject = None
+        self.status = None
+        self.assignee = None
+        self.resolution = None
+        if query_issue_status and progress_browser and bugzilla_browser:
+            try:
+                if bugref.startswith('poo#'):
+                    self.json = progress_browser.get_json(bugref_href + '.json')['issue']
+                    self.status = self.json['status']['name']
+                    self.assignee = self.json['assigned_to']['name'] if 'assigned_to' in self.json else 'None'
+                    self.subject = self.json['subject']
+                # bugref.startswith('bsc#') or bugref.startswith('boo#')
+                else:
+                    bugid = int(re.search('(?<=(bsc|boo)#)([0-9]+)', bugref).group())
+                    self.json = bugzilla_browser.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
+                    self.status = self.json['status']
+                    if self.json.get('resolution'):
+                        self.resolution = self.json['resolution']
+                    self.assignee = self.json['assigned_to'] if 'assigned_to' in self.json else 'None'
+                    self.subject = self.json['summary']
+            except DownloadError as e:  # pragma: no cover
+                self.msg = str(e)
+            except (TypeError, ValueError):
+                self.msg = "Ticket not found"
+
+    def __str__(self):
+        """Format issue using markdown."""
+        if self.msg:
+            msg = self.msg
+        elif self.status:
+            status = self.status
+            if self.resolution:
+                status += ' (%s)' % self.resolution
+            msg = 'Ticket status: %s, assignee: %s' % (status, self.assignee)
+        else:
+            msg = None
+        return '[%s](%s%s)%s' % (
+            self.bugref,
+            self.bugref_href,
+            ' "%s"' % self.subject if self.subject else '',
+            ' (%s)' % msg if msg else '',
+        )
+
+
+class ArchReport(object):
+
+    """Report for a single architecture."""
+
+    def __init__(self, args, root_url):
+        """Construct an archreport object with options."""
+        self.args = args
+        self.root_url = root_url
+        self.progress_browser = progress_browser_factory(args) if args.query_issue_status else None
+        self.bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
+
+    def all_failures_one_bug(self, result_list, query_issue_status=False):
+        """Return single report line of markdown."""
+        bug = result_list[0]
+        issue = Issue(bug['bugref'], bug['bugref_href'], query_issue_status, self.progress_browser, self.bugzilla_browser)
+        return "* %s -> %s\n" % (', '.join([i['name'] for i in result_list]), issue)
+
+    def generate(self, arch_state_results):
+        """Return report for all architectures."""
+        return '<hr>'.join(self.generate_arch_report(k, v) for k, v in iteritems(arch_state_results))
+
+    def generate_arch_report(self, arch, results):
+        """Return report for single architecture."""
+        verbose_test = self.args.verbose_test
+        show_empty = self.args.show_empty
+        status_badge = set_status_badge([i['state'] for i in results.values()])
+
+        results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
+        issues = defaultdict(lambda: defaultdict(str))
+        for bugref, result_list in iteritems(results_by_bugref):
+            # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
+            # scenarios, ...
+            # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
+            if not re.match('(poo|bsc|boo)#', bugref):
+                continue
+            # if any result was still failing the issue is regarded as existing
+            query_issue_status = self.args.query_issue_status and re.match('(poo|bsc|boo)#', bugref)
+            issues[issue_state(result_list)][issue_type(bugref)] += self.all_failures_one_bug(result_list, query_issue_status)
+
+        # left do handle are the issues marked with 'TODO'
+        if self.args.bugrefs or self.args.query_issue_status:
+            issues['new']['todo'] = simple_joined_issues(results_by_bugref, 'NEW_ISSUE')
+            issues['existing']['todo'] = simple_joined_issues(results_by_bugref, 'STILL_FAILING')
+        else:
+            report = Report(self.root_url, verbose_test)
+            issues['new']['todo'] = '\n'.join('* %s' % report.new_issue(k, v) for k, v in iteritems(results) if v['state'] == 'NEW_ISSUE')
+            issues['existing']['todo'] = '* ' + ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_FAILING')
+
+        if self.args.include_softfails:
+            new_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'NEW_SOFT_ISSUE')
+            if new_soft_fails_str:
+                issues['new']['product'] += '\n* soft fails: ' + new_soft_fails_str + '\n'
+            existing_soft_fails_str = ', '.join(k for k, v in iteritems(results) if v['state'] == 'STILL_SOFT_FAILING')
+            if existing_soft_fails_str:
+                issues['existing']['product'] += '\n* soft fails: ' + existing_soft_fails_str + '\n'
+
+        todo_issues = todo_review_template.substitute({
+            'new_issues': issue_listing('***new issues***', issues['new']['todo'], show_empty),
+            'existing_issues': issue_listing('***existing issues***', issues['existing']['todo'], show_empty),
+        })
+        return openqa_review_report_arch_template.substitute({
+            'arch': arch,
+            'status_badge': status_badge,
+            # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
+            # For now we can just not easily decide unless we use the 'bugrefs' mode
+            'new_openqa_issues': issue_listing('**New openQA-issues:**', issues['new']['openqa'], show_empty),
+            'existing_openqa_issues': issue_listing('**Existing openQA-issues:**', issues['existing']['openqa'], show_empty),
+            'new_product_issues': issue_listing('**New Product bugs:**', issues['new']['product'], show_empty),
+            'existing_product_issues': issue_listing('**Existing Product bugs:**', issues['existing']['product'], show_empty),
+            'todo_issues': todo_issues if (issues['new']['todo'] or issues['existing']['todo']) else '',
+        })
+
+
 def generate_product_report(browser, job_group_url, root_url, args=None):
     """Read overview page of one job group and generate a report for the product.
 
@@ -582,11 +624,12 @@ def generate_product_report(browser, job_group_url, root_url, args=None):
 
     now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
     missing_archs_str = '\n * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
+    arch_report = ArchReport(args, root_url)
     openqa_review_report_product = openqa_review_report_product_template.substitute({
         'now': now_str,
         'build': build,
         'common_issues': common_issues(missing_archs_str, args.show_empty),
-        'arch_report': generate_arch_reports(arch_state_results, root_url, args),
+        'arch_report': arch_report.generate(arch_state_results),
     })
     return openqa_review_report_product
 
