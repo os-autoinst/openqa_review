@@ -6,3 +6,4 @@ dist/
 *.pyc
 version.py
 coverage_html/
+.*.swp
