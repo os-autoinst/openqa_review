@@ -220,8 +220,9 @@ def get_test_bugref(entry):
     bugref = entry.find(id=re.compile('^bug-'))
     if not bugref:
         return {}
-    return {'bugref': re.sub('Bug\(s\) referenced: ', '', bugref.i['title']),
-            'bugref_href': bugref.a['href']
+    # work around openQA providing incorrect URLs (e.g. following whitespace)
+    return {'bugref': re.search('\S+#([0-9]+)', bugref.i['title']).group(),
+            'bugref_href': bugref.a['href'].strip()
             }
 
 
@@ -311,7 +312,7 @@ def query_issue(args, bugref, bugref_href):
             "username": config.get('product_issues', 'username'),
             "password": config.get('product_issues', 'password'),
         })
-        bugid = int(bugref.replace('bsc#', '').replace('boo#', ''))
+        bugid = int(re.search('(?<=(bsc|boo)#)([0-9]+)', bugref).group())
         issue_json = b.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
         issue['status'] = issue_json['status']
         if issue_json.get('resolution'):
