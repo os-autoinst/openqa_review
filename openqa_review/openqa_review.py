@@ -181,13 +181,13 @@ def parse_summary(details):
 
 change_state = {
     ('result_passed', 'result_failed'): 'NEW_ISSUE',
-    ('result_softfail', 'result_failed'): 'NEW_ISSUE',
-    ('result_passed', 'result_softfail'): 'NEW_SOFT_ISSUE',
+    ('result_softfailed', 'result_failed'): 'NEW_ISSUE',
+    ('result_passed', 'result_softfailed'): 'NEW_SOFT_ISSUE',
     ('result_failed', 'result_passed'): 'FIXED',  # fixed, maybe spurious, false positive
-    ('result_softfail', 'result_passed'): 'FIXED',
+    ('result_softfailed', 'result_passed'): 'FIXED',
     ('result_failed', 'result_failed'): 'STILL_FAILING',  # still failing or partial improve, partial degrade
-    ('result_softfail', 'result_softfail'): 'STILL_SOFT_FAILING',
-    ('result_failed', 'result_softfail'): 'IMPROVED',
+    ('result_softfailed', 'result_softfailed'): 'STILL_SOFT_FAILING',
+    ('result_failed', 'result_softfailed'): 'IMPROVED',
     ('result_passed', 'result_passed'): 'STABLE',  # ignore or crosscheck if not fals positive
 }
 

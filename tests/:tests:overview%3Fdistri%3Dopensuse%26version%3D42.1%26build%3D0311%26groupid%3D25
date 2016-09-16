@@ -248,7 +248,7 @@
 
                                         <span id="res-169596">
                                             <a href="/tests/169596">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
@@ -411,7 +411,7 @@
 
                                         <span id="res-169601">
                                             <a href="/tests/169601">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
@@ -425,7 +425,7 @@
 
                                         <span id="res-169602">
                                             <a href="/tests/169602">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
@@ -493,7 +493,7 @@
 
                                         <span id="res-169605">
                                             <a href="/tests/169605">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
@@ -929,7 +929,7 @@
 
                                         <span id="res-169632">
                                             <a href="/tests/169632">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
@@ -943,7 +943,7 @@
 
                                         <span id="res-169633">
                                             <a href="/tests/169633">
-                                                <i class="status fa fa-circle result_softfail" title="Done: softfail"></i>
+                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
                                             </a>
                                         </span>
                             </td>
