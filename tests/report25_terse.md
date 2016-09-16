@@ -1,7 +1,7 @@
 # 0
 
 
-**Date:** 2016-01-04 - 22:52
+**Date:** 2016-09-15 - 16:33
 **Build:** 0313
 
 **Common issues:**
@@ -14,12 +14,10 @@
 
 **New Product bugs:**
 
-
 * soft fails: upgrade_offline_13.1_allpatterns
 
 
 **Existing Product bugs:**
-
 
 * soft fails: autoupgrade_13.1, cryptlvm, cryptlvm_minimal_x, textmode+awesome
 
@@ -41,9 +39,15 @@
 * gnome@uefi
 * textmode
 
+
 ***existing issues***
 
-* gcc5, gcc5+allpatterns, toolchain_zypper, upgrade_offline_13.1+gcc5_64bit, upgrade_offline_13.2_gcc5
+* gcc5
+* gcc5+allpatterns
+* toolchain_zypper
+* upgrade_offline_13.1+gcc5_64bit
+* upgrade_offline_13.2_gcc5
+
 
 
 ---

@@ -321,7 +321,7 @@ def test_new_tests_appearing_in_builds_are_supported():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'differing_tests')
     report = openqa_review.generate_report(args)
     # There should be one new test which is failing and has not been there in before
-    assert '* ***btrfs@zkvm***: https://openqa.opensuse.org/tests/181148 (reference NONE )' in report
+    assert '* [btrfs@zkvm](https://openqa.opensuse.org/tests/181148 "Failed modules: livecdreboot")' in report
 
 
 def test_bugrefs_are_used_for_triaging():
@@ -335,6 +335,7 @@ def test_bugrefs_are_used_for_triaging():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.show_empty = False
     args.include_softfails = False
+    args.verbose_test = 1
     openqa_review.config = ConfigParser()
     openqa_review.config.add_section('product_issues')
     openqa_review.config.set('product_issues', 'base_url', 'https://%(username)s:%(password)s@apibugzilla.suse.com')

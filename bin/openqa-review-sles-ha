@@ -1,4 +1,4 @@
 #!/bin/sh -e
-args="--host http://openqa.suse.de --against-reviewed last -vvvv -s -n --bugrefs --no-empty-sections --include-softfails --query-issue-status $@"
+args="--host http://openqa.suse.de --against-reviewed last -vvvv -s -n -T --bugrefs --no-empty-sections --include-softfails --query-issue-status $@"
 openqa-review -j 'Acceptance.*Server' $args | tee $(date +%F)_SLES.md
 openqa-review -j 'Acceptance.*HA' $args | tee $(date +%F)_HA.md
