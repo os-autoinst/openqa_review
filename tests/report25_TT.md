@@ -1,7 +1,7 @@
 # 0
 
 
-**Date:** 2016-01-05 - 00:00
+**Date:** 2016-09-19 - 14:34
 **Build:** 0313 (reference 0311)
 
 **Common issues:**
@@ -14,14 +14,12 @@
 
 **New Product bugs:**
 
-
-* soft fails: upgrade_offline_13.1_allpatterns
+* soft fails: [upgrade_offline_13.1_allpatterns](https://openqa.opensuse.org/tests/169809) [(ref)](https://openqa.opensuse.org/tests/169614 "Previous test")
 
 
 **Existing Product bugs:**
 
-
-* soft fails: autoupgrade_13.1, cryptlvm, cryptlvm_minimal_x, textmode+awesome
+* soft fails: [autoupgrade_13.1](https://openqa.opensuse.org/tests/169791) [(ref)](https://openqa.opensuse.org/tests/169596 "Previous test"), [cryptlvm](https://openqa.opensuse.org/tests/169796 "Failed modules: zypper_in") [(ref)](https://openqa.opensuse.org/tests/169601 "Previous test"), [cryptlvm_minimal_x](https://openqa.opensuse.org/tests/169797) [(ref)](https://openqa.opensuse.org/tests/169602 "Previous test"), [textmode+awesome](https://openqa.opensuse.org/tests/169828) [(ref)](https://openqa.opensuse.org/tests/169633 "Previous test")
 
 
 **New openQA-issues:**
@@ -36,22 +34,20 @@
 
 ***new issues***
 
-* ***RAID10***: https://openqa.opensuse.org/tests/169785, failed modules:
- * bootloader: https://openqa.opensuse.org/tests/169785/modules/bootloader/steps/2
-
-* ***autoyast_13.2_gnome***: https://openqa.opensuse.org/tests/169793, failed modules:
- * desktop_mainmenu: https://openqa.opensuse.org/tests/169793/modules/desktop_mainmenu/steps/1
-
-* ***gnome@uefi***: https://openqa.opensuse.org/tests/169801, failed modules:
- * welcome: https://openqa.opensuse.org/tests/169801/modules/welcome/steps/3
-
-* ***textmode***: https://openqa.opensuse.org/tests/169827, failed modules:
- * snapper_undochange: https://openqa.opensuse.org/tests/169827/modules/snapper_undochange/steps/6
+* [RAID10](https://openqa.opensuse.org/tests/169785 "Failed modules: bootloader") [(ref)](https://openqa.opensuse.org/tests/169590 "Previous test")
+* [autoyast_13.2_gnome](https://openqa.opensuse.org/tests/169793 "Failed modules: desktop_mainmenu") [(ref)](https://openqa.opensuse.org/tests/169598 "Previous test")
+* [gnome@uefi](https://openqa.opensuse.org/tests/169801 "Failed modules: welcome") [(ref)](https://openqa.opensuse.org/tests/169606 "Previous test")
+* [textmode](https://openqa.opensuse.org/tests/169827 "Failed modules: snapper_undochange") [(ref)](https://openqa.opensuse.org/tests/169632 "Previous test")
 
 
 ***existing issues***
 
-* gcc5, gcc5+allpatterns, toolchain_zypper, upgrade_offline_13.1+gcc5_64bit, upgrade_offline_13.2_gcc5
+* [gcc5](https://openqa.opensuse.org/tests/169823 "Failed modules: addon_products_leap") [(ref)](https://openqa.opensuse.org/tests/169628 "Previous test")
+* [gcc5+allpatterns](https://openqa.opensuse.org/tests/169824 "Failed modules: addon_products_leap") [(ref)](https://openqa.opensuse.org/tests/169629 "Previous test")
+* [toolchain_zypper](https://openqa.opensuse.org/tests/169829 "Failed modules: addon_products_leap") [(ref)](https://openqa.opensuse.org/tests/169634 "Previous test")
+* [upgrade_offline_13.1+gcc5_64bit](https://openqa.opensuse.org/tests/169807 "Failed modules: addon_products_leap") [(ref)](https://openqa.opensuse.org/tests/169612 "Previous test")
+* [upgrade_offline_13.2_gcc5](https://openqa.opensuse.org/tests/169812 "Failed modules: addon_products_leap") [(ref)](https://openqa.opensuse.org/tests/169617 "Previous test")
+
 
 
 ---
