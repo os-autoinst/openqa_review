@@ -678,14 +678,13 @@ def parse_args():
                         specify just '0128' and the last reviewed job is found from the comments section if the comment
                         is sticking to the template format for review comments.
                         Special argument 'last' will compare the last finished build against the last reviewed one.""")
-    test_details = parser.add_mutually_exclusive_group()
-    test_details.add_argument('-T', '--verbose-test',
-                              help='Increase test result verbosity level, specify multiple times to increase verbosity',
-                              action='count', default=1)
-    test_details.add_argument('-r', '--bugrefs', action='store_true',
-                              help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
-                              See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
-                              for details about bugrefs in openQA""")
+    parser.add_argument('-T', '--verbose-test',
+                        help='Increase test result verbosity level, specify multiple times to increase verbosity',
+                        action='count', default=1)
+    parser.add_argument('-r', '--bugrefs', action='store_true',
+                        help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
+                        See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
+                        for details about bugrefs in openQA""")
     parser.add_argument('-R', '--query-issue-status', action='store_true',
                         help="""Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs" and
                         needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
