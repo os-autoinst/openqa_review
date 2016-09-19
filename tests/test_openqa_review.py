@@ -349,7 +349,13 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs.md')).read()
     compare_report(report, ref_report)
 
+    args.verbose_test = 2
+    report = str(openqa_review.generate_report(args))
+    ref_report = open(os.path.join(args.load_dir, 'report25_T_bugrefs.md')).read()
+    compare_report(report, ref_report)
+
     # now, with query issues
+    args.verbose_test = 1
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
