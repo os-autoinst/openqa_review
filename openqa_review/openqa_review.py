@@ -205,6 +205,10 @@ def status(entry):
     return entry.i['class'][3]
 
 
+def get_build_nr(url):
+    return unquote(re.search('build=([^&]*)', url).groups()[0])
+
+
 def get_failed_needles(m):
     return [i.text for i in BeautifulSoup(m['title'], 'html.parser').find_all('li')] if m.get('title') else []
 
@@ -465,25 +469,6 @@ class Issue(object):
         )
 
 
-class ArchReports(object):
-
-    """Reports for each arch of a product."""
-
-    def __init__(self, args, root_url, arch_state_results):
-        """Construct an archreports object with options."""
-        self.args = args
-        self.root_url = root_url
-        self.progress_browser = progress_browser_factory(args) if args.query_issue_status else None
-        self.bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
-        self.reports = SortedDict()
-        for arch, results in iteritems(arch_state_results):
-            self.reports[arch] = ArchReport(arch, results, args, root_url, self.progress_browser, self.bugzilla_browser)
-
-    def __str__(self):
-        """Return report for all architectures."""
-        return '<hr>'.join(map(str, self.reports.values()))
-
-
 class IssueEntry(object):
 
     """List of failed test scenarios with corresponding bug."""
@@ -594,59 +579,70 @@ class ArchReport(object):
         })
 
 
-def generate_product_report(browser, job_group_url, root_url, args=None):
-    """Read overview page of one job group and generate a report for the product.
+class ProductReport(object):
 
-    @returns review report for product in Markdown format
+    """Read overview page of one job group and generate a report for the product."""
 
-    Example:
-    >>> browser = Browser() # doctest: +SKIP
-    >>> report = generate_product_report(browser, 'https://openqa.opensuse.org/group_overview/25', 'https://openqa.opensuse.org') # doctest: +SKIP
-    """
-    output_state_results = args.output_state_results if args.output_state_results else False
-    try:
-        current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
-    except ValueError:
-        raise NotEnoughBuildsError()
+    def __init__(self, browser, job_group_url, root_url, args):
+        """Construct a product report object with options."""
+        self.args = args
+        self.job_group_url = job_group_url
 
-    # read last finished
-    current_details = browser.get_soup(current_url)
-    previous_details = browser.get_soup(previous_url)
-    for details in current_details, previous_details:
-        assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0, \
-            "invalid page with no test results found, make sure you specified valid builds (leading zero missing?)"
-    current_summary = parse_summary(current_details)
-    previous_summary = parse_summary(previous_details)
+        try:
+            current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
+        except ValueError:
+            raise NotEnoughBuildsError()
 
-    changes = {k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary) if k != 'none' and k != 'incomplete'}
-    log.info("Changes since last build:\n\t%s" % '\n\t'.join("%s: %s" % (k, v) for k, v in iteritems(changes)))
+        # read last finished
+        current_details = browser.get_soup(current_url)
+        previous_details = browser.get_soup(previous_url)
+        for details in current_details, previous_details:
+            assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0, \
+                "invalid page with no test results found, make sure you specified valid builds (leading zero missing?)"
+        current_summary = parse_summary(current_details)
+        previous_summary = parse_summary(previous_details)
 
-    def get_build_nr(url):
-        return unquote(re.search('build=([^&]*)', url).groups()[0])
-    build = get_build_nr(current_url)
-    if args.verbose_test and args.verbose_test > 1:
-        build += ' (reference %s)' % get_build_nr(previous_url)
-    # for each architecture iterate over all
-    cur_archs, prev_archs = (set(arch.text for arch in details.find_all('th', id=re.compile('flavor_'))) for details in [current_details, previous_details])
-    archs = cur_archs
-    if args.arch:
-        assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(args.arch, cur_archs)
-        archs = [args.arch]
-    missing_archs = prev_archs - cur_archs
-    if missing_archs:
-        log.info("%s missing completely from current run: %s" %
-                 (pluralize(len(missing_archs), "architecture is", "architectures are"), ', '.join(missing_archs)))
-    arch_state_results = SortedDict({arch: get_arch_state_results(arch, current_details, previous_details, output_state_results) for arch in archs})
+        changes = {k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary) if k != 'none' and k != 'incomplete'}
+        log.info("Changes since last build:\n\t%s" % '\n\t'.join("%s: %s" % (k, v) for k, v in iteritems(changes)))
 
-    now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
-    missing_archs_str = '\n * **Missing architectures**: %s' % ', '.join(missing_archs) if missing_archs else ''
-    openqa_review_report_product = openqa_review_report_product_template.substitute({
-        'now': now_str,
-        'build': build,
-        'common_issues': common_issues(missing_archs_str, args.show_empty),
-        'arch_report': str(ArchReports(args, root_url, arch_state_results)),
-    })
-    return openqa_review_report_product
+        self.build = get_build_nr(current_url)
+        self.ref_build = get_build_nr(previous_url)
+
+        # for each architecture iterate over all
+        cur_archs, prev_archs = (set(arch.text for arch in details.find_all('th', id=re.compile('flavor_'))) for details in [current_details, previous_details])
+        archs = cur_archs
+        if args.arch:
+            assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(args.arch, cur_archs)
+            archs = [args.arch]
+        self.missing_archs = prev_archs - cur_archs
+        if self.missing_archs:
+            log.info("%s missing completely from current run: %s" %
+                     (pluralize(len(self.missing_archs), "architecture is", "architectures are"), ', '.join(self.missing_archs)))
+
+        # create arch reports
+        self.reports = SortedDict()
+        progress_browser = progress_browser_factory(args) if args.query_issue_status else None
+        bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
+        for arch in sorted(archs):
+            results = get_arch_state_results(arch, current_details, previous_details, args.output_state_results)
+            self.reports[arch] = ArchReport(arch, results, args, root_url, progress_browser, bugzilla_browser)
+
+    def __str__(self):
+        """Return report for product."""
+        now_str = datetime.datetime.now().strftime('%Y-%m-%d - %H:%M')
+        missing_archs_str = '\n * **Missing architectures**: %s' % ', '.join(self.missing_archs) if self.missing_archs else ''
+
+        build_str = self.build
+        if self.args.verbose_test and self.args.verbose_test > 1:
+            build_str += ' (reference %s)' % self.ref_build
+
+        openqa_review_report_product = openqa_review_report_product_template.substitute({
+            'now': now_str,
+            'build': build_str,
+            'common_issues': common_issues(missing_archs_str, self.args.show_empty),
+            'arch_report': '<hr>'.join(map(str, self.reports.values()))
+        })
+        return openqa_review_report_product
 
 
 def parse_args():
@@ -732,6 +728,50 @@ def get_job_groups(browser, root_url, args):
     return SortedDict(job_groups)
 
 
+class Report(object):
+
+    """openQA review report."""
+
+    def __init__(self, browser, args, root_url, job_groups):
+        """Create openQA review report."""
+        self.browser = browser
+        self.args = args
+        self.root_url = root_url
+        self.job_groups = job_groups
+
+        self._label = 'Gathering data and processing report'
+        self._progress = 0
+        self.report = SortedDict()
+
+        for k, v in iteritems(job_groups):
+            log.info("Processing '%s'" % v)
+            if args.no_progress or not humanfriendly_available:
+                self.report[k] = self._one_report(v)
+            else:
+                with AutomaticSpinner(label=self._next_label(self._progress)):
+                    self.report[k] = self._one_report(v)
+            self._progress += 1
+        if not args.no_progress:
+            sys.stderr.write("\r%s\n" % self._next_label(self._progress))  # It's nice to see 100%, too :-)
+
+    def _one_report(self, job_group_url):
+        # for each job group on openqa.opensuse.org
+        try:
+            return ProductReport(self.browser, job_group_url, self.root_url, self.args)
+        except NotEnoughBuildsError:
+            return "Not enough finished builds found"
+
+    def _next_label(self, progress):
+        return '%s %i%%' % (self._label, self._progress * 100 / len(self.job_groups.keys()))
+
+    def __str__(self):
+        """Generate markdown."""
+        report_str = ""
+        for k, v in iteritems(self.report):
+            report_str += '# %s\n\n%s\n---\n' % (k, v)
+        return report_str
+
+
 def generate_report(args):
     verbose_to_log = {
         0: logging.CRITICAL,
@@ -755,30 +795,7 @@ def generate_report(args):
     assert not (args.builds and len(job_groups) > 1), "builds option and multiple job groups not supported"
     assert len(job_groups) > 0, "No job groups were found, maybe misspecified '--job-groups'?"
 
-    # for each job group on openqa.opensuse.org
-    def one_report(job_group_url):
-        try:
-            log.info("Processing '%s'" % v)
-            return generate_product_report(browser, job_group_url, root_url, args)
-        except NotEnoughBuildsError:
-            return "Not enough finished builds found"
-    label = 'Gathering data and processing report'
-    progress = 0
-    report = ''
-
-    def next_label(progress):
-        return '%s %s %%' % (label, progress * 100 / len(job_groups.keys()))
-
-    for k, v in iteritems(job_groups):
-        if args.no_progress or not humanfriendly_available:
-            report += '# %s\n\n%s' % (k, one_report(v)) + '\n---\n'
-        else:
-            with AutomaticSpinner(label=next_label(progress)):
-                report += '# %s\n\n%s' % (k, one_report(v)) + '\n---\n'
-        progress += 1
-    if not args.no_progress:
-        print("\n%s" % next_label(progress))  # It's nice to see 100%, too :-)
-    return report
+    return Report(browser, args, root_url, job_groups)
 
 
 def load_config():
