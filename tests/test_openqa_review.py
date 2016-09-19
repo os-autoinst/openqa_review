@@ -109,7 +109,7 @@ def compare_report(report, ref_report):
 
 def test_previously_loaded_cache_file_is_generated_into_valid_verbose_report_if_configured():
     args = cache_test_args_factory()
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert '**Common issues:**' in report
     # Missing architecture is reported
     assert re.search("Missing arch.*i586", report)
@@ -120,7 +120,7 @@ def test_previously_loaded_cache_file_is_generated_into_valid_verbose_report_if_
 def test_previously_loaded_cache_file_is_generated_into_valid_terse_report_by_default():
     args = cache_test_args_factory()
     args.verbose_test = 1
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert '**Common issues:**' in report
     ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_terse.md')).read()
     compare_report(report, ref_report)
@@ -129,7 +129,7 @@ def test_previously_loaded_cache_file_is_generated_into_valid_terse_report_by_de
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l2():
     args = cache_test_args_factory()
     args.verbose_test = 2
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_T.md')).read()
     compare_report(report, ref_report)
 
@@ -137,7 +137,7 @@ def test_previously_loaded_cache_file_is_generated_into_ref_report_l2():
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l3():
     args = cache_test_args_factory()
     args.verbose_test = 3
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TT.md')).read()
     compare_report(report, ref_report)
 
@@ -145,14 +145,14 @@ def test_previously_loaded_cache_file_is_generated_into_ref_report_l3():
 def test_builds_can_be_specified_and_appear_in_report():
     args = cache_test_args_factory()
     args.builds = '0313,0308'
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert '**Build:** {} (reference {})'.format(*args.builds.split(',')) in report
 
 
 def test_too_high_verbosity_selection_yields_still_valid_selection():
     args = cache_test_args_factory()
     args.verbose_test = 5
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert report != ''
 
 
@@ -161,7 +161,7 @@ def test_ha_tests_yields_valid_report_with_valid_build_nr():
     args.arch = None  # let this test check architectures by itself to reach good test coverage
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live')
     args.job_group_urls = args.host + '/group_overview/27'
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert '0104@0351' in report
 
 
@@ -170,7 +170,7 @@ def test_specified_job_group_yields_single_product_report():
     args.job_group_urls = None
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'single_job_group')
     args.job_groups = 'openSUSE Tumbleweed  1.Gnome'
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
     assert len([l for l in report.splitlines() if l.startswith('#')]) == 1
@@ -191,7 +191,7 @@ def test_specified_job_group_yields_single_product_report():
     # exception as python2 raises IOError, python3 FileNotFoundError
     # but we can check the content anyway.
     with pytest.raises(Exception) as e:
-        report = openqa_review.generate_report(args)
+        report = str(openqa_review.generate_report(args))
     assert 'group_overview:26' in str(e.value)
 
     # job groups can also be used as an incomplete search tags or regex
@@ -201,12 +201,12 @@ def test_specified_job_group_yields_single_product_report():
     args.no_progress = False
     # see above
     with pytest.raises(Exception) as e:
-        report = openqa_review.generate_report(args)
+        report = str(openqa_review.generate_report(args))
     assert 'group_overview:26' in str(e.value)
 
     # job group with only a single recent build yields empty report
     args.job_groups = 'x-released openSUSE Tumbleweed GA JeOS'
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
     assert 'Not enough finished builds' in report
@@ -257,7 +257,7 @@ def test_generate_report_with_progress_notification_does_not_fail():
     # Not easy to test automatically but at least we can call it and assume it also gives valid results
     args.no_progress = False
     args.job_groups_url = None
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     assert '**Common issues:**' in report
 
 
@@ -309,7 +309,7 @@ def test_single_job_group_pages_can_be_cached_from_cache():
     with TemporaryDirectory() as tmp_dir:
         args.save_dir = tmp_dir
         args.save = True
-        report = openqa_review.generate_report(args)
+        report = str(openqa_review.generate_report(args))
         assert '**Common issues:**' in report
 
 
@@ -319,7 +319,7 @@ def test_new_tests_appearing_in_builds_are_supported():
     args.builds = '0405,0389'
     args.arch = 'i586'
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'differing_tests')
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     # There should be one new test which is failing and has not been there in before
     assert '* [btrfs@zkvm](https://openqa.opensuse.org/tests/181148 "Failed modules: livecdreboot")' in report
 
@@ -341,7 +341,7 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.set('product_issues', 'base_url', 'https://%(username)s:%(password)s@apibugzilla.suse.com')
     openqa_review.config.set('product_issues', 'username', 'user')
     openqa_review.config.set('product_issues', 'password', 'pass')
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     # report should feature bug references
     assert 'bsc#' in report
     # and references to 'test issues'
@@ -349,7 +349,13 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs.md')).read()
     compare_report(report, ref_report)
 
+    args.verbose_test = 2
+    report = str(openqa_review.generate_report(args))
+    ref_report = open(os.path.join(args.load_dir, 'report25_T_bugrefs.md')).read()
+    compare_report(report, ref_report)
+
     # now, with query issues
+    args.verbose_test = 1
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
