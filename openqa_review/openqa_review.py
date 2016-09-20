@@ -248,8 +248,9 @@ def get_state(cur, prev_dict):
 
 
 def get_arch_state_results(arch, current_details, previous_details, output_state_results=False):
-    test_results = current_details.find_all('td', id=re.compile(arch))
-    test_results_previous = previous_details.find_all('td', id=re.compile(arch))
+    result_re = re.compile(arch + '_')
+    test_results = current_details.find_all('td', id=result_re)
+    test_results_previous = previous_details.find_all('td', id=result_re)
     # find differences from previous to current (result_X)
     test_results_dict = {i['id']: i for i in test_results}
     test_results_previous_dict = {i['id']: i for i in test_results_previous if i['id'] in test_results_dict.keys()}

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="622547e71bb909170633936c1725fdbd31d28f84" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/90959f62a0/bootstrap.css" rel="stylesheet">
+      <script src="/asset/1e6ab518bc/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+          setupForAll();
+            setupOverview();
+
+          } );
+
+//]]></script>
+      <link rel="icon"
+            type="image/png" sizes="16x16"
+            href="/asset/5caa45a06e/logo-16.png">
+      <link rel="icon" href="/asset/3137d8fd56/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-static-top navbar-default">
+          <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src="/asset/3137d8fd56/logo.svg" alt="openQA"></a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+
+                      <li>
+                          <a href="/tests">All Tests</a>
+                      </li>
+
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Job Groups<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                              
+                                  <li>
+                                      <a href="/group_overview/17">Open Build Service</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/5">Staging Project I</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/2">Staging Projects</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/24">openQA</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/9">openSUSE 13.2</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/11">openSUSE 13.2 Updates</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/25">openSUSE Argon</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/23">openSUSE Krypton</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/7">openSUSE Leap</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/15">openSUSE Leap 42.1 JeOS</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/10">openSUSE Leap 42.1 Maintenance</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/14">openSUSE Leap 42.1 Updates</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/19">openSUSE Leap 42.2</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/20">openSUSE Leap 42.2 AArch64</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/21">openSUSE Leap 42.2 PowerPC</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/6">openSUSE Leap Staging Projects</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/1">openSUSE Tumbleweed</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/3">openSUSE Tumbleweed AArch64</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/4">openSUSE Tumbleweed PowerPC</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/22">windows 10</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/12">xx-released: openSUSE Leap 42.1 AArch64</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/13">xx-released: openSUSE Leap 42.1 PowerPC</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/18">xx-released: openSUSE Leap 42.1 Stagings</a>
+                                  </li>
+                                  <li>
+                                      <a href="/group_overview/16">zz-dead: openSUSE Leap 42.1 Test Updates</a>
+                                  </li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                          <li id="user-action">
+                              <a href="/login">Login</a>
+                          </li>
+                  </ul>
+              </div><!-- /.navbar-collapse -->
+          </div>
+      </nav>
+      <div class="container" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-success">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/4">openSUSE Tumbleweed PowerPC</a></b>
+            build 20160916
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">11</span>
+
+                Soft Failure:
+                <span class="badge">7</span>
+            Failed: <span class="badge">0</span>
+
+        </div>
+    </div>
+    <div class="panel panel-default" id="filter-panel">
+        <div class="panel-heading"><strong>Filter</strong> <span>no filter present, click to toggle filter form<span></div>
+        <div class="panel-body">
+            <form action="#" type="get" id="filter-form">
+                <div class="form-group" id="filter-results">
+                    <strong>Result</strong>
+                        <label><input value="none" name="result" type="checkbox" id="filter-none"> None</label>
+                        <label><input value="passed" name="result" type="checkbox" id="filter-passed"> Passed</label>
+                        <label><input value="softfailed" name="result" type="checkbox" id="filter-softfailed"> Softfailed</label>
+                        <label><input value="failed" name="result" type="checkbox" id="filter-failed"> Failed</label>
+                        <label><input value="incomplete" name="result" type="checkbox" id="filter-incomplete"> Incomplete</label>
+                        <label><input value="skipped" name="result" type="checkbox" id="filter-skipped"> Skipped</label>
+                        <label><input value="obsoleted" name="result" type="checkbox" id="filter-obsoleted"> Obsoleted</label>
+                        <label><input value="parallel_failed" name="result" type="checkbox" id="filter-parallel_failed"> Parallel failed</label>
+                        <label><input value="parallel_restarted" name="result" type="checkbox" id="filter-parallel_restarted"> Parallel restarted</label>
+                        <label><input value="user_cancelled" name="result" type="checkbox" id="filter-user_cancelled"> User cancelled</label>
+                        <label><input value="user_restarted" name="result" type="checkbox" id="filter-user_restarted"> User restarted</label>
+                </div>
+                <div class="form-group" id="filter-states">
+                    <strong>State</strong>
+                        <label><input value="scheduled" name="state" type="checkbox" id="filter-scheduled"> Scheduled</label>
+                        <label><input value="running" name="state" type="checkbox" id="filter-running"> Running</label>
+                        <label><input value="cancelled" name="state" type="checkbox" id="filter-cancelled"> Cancelled</label>
+                        <label><input value="waiting" name="state" type="checkbox" id="filter-waiting"> Waiting</label>
+                        <label><input value="done" name="state" type="checkbox" id="filter-done"> Done</label>
+                        <label><input value="uploading" name="state" type="checkbox" id="filter-uploading"> Uploading</label>
+                </div>
+                <div class="form-group">
+                    <strong>Architecture</strong>
+                    <input type="text" class="form-control" name="arch" placeholder="any" id="filter-arch">
+                </div>
+                <div class="form-group">
+                    <strong>Misc</strong>
+                    <label><input value="1" name="todo" type="checkbox" id="filter-todo"> TODO</label>
+                </div>
+                <button type="submit" class="btn btn-default">Apply</button>
+            </form>
+        </div>
+    </div>
+        <h3>Flavor: DVD</h3>
+        <table id="results_DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_DVD_arch_ppc64">ppc64</th>
+                        <th id="flavor_DVD_arch_ppc64le">ppc64le</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">boot_to_snapshot</td>
+
+                            <td id="res_DVD_ppc64_boot_to_snapshot">
+
+             <span id="res-264495">
+                 <a href="/tests/264495">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_boot_to_snapshot">
+
+             <span id="res-264503">
+                 <a href="/tests/264503">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gpt</td>
+
+                            <td id="res_DVD_ppc64_gpt">
+
+             <span id="res-264490">
+                 <a href="/tests/264490">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_gpt">
+
+             <span id="res-264502">
+                 <a href="/tests/264502">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="install_only_ppc@ppc64-multipath">install_only_ppc@ppc64-mul ...</span></td>
+
+                            <td id="res_DVD_ppc64_install_only_ppc@ppc64-multipath">
+
+             <span id="res-264489">
+                 <a href="/tests/264489">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="install_only_ppc@ppc64le-multipath">install_only_ppc@ppc64le-m ...</span></td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_ppc64le_install_only_ppc@ppc64le-multipath">
+
+             <span id="res-264501">
+                 <a href="/tests/264501">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm</td>
+
+                            <td id="res_DVD_ppc64_lvm">
+
+             <span id="res-264493">
+                 <a href="/tests/264493">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_lvm">
+
+             <span id="res-264497">
+                 <a href="/tests/264497">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                            <td id="res_DVD_ppc64_mediacheck">
+
+             <span id="res-264491">
+                 <a href="/tests/264491">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_mediacheck">
+
+             <span id="res-264500">
+                 <a href="/tests/264500">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx</td>
+
+                            <td id="res_DVD_ppc64_minimalx">
+
+             <span id="res-264488">
+                 <a href="/tests/264488">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_minimalx">
+
+             <span id="res-264496">
+                 <a href="/tests/264496">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system</td>
+
+                            <td id="res_DVD_ppc64_rescue_system">
+
+             <span id="res-264494">
+                 <a href="/tests/264494">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_rescue_system">
+
+             <span id="res-264498">
+                 <a href="/tests/264498">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode</td>
+
+                            <td id="res_DVD_ppc64_textmode">
+
+             <span id="res-264492">
+                 <a href="/tests/264492">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_DVD_ppc64le_textmode">
+
+             <span id="res-264499">
+                 <a href="/tests/264499">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+        <h3>Flavor: NET</h3>
+        <table id="results_NET" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_NET_arch_ppc64">ppc64</th>
+                        <th id="flavor_NET_arch_ppc64le">ppc64le</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">minimalx</td>
+
+                            <td id="res_NET_ppc64_minimalx">
+
+             <span id="res-264486">
+                 <a href="/tests/264486">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+
+                            <td id="res_NET_ppc64le_minimalx">
+
+             <span id="res-264487">
+                 <a href="/tests/264487">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

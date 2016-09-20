@@ -369,6 +369,15 @@ def test_bugrefs_are_used_for_triaging():
     compare_report(report, ref_report)
 
 
+def test_arch_distinguish():
+    args = cache_test_args_factory()
+    args.arch = None
+    args.job_group_urls = args.host + '/group_overview/4'
+
+    report = str(openqa_review.generate_report(args))
+    assert 'ppc64le' in report
+
+
 @pytest.mark.webtest
 def test_default_returns_valid_markdown_document():
     args = args_factory()
