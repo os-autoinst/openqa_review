@@ -36,8 +36,8 @@
 
 * RAID10
 * autoyast_13.2_gnome
-* gnome@uefi
 * textmode
+* textmode@uefi
 
 
 ***existing issues***

@@ -196,13 +196,7 @@ interesting_states_names = [i for i in set(change_state.values()) if i != 'STABL
 
 def status(entry):
     """Return test status from entry, e.g. 'result_passed'."""
-    # TODO to also get URLs to tests:
-    #  test_urls = [i.find('a').get('href') for i in entry.find_all(class_='failedmodule')]
-    # returns something like '/tests/167330/modules/welcome/steps/8'
-    # to also return failed needles (if any):
-    #  failed_needles = [BeautifulSoup(i.get('title'), 'html.parser').ul.li.text for i in entry.find_all(class_='failedmodule')]
-    # returns something like 'inst-betawarning-20140602'
-    return entry.i['class'][3]
+    return [s for s in entry.i['class'] if re.search('(state|result)_', s)][0]
 
 
 def get_build_nr(url):
@@ -236,11 +230,11 @@ def get_state(cur, prev_dict):
     # failing needles differ
     try:
         prev = prev_dict[cur['id']]
-        state_dict = {'state': change_state.get((status(prev), status(cur)), 'INCOMPLETE')}
+        state_dict = {'state': change_state[(status(prev), status(cur))]}
         # add more details, could be skipped if we don't have details
         state_dict.update({'prev': {'href': prev.find('a')['href']}})
     except KeyError:
-        # if there is no previous we assume passed to mark new failing test as 'NEW_ISSUE'
+        # if there is no previous or it was never completed we assume passed to mark new failing test as 'NEW_ISSUE'
         state_dict = {'state': change_state.get(('result_passed', status(cur)), 'INCOMPLETE')}
     state_dict.update(get_test_details(cur))
     state_dict.update(get_test_bugref(cur))

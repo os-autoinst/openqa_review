@@ -499,20 +499,6 @@
                             </td>
                     </tr>
                     <tr>
-                        <td width="10%" class="name">gnome@uefi</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_gnome@uefi">
-
-                                        <span id="res-169606">
-                                            <a href="/tests/169606">
-                                                <i class="status fa fa-circle result_passed" title="Done: passed"></i>
-                                            </a>
-                                        </span>
-                            </td>
-                    </tr>
-                    <tr>
                         <td width="10%" class="name">lvm</td>
 
                                 <td>-</td>
@@ -930,6 +916,20 @@
                                         <span id="res-169632">
                                             <a href="/tests/169632">
                                                 <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
+                                            </a>
+                                        </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode@uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode@uefi">
+
+                                        <span id="res-169633">
+                                            <a href="/tests/169633">
+                                                <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
                                             </a>
                                         </span>
                             </td>

@@ -78,7 +78,7 @@
         <div class="panel-body">
             Passed: <span class="badge">0</span>
 
-            Failed: <span class="badge">14</span>
+            Failed: <span class="badge">6</span>
 
         </div>
     </div>
@@ -92,39 +92,6 @@
                 </tr>
             </thead>
             <tbody>
-                    <tr>
-                        <td width="10%" class="name">ha</td>
-
-                            <td id="res_Gnome-DVD_arm_ha">
-
-                                        <span id="res-174668">
-                                            <a href="/tests/174668">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174668/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-
-                            <td id="res_Gnome-DVD_x86_64_ha">
-
-                                        <span id="res-174622">
-                                            <a href="/tests/174622">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174622/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
                     <tr>
                         <td width="10%" class="name">ha+awesome</td>
 
@@ -180,146 +147,6 @@
 
                                             <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
                                                 <a href="/tests/174624/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">ha+geo+allpatterns+workaround_deps</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_ha+geo+allpatterns+workaround_deps">
-
-                                        <span id="res-174633">
-                                            <a href="/tests/174633">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174633/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.1+ha+geo</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+ha+geo">
-
-                                        <span id="res-174627">
-                                            <a href="/tests/174627">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>welcome-20140602</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174627/modules/welcome/steps/3">
-                                                    welcome
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.1+ha_64bit</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+ha_64bit">
-
-                                        <span id="res-174626">
-                                            <a href="/tests/174626">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174626/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.1+gcc5+ha+geo</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.1+gcc5+ha+geo">
-
-                                        <span id="res-174628">
-                                            <a href="/tests/174628">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174628/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.2_ha</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_ha">
-
-                                        <span id="res-174629">
-                                            <a href="/tests/174629">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174629/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.2_ha+geo</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_ha+geo">
-
-                                        <span id="res-174630">
-                                            <a href="/tests/174630">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174630/modules/addon_products_leap/steps/11">
-                                                    addon_products_leap
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
-                        <td width="10%" class="name">upgrade_offline_13.2_gcc5+ha+geo</td>
-
-                                <td>-</td>
-
-                            <td id="res_Gnome-DVD_x86_64_upgrade_offline_13.2_gcc5+ha+geo">
-
-                                        <span id="res-174631">
-                                            <a href="/tests/174631">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title=\'<p>Failed needles:</p><ul><li>addon-betawarning-ha-20150707</li><li>addon-betawarning-ha-20150903</li></ul>\' data-toggle=\'tooltip\' class="failedmodule" >
-                                                <a href="/tests/174631/modules/addon_products_leap/steps/11">
                                                     addon_products_leap
                                                 </a>
                                             </span>

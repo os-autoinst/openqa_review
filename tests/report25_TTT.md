@@ -36,8 +36,8 @@
 
 * [RAID10](https://openqa.opensuse.org/tests/169785 "Failed modules: bootloader") [(ref)](https://openqa.opensuse.org/tests/169590 "Previous test")
 * [autoyast_13.2_gnome](https://openqa.opensuse.org/tests/169793 "Failed modules: desktop_mainmenu") [(ref)](https://openqa.opensuse.org/tests/169598 "Previous test")
-* [gnome@uefi](https://openqa.opensuse.org/tests/169801 "Failed modules: welcome") [(ref)](https://openqa.opensuse.org/tests/169606 "Previous test")
 * [textmode](https://openqa.opensuse.org/tests/169827 "Failed modules: snapper_undochange") [(ref)](https://openqa.opensuse.org/tests/169632 "Previous test")
+* [textmode@uefi](https://openqa.opensuse.org/tests/169828 "Failed modules: bootloader_uefi")
 
 
 ***existing issues***

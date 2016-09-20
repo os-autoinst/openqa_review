@@ -334,24 +334,6 @@
                             </td>
                     </tr>
                     <tr>
-                        <td width="10%" class="name">gnome@uefi</td>
-
-                            <td id="res_Gnome-DVD_x86_64_gnome@uefi">
-
-                                        <span id="res-169801">
-                                            <a href="/tests/169801">
-                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title='<p>Failed needles:</p><ul><li>welcome-20140602</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169801/modules/welcome/steps/3">
-                                                    welcome
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
                         <td width="10%" class="name">lvm</td>
 
                             <td id="res_Gnome-DVD_x86_64_lvm">
@@ -671,6 +653,24 @@
                                             <span  class="failedmodule" >
                                                 <a href="/tests/169827/modules/snapper_undochange/steps/6">
                                                     snapper_undochange
+                                                </a>
+                                            </span>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="name">textmode@uefi</td>
+
+                            <td id="res_Gnome-DVD_x86_64_textmode@uefi">
+
+                                        <span id="res-169828">
+                                            <a href="/tests/169828">
+                                                <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                                            </a>
+                                        </span>
+
+                                            <span  class="failedmodule" >
+                                                <a href="/tests/169828/modules/bootloader_uefi/steps/1">
+                                                    bootloader_uefi
                                                 </a>
                                             </span>
                             </td>
