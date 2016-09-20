@@ -48,6 +48,7 @@ def args_factory():
     args.include_softfails = True
     args.query_issue_status = False
     args.query_issue_status_help = True
+    args.report_links = False
     return args
 
 
@@ -341,6 +342,9 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.set('product_issues', 'base_url', 'https://%(username)s:%(password)s@apibugzilla.suse.com')
     openqa_review.config.set('product_issues', 'username', 'user')
     openqa_review.config.set('product_issues', 'password', 'pass')
+    openqa_review.config.set('product_issues', 'report_url', 'https://bugzilla.opensuse.org')
+    openqa_review.config.add_section('product_issues:mapping')
+    openqa_review.config.set('product_issues:mapping', '25', 'openSUSE Tumbleweed')
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
     assert 'bsc#' in report
@@ -350,12 +354,14 @@ def test_bugrefs_are_used_for_triaging():
     compare_report(report, ref_report)
 
     args.verbose_test = 2
+    args.report_links = True
     report = str(openqa_review.generate_report(args))
     ref_report = open(os.path.join(args.load_dir, 'report25_T_bugrefs.md')).read()
     compare_report(report, ref_report)
 
     # now, with query issues
     args.verbose_test = 1
+    args.report_links = False
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
