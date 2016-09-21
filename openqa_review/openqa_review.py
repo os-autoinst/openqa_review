@@ -101,10 +101,10 @@ import logging
 import os.path
 import re
 import sys
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 from string import Template
-from urllib.parse import quote, unquote, urljoin
+from urllib.parse import quote, unquote, urljoin, urlencode
 
 from bs4 import BeautifulSoup
 from sortedcontainers import SortedDict
@@ -142,6 +142,12 @@ system = bugzilla
 #username = user
 #password = secret
 base_url = https://%(username)s:%(password)s@apibugzilla.suse.com
+
+# for correct generation of issue reporting links add mappings from openQA
+# group IDs to product names in the corresponding issue tracker, e.g.
+# necessary for bugzilla
+[product_issues:mapping]
+25 = openSUSE Tumbleweed
 """
 
 
@@ -204,7 +210,7 @@ def get_build_nr(url):
 
 
 def get_failed_needles(m):
-    return [i.text for i in BeautifulSoup(m['title'], 'html.parser').find_all('li')] if m.get('title') else []
+    return [str(i.text) for i in BeautifulSoup(m['title'], 'html.parser').find_all('li')] if m.get('title') else []
 
 
 def get_test_details(entry):
@@ -410,6 +416,43 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     return current_url, previous_url
 
 
+def issue_report_link(root_url, group, build, f):
+    """Generate a bug reporting link for the current issue."""
+    # always select the first failed module.
+    # It might not be the fatal one but better be safe and assume the first
+    # failed module introduces a problem in the whole job
+    failed_module = f['failedmodules'][0]
+    module = failed_module['name']
+    url = urljoin(root_url, str(failed_module['href']))
+    details = 'Failed needles: %s' % failed_module['needles']
+    description = """### Observation
+
+openQA test fails in
+%s
+with
+%s
+
+
+## Reproducible
+
+Fails with X/Y runs since / First time occurence
+
+
+## Expected result
+
+Last good:
+""" % (url, details)
+
+    product_entries = OrderedDict([
+        ('product', config.get('product_issues:mapping', group)),
+        ('short_desc', '[Build %s] openQA test fails in %s' % (build, module)),
+        ('bug_file_loc', url),
+        ('comment', description)
+    ])
+    product_bug = urljoin(config.get('product_issues', 'report_url'), 'enter_bug.cgi') + '?' + urlencode(product_entries)
+    return ': report [product bug](%s)' % (product_bug)
+
+
 class Issue(object):
 
     """Issue with extra status info from issue tracker."""
@@ -471,13 +514,15 @@ class IssueEntry(object):
 
     """List of failed test scenarios with corresponding bug."""
 
-    def __init__(self, args, root_url, failures, bug=None, soft=False):
+    def __init__(self, args, root_url, failures, group=None, build=None, bug=None, soft=False):
         """Construct an issueentry object with options."""
         self.args = args
         self.failures = [f for f in failures]
         self.bug = bug
         self.soft = soft
         self.root_url = root_url
+        self.group = group
+        self.build = build
 
     def _url(self, v):
         """Absolute url e.g. for test references."""
@@ -489,14 +534,16 @@ class IssueEntry(object):
     def _format_failure(self, f):
         """Yield a report entry for one new issue based on verbosity."""
         failure_modules_str = ' "Failed modules: %s"' % self._format_failure_modules(f['failedmodules']) if f['failedmodules'] else ''
+        report_str = issue_report_link(self.root_url, self.group, self.build, f) if (self.args.report_links and self.group and self.build) else ''
         if self.args.verbose_test >= 3 and 'prev' in f:
-            return '[%s](%s%s) [(ref)](%s "Previous test")' % (
+            return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
                 f['name'], self._url(f),
                 failure_modules_str,
-                self._url(f['prev'])
+                self._url(f['prev']),
+                report_str
             )
         elif self.args.verbose_test >= 2:
-            return '[%s](%s%s)' % (f['name'], self._url(f), failure_modules_str)
+            return '[%s](%s%s)%s' % (f['name'], self._url(f), failure_modules_str, report_str)
         else:
             return '%s' % f['name']
 
@@ -509,20 +556,22 @@ class IssueEntry(object):
         )
 
     @classmethod
-    def for_each(cls, args, root_url, failures):
+    def for_each(cls, args, root_url, failures, group, build):
         """Create one object for each failure (for todo entries)."""
-        return map(lambda f: cls(args, root_url, [f]), failures)
+        return map(lambda f: cls(args, root_url, [f], group, build), failures)
 
 
 class ArchReport(object):
 
     """Report for a single architecture."""
 
-    def __init__(self, arch, results, args, root_url, progress_browser, bugzilla_browser):
+    def __init__(self, arch, results, args, root_url, group, build, progress_browser, bugzilla_browser):
         """Construct an archreport object with options."""
         self.arch = arch
         self.args = args
         self.root_url = root_url
+        self.group = group
+        self.build = build
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
 
@@ -540,15 +589,13 @@ class ArchReport(object):
 
             bug = result_list[0]
             issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
-            self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, issue))
+            self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
 
         # left do handle are the issues marked with 'TODO'
-        self.issues['new']['todo'].extend(
-            IssueEntry.for_each(self.args, self.root_url, (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'NEW_ISSUE'))
-        )
-        self.issues['existing']['todo'].extend(
-            IssueEntry.for_each(self.args, self.root_url, (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'STILL_FAILING'))
-        )
+        new_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'NEW_ISSUE')
+        self.issues['new']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, self.group, self.build))
+        existing_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'STILL_FAILING')
+        self.issues['existing']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, self.group, self.build))
 
         if self.args.include_softfails:
             new_soft_fails = [r for r in results.values() if r['state'] == 'NEW_SOFT_ISSUE']
@@ -585,6 +632,7 @@ class ProductReport(object):
         """Construct a product report object with options."""
         self.args = args
         self.job_group_url = job_group_url
+        self.group = job_group_url.split('/')[-1]
 
         try:
             current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
@@ -623,7 +671,7 @@ class ProductReport(object):
         bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
         for arch in sorted(archs):
             results = get_arch_state_results(arch, current_details, previous_details, args.output_state_results)
-            self.reports[arch] = ArchReport(arch, results, args, root_url, progress_browser, bugzilla_browser)
+            self.reports[arch] = ArchReport(arch, results, args, root_url, self.group, self.build, progress_browser, bugzilla_browser)
 
     def __str__(self):
         """Return report for product."""
@@ -684,6 +732,9 @@ def parse_args():
                         needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
     parser.add_argument('--query-issue-status-help', action='store_true',
                         help="""Shows help how to setup '--query-issue-status' configuration file.""")
+    parser.add_argument('--report-links', action='store_true',
+                        help="""Generate issue reporting links into report. Needs configuration file for product mapping,
+                        see '--query-issue-status-help'.""")
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
     parser.add_argument('--running-threshold', default=0,
