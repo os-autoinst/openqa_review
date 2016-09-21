@@ -102,9 +102,9 @@ import os.path
 import re
 import sys
 from collections import defaultdict, OrderedDict
-from configparser import ConfigParser  # isort:skip can not make isort happy here
+from configparser import ConfigParser, NoSectionError  # isort:skip can not make isort happy here
 from string import Template
-from urllib.parse import quote, unquote, urljoin, urlencode
+from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
 
 from bs4 import BeautifulSoup
 from sortedcontainers import SortedDict
@@ -416,18 +416,42 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     return current_url, previous_url
 
 
-def issue_report_link(root_url, group, build, f):
+def issue_report_link(args, root_url, f, test_browser=None):
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
     # It might not be the fatal one but better be safe and assume the first
     # failed module introduces a problem in the whole job
+
+    test_details_page = test_browser.get_soup(f['href'])
+    current_build_overview = splitquery(test_details_page.find(id='current-build-overview').a['href'])
+    overview_params = parse_qs(current_build_overview[-1])
+    group = overview_params['groupid'][0]
+    build = overview_params['build'][0]
+    scenario_div = test_details_page.find(class_='previous').div.div
+    scenario = re.findall('Results for (.*) \(', scenario_div.text)[0]
+    latest_link = urljoin(root_url, str(scenario_div.a['href']))
     failed_module = f['failedmodules'][0]
     module = failed_module['name']
     url = urljoin(root_url, str(failed_module['href']))
     details = 'Failed needles: %s' % failed_module['needles']
+    previous_results = test_details_page.find(id='previous_results', class_='overview').find_all('tr')[1:]
+    previous_results_list = [(i.td['id'], {'status': status(i),
+                                           'details': get_test_details(i),
+                                           'build': int(i.find(class_='build').text)}) for i in previous_results]
+    good = re.compile('(?<=_)(passed|softfailed)')
+
+    def build_link(v):
+        return '[%s](%s)' % (v['build'], urljoin(root_url, str(v['details']['href'])))
+    first_known_bad = build + ' (current job)'
+    last_good = '(unknown)'
+    for k, v in previous_results_list:
+        if good.search(v['status']):
+            last_good = build_link(v)
+            break
+        first_known_bad = build_link(v)
     description = """### Observation
 
-openQA test fails in
+openQA test in scenario %s fails in
 %s
 with
 %s
@@ -435,16 +459,40 @@ with
 
 ## Reproducible
 
-Fails with X/Y runs since / First time occurence
+Fails since (at least) Build %s
 
 
 ## Expected result
 
-Last good:
-""" % (url, details)
+Last good: %s (or more recent)
 
+
+## Further details
+
+Always latest result in this scenario: %s
+""" % (scenario, url, details, first_known_bad, last_good, latest_link)
+
+    config_section = 'product_issues:%s:product_mapping' % root_url.rstrip('/')
+    # the test module name itself is often not specific enough, that is why we step upwards from the current module until we find the module folder and
+    # concatenate the complete module name in format <folder>-<module> and search for that in the config for potential mappings
+    first_step_url = urljoin(str(failed_module['href']), '1/src')
+    start_of_current_module = test_details_page.find('a', {'href': first_step_url})
+    try:
+        module_folder = start_of_current_module.parent.parent.parent.parent.find(class_='glyphicon-folder-open').parent.text.strip()
+    except AttributeError:  # pragma: no cover
+        module_folder = ''
+        log.warn("Could not find module folder on test details page searching for parents of %s" % first_step_url)
+    complete_module = module_folder + '-' + module
+    component_config_section = 'product_issues:%s:component_mapping' % root_url.rstrip('/')
+    try:
+        components_config_dict = dict(config.items(component_config_section))
+        component = [v for k, v in iteritems(components_config_dict) if re.match(k, complete_module)][0]
+    except (NoSectionError, IndexError) as e:  # pragma: no cover
+        log.info("No matching component could be found for the module_folder %s and module name %s in the config section: %s" % (module_folder, module, e))
+        component = ''
     product_entries = OrderedDict([
-        ('product', config.get('product_issues:%s:product_mapping' % root_url.rstrip('/'), group)),
+        ('product', config.get(config_section, group)),
+        ('component', component),
         ('short_desc', '[Build %s] openQA test fails in %s' % (build, module)),
         ('bug_file_loc', url),
         ('comment', description)
@@ -514,15 +562,14 @@ class IssueEntry(object):
 
     """List of failed test scenarios with corresponding bug."""
 
-    def __init__(self, args, root_url, failures, group=None, build=None, bug=None, soft=False):
+    def __init__(self, args, root_url, failures, test_browser=None, bug=None, soft=False):
         """Construct an issueentry object with options."""
         self.args = args
         self.failures = [f for f in failures]
         self.bug = bug
         self.soft = soft
         self.root_url = root_url
-        self.group = group
-        self.build = build
+        self.test_browser = test_browser
 
     def _url(self, v):
         """Absolute url e.g. for test references."""
@@ -534,7 +581,7 @@ class IssueEntry(object):
     def _format_failure(self, f):
         """Yield a report entry for one new issue based on verbosity."""
         failure_modules_str = ' "Failed modules: %s"' % self._format_failure_modules(f['failedmodules']) if f['failedmodules'] else ''
-        report_str = issue_report_link(self.root_url, self.group, self.build, f) if (self.args.report_links and self.group and self.build) else ''
+        report_str = issue_report_link(self.args, self.root_url, f, self.test_browser) if (self.args.report_links and self.test_browser) else ''
         if self.args.verbose_test >= 3 and 'prev' in f:
             return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
                 f['name'], self._url(f),
@@ -556,22 +603,20 @@ class IssueEntry(object):
         )
 
     @classmethod
-    def for_each(cls, args, root_url, failures, group, build):
+    def for_each(cls, args, root_url, failures, test_browser):
         """Create one object for each failure (for todo entries)."""
-        return map(lambda f: cls(args, root_url, [f], group, build), failures)
+        return map(lambda f: cls(args, root_url, [f], test_browser), failures)
 
 
 class ArchReport(object):
 
     """Report for a single architecture."""
 
-    def __init__(self, arch, results, args, root_url, group, build, progress_browser, bugzilla_browser):
+    def __init__(self, arch, results, args, root_url, progress_browser, bugzilla_browser, test_browser):
         """Construct an archreport object with options."""
         self.arch = arch
         self.args = args
         self.root_url = root_url
-        self.group = group
-        self.build = build
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
 
@@ -593,9 +638,9 @@ class ArchReport(object):
 
         # left do handle are the issues marked with 'TODO'
         new_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'NEW_ISSUE')
-        self.issues['new']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, self.group, self.build))
+        self.issues['new']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, test_browser))
         existing_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'STILL_FAILING')
-        self.issues['existing']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, self.group, self.build))
+        self.issues['existing']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser))
 
         if self.args.include_softfails:
             new_soft_fails = [r for r in results.values() if r['state'] == 'NEW_SOFT_ISSUE']
@@ -671,7 +716,7 @@ class ProductReport(object):
         bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
         for arch in sorted(archs):
             results = get_arch_state_results(arch, current_details, previous_details, args.output_state_results)
-            self.reports[arch] = ArchReport(arch, results, args, root_url, self.group, self.build, progress_browser, bugzilla_browser)
+            self.reports[arch] = ArchReport(arch, results, args, root_url, progress_browser, bugzilla_browser, browser)
 
     def __str__(self):
         """Return report for product."""

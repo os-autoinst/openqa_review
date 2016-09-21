@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="3c1cf0b947ef86a5e28d8c1d0564aab02ea1e26e" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/90959f62a0/bootstrap.css" rel="stylesheet">
+      <script src="/asset/1e6ab518bc/bootstrap.js"></script>
+
+
+
+      <script>//<![CDATA[
+
+
+          $(function() {
+          setupForAll();
+            setupOverview();
+
+          } );
+
+//]]></script>
+      <link rel="icon"
+            type="image/png" sizes="16x16"
+            href="/asset/5caa45a06e/logo-16.png">
+      <link rel="icon" href="/asset/3137d8fd56/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-static-top navbar-default">
+          <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src="/asset/3137d8fd56/logo.svg" alt="openQA"></a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+
+                      <li>
+                          <a href="/tests">All Tests</a>
+                      </li>
+
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Job Groups<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+
+                                  <li>
+                                      <a href="/group_overview/25">Acceptance: openSUSE Tumbleweed  1.Gnome</a>
+                                  </li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                          <li id="user-action">
+                              <a href="/login">Login</a>
+                          </li>
+                  </ul>
+              </div><!-- /.navbar-collapse -->
+          </div>
+      </nav>
+      <div class="container" id="content">
+
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-danger">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/25">Acceptance: openSUSE Tumbleweed  1.Gnome</a></b>
+            build 2139
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">27</span>
+
+                Soft Failure:
+                <span class="badge">3</span>
+            Failed: <span class="badge">1</span>
+
+                None:
+                <span class="badge">17</span>
+        </div>
+    </div>
+    <div class="panel panel-default" id="filter-panel">
+        <div class="panel-heading"><strong>Filter</strong> <span>no filter present, click to toggle filter form<span></div>
+        <div class="panel-body">
+            <form action="#" type="get" id="filter-form">
+                <div class="form-group" id="filter-results">
+                    <strong>Result</strong>
+                        <label><input value="none" name="result" type="checkbox" id="filter-none"> None</label>
+                        <label><input value="passed" name="result" type="checkbox" id="filter-passed"> Passed</label>
+                        <label><input value="softfailed" name="result" type="checkbox" id="filter-softfailed"> Softfailed</label>
+                        <label><input value="failed" name="result" type="checkbox" id="filter-failed"> Failed</label>
+                        <label><input value="incomplete" name="result" type="checkbox" id="filter-incomplete"> Incomplete</label>
+                        <label><input value="skipped" name="result" type="checkbox" id="filter-skipped"> Skipped</label>
+                        <label><input value="obsoleted" name="result" type="checkbox" id="filter-obsoleted"> Obsoleted</label>
+                        <label><input value="parallel_failed" name="result" type="checkbox" id="filter-parallel_failed"> Parallel failed</label>
+                        <label><input value="parallel_restarted" name="result" type="checkbox" id="filter-parallel_restarted"> Parallel restarted</label>
+                        <label><input value="user_cancelled" name="result" type="checkbox" id="filter-user_cancelled"> User cancelled</label>
+                        <label><input value="user_restarted" name="result" type="checkbox" id="filter-user_restarted"> User restarted</label>
+                </div>
+                <div class="form-group" id="filter-states">
+                    <strong>State</strong>
+                        <label><input value="scheduled" name="state" type="checkbox" id="filter-scheduled"> Scheduled</label>
+                        <label><input value="running" name="state" type="checkbox" id="filter-running"> Running</label>
+                        <label><input value="cancelled" name="state" type="checkbox" id="filter-cancelled"> Cancelled</label>
+                        <label><input value="waiting" name="state" type="checkbox" id="filter-waiting"> Waiting</label>
+                        <label><input value="done" name="state" type="checkbox" id="filter-done"> Done</label>
+                        <label><input value="uploading" name="state" type="checkbox" id="filter-uploading"> Uploading</label>
+                </div>
+                <div class="form-group">
+                    <strong>Architecture</strong>
+                    <input type="text" class="form-control" name="arch" placeholder="any" id="filter-arch">
+                </div>
+                <div class="form-group">
+                    <strong>Misc</strong>
+                    <label><input value="1" name="todo" type="checkbox" id="filter-todo"> TODO</label>
+                </div>
+                <button type="submit" class="btn btn-default">Apply</button>
+            </form>
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD</h3>
+        <table id="results_Gnome-DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_Gnome-DVD_arch_arm">arm</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID0</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID0">
+
+             <span id="res-585914">
+                 <a href="/tests/585914">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID1">
+
+             <span id="res-585915">
+                 <a href="/tests/585915">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID10</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID10">
+
+             <span id="res-585916">
+                 <a href="/tests/585916">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID5</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID5">
+
+             <span id="res-585933">
+                 <a href="/tests/585933">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID6</td>
+
+                            <td id="res_Gnome-DVD_arm_RAID6">
+
+             <a href="/tests/585967">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_allpatterns">
+
+             <span id="res-585860">
+                 <a href="/tests/585860">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">boot_to_snapshot</td>
+
+                            <td id="res_Gnome-DVD_arm_boot_to_snapshot">
+
+             <span id="res-585861">
+                 <a href="/tests/585861">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">btrfs</td>
+
+                            <td id="res_Gnome-DVD_arm_btrfs">
+
+             <span id="res-585862">
+                 <a href="/tests/585862">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm">
+
+             <span id="res-585952">
+                 <a href="/tests/585952">
+                     <i class="status fa fa-circle result_obsoleted" title="Done: obsoleted"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm+activate_existing</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm+activate_existing">
+
+             <a href="/tests/585949">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="cryptlvm+activate_existing+force_recompute">cryptlvm+activate_existing ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm+activate_existing+force_recompute">
+
+             <a href="/tests/585948">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="cryptlvm+activate_existing+import_users">cryptlvm+activate_existing ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm+activate_existing+import_users">
+
+             <a href="/tests/585950">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm+cancel_existing</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm+cancel_existing">
+
+             <a href="/tests/585951">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm_minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_cryptlvm_minimal_x">
+
+             <span id="res-585881">
+                 <a href="/tests/585881">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4</td>
+
+                            <td id="res_Gnome-DVD_arm_ext4">
+
+             <span id="res-585882">
+                 <a href="/tests/585882">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome">
+
+             <span id="res-585883">
+                 <a href="/tests/585883">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@arm-smp</td>
+
+                            <td id="res_Gnome-DVD_arm_gnome@arm-smp">
+
+             <span id="res-585885">
+                 <a href="/tests/585885">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gpt</td>
+
+                            <td id="res_Gnome-DVD_arm_gpt">
+
+             <span id="res-585884">
+                 <a href="/tests/585884">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">installcheck</td>
+
+                            <td id="res_Gnome-DVD_arm_installcheck">
+
+             <a href="/tests/585850">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm</td>
+
+                            <td id="res_Gnome-DVD_arm_lvm">
+
+             <span id="res-585886">
+                 <a href="/tests/585886">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                            <td id="res_Gnome-DVD_arm_mediacheck">
+
+             <span id="res-585887">
+                 <a href="/tests/585887">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2">
+
+             <span id="res-585929">
+                 <a href="/tests/585929">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/585929#step/zypper_in/5">zypper_in</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2_allpatterns">upgrade_offline_13.2_al ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2_allpatterns">
+
+             <span id="res-585845">
+                 <a href="/tests/585845">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">upgrade_offline_13.2sp1</td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2sp1">
+
+             <span id="res-585926">
+                 <a href="/tests/585926">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_offline_13.2sp1_allpatterns">upgrade_offline_13.2sp1 ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_offline_13.2sp1_allpatterns">
+
+             <span id="res-585844">
+                 <a href="/tests/585844">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga">upgrade_zdup_offline_sle ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga">
+
+             <span id="res-585925">
+                 <a href="/tests/585925">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="upgrade_zdup_offline_13.2_ga_allpatterns">upgrade_zdup_offline_sle ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_upgrade_zdup_offline_13.2_ga_allpatterns">
+
+             <span id="res-585927">
+                 <a href="/tests/585927">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal+base">
+
+             <span id="res-585908">
+                 <a href="/tests/585908">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal_x</td>
+
+                            <td id="res_Gnome-DVD_arm_minimal_x">
+
+             <span id="res-585909">
+                 <a href="/tests/585909">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">multipath@arm-no-tmpfs</td>
+
+                            <td id="res_Gnome-DVD_arm_multipath@arm-no-tmpfs">
+
+             <span id="res-585932">
+                 <a href="/tests/585932">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system_13.1sp4</td>
+
+                            <td id="res_Gnome-DVD_arm_rescue_system_13.1sp4">
+
+             <span id="res-585910">
+                 <a href="/tests/585910">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2">
+
+             <a href="/tests/585930">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2sp1">
+
+             <a href="/tests/585935">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5">
+
+             <span id="res-585911">
+                 <a href="/tests/585911">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5+allpatterns</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5+allpatterns">
+
+             <span id="res-585912">
+                 <a href="/tests/585912">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader-ofw-12sp1-grub2-20151023</li><li>bootloader-ofw-20150724</li><li>bootloader-ofw-grub2-20150923</li><li>bootloader-ofw-grub2-zdup-20151013</li><li>bootloader-ofw-zdup-grub2-20151013</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/585912#step/reboot_gnome/9">reboot_gnome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5-ftp</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5-ftp">
+
+             <span id="res-585837">
+                 <a href="/tests/585837">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gcc5-http</td>
+
+                            <td id="res_Gnome-DVD_arm_gcc5-http">
+
+             <a href="/tests/585838">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">leap+extratests</td>
+
+                            <td id="res_Gnome-DVD_arm_leap+extratests">
+
+             <a href="/tests/585940">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">leap12_gnome_create_hdd</td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_gnome_create_hdd">
+
+             <span id="res-585852">
+                 <a href="/tests/585852">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_minimal_base+gcc5_create_hdd">leap12_minimal_base+gcc5_cr ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_minimal_base+gcc5_create_hdd">
+
+             <span id="res-585853">
+                 <a href="/tests/585853">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_fs_stress">leap12_qa_acceptance_fs_st ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_fs_stress">
+
+             <span id="res-585941">
+                 <a href="/tests/585941">
+                     <i class="status fa fa-circle result_obsoleted" title="Done: obsoleted"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_process_stress">leap12_qa_acceptance_proce ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_process_stress">
+
+             <span id="res-585942">
+                 <a href="/tests/585942">
+                     <i class="status fa fa-circle result_obsoleted" title="Done: obsoleted"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="leap12_qa_acceptance_sched_stress">leap12_qa_acceptance_sched ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_leap12_qa_acceptance_sched_stress">
+
+             <span id="res-585943">
+                 <a href="/tests/585943">
+                     <i class="status fa fa-circle result_obsoleted" title="Done: obsoleted"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode</td>
+
+                            <td id="res_Gnome-DVD_arm_textmode">
+
+             <span id="res-585913">
+                 <a href="/tests/585913">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">toolchain_zypper@arm-smp</td>
+
+                            <td id="res_Gnome-DVD_arm_toolchain_zypper@arm-smp">
+
+             <span id="res-585851">
+                 <a href="/tests/585851">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfs</td>
+
+                            <td id="res_Gnome-DVD_arm_xfs">
+
+             <a href="/tests/585964">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">yast_hostname</td>
+
+                            <td id="res_Gnome-DVD_arm_yast_hostname">
+
+             <a href="/tests/585843">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name"><span title="yast_hostname+linuxrc_hostname">yast_hostname+linuxrc_host ...</span></td>
+
+                            <td id="res_Gnome-DVD_arm_yast_hostname+linuxrc_hostname">
+
+             <a href="/tests/585924">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">yast_no_self_update</td>
+
+                            <td id="res_Gnome-DVD_arm_yast_no_self_update">
+
+             <a href="/tests/585842">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

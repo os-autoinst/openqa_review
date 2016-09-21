@@ -1,7 +1,7 @@
 # 0
 
 
-**Date:** 2016-09-21 - 20:01
+**Date:** 2016-09-21 - 21:34
 **Build:** 1507 (reference 1500)
 
 <hr>
@@ -30,7 +30,7 @@
 
 ***existing issues***
 
-* [ssh-X@i586--l3](https://openqa.opensuse.org/tests/384325 "Failed modules: bootloader_i586"): report [product bug](https://bugzilla.opensuse.org/enter_bug.cgi?product=openSUSE+Tumbleweed&short_desc=%5BBuild+1507%5D+openQA+test+fails+in+bootloader_i586&bug_file_loc=https%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F384325%2Fmodules%2Fbootloader_i586%2Fsteps%2F11&comment=%23%23%23+Observation%0A%0AopenQA+test+fails+in%0Ahttps%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F384325%2Fmodules%2Fbootloader_i586%2Fsteps%2F11%0Awith%0AFailed+needles%3A+%5B%27bootloader_i586-yast2-windowborder-20160504%27%5D%0A%0A%0A%23%23+Reproducible%0A%0AFails+with+X%2FY+runs+since+%2F+First+time+occurence%0A%0A%0A%23%23+Expected+result%0A%0ALast+good%3A%0A)
+* [ssh-X@i586--l3](https://openqa.opensuse.org/tests/384325 "Failed modules: bootloader_i586"): report [product bug](https://bugzilla.opensuse.org/enter_bug.cgi?product=openSUSE+Tumbleweed&component=Bootloader&short_desc=%5BBuild+1507%5D+openQA+test+fails+in+bootloader_i586&bug_file_loc=https%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F384325%2Fmodules%2Fbootloader_i586%2Fsteps%2F11&comment=%23%23%23+Observation%0A%0AopenQA+test+in+scenario+opensuse-42.1-Gnome-DVD-i586-ssh-X%40i586--l3+fails+in%0Ahttps%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F384325%2Fmodules%2Fbootloader_i586%2Fsteps%2F11%0Awith%0AFailed+needles%3A+%5B%27bootloader_i586-yast2-windowborder-20160504%27%5D%0A%0A%0A%23%23+Reproducible%0A%0AFails+since+%28at+least%29+Build+%5B1494%5D%28https%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F381889%29%0A%0A%0A%23%23+Expected+result%0A%0ALast+good%3A+%28unknown%29+%28or+more+recent%29%0A%0A%0A%23%23+Further+details%0A%0AAlways+latest+result+in+this+scenario%3A+https%3A%2F%2Fopenqa.opensuse.org%2Ftests%2Flatest%3Fflavor%3DGnome-DVD%26version%3D42.1%26test%3Dssh-X%26machine%3Di586--l3%26distri%3Dopensuse%26arch%3Di586%0A)
 
 
 

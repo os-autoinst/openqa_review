@@ -345,6 +345,8 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.set('product_issues', 'report_url', 'https://bugzilla.opensuse.org')
     openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:product_mapping')
     openqa_review.config.set('product_issues:https://openqa.opensuse.org:product_mapping', '25', 'openSUSE Tumbleweed')
+    openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:component_mapping')
+    openqa_review.config.set('product_issues:https://openqa.opensuse.org:component_mapping', 'installation-bootloader', 'Bootloader')
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
     assert 'bsc#' in report
@@ -359,10 +361,19 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_T_bugrefs.md')).read()
     compare_report(report, ref_report)
 
+    # report bug link(s) with 'new issue'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report_link_new_issue')
+    args.arch = 'arm'
+    report = str(openqa_review.generate_report(args))
+    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_bug_link_new_issue.md')).read()
+    compare_report(report, ref_report)
+
     # now, with query issues
     args.verbose_test = 1
     args.report_links = False
     args.query_issue_status = True
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
+    args.arch = 'i586'
     report = openqa_review.generate_report(args)
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
     compare_report(report, ref_report)

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="f49fa693ebd634abe1ac68c46fd8b529792f2f96" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: opensuse-42.1-Gnome-DVD-i586-Build1507-ssh-X@i586--l3 test results</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/90959f62a0/bootstrap.css" rel="stylesheet">
+      <script src="/asset/1e6ab518bc/bootstrap.js"></script>
+
+      <script src="/asset/762dcadb65/test_result.js"></script>
+
+
+      <script>//<![CDATA[
+
+
+          $(function() {
+          setupForAll();
+              $('.timeago').timeago();
+    setupResultButtons();
+    setupResult('done', 384325);
+
+          } );
+
+//]]></script>
+      <link rel="icon"
+            type="image/png" sizes="16x16"
+            href="/asset/5caa45a06e/logo-16.png">
+      <link rel="icon" href="/asset/3137d8fd56/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-static-top navbar-default">
+          <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src="/asset/3137d8fd56/logo.svg" alt="openQA"></a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+
+                      <li>
+                          <a href="/tests">All Tests</a>
+                      </li>
+
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Job Groups<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+
+<li id='current-group-overview'><a href="/group_overview/25">Acceptance: openSUSE Tumbleweed  1.Gnome (current)</a></li>
+<li id='current-build-overview'><a href="/tests/overview?build=1507&amp;distri=opensuse&amp;version=42.1&amp;groupid=25"><i class="glyphicon glyphicon-arrow-right"></i> Build 1507</a></li>
+<li role='separator' class='divider'></li>
+
+                                  <li>
+                                      <a href="/group_overview/25">Acceptance: openSUSE Tumbleweed  1.Gnome</a>
+                                  </li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                          <li class="dropdown" id="user-action">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >Logged in as
+                                  okurz
+                                  <span class="caret"></span>
+                              </a>
+                              <ul class="dropdown-menu">
+                                      <li class="dropdown-header">Operators Menu</li>
+                                      <li><a href="/admin/products">Medium types</a></li>
+                                      <li><a href="/admin/machines">Machines</a></li>
+                                      <li><a href="/admin/test_suites">Test suites</a></li>
+                                      <li><a href="/admin/groups">Job groups</a></li>
+                                      <li><a href="/admin/productlog">Scheduled products</a></li>
+
+                                      <li><a href="/admin/assets">Assets</a></li>
+                                      <!-- Sure this is not the proper place for the workers view,
+                                      but the previous one was even more annoying -->
+                                      <li><a href="/admin/workers">Workers</a></li>
+
+                                          <li role="separator" class="divider"></li>
+                                          <li class="dropdown-header">Administrators Menu</li>
+                                          <li><a href="/admin/users">Users</a></li>
+                                          <li><a href="/admin/needles">Needles</a></li>
+                                          <li><a href="/admin/auditlog">Audit log</a></li>
+                                      <li role="separator" class="divider"></li>
+                                      <li>
+                                         <a href="/api_keys">Manage API keys</a>
+                                      </li>
+                                  <li>
+                                      <a data-method="delete" href="/logout">Logout</a>
+                                  </li>
+                              </ul>
+                          </li>
+                  </ul>
+              </div><!-- /.navbar-collapse -->
+          </div>
+      </nav>
+      <div class="container" id="content">
+
+
+
+<div class="row">
+    <div>
+        <div id='flash-messages'>
+        </div>
+
+    </div>
+</div>
+
+<div class="row" id="result-row">
+    <div class="col-sm-12">
+                <div class="panel panel-danger" id="info_box">
+            <div class="panel-heading">
+                Results for
+                opensuse-42.1-Gnome-DVD-i586-Build1507-ssh-X@i586--l3
+            </div>
+            <div class="panel-body">
+                <div>
+                        Result: <b>failed</b>
+                        finished
+                        <abbr class="timeago" title="2016-05-10T18:41:55Z">2016-05-10 18:41:55 +0000</abbr>
+                        (
+                        04:51 minutes
+                        )
+                        <a data-method="post" data-remote="true" href="/api/v1/jobs/384325/restart" id="restart-result">
+                            <i class="fa fa-2 fa-repeat" title="Restart Job"></i>
+                        </a>
+                </div>
+                <div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div role="tabpanel">
+
+            <ul class="nav nav-tabs" role="tablist" id="result_tabs">
+                <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+                <li role="presentation"><a href="#downloads" aria-controls="downloads" role="tab" data-toggle="tab">Logs &amp; Assets</a></li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments (1)</a></li>
+                <li role="presentation"><a href="#previous" aria-controls="previous" role="tab" data-toggle="tab">Previous results (7)</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="details">
+                        <table id="results" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Test</th>
+                <th>Result</th>
+                <th style="width: 100%">References</th>
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                            installation
+                        </td>
+                    </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/isosize/steps/1/src">isosize</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-exclamation" title="Important: overall result is failed if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/isosize/steps/1" href="#step/isosize/1" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/5f/.thumbs/5ffd3541b02a5ed6e94b195ddbeda8.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/bootloader_i586/steps/1/src">bootloader_i586</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultfail">
+                        failed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/1" href="#step/bootloader_i586/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/67/.thumbs/ca277618424923569b3d362d17e4f3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/2" href="#step/bootloader_i586/2" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/9b/.thumbs/230424494df4a6176f4d561ec25005.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/3" href="#step/bootloader_i586/3" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/4" href="#step/bootloader_i586/4" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/32/.thumbs/7521f6917ab793d746ec4b8d4a931f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/5" href="#step/bootloader_i586/5" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/6" href="#step/bootloader_i586/6" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/e3/.thumbs/4ce49cc69d03c777aaf49636da58f9.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/7" href="#step/bootloader_i586/7" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/ba/.thumbs/54504b24c748066673c3645a66f635.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/8" href="#step/bootloader_i586/8" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/9" href="#step/bootloader_i586/9" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/12/.thumbs/98e2d6deff09b67c3a9d809c6db053.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/10" href="#step/bootloader_i586/10" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/36/.thumbs/93dc90ab39226fff79ee28de03955c.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-down"></div>
+                                <a class="no_hover" data-url="/tests/384325/modules/bootloader_i586/steps/11" href="#step/bootloader_i586/11" title>
+                                        <img alt class="resborder resborder_fail" height="45" src="/image/36/.thumbs/93dc90ab39226fff79ee28de03955c.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/welcome/steps/1/src">welcome</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/system_role/steps/1/src">system_role</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/partitioning/steps/1/src">partitioning</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/partitioning_finish/steps/1/src">partitioning_finish</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/releasenotes/steps/1/src">releasenotes</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/installer_timezone/steps/1/src">installer_timezone</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/logpackages/steps/1/src">logpackages</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/user_settings/steps/1/src">user_settings</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/user_settings_root/steps/1/src">user_settings_root</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/installation_overview/steps/1/src">installation_overview</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/start_install/steps/1/src">start_install</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/install_and_reboot/steps/1/src">install_and_reboot</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/reconnect_i586/steps/1/src">reconnect_i586</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/384325/modules/first_boot/steps/1/src">first_boot</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                                <i class="flag fa fa-anchor" title="Milestone: snapshot the state after this test for restoring"></i>
+                        </div>
+                    </td>
+                    <td class="result resultunknown">
+                        none
+                    </td>
+                    <td class="links">
+                   </td>
+                </tr>
+        </tbody>
+    </table>
+
+                </div>
+
+
+                <div role="tabpanel" class="tab-pane" id="downloads">
+                        <div class="h5">Result Files</div>
+    <ul>
+            <li>
+                    <a href="/tests/384325/file/vars.json">
+                        vars.json
+                    </a>
+            </li>
+    </ul>
+
+
+
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="settings">
+                    <table class="infotbl table table-striped" id="settings_box">
+    <thead>
+        <tr>
+            <th colspan="2">Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">ARCH</td>
+            <td style="text-align: left;">i586</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BACKEND</td>
+            <td style="text-align: left;">i586</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BETA</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BETA_SDK</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BUILD</td>
+            <td style="text-align: left;">1507</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">DISTRI</td>
+            <td style="text-align: left;">opensuse</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">FLAVOR</td>
+            <td style="text-align: left;">Gnome-DVD</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">INSTALLONLY</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">ISO</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Gnome-DVD-i586-Build1507-Media1.iso</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">ISO_MAXSIZE</td>
+            <td style="text-align: left;">4700372992</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">MACHINE</td>
+            <td style="text-align: left;">i586--l3</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">NAME</td>
+            <td style="text-align: left;">00384325-opensuse-42.1-Gnome-DVD-i586-Build1507-ssh-X@i586--l3</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_0</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Gnome-DVD-i586-Build1507-Media1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_10</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Live-POOL-i586-Build0277-Media1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_11</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Live-POOL-i586-Build0277-Media1.license</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_12</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Live-GEO-POOL-i586-x86_64-Build0088-Media1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_13</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Live-GEO-POOL-i586-x86_64-Build0088-Media1.license</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_7</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-Gnome-POOL-i586-Build1507-Media1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_8</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-SDK-POOL-i586-Build0677-Media1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_9</td>
+            <td style="text-align: left;">openSUSE Tumbleweed-42.1-SDK-POOL-i586-Build0677-Media1.license</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">SHUTDOWN_NEEDS_AUTH</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">TEST</td>
+            <td style="text-align: left;">ssh-X</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">VERSION</td>
+            <td style="text-align: left;">42.1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">VIDEOMODE</td>
+            <td style="text-align: left;">ssh-x</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">WORKER_CLASS</td>
+            <td style="text-align: left;">i586--l3</td>
+        </tr>
+    </tbody>
+</table>
+
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="previous">
+                    <div class="previous">
+                        <div id="scenario">
+    <div class="h5">Results for <i>opensuse-42.1-Gnome-DVD-i586-ssh-X@i586--l3</i> (<a href="/tests/latest?flavor=Gnome-DVD&amp;version=42.1&amp;test=ssh-X&amp;machine=i586--l3&amp;distri=opensuse&amp;arch=i586">latest job for this scenario</a>)</div>
+</div>
+<div>
+<table id="previous_results" class="overview table table-striped no-wrap" style="width: 100%">
+    <thead>
+        <tr>
+            <th class="job">Result</th>
+            <th>Build</th>
+            <th>Finished</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="res_383897">
+                <span id="res-383897">
+                    <a href="/tests/383897">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/383897#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-383897">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=1506&amp;version=42.1">1506</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-10T16:34:24Z">2016-05-10 16:34:24 +0000</abbr>
+                (
+                04:34 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_383870">
+                <span id="res-383870">
+                    <a href="/tests/383870">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/383870#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-383870">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=1505&amp;version=42.1">1505</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-10T14:01:12Z">2016-05-10 14:01:12 +0000</abbr>
+                (
+                05:37 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_383451">
+                <span id="res-383451">
+                    <a href="/tests/383451">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/383451#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-383451">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=1502&amp;version=42.1">1502</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-10T07:25:26Z">2016-05-10 07:25:26 +0000</abbr>
+                (
+                05:25 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_383158">
+                <span id="res-383158">
+                    <a href="/tests/383158">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/383158#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-383158">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=42.1&amp;distri=opensuse&amp;build=1501">1501</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-10T04:31:56Z">2016-05-10 04:31:56 +0000</abbr>
+                (
+                05:21 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_382797">
+                <span id="res-382797">
+                    <a href="/tests/382797">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382797#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-382797">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=42.1&amp;build=1500&amp;distri=opensuse">1500</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-09T21:24:38Z">2016-05-09 21:24:38 +0000</abbr>
+                (
+                09:55 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_382110">
+                <span id="res-382110">
+                    <a href="/tests/382110">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/382110#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-382110">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=42.1&amp;build=1498&amp;distri=opensuse">1498</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-09T15:31:33Z">2016-05-09 15:31:33 +0000</abbr>
+                (
+                06:15 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_381889">
+                <span id="res-381889">
+                    <a href="/tests/381889">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>bootloader_i586-yast2-windowborder-20160504</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/381889#step/bootloader_i586/11">bootloader_i586</a>
+    </span>
+
+                    <span id="test-label-381889">
+        <i class="test-label label_not_deployed_yet fa fa-bookmark" title="not_deployed_yet"></i>
+    </span>
+
+            </td>
+            <td class="build"><a href="/tests/overview?build=1494&amp;distri=opensuse&amp;version=42.1">1494</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2016-05-09T11:23:29Z">2016-05-09 11:23:29 +0000</abbr>
+                (
+                07:32 minutes
+                )
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div id="more_results">
+    Limit to
+    <b>10</b> / <a href="/tests/384325?limit_previous=20#previous">20</a> / <a href="/tests/384325?limit_previous=50#previous">50</a> / <a href="/tests/384325?limit_previous=100#previous">100</a> / <a href="/tests/384325?limit_previous=400#previous">400</a>
+    previous results
+</div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="preview_container_out">
+    <div id="preview_container_in" class="well well-lg">
+    </div>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
