@@ -660,7 +660,7 @@ class ProductReport(object):
         if args.arch:
             assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(args.arch, cur_archs)
             archs = [args.arch]
-        self.missing_archs = prev_archs - cur_archs
+        self.missing_archs = sorted(prev_archs - cur_archs)
         if self.missing_archs:
             log.info("%s missing completely from current run: %s" %
                      (pluralize(len(self.missing_archs), "architecture is", "architectures are"), ', '.join(self.missing_archs)))
