@@ -643,8 +643,13 @@ class ProductReport(object):
         return openqa_review_report_product
 
 
+class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+    """Preserve multi-line __doc__ and provide default arguments in help strings."""
+    pass
+
+
 def parse_args():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=CustomFormatter)
     parser.add_argument('-v', '--verbose',
                         help="Increase verbosity level, specify multiple times to increase verbosity",
                         action='count', default=1)
