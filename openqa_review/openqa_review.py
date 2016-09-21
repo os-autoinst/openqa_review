@@ -424,6 +424,7 @@ class Issue(object):
         self.status = None
         self.assignee = None
         self.resolution = None
+        self.priority = None
         if query_issue_status and progress_browser and bugzilla_browser:
             try:
                 if bugref.startswith('poo#'):
@@ -431,6 +432,7 @@ class Issue(object):
                     self.status = self.json['status']['name']
                     self.assignee = self.json['assigned_to']['name'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['subject']
+                    self.priority = self.json['priority']['name']
                 # bugref.startswith('bsc#') or bugref.startswith('boo#')
                 else:
                     bugid = int(re.search('(?<=(bsc|boo)#)([0-9]+)', bugref).group())
@@ -440,6 +442,7 @@ class Issue(object):
                         self.resolution = self.json['resolution']
                     self.assignee = self.json['assigned_to'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['summary']
+                    self.priority = self.json['priority'].split(' ')[0]
             except DownloadError as e:  # pragma: no cover
                 self.msg = str(e)
             except (TypeError, ValueError):
@@ -453,7 +456,7 @@ class Issue(object):
             status = self.status
             if self.resolution:
                 status += ' (%s)' % self.resolution
-            msg = 'Ticket status: %s, assignee: %s' % (status, self.assignee)
+            msg = 'Ticket status: %s, prio: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None
         return '[%s](%s%s)%s' % (
