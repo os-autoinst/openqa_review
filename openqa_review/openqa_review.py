@@ -146,7 +146,7 @@ base_url = https://%(username)s:%(password)s@apibugzilla.suse.com
 # for correct generation of issue reporting links add mappings from openQA
 # group IDs to product names in the corresponding issue tracker, e.g.
 # necessary for bugzilla
-[product_issues:mapping]
+[product_issues:https://openqa.opensuse.org:product_mapping]
 25 = openSUSE Tumbleweed
 """
 
@@ -444,7 +444,7 @@ Last good:
 """ % (url, details)
 
     product_entries = OrderedDict([
-        ('product', config.get('product_issues:mapping', group)),
+        ('product', config.get('product_issues:%s:product_mapping' % root_url.rstrip('/'), group)),
         ('short_desc', '[Build %s] openQA test fails in %s' % (build, module)),
         ('bug_file_loc', url),
         ('comment', description)

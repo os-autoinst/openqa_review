@@ -343,8 +343,8 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.set('product_issues', 'username', 'user')
     openqa_review.config.set('product_issues', 'password', 'pass')
     openqa_review.config.set('product_issues', 'report_url', 'https://bugzilla.opensuse.org')
-    openqa_review.config.add_section('product_issues:mapping')
-    openqa_review.config.set('product_issues:mapping', '25', 'openSUSE Tumbleweed')
+    openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:product_mapping')
+    openqa_review.config.set('product_issues:https://openqa.opensuse.org:product_mapping', '25', 'openSUSE Tumbleweed')
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
     assert 'bsc#' in report
