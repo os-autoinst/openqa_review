@@ -534,6 +534,7 @@ class Issue(object):
         self.assignee = None
         self.resolution = None
         self.priority = None
+        self.queried = False
         if query_issue_status and progress_browser and bugzilla_browser:
             try:
                 if bugref.startswith('poo#'):
@@ -552,10 +553,32 @@ class Issue(object):
                     self.assignee = self.json['assigned_to'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['summary']
                     self.priority = self.json['priority'].split(' ')[0]
+                self.queried = True
             except DownloadError as e:  # pragma: no cover
                 self.msg = str(e)
             except (TypeError, ValueError):
                 self.msg = "Ticket not found"
+
+    @property
+    def is_assigned(self):
+        """Issue has been assigned."""
+        assert self.queried
+        if self.assignee == 'None':
+            return False
+        elif "@forge.provo.novell.com" in self.assignee:
+            return False
+        else:
+            return True
+
+    @property
+    def is_open(self):
+        """Issue is still open."""
+        assert self.queried
+        s = self.status.upper()
+        if s in ["RESOLVED", "REJECTED", "VERIFIED"]:
+            return False
+        else:
+            return True
 
     def __str__(self):
         """Format issue using markdown."""
@@ -667,6 +690,15 @@ class ArchReport(object):
                 self.issues['new']['product'].append(IssueEntry(self.args, self.root_url, new_soft_fails, soft=True))
             if existing_soft_fails:
                 self.issues['existing']['product'].append(IssueEntry(self.args, self.root_url, existing_soft_fails, soft=True))
+
+    @property
+    def total_issues(self):
+        """Number of issue entries for this arch."""
+        total = 0
+        for issue_status, issue_types in iteritems(self.issues):
+            for issue_type, ies in iteritems(issue_types):
+                total += len(ies)
+        return total
 
     def __str__(self):
         """Return as markdown."""
@@ -805,6 +837,8 @@ def parse_args():
                         see '--query-issue-status-help'.""")
     parser.add_argument('-a', '--arch',
                         help='Only single architecture, e.g. \'x86_64\', not all')
+    parser.add_argument('-f', '--filter',
+                        help='Filter for \'closed\' or \'unassigned\' issues.')
     parser.add_argument('--running-threshold', default=0,
                         help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
     parser.add_argument('--no-empty-sections', action='store_false', default=True, dest='show_empty',
@@ -925,11 +959,37 @@ def load_config():
         sys.exit(1)
 
 
+ie_filters = {
+    "closed": lambda ie: ie.bug and ie.bug.queried and not ie.bug.is_open,
+    "unassigned": lambda ie: ie.bug and ie.bug.queried and ie.bug.is_open and not ie.bug.is_assigned
+}
+
+
+def filter_report(report, iefilter):
+    report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if isinstance(pr, ProductReport)})
+    for product, pr in iteritems(report.report):
+        for arch, ar in iteritems(pr.reports):
+            for issue_status, issue_types in iteritems(ar.issues):
+                for issue_type, ies in iteritems(issue_types):
+                    issue_types[issue_type] = [ie for ie in ies if iefilter(ie)]
+        pr.reports = SortedDict({a: ar for a, ar in iteritems(pr.reports) if ar.total_issues > 0})
+    report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if pr.reports})
+
+
 def main():  # pragma: no cover, only interactive
     args = parse_args()
     if args.query_issue_status or args.report_links:
         load_config()
     report = generate_report(args)
+
+    if args.filter:
+        try:
+            filter_report(report, ie_filters[args.filter])
+        except KeyError:
+            print("No such filter '%s'" % args.filter)
+            print("Available filters: %s" % ', '.join(ie_filters.keys()))
+            sys.exit(1)
+
     print(report)
 
 
