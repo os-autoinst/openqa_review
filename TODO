@@ -45,17 +45,17 @@
     https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt
 
 
-  - diff os-autoinst.txt logfiles, e.g. download and offer wizard like in
-    desired user diff editor
-   - can skip differing timestamps and near matches, maybe python difflib can
-     do this?
+ - diff os-autoinst.txt logfiles, e.g. download and offer wizard like in
+   desired user diff editor
+  - can skip differing timestamps and near matches, maybe python difflib can
+    do this?
 
 
-  - offer links to
-   - autoinst.txt (should be easy, it is the test-url + '/file/autoinst-log.txt', e.g. https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt')
-   - the test source code
-   - the git changelog of test + openQA + os-autoinst
-   - the OBS packages changed during period
+ - offer links to
+  - autoinst.txt (should be easy, it is the test-url + '/file/autoinst-log.txt', e.g. https://openqa.opensuse.org/tests/167348/file/autoinst-log.txt')
+  - the test source code
+  - the git changelog of test + openQA + os-autoinst
+  - the OBS packages changed during period
 
 
  - redirect report to file
