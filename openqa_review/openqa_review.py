@@ -469,7 +469,7 @@ Last good: %s (or more recent)
 
 ## Further details
 
-Always latest result in this scenario: %s
+Always latest result in this scenario: [latest](%s)
 """ % (scenario, url, details, first_known_bad, last_good, latest_link)
 
     config_section = 'product_issues:%s:product_mapping' % root_url.rstrip('/')
