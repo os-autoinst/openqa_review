@@ -378,6 +378,17 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
     compare_report(report, ref_report)
 
+    # now, try filtering: unassigned
+    openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
+    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md')).read()
+    compare_report(report, ref_report)
+
+    # 2nd filter: closed
+    report = openqa_review.generate_report(args)
+    openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
+    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md')).read()
+    compare_report(report, ref_report)
+
     # report generated when no todo items are left
     args.builds = '1508,1500'
     args.query_issue_status = False

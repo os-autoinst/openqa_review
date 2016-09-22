@@ -11,13 +11,13 @@
 
 **New Product bugs:**
 
-* toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading") (Ticket status: NEW, prio: P2, assignee: foobar@suse.com)
+* toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading") (Ticket status: NEW, prio: P2, assignee: kernel-maintainers@forge.provo.novell.com)
 * toolchain_zypper@bar -> [boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)
 
 
 **Existing Product bugs:**
 
-* allpatterns, ext4@i586--l2, gnome, minimal+base -> [bsc#822770](https://bugzilla.opensuse.org/show_bug.cgi?id=822770 "Install of grub2-efi failed") (Ticket status: NEW (FOOBAR), prio: P5, assignee: bazifoo@gmail.com)
+* allpatterns, ext4@i586--l2, gnome, minimal+base -> [bsc#822770](https://bugzilla.opensuse.org/show_bug.cgi?id=822770 "Install of grub2-efi failed") (Ticket status: RESOLVED (FOOBAR), prio: P5, assignee: bazifoo@gmail.com)
 
 
 **Existing openQA-issues:**
