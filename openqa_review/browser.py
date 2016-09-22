@@ -3,6 +3,7 @@
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
 install_aliases()
 
+import codecs
 import json
 import logging
 import os.path
@@ -89,7 +90,7 @@ class Browser(object):
         raw = json.dumps(content) if as_json else content
         if self.save:
             log.info("Saving content instead from URL %s from filename %s" % (url, filename))
-            open(os.path.join(self.save_dir, filename), 'w').write(raw)
+            codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf-8').write(raw)
         self.cache[url] = raw
         return content
 
