@@ -59,25 +59,6 @@
 
 
  - redirect report to file
- - offer to open urls to failed tests in browser
- - offer to open bugs in bugzilla or just text template (could enter new bugs
-   but don't submit yet for review), e.g. based on
-   https://bugzilla.suse.com/show_bug.cgi?id=959694
-   All fields in bugzilla can be prefilled over the URL– e.g.
-```
-https://bugzilla.opensuse.org/enter_bug.cgi?classification=7340&product=openSUSE.org&component=3rd%20party%20software&assigned_to=enter_package_bugowner%40suse.com&short_desc=home%3Aproject%3Aname%2Fpackage-name%3A%20Bug&bug_file_loc=https%3A%2F%2Fopenqa.opensuse.org%2Ftests%2F264648%23step%2Fbootloader%2F11&comment=COMMENT_GOES_HERE%20with%20space%0Aafter%20newline
-# also encode urls to include in content
-urllib.parse.quote('https://openqa.opensuse.org/tests/264648#step/bootloader/11').replace('/', '%2F')
-```
-   for SLES 12 SP2 it should be: `product=SUSE%20Linux%20Enterprise%20Server%2012%20SP2`
-   also see reference
-   http://webmasters.stackexchange.com/questions/31562/extension-to-add-button-report-to-bugzilla
-   and for redmine
-   http://www.redmine.org/issues/9076, e.g.  http://www.redmine.org/projects/redmine/issues/new?issue[description]=prefilled%20description&issue[custom_field_values][2]=Duplicate
-
-https://progress.opensuse.org/projects/openqatests/issues/new?issue[subject]=[Build%20XXX]%20Test%20foo%20fails&issue[description]=%23%23%20Observation%0AMore%20text
-
-
  - template for failed openqa product bugs in wiki
  - improve detection about "new product issue" or "new openqa issue".
    Assumption: If the source code of the test did not change
