@@ -102,7 +102,7 @@ import os.path
 import re
 import sys
 from collections import defaultdict, OrderedDict
-from configparser import ConfigParser, NoSectionError  # isort:skip can not make isort happy here
+from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
 from string import Template
 from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
 
@@ -498,8 +498,13 @@ Always latest result in this scenario: [latest](%s)
     except (NoSectionError, IndexError) as e:  # pragma: no cover
         log.info("No matching component could be found for the module_folder %s and module name %s in the config section: %s" % (module_folder, module, e))
         component = ''
+    try:
+        product = config.get(config_section, group)
+    except NoOptionError as e:  # pragma: no cover
+        log.info("%s. Reporting link for product will not work." % e)
+        product = ''
     product_entries = OrderedDict([
-        ('product', config.get(config_section, group)),
+        ('product', product),
         ('component', component),
         ('short_desc', '[Build %s] openQA test fails in %s' % (build, module)),
         ('bug_file_loc', url),
