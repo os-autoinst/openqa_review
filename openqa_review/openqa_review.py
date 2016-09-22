@@ -445,7 +445,7 @@ def issue_report_link(args, root_url, f, test_browser=None):
     previous_results = test_details_page.find(id='previous_results', class_='overview').find_all('tr')[1:]
     previous_results_list = [(i.td['id'], {'status': status(i),
                                            'details': get_test_details(i),
-                                           'build': int(i.find(class_='build').text)}) for i in previous_results]
+                                           'build': i.find(class_='build').text}) for i in previous_results]
     good = re.compile('(?<=_)(passed|softfailed)')
 
     def build_link(v):
