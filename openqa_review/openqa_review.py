@@ -142,12 +142,20 @@ system = bugzilla
 #username = user
 #password = secret
 base_url = https://%(username)s:%(password)s@apibugzilla.suse.com
+report_url = https://bugzilla.suse.com
 
 # for correct generation of issue reporting links add mappings from openQA
 # group IDs to product names in the corresponding issue tracker, e.g.
 # necessary for bugzilla
 [product_issues:https://openqa.opensuse.org:product_mapping]
 25 = openSUSE Tumbleweed
+
+[product_issues:http://openqa.opensuse.org:component_mapping]
+installation-bootloader = Bootloader
+
+[test_issues]
+system = redmine
+report_url = https://progress.opensuse.org/projects/openqatests/issues/new
 """
 
 
@@ -498,7 +506,12 @@ Always latest result in this scenario: [latest](%s)
         ('comment', description)
     ])
     product_bug = urljoin(config.get('product_issues', 'report_url'), 'enter_bug.cgi') + '?' + urlencode(product_entries)
-    return ': report [product bug](%s)' % (product_bug)
+    test_entries = OrderedDict([
+        ('issue[subject]', '[Build %s] test %s fails' % (build, module)),
+        ('issue[description]', description)
+    ])
+    test_issue = config.get('test_issues', 'report_url') + '?' + urlencode(test_entries)
+    return ': report [product bug](%s) / [openQA issue](%s)' % (product_bug, test_issue)
 
 
 class Issue(object):
