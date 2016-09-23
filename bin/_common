@@ -1,0 +1,10 @@
+cleanup() {
+    rm -r ${tmp}
+}
+
+setup_tmpdir() {
+    tmp=$(mktemp -d)
+    trap cleanup EXIT
+}
+
+set -o pipefail

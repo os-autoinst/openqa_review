@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+. $(dirname $0)/_common
+setup_tmpdir
+
 TPL="dashboard_files/dashboard.html.in"
 OUT="dashboard.html"
 if which openqa-review >/dev/null 2>&1 ; then
@@ -8,18 +11,12 @@ else
 	OPENQA_REVIEW="./openqa_review/openqa_review.py"
 fi
 
-cache=$(mktemp -d)
-
-function cleanup {
-    rm -r $cache
-}
-
 openqa_host="${openqa_host:-"http://openqa.suse.de/"}"
 
 GLOBAL_PARAMS="--host $openqa_host --no-empty-sections -R $@"
 
-closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$cache" -f closed | sed 's/^#\s/#### /' | markdown)
-unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$cache" -f unassigned | sed 's/^#\s/#### /' | markdown)
+closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$tmp" -f closed | sed 's/^#\s/#### /' | markdown)
+unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$tmp" -f unassigned | sed 's/^#\s/#### /' | markdown)
 
 sed '/TPL_OPENQA_CONTENT/q' $TPL | head -n -1 > $OUT
 cat >> $OUT <<EOF
