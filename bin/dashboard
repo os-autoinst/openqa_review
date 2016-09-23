@@ -3,20 +3,24 @@
 . $(dirname $0)/_common
 setup_tmpdir
 
-TPL="dashboard_files/dashboard.html.in"
-OUT="dashboard.html"
+TPL="${TPL:-"dashboard_files/dashboard.html.in"}"
+OUT="${OUT:-"dashboard.html"}"
 if which openqa-review >/dev/null 2>&1 ; then
-	OPENQA_REVIEW="openqa-review"
+    OPENQA_REVIEW="${OPENQA_REVIEW:-"openqa-review"}"
 else
-	OPENQA_REVIEW="./openqa_review/openqa_review.py"
+    OPENQA_REVIEW="${OPENQA_REVIEW:-"./openqa_review/openqa_review.py"}"
 fi
 
 openqa_host="${openqa_host:-"http://openqa.suse.de/"}"
 
-GLOBAL_PARAMS="--host $openqa_host --no-empty-sections -R $@"
+GLOBAL_PARAMS="${GLOBAL_PARAMS:-"--host $openqa_host --no-empty-sections -R $@"}"
 
-closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$tmp" -f closed | sed 's/^#\s/#### /' | markdown)
-unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$tmp" -f unassigned | sed 's/^#\s/#### /' | markdown)
+decrease_header() {
+    sed 's/^#\s/#### /'
+}
+
+closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$tmp" -f closed | decrease_header | markdown)
+unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$tmp" -f unassigned | decrease_header | markdown)
 
 sed '/TPL_OPENQA_CONTENT/q' $TPL | head -n -1 > $OUT
 cat >> $OUT <<EOF
@@ -25,7 +29,7 @@ cat >> $OUT <<EOF
         Closed Bugs
     </div>
     <div class="panel-body">
-		${closed_html}
+        ${closed_html}
     </div>
 </div>
 
@@ -34,7 +38,7 @@ cat >> $OUT <<EOF
         Unassigned Bugs
     </div>
     <div class="panel-body">
-		${unassigned_html}
+        ${unassigned_html}
     </div>
 </div>
 EOF
