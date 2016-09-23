@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -e
 
 TPL="dashboard_files/dashboard.html.in"
 OUT="dashboard.html"
@@ -10,7 +10,13 @@ fi
 
 cache=$(mktemp -d)
 
-GLOBAL_PARAMS="--host https://openqa.suse.de/ --no-empty-sections -R $@"
+function cleanup {
+    rm -r $cache
+}
+
+openqa_host="${openqa_host:-"http://openqa.suse.de/"}"
+
+GLOBAL_PARAMS="--host $openqa_host --no-empty-sections -R $@"
 
 closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$cache" -f closed | sed 's/^#\s/#### /' | markdown)
 unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$cache" -f unassigned | sed 's/^#\s/#### /' | markdown)
@@ -37,5 +43,3 @@ cat >> $OUT <<EOF
 EOF
 
 sed '1,/TPL_OPENQA_CONTENT/d' $TPL >> $OUT
-
-rm -r "$cache"
