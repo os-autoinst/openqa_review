@@ -22,8 +22,11 @@ decrease_header() {
 closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$tmp" -f closed | decrease_header | markdown)
 unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$tmp" -f unassigned | decrease_header | markdown)
 
-sed '/TPL_OPENQA_CONTENT/q' $TPL | head -n -1 > $OUT
-cat >> $OUT <<EOF
+TPL_OPENQA_HEADER_LINKS='
+<p><a href="#closed_box">» Closed bugs</a></p>
+<p><a href="#unassigned_box">» Unassigned bugs</a></p>
+'
+TPL_OPENQA_CONTENT=$(cat <<EOF
 <div class="panel panel-default" id="closed_box">
     <div class="panel-heading" style="font-weight: bold;">
         Closed Bugs
@@ -42,5 +45,11 @@ cat >> $OUT <<EOF
     </div>
 </div>
 EOF
+)
 
-sed '1,/TPL_OPENQA_CONTENT/d' $TPL >> $OUT
+eval "cat <<EOF
+$(<$TPL)
+EOF
+" 2> /dev/null > $OUT
+
+

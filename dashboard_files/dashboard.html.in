@@ -62,8 +62,7 @@
         <div class="col-md-10">
             <h2>openQA review report for openqa.suse.de</h2>
 
-<p><a href="#closed_box">» Closed bugs</a></p>
-<p><a href="#unassigned_box">» Unassigned bugs</a></p>
+            ${TPL_OPENQA_HEADER_LINKS}
 
         </div>
 
@@ -78,7 +77,7 @@
     </div>
 </div>
 
-TPL_OPENQA_CONTENT
+${TPL_OPENQA_CONTENT}
 
       </div>
 
