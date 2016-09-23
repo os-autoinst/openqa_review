@@ -1,3 +1,13 @@
+ - report_links: previous builds can be in wrong order, should be sorted by
+   build, see https://openqa.suse.de/tests/588121#previous
+
+ - optional inclusion of "incompletes" to review them, too
+
+ - parse soft fails from test details pages as they show a nice icon for
+   instances of record_soft_failure
+
+ - think about updating a wiki page on redmine with a report
+   http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages
 
  - Review https://gitlab.suse.de/security/tools/tree/master and
    especially https://gitlab.suse.de/security/tools/blob/master/bzmass for
