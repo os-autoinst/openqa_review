@@ -50,3 +50,5 @@ requests for consideration or create an issue with a code change proposal.
 ## License
 
 This project is licensed under the MIT license, see LICENSE file for details.
+Exceptions are the files under `dashboard_files/` which are GPL-2 licensed
+coming from https://github.com/os-autoinst/openQA/.
