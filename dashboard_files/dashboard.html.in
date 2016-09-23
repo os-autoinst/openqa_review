@@ -12,7 +12,6 @@
 
       <!-- Bootstrap core CSS -->
       <link href="dashboard_files/bootstrap.css" rel="stylesheet">
-      <script src="dashboard_files/bootstrap.js"></script>
 
       <link rel="icon" type="image/png" sizes="16x16" href="https://openqa.suse.de/asset/5caa45a06e/logo-16.png">
       <link rel="icon" href="dashboard_files/logo.svg" sizes="any" type="image/svg+xml">
