@@ -8,3 +8,37 @@ setup_tmpdir() {
 }
 
 set -o pipefail
+
+decrease_header() {
+    sed 's/^#\s/#### /'
+}
+
+header_line() {
+    local id="${1:?"Need header ref corresponding to div id value (without leading '#')"}"
+    local title="${2:?"Need title"}"
+
+    echo $(cat <<EOF
+<p><a href="#${id}">» ${title}</a></p>
+EOF
+)
+}
+
+entry_block() {
+    local id="${1:?"Need div id value corresponding to header href"}"
+    local title="${2:?"Need title for box header"}"
+    local content="${3:?"Need content"}"
+
+    echo $(cat <<EOF
+<div class="panel panel-default" id="${id}">
+    <div class="panel-heading" style="font-weight: bold;">
+        ${title}
+
+        <span style="float:right;"><a href="#">Back to top</a></span>
+    </div>
+    <div class="panel-body">
+        ${content}
+    </div>
+</div>
+EOF
+)
+}

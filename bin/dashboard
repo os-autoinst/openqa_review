@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 . $(dirname $0)/_common
-setup_tmpdir
+[ -d $tmp ] || setup_tmpdir
 
 TPL="${TPL:-"dashboard_files/dashboard.html.in"}"
 OUT="${OUT:-"dashboard.html"}"
@@ -15,41 +15,22 @@ openqa_host="${openqa_host:-"http://openqa.suse.de/"}"
 
 GLOBAL_PARAMS="${GLOBAL_PARAMS:-"--host $openqa_host --no-empty-sections -R $@"}"
 
-decrease_header() {
-    sed 's/^#\s/#### /'
-}
-
 closed_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --save --save-dir="$tmp" -f closed | decrease_header | markdown)
 unassigned_html=$($OPENQA_REVIEW $GLOBAL_PARAMS --load --load-dir="$tmp" -f unassigned | decrease_header | markdown)
 
-TPL_OPENQA_HEADER_LINKS='
-<p><a href="#closed_box">» Closed bugs</a></p>
-<p><a href="#unassigned_box">» Unassigned bugs</a></p>
-'
-TPL_OPENQA_CONTENT=$(cat <<EOF
-<div class="panel panel-default" id="closed_box">
-    <div class="panel-heading" style="font-weight: bold;">
-        Closed Bugs
-    </div>
-    <div class="panel-body">
-        ${closed_html}
-    </div>
-</div>
+TPL_OPENQA_HEADER_LINKS=$(cat <<EOF
+$(header_line "closed_box" "Closed Bugs")
+$(header_line "unassigned_box" "Unassigned Bugs")
+EOF
+)
 
-<div class="panel panel-default" id="unassigned_box">
-    <div class="panel-heading" style="font-weight: bold;">
-        Unassigned Bugs
-    </div>
-    <div class="panel-body">
-        ${unassigned_html}
-    </div>
-</div>
+TPL_OPENQA_CONTENT=$(cat <<EOF
+$(entry_block "closed_box" "Closed Bugs" "${closed_html}")
+$(entry_block "unassigned_box" "Unassigned Bugs" "${unassigned_html}")
 EOF
 )
 
 eval "cat <<EOF
 $(<$TPL)
 EOF
-" 2> /dev/null > $OUT
-
-
+" > $OUT
