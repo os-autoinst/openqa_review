@@ -424,6 +424,21 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     return current_url, previous_url
 
 
+def get_failed_module_details_for_report(f, root_url):
+    try:
+        failed_module = f['failedmodules'][0]
+    except IndexError:
+        log.debug("%s does not have failed module, taking complete job." % f['href'])
+        module = ''
+        url = f['href']
+        details = ''
+    else:
+        module = failed_module['name']
+        url = failed_module['href']
+        details = '\nwith failed needles: %s' % failed_module['needles']
+    return module, url, details
+
+
 def issue_report_link(args, root_url, f, test_browser=None):
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
@@ -437,11 +452,8 @@ def issue_report_link(args, root_url, f, test_browser=None):
     build = overview_params['build'][0]
     scenario_div = test_details_page.find(class_='previous').div.div
     scenario = re.findall('Results for (.*) \(', scenario_div.text)[0]
-    latest_link = urljoin(root_url, str(scenario_div.a['href']))
-    failed_module = f['failedmodules'][0]
-    module = failed_module['name']
-    url = urljoin(root_url, str(failed_module['href']))
-    details = 'Failed needles: %s' % failed_module['needles']
+    latest_link = absolute_url(root_url, scenario_div.a)
+    module, url, details = get_failed_module_details_for_report(f, root_url)
     previous_results = test_details_page.find(id='previous_results', class_='overview').find_all('tr')[1:]
     previous_results_list = [(i.td['id'], {'status': status(i),
                                            'details': get_test_details(i),
@@ -449,7 +461,7 @@ def issue_report_link(args, root_url, f, test_browser=None):
     good = re.compile('(?<=_)(passed|softfailed)')
 
     def build_link(v):
-        return '[%s](%s)' % (v['build'], urljoin(root_url, str(v['details']['href'])))
+        return '[%s](%s)' % (v['build'], absolute_url(root_url, v['details']))
     first_known_bad = build + ' (current job)'
     last_good = '(unknown)'
     for k, v in previous_results_list:
@@ -460,9 +472,7 @@ def issue_report_link(args, root_url, f, test_browser=None):
     description = """### Observation
 
 openQA test in scenario %s fails in
-%s
-with
-%s
+%s%s
 
 
 ## Reproducible
@@ -478,12 +488,12 @@ Last good: %s (or more recent)
 ## Further details
 
 Always latest result in this scenario: [latest](%s)
-""" % (scenario, url, details, first_known_bad, last_good, latest_link)
+""" % (scenario, urljoin(root_url, str(url)), details, first_known_bad, last_good, latest_link)
 
     config_section = 'product_issues:%s:product_mapping' % root_url.rstrip('/')
     # the test module name itself is often not specific enough, that is why we step upwards from the current module until we find the module folder and
     # concatenate the complete module name in format <folder>-<module> and search for that in the config for potential mappings
-    first_step_url = urljoin(str(failed_module['href']), '1/src')
+    first_step_url = urljoin(str(url), '1/src')
     start_of_current_module = test_details_page.find('a', {'href': first_step_url})
     try:
         module_folder = start_of_current_module.parent.parent.parent.parent.find(class_='glyphicon-folder-open').parent.text.strip()
@@ -496,7 +506,7 @@ Always latest result in this scenario: [latest](%s)
         components_config_dict = dict(config.items(component_config_section))
         component = [v for k, v in iteritems(components_config_dict) if re.match(k, complete_module)][0]
     except (NoSectionError, IndexError) as e:  # pragma: no cover
-        log.info("No matching component could be found for the module_folder %s and module name %s in the config section: %s" % (module_folder, module, e))
+        log.info("No matching component could be found for the module_folder '%s' and module name '%s' in the config section '%s'" % (module_folder, module, e))
         component = ''
     try:
         product = config.get(config_section, group)
@@ -506,13 +516,13 @@ Always latest result in this scenario: [latest](%s)
     product_entries = OrderedDict([
         ('product', product),
         ('component', component),
-        ('short_desc', '[Build %s] openQA test fails in %s' % (build, module)),
-        ('bug_file_loc', url),
+        ('short_desc', '[Build %s] openQA test fails%s' % (build, ' in %s' % module if module else '')),
+        ('bug_file_loc', urljoin(root_url, str(url))),
         ('comment', description)
     ])
     product_bug = urljoin(config.get('product_issues', 'report_url'), 'enter_bug.cgi') + '?' + urlencode(product_entries)
     test_entries = OrderedDict([
-        ('issue[subject]', '[Build %s] test %s fails' % (build, module)),
+        ('issue[subject]', '[Build %s] test %sfails' % (build, module + ' ' if module else '')),
         ('issue[description]', description)
     ])
     test_issue = config.get('test_issues', 'report_url') + '?' + urlencode(test_entries)

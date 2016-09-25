@@ -672,12 +672,6 @@
                  </a>
              </span>
 
-
-    <span title='<p>Failed needles:</p><ul><li>bootloader-ofw-12sp1-grub2-20151023</li><li>bootloader-ofw-20150724</li><li>bootloader-ofw-grub2-20150923</li><li>bootloader-ofw-grub2-zdup-20151013</li><li>bootloader-ofw-zdup-grub2-20151013</li></ul>' data-toggle='tooltip' class="failedmodule" >
-        <a href="/tests/585912#step/reboot_gnome/9">reboot_gnome</a>
-    </span>
-
-
 </td>
 
                     </tr>
