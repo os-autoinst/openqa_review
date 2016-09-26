@@ -163,7 +163,7 @@ openqa_review_report_product_template = Template("""
 **Date:** $now
 **Build:** $build
 $common_issues
-<hr>
+---
 $arch_report
 """)  # noqa: W291  # ignore trailing whitespace for forced line breaks
 
@@ -312,7 +312,7 @@ def issue_listing(header, issues, show_empty=True):
 def common_issues(issues, show_empty=True):
     if not show_empty and issues == '':
         return ''
-    return '\n' + '**Common issues:**' + '\n' + issues
+    return '\n' + '**Common issues:**' + '\n' + issues + '\n'
 
 
 def issue_type(bugref):

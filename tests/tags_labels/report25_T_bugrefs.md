@@ -4,7 +4,7 @@
 **Date:** 2016-09-22 - 13:24
 **Build:** 1507 (reference 1500)
 
-<hr>
+---
 
 **Arch:** i586
 **Status: <font color="red">Red</font>**
