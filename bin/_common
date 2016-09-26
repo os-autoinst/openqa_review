@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cleanup() {
     rm -r ${tmp}
 }
@@ -26,7 +28,7 @@ EOF
 entry_block() {
     local id="${1:?"Need div id value corresponding to header href"}"
     local title="${2:?"Need title for box header"}"
-    local content="${3:?"Need content"}"
+    local content="${3}"
 
     echo $(cat <<EOF
 <div class="panel panel-default" id="${id}">
