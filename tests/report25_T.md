@@ -7,7 +7,8 @@
 **Common issues:**
 
  * **Missing architectures**: i586
-<hr>
+
+---
 
 **Arch:** x86_64
 **Status: <font color="red">Red</font>**

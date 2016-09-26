@@ -7,7 +7,8 @@
 **Common issues:**
 
  * **Missing architectures**: aarch64, i586, x86_64
-<hr>
+
+---
 
 **Arch:** arm
 **Status: <font color="red">Red</font>**
