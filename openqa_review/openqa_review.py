@@ -604,7 +604,7 @@ class Issue(object):
         return '[%s](%s%s)%s' % (
             self.bugref,
             self.bugref_href,
-            ' "%s"' % self.subject if self.subject else '',
+            ' "%s"' % self.subject.replace(')', '&#41;') if self.subject else '',
             ' (%s)' % msg if msg else '',
         )
 
