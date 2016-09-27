@@ -20,7 +20,7 @@
           hr + h4 {
               margin-top: -18px;
               padding-top: 18px;
-              border-top: 1px solid #eee;
+              border-top: 2px solid #eee;
           }
       </style>
 
