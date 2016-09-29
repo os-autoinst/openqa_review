@@ -358,8 +358,14 @@ def find_builds(soup, running_threshold=0):
     """Find finished builds, ignore still running or empty."""
     def below_threshold(bar):
         threshold = float(running_threshold) if running_threshold is not None else 0
-        return float(bar['style'].lstrip('width: ').rstrip('%')) <= threshold
-    finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
+        return float(bar['style'].lstrip('width: ').rstrip(';').rstrip('%')) <= threshold
+    builds = [bar.parent.parent for bar in soup.find_all(class_=re.compile("progress build-dashboard"))]
+    finished = [build for build in builds if not build.find(class_='progress-bar-striped') or
+                below_threshold(build.find(class_='progress-bar-striped'))]
+
+    if not finished:
+        log.debug('Could not find builds, reverting to old-style openQA (pre 61b4db60c42da81cffdaa4cd484c0a0db4f98690 #912)')
+        finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
     def not_empty_build(bar):
         passed = re.compile("progress-bar-(success|passed|softfailed)")

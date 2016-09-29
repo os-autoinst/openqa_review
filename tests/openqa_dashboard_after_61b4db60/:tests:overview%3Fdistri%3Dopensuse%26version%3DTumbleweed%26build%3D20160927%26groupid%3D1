@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+      <div class="container" id="content">
+
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-danger">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/1">openSUSE Tumbleweed</a></b>
+            build 20160927
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">55</span>
+
+                Incomplete:
+                <span class="badge">1</span>
+                Soft Failure:
+                <span class="badge">43</span>
+            Failed: <span class="badge">4</span>
+
+        </div>
+    </div>
+    <div class="panel panel-default" id="filter-panel">
+        <div class="panel-heading"><strong>Filter</strong> <span>no filter present, click to toggle filter form<span></div>
+        <div class="panel-body">
+            <form action="#" type="get" id="filter-form">
+                <div class="form-group" id="filter-results">
+                    <strong>Result</strong>
+                        <label><input value="none" name="result" type="checkbox" id="filter-none"> None</label>
+                        <label><input value="passed" name="result" type="checkbox" id="filter-passed"> Passed</label>
+                        <label><input value="softfailed" name="result" type="checkbox" id="filter-softfailed"> Softfailed</label>
+                        <label><input value="failed" name="result" type="checkbox" id="filter-failed"> Failed</label>
+                        <label><input value="incomplete" name="result" type="checkbox" id="filter-incomplete"> Incomplete</label>
+                        <label><input value="skipped" name="result" type="checkbox" id="filter-skipped"> Skipped</label>
+                        <label><input value="obsoleted" name="result" type="checkbox" id="filter-obsoleted"> Obsoleted</label>
+                        <label><input value="parallel_failed" name="result" type="checkbox" id="filter-parallel_failed"> Parallel failed</label>
+                        <label><input value="parallel_restarted" name="result" type="checkbox" id="filter-parallel_restarted"> Parallel restarted</label>
+                        <label><input value="user_cancelled" name="result" type="checkbox" id="filter-user_cancelled"> User cancelled</label>
+                        <label><input value="user_restarted" name="result" type="checkbox" id="filter-user_restarted"> User restarted</label>
+                </div>
+                <div class="form-group" id="filter-states">
+                    <strong>State</strong>
+                        <label><input value="scheduled" name="state" type="checkbox" id="filter-scheduled"> Scheduled</label>
+                        <label><input value="running" name="state" type="checkbox" id="filter-running"> Running</label>
+                        <label><input value="cancelled" name="state" type="checkbox" id="filter-cancelled"> Cancelled</label>
+                        <label><input value="waiting" name="state" type="checkbox" id="filter-waiting"> Waiting</label>
+                        <label><input value="done" name="state" type="checkbox" id="filter-done"> Done</label>
+                        <label><input value="uploading" name="state" type="checkbox" id="filter-uploading"> Uploading</label>
+                </div>
+                <div class="form-group">
+                    <strong>Architecture</strong>
+                    <input type="text" class="form-control" name="arch" placeholder="any" id="filter-arch">
+                </div>
+                <div class="form-group">
+                    <strong>Misc</strong>
+                    <label><input value="1" name="todo" type="checkbox" id="filter-todo"> TODO</label>
+                </div>
+                <button type="submit" class="btn btn-default">Apply</button>
+            </form>
+        </div>
+    </div>
+        <h3>Flavor: DVD</h3>
+        <table id="results_DVD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_DVD_arch_i586">i586</th>
+                        <th id="flavor_DVD_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID0</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_RAID0">
+
+             <span id="res-272275">
+                 <a href="/tests/272275">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_RAID1">
+
+             <span id="res-272276">
+                 <a href="/tests/272276">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID10</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_RAID10">
+
+             <span id="res-272278">
+                 <a href="/tests/272278">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID5</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_RAID5">
+
+             <span id="res-272277">
+                 <a href="/tests/272277">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">boot_to_snapshot</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_boot_to_snapshot">
+
+             <span id="res-272258">
+                 <a href="/tests/272258">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_cryptlvm">
+
+             <span id="res-272279">
+                 <a href="/tests/272279">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm@uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_cryptlvm@uefi">
+
+             <span id="res-272256">
+                 <a href="/tests/272256">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_ext4">
+
+             <span id="res-272284">
+                 <a href="/tests/272284">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">extra_tests_on_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_extra_tests_on_gnome">
+
+             <span id="res-272308">
+                 <a href="/tests/272308">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>multi_users_dm-gnome-20160222</li><li>multi_users_dm-gnome-20160722</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272308#step/multi_users_dm/11">multi_users_dm</a>
+    </span>
+
+             <span id="bug-272308">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=976764">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: boo#976764"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">extra_tests_on_kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_extra_tests_on_kde">
+
+             <span id="res-272294">
+                 <a href="/tests/272294">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">extra_tests_on_textmode</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_extra_tests_on_textmode">
+
+             <span id="res-272296">
+                 <a href="/tests/272296">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/272296#step/btrfs_qgroups/62">btrfs_qgroups</a>
+    </span>
+         +3
+
+             <span id="bug-272296">
+        <a href="https://bugzilla.suse.com/show_bug.cgi?id=993841">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#993841"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">extra_tests_on_xfce</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_extra_tests_on_xfce">
+
+             <span id="res-272295">
+                 <a href="/tests/272295">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome">
+
+             <span id="res-272269">
+                 <a href="/tests/272269">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272269#step/chrome/22">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>yast2-nfs-client-selected-for-install-20150902</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272269#step/yast2_i/14">yast2_i</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome+do_not_import_ssh_keys</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome+do_not_import_ssh_keys">
+
+             <span id="res-272305">
+                 <a href="/tests/272305">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome+import_ssh_keys</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome+import_ssh_keys">
+
+             <span id="res-272304">
+                 <a href="/tests/272304">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome-gdm</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome-gdm">
+
+             <span id="res-272301">
+                 <a href="/tests/272301">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome-image">
+
+             <span id="res-272291">
+                 <a href="/tests/272291">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@Laptop_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_gnome@Laptop_64">
+
+             <span id="res-272270">
+                 <a href="/tests/272270">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272270#step/chrome/22">chrome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">install_only@64bit-multipath</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_install_only@64bit-multipath">
+
+             <span id="res-272263">
+                 <a href="/tests/272263">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">install_only@smp_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_install_only@smp_64">
+
+             <span id="res-272282">
+                 <a href="/tests/272282">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde">
+
+             <span id="res-272265">
+                 <a href="/tests/272265">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde-image">
+
+             <span id="res-272292">
+                 <a href="/tests/272292">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde-sddm</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde-sddm">
+
+             <span id="res-272302">
+                 <a href="/tests/272302">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>gnucash-20151203</li><li>gnucash-20151229</li><li>gnucash-20160504</li><li>gnucash-20160804</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272302#step/gnucash/38">gnucash</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>oomath-5.2-prompt-kde-20160606</li><li>oomath-prompt-kde-20150722</li><li>oomath-prompt-kde-20151116</li><li>oomath-prompt-kde-20160111</li><li>oomath-prompt-kde-20160606</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272302#step/oomath/6">oomath</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde@Laptop_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde@Laptop_64">
+
+             <span id="res-272267">
+                 <a href="/tests/272267">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde@USBboot_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde@USBboot_64">
+
+             <span id="res-272266">
+                 <a href="/tests/272266">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde_dual_windows10@uefi_win</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_kde_dual_windows10@uefi_win">
+
+             <span id="res-272303">
+                 <a href="/tests/272303">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_lvm">
+
+             <span id="res-272674">
+                 <a href="/tests/272674">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lvm+RAID1</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_lvm+RAID1">
+
+             <span id="res-272306">
+                 <a href="/tests/272306">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lxde</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_lxde">
+
+             <span id="res-272273">
+                 <a href="/tests/272273">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>xterm-started-20141205</li><li>xterm-started-20150325</li><li>xterm-started-20150430</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272273#step/chrome/6">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-lxde-20160111</li><li>firefox-lxde-20160314</li><li>firefox-lxde-20160428</li><li>firefox-lxde-20160531</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272273#step/firefox/7">firefox</a>
+    </span>
+         +3
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_mediacheck">
+
+             <span id="res-272288">
+                 <a href="/tests/272288">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_memtest">
+
+             <span id="res-272286">
+                 <a href="/tests/272286">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_minimalx">
+
+             <span id="res-272271">
+                 <a href="/tests/272271">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx+btrfs+nosephome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_minimalx+btrfs+nosephome">
+
+             <span id="res-272272">
+                 <a href="/tests/272272">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx_btrfs_snapper</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_minimalx_btrfs_snapper">
+
+             <span id="res-272261">
+                 <a href="/tests/272261">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_rescue_system">
+
+             <span id="res-272289">
+                 <a href="/tests/272289">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">splitusr</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_splitusr">
+
+             <span id="res-272280">
+                 <a href="/tests/272280">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode</td>
+
+                            <td id="res_DVD_i586_textmode">
+
+             <span id="res-272255">
+                 <a href="/tests/272255">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                            <td id="res_DVD_x86_64_textmode">
+
+             <span id="res-272264">
+                 <a href="/tests/272264">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_textmode-image">
+
+             <span id="res-272262">
+                 <a href="/tests/272262">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_uefi">
+
+             <span id="res-272268">
+                 <a href="/tests/272268">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">uefi-os</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_uefi-os">
+
+             <span id="res-272287">
+                 <a href="/tests/272287">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">uefi@USBboot_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_uefi@USBboot_64">
+
+             <span id="res-272257">
+                 <a href="/tests/272257">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_123</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_123">
+
+             <span id="res-272281">
+                 <a href="/tests/272281">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/272281#step/consoletest_setup/67">consoletest_setup</a>
+    </span>
+
+             <span id="comment-272281">
+        <a href="/tests/272281#comments">
+            <i class="test-label label_comment fa fa-comment" title="1 comment available"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_13.1-gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_13.1-gnome">
+
+             <span id="res-272283">
+                 <a href="/tests/272283">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272283#step/chrome/22">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-46+-gnome-20160504</li><li>firefox-46+-gnome-leap422-20160616</li><li>firefox-49+-gnome-20160924</li><li>firefox-gnome-20150927</li><li>firefox-gnome-20160201</li><li>firefox-gnome-20160304</li><li>firefox-gnome-20160310</li><li>firefox-gnome-20160314</li><li>firefox-gnome-20160401</li><li>firefox-gnome-20160923</li><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.1-20160301</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272283#step/firefox/8">firefox</a>
+    </span>
+         +2
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_13.2</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_13.2">
+
+             <span id="res-272290">
+                 <a href="/tests/272290">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>O42-oomath-20150627</li><li>O42-oomath-20160304</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272290#step/oomath/4">oomath</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>Networkmanager_controlled-20160127</li><li>install-susefirewall2-20140817</li><li>yast2_lan-20140630</li><li>yast2_lan-20160211</li><li>yast2_lan-20160224</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272290#step/yast2_lan/12">yast2_lan</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_Leap_42.1_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_Leap_42.1_gnome">
+
+             <span id="res-272297">
+                 <a href="/tests/272297">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272297#step/chrome/22">chrome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_Leap_42.1_kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_Leap_42.1_kde">
+
+             <span id="res-272259">
+                 <a href="/tests/272259">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_Leap_42.2_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_Leap_42.2_gnome">
+
+             <span id="res-272298">
+                 <a href="/tests/272298">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272298#step/chrome/22">chrome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_Leap_42.2_kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_update_Leap_42.2_kde">
+
+             <span id="res-272299">
+                 <a href="/tests/272299">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>gnucash-20151203</li><li>gnucash-20151229</li><li>gnucash-20160504</li><li>gnucash-20160804</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272299#step/gnucash/38">gnucash</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>O42-oomath-20150627</li><li>O42-oomath-20160304</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272299#step/oomath/4">oomath</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfce</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_xfce">
+
+             <span id="res-272274">
+                 <a href="/tests/272274">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>chromium-main-window-kde-20160704</li><li>chromium-main-window-kde-leap422-20160614</li><li>chromium-main-window-kde-leap422-20160704</li><li>chromium-main-window-kde-leap422-20160921</li><li>chromium-main-window-leap422-20160614</li><li>chromium-xfce-20160728</li><li>chromium-xfce-20160804</li><li>chromium-xfce-leap422-20160617</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272274#step/chromium/16">chromium</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-xfce-20160301</li><li>firefox-xfce-20160314</li><li>firefox-xfce-20160428</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272274#step/firefox/7">firefox</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfce-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_xfce-image">
+
+             <span id="res-272293">
+                 <a href="/tests/272293">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfs</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_xfs">
+
+             <span id="res-272260">
+                 <a href="/tests/272260">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">yast2_ui_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_yast2_ui_gnome">
+
+             <span id="res-272307">
+                 <a href="/tests/272307">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>yast2_apparmor_profile_mode_configuration_show_all-20160707</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272307#step/yast2_apparmor/7">yast2_apparmor</a>
+    </span>
+         +11
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">yast_no_self_update</td>
+
+                                <td>-</td>
+
+                            <td id="res_DVD_x86_64_yast_no_self_update">
+
+             <span id="res-272300">
+                 <a href="/tests/272300">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+        <h3>Flavor: GNOME-Live</h3>
+        <table id="results_GNOME-Live" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_GNOME-Live_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">gnome-live</td>
+
+                            <td id="res_GNOME-Live_x86_64_gnome-live">
+
+             <span id="res-272709">
+                 <a href="/tests/272709">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>gnome_music-3.16+-20150325</li><li>gnome_music-3.18+-20151017</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272709#step/gnome_music/4">gnome_music</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>ooffice-1-gnome-20151014</li><li>ooffice-1-gnome-20160209</li><li>ooffice-1-gnome-20160304</li><li>ooffice-1-gnome-20160606</li><li>ooffice-1-gnome-20160803</li><li>ooffice-1-gnome-20160811</li><li>ooffice-1-gnome-20160828</li><li>ooffice-1-gnome-20160914</li><li>ooffice-test-ooffice-1-gnome-leap422-20160616</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272709#step/ooffice/5">ooffice</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome-live@USBboot_64</td>
+
+                            <td id="res_GNOME-Live_x86_64_gnome-live@USBboot_64">
+
+             <span id="res-272310">
+                 <a href="/tests/272310">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/272310#step/firefox_audio/49">firefox_audio</a>
+    </span>
+         +3
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                            <td id="res_GNOME-Live_x86_64_mediacheck">
+
+             <span id="res-272312">
+                 <a href="/tests/272312">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                            <td id="res_GNOME-Live_x86_64_memtest">
+
+             <span id="res-272311">
+                 <a href="/tests/272311">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+        <h3>Flavor: KDE-Live</h3>
+        <table id="results_KDE-Live" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_KDE-Live_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">kde-live</td>
+
+                            <td id="res_KDE-Live_x86_64_kde-live">
+
+             <span id="res-272313">
+                 <a href="/tests/272313">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>test-amarok-1-20150430</li><li>test-amarok-1-20151116</li><li>test-amarok-1-20151223</li><li>test-amarok-1-20160121</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272313#step/amarok/13">amarok</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>kontact-window-20151013</li><li>kontact-window-20151117</li><li>kontact-window-20160121</li><li>kontact-window-20160122</li><li>kontact-window-20160430</li><li>kontact-window-20160704</li><li>kontact-window-20160810</li><li>kontact-window-20160828</li><li>kontact-window-20160831</li><li>kontact-window-leap422-20160602</li><li>kontact-window-livetest-20160623</li><li>kontact-window-livetest-20160810</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272313#step/kontact/12">kontact</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde-live@USBboot_64</td>
+
+                            <td id="res_KDE-Live_x86_64_kde-live@USBboot_64">
+
+             <span id="res-272314">
+                 <a href="/tests/272314">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>test-amarok-1-20150430</li><li>test-amarok-1-20151116</li><li>test-amarok-1-20151223</li><li>test-amarok-1-20160121</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272314#step/amarok/13">amarok</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>kontact-window-20151013</li><li>kontact-window-20151117</li><li>kontact-window-20160121</li><li>kontact-window-20160122</li><li>kontact-window-20160430</li><li>kontact-window-20160704</li><li>kontact-window-20160810</li><li>kontact-window-20160828</li><li>kontact-window-20160831</li><li>kontact-window-leap422-20160602</li><li>kontact-window-livetest-20160623</li><li>kontact-window-livetest-20160810</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272314#step/kontact/12">kontact</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde-live_installation</td>
+
+                            <td id="res_KDE-Live_x86_64_kde-live_installation">
+
+             <span id="res-273172">
+                 <a href="/tests/273172">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">mediacheck</td>
+
+                            <td id="res_KDE-Live_x86_64_mediacheck">
+
+             <span id="res-272316">
+                 <a href="/tests/272316">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                            <td id="res_KDE-Live_x86_64_memtest">
+
+             <span id="res-272315">
+                 <a href="/tests/272315">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+        <h3>Flavor: NET</h3>
+        <table id="results_NET" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_NET_arch_i586">i586</th>
+                        <th id="flavor_NET_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID0</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_RAID0">
+
+             <span id="res-272229">
+                 <a href="/tests/272229">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_RAID1">
+
+             <span id="res-272670">
+                 <a href="/tests/272670">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID10</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_RAID10">
+
+             <span id="res-272669">
+                 <a href="/tests/272669">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">RAID5</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_RAID5">
+
+             <span id="res-272231">
+                 <a href="/tests/272231">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_cryptlvm">
+
+             <span id="res-272233">
+                 <a href="/tests/272233">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_gnome">
+
+             <span id="res-272224">
+                 <a href="/tests/272224">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272224#step/chrome/22">chrome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome-gdm</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_gnome-gdm">
+
+             <span id="res-272253">
+                 <a href="/tests/272253">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome@Laptop_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_gnome@Laptop_64">
+
+             <span id="res-272225">
+                 <a href="/tests/272225">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272225#step/chrome/22">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>hexchat-connection-complete-dialog-20160225</li><li>hexchat-connection-complete-dialog-20160304</li><li>hexchat-connection-complete-dialog-20160526</li><li>hexchat-connection-complete-dialog-20160905</li><li>hexchat-connection-complete-dialog-gnome-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-gnome-leap422-20160616</li><li>hexchat-connection-complete-dialog-kde-tw-20160307</li><li>hexchat-connection-complete-dialog-lxde-20160905</li><li>hexchat-connection-complete-dialog-lxde-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160617</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160905</li><li>hexchat-connection-complete-dialog-xfce-leap42.1-20160304</li><li>xchat-connection-complete-dialog-gnome-leap42.1-20160308</li><li>xchat-connection-complete-dialog-kde-tw--20160307</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272225#step/hexchat/23">hexchat</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">install_only</td>
+
+                            <td id="res_NET_i586_install_only">
+
+             <span id="res-272217">
+                 <a href="/tests/272217">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
+                        <td class="name">install_only@smp_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_install_only@smp_64">
+
+             <span id="res-272237">
+                 <a href="/tests/272237">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_kde">
+
+             <span id="res-272220">
+                 <a href="/tests/272220">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde@Laptop_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_kde@Laptop_64">
+
+             <span id="res-272222">
+                 <a href="/tests/272222">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>hexchat-connection-complete-dialog-20160225</li><li>hexchat-connection-complete-dialog-20160304</li><li>hexchat-connection-complete-dialog-20160526</li><li>hexchat-connection-complete-dialog-20160905</li><li>hexchat-connection-complete-dialog-gnome-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-gnome-leap422-20160616</li><li>hexchat-connection-complete-dialog-kde-tw-20160307</li><li>hexchat-connection-complete-dialog-kde-tw-20160810</li><li>hexchat-connection-complete-dialog-lxde-20160905</li><li>hexchat-connection-complete-dialog-lxde-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160617</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160905</li><li>hexchat-connection-complete-dialog-xfce-leap42.1-20160304</li><li>xchat-connection-complete-dialog-gnome-leap42.1-20160308</li><li>xchat-connection-complete-dialog-kde-tw--20160307</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272222#step/hexchat/19">hexchat</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde@USBboot_64</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_kde@USBboot_64">
+
+             <span id="res-272221">
+                 <a href="/tests/272221">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>hexchat-connection-complete-dialog-20160225</li><li>hexchat-connection-complete-dialog-20160304</li><li>hexchat-connection-complete-dialog-20160526</li><li>hexchat-connection-complete-dialog-20160905</li><li>hexchat-connection-complete-dialog-gnome-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-gnome-leap422-20160616</li><li>hexchat-connection-complete-dialog-kde-tw-20160307</li><li>hexchat-connection-complete-dialog-kde-tw-20160810</li><li>hexchat-connection-complete-dialog-lxde-20160905</li><li>hexchat-connection-complete-dialog-lxde-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160617</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160905</li><li>hexchat-connection-complete-dialog-xfce-leap42.1-20160304</li><li>xchat-connection-complete-dialog-gnome-leap42.1-20160308</li><li>xchat-connection-complete-dialog-kde-tw--20160307</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272221#step/hexchat/19">hexchat</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">kde_dual_windows10@uefi_win</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_kde_dual_windows10@uefi_win">
+
+             <span id="res-272254">
+                 <a href="/tests/272254">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">lxde</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_lxde">
+
+             <span id="res-272227">
+                 <a href="/tests/272227">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-lxde-20160111</li><li>firefox-lxde-20160314</li><li>firefox-lxde-20160428</li><li>firefox-lxde-20160531</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272227#step/firefox/6">firefox</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>hexchat-connection-complete-dialog-20160225</li><li>hexchat-connection-complete-dialog-20160304</li><li>hexchat-connection-complete-dialog-20160526</li><li>hexchat-connection-complete-dialog-20160905</li><li>hexchat-connection-complete-dialog-gnome-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-gnome-leap422-20160616</li><li>hexchat-connection-complete-dialog-kde-tw-20160307</li><li>hexchat-connection-complete-dialog-lxde-20160905</li><li>hexchat-connection-complete-dialog-lxde-leap42.1-20160304</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160617</li><li>hexchat-connection-complete-dialog-lxde-leap422-20160905</li><li>hexchat-connection-complete-dialog-xfce-leap42.1-20160304</li><li>xchat-connection-complete-dialog-gnome-leap42.1-20160308</li><li>xchat-connection-complete-dialog-kde-tw--20160307</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272227#step/hexchat/20">hexchat</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_memtest">
+
+             <span id="res-272238">
+                 <a href="/tests/272238">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_minimalx">
+
+             <span id="res-272226">
+                 <a href="/tests/272226">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimalx-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_minimalx-image">
+
+             <span id="res-272243">
+                 <a href="/tests/272243">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">otherDE_awesome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_otherDE_awesome">
+
+             <span id="res-272249">
+                 <a href="/tests/272249">
+                     <i class="status fa fa-circle result_incomplete" title="Done: incomplete"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">otherDE_enlightenment</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_otherDE_enlightenment">
+
+             <span id="res-273288">
+                 <a href="/tests/273288">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>enlightenment_generic_desktop-20160609</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/273288#step/enlightenment_first_start/14"><span title="enlightenment_first_start">enlightenment_first_s ...</span></a>
+    </span>
+         +2
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">otherDE_lxqt</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_otherDE_lxqt">
+
+             <span id="res-272247">
+                 <a href="/tests/272247">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">otherDE_mate</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_otherDE_mate">
+
+             <span id="res-272987">
+                 <a href="/tests/272987">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">textmode</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_textmode">
+
+             <span id="res-272219">
+                 <a href="/tests/272219">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">tumbleweed-image</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_tumbleweed-image">
+
+             <span id="res-272244">
+                 <a href="/tests/272244">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">uefi</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_uefi">
+
+             <span id="res-272223">
+                 <a href="/tests/272223">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">uefi-os</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_uefi-os">
+
+             <span id="res-272239">
+                 <a href="/tests/272239">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_121</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_update_121">
+
+             <span id="res-272234">
+                 <a href="/tests/272234">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>chromium-html5test-20160114</li><li>chromium-html5test-20160224</li><li>chromium-html5test-kde-20160708</li><li>chromium-html5test-kde-20160926</li><li>chromium-html5test-kde-leap422-20160616</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272234#step/chromium/18">chromium</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>test-oocalc-1-kde-20150722</li><li>test-oocalc-1-kde-20151218</li><li>test-oocalc-1-kde-20160122</li><li>test-oocalc-1-kde-20160125</li><li>test-oocalc-1-kde-20160606</li><li>test-oocalc-1-kde-20160916</li><li>test-oocalc-1-kde-leap422-20160602</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272234#step/oocalc/4">oocalc</a>
+    </span>
+         +3
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_122</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_update_122">
+
+             <span id="res-272235">
+                 <a href="/tests/272235">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>amarok-20151117</li><li>amarok-20160121</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272235#step/amarok/20">amarok</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>chromium-html5test-20160114</li><li>chromium-html5test-20160224</li><li>chromium-html5test-kde-20160708</li><li>chromium-html5test-kde-20160926</li><li>chromium-html5test-kde-leap422-20160616</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272235#step/chromium/19">chromium</a>
+    </span>
+         +4
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_123</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_update_123">
+
+             <span id="res-272236">
+                 <a href="/tests/272236">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/272236#step/consoletest_setup/67">consoletest_setup</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">update_13.2</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_update_13.2">
+
+             <span id="res-272242">
+                 <a href="/tests/272242">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>gnucash-20151203</li><li>gnucash-20151229</li><li>gnucash-20160504</li><li>gnucash-20160804</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272242#step/gnucash/38">gnucash</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">xfce</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_xfce">
+
+             <span id="res-272228">
+                 <a href="/tests/272228">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>chromium-main-window-kde-20160704</li><li>chromium-main-window-kde-leap422-20160614</li><li>chromium-main-window-kde-leap422-20160704</li><li>chromium-main-window-kde-leap422-20160921</li><li>chromium-main-window-leap422-20160614</li><li>chromium-xfce-20160728</li><li>chromium-xfce-20160804</li><li>chromium-xfce-leap422-20160617</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272228#step/chromium/16">chromium</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-xfce-20160301</li><li>firefox-xfce-20160314</li><li>firefox-xfce-20160428</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272228#step/firefox/6">firefox</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-13.1-gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-13.1-gnome">
+
+             <span id="res-272240">
+                 <a href="/tests/272240">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>desktop-runner-enlightenment-20160609</li><li>desktop-runner-gnome-3.16+-20150325</li><li>desktop-runner-gnome-3.18.1+-20151225</li><li>desktop-runner-gnome-3.19.91+-20160304</li><li>desktop-runner-gnome-3.19.91+-20160827</li><li>gdm_session_switch-desktop-runner-20160913</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272240#step/enable_firewall/9">enable_firewall</a>
+    </span>
+         +2
+
+             <span id="bug-272240">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=990083">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: boo#990083"></i>
+        </a>
+    </span>
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-13.2</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-13.2">
+
+             <span id="res-272241">
+                 <a href="/tests/272241">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-Leap-42.1-gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-Leap-42.1-gnome">
+
+             <span id="res-272250">
+                 <a href="/tests/272250">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272250#step/chrome/22">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>inkscape-1-xfce-20150507</li><li>inkscape-1-xfce-20160127</li><li>inkscape-1-xfce-20160331</li><li>inkscape-1-xfce-20160828</li><li>test-inkscape-1-gnome-20150204</li><li>test-inkscape-1-gnome-20151107</li><li>test-inkscape-1-gnome-20160304</li><li>test-inkscape-1-gnome-20160331</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272250#step/inkscape/15">inkscape</a>
+    </span>
+         +1
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-Leap-42.1-kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-Leap-42.1-kde">
+
+             <span id="res-272218">
+                 <a href="/tests/272218">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-Leap-42.2-gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-Leap-42.2-gnome">
+
+             <span id="res-272671">
+                 <a href="/tests/272671">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>consoletest_finish-gnome-20140702</li><li>consoletest_finish-gnome-20140902</li><li>consoletest_finish-gnome-20150915</li><li>consoletest_finish-gnome-TW-20151222</li><li>first_boot-generic-desktop-20160407</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272671#step/chrome/22">chrome</a>
+    </span>
+
+    <span title='<p>Failed needles:</p><ul><li>inkscape-1-xfce-20150507</li><li>inkscape-1-xfce-20160127</li><li>inkscape-1-xfce-20160331</li><li>inkscape-1-xfce-20160828</li><li>test-inkscape-1-gnome-20150204</li><li>test-inkscape-1-gnome-20151107</li><li>test-inkscape-1-gnome-20160304</li><li>test-inkscape-1-gnome-20160331</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272671#step/inkscape/15">inkscape</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup-Leap-42.2-kde</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup-Leap-42.2-kde">
+
+             <span id="res-272672">
+                 <a href="/tests/272672">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">zdup_tw2twnext_gnome</td>
+
+                                <td>-</td>
+
+                            <td id="res_NET_x86_64_zdup_tw2twnext_gnome">
+
+             <span id="res-272245">
+                 <a href="/tests/272245">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span  class="failedmodule" >
+        <a href="/tests/272245#step/chrome/101">chrome</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+        <h3>Flavor: Rescue-CD</h3>
+        <table id="results_Rescue-CD" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_Rescue-CD_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">memtest</td>
+
+                            <td id="res_Rescue-CD_x86_64_memtest">
+
+             <span id="res-272319">
+                 <a href="/tests/272319">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+
+
+
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue</td>
+
+                            <td id="res_Rescue-CD_x86_64_rescue">
+
+             <span id="res-272318">
+                 <a href="/tests/272318">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+
+
+    <span title='<p>Failed needles:</p><ul><li>firefox-gnome-leap-20160925</li><li>firefox-gnome-leap42.2-20160517</li><li>firefox-xfce-20160301</li><li>firefox-xfce-20160314</li><li>firefox-xfce-20160428</li><li>firefox-xfce-20160531</li></ul>' data-toggle='tooltip' class="failedmodule" >
+        <a href="/tests/272318#step/firefox/8">firefox</a>
+    </span>
+
+
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

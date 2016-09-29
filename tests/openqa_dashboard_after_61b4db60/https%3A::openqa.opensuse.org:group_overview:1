@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+      <div class="container" id="content">
+
+<div id='flash-messages'>
+        </div>
+
+
+
+<h2>Last Builds for Group openSUSE Tumbleweed</h2>
+
+    <div id="group_descriptions">
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20160928&amp;groupid=1">Build20160928</a>
+                (<abbr class="timeago" title="2016-09-29T14:29:20Z">
+                2016-09-29T14:29:20
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress build-dashboard">
+                    <div class="progress-bar progress-bar-passed" style="width: 40.7766990291262%">
+                        42 passed
+                    </div>
+                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 4.85436893203883%">
+                        5 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 36.8932038834951%">
+                        38 softfailed
+                    </div>
+                    <div class="progress-bar progress-bar-failed" style="width: 15.5339805825243%">
+                        16 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20160927&amp;groupid=1">Build20160927</a>
+                (<abbr class="timeago" title="2016-09-27T20:18:53Z">
+                2016-09-27T20:18:53
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress build-dashboard">
+                    <div class="progress-bar progress-bar-passed" style="width: 53.3980582524272%">
+                        55 passed
+                    </div>
+                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
+                        43 softfailed
+                    </div>
+                    <div class="progress-bar progress-bar-failed" style="width: 4.85436893203883%">
+                        5 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20160926&amp;groupid=1">Build20160926</a>
+                (<abbr class="timeago" title="2016-09-26T21:52:42Z">
+                2016-09-26T21:52:42
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress build-dashboard">
+                    <div class="progress-bar progress-bar-passed" style="width: 51.4563106796116%">
+                        53 passed
+                    </div>
+                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
+                        43 softfailed
+                    </div>
+                    <div class="progress-bar progress-bar-failed" style="width: 5.8252427184466%">
+                        6 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-nowrap">
+            <h4>
+                <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20160925&amp;groupid=1">Build20160925</a>
+                (<abbr class="timeago" title="2016-09-25T18:34:49Z">
+                2016-09-25T18:34:49
+                </abbr>)
+            </h4>
+        </div>
+        <div class="col-md-8">
+                <div class="progress build-dashboard">
+                    <div class="progress-bar progress-bar-passed" style="width: 50.4854368932039%">
+                        52 passed
+                    </div>
+                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
+                        0 unfinished
+                    </div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
+                        43 softfailed
+                    </div>
+                    <div class="progress-bar progress-bar-failed" style="width: 7.76699029126214%">
+                        8 failed
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+<div id="more_builds">
+    Limit to
+    <b>10</b> / <a href="/group_overview/1?time_limit_days=1000&amp;limit_builds=20">20</a> / <a href="/group_overview/1?time_limit_days=1000&amp;limit_builds=50">50</a> / <a href="/group_overview/1?time_limit_days=1000&amp;limit_builds=100">100</a> / <a href="/group_overview/1?time_limit_days=1000&amp;limit_builds=400">400</a>
+    builds, only
+    <a href="/group_overview/1?only_tagged=1">tagged</a> / <b>all</b>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
