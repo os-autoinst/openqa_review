@@ -747,8 +747,8 @@ class ProductReport(object):
 
         try:
             current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
-        except ValueError:
-            raise NotEnoughBuildsError()
+        except ValueError as e:
+            raise NotEnoughBuildsError(e)
 
         # read last finished
         current_details = browser.get_soup(current_url)
@@ -925,7 +925,8 @@ class Report(object):
         # for each job group on openqa.opensuse.org
         try:
             return ProductReport(self.browser, job_group_url, self.root_url, self.args)
-        except NotEnoughBuildsError:
+        except NotEnoughBuildsError as e:
+            log.debug("Catched 'not enough builds': %s" % e)
             return "Not enough finished builds found"
 
     def _next_label(self, progress):
