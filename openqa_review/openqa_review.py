@@ -359,7 +359,7 @@ def find_builds(soup, running_threshold=0):
     def below_threshold(bar):
         threshold = float(running_threshold) if running_threshold is not None else 0
         return float(bar['style'].lstrip('width: ').rstrip(';').rstrip('%')) <= threshold
-    builds = [bar.parent.parent for bar in soup.find_all(class_=re.compile("progress build-dashboard"))]
+    builds = [bar.parent.parent for bar in soup.find_all(class_='progress build-dashboard')]
     finished = [build for build in builds if not build.find(class_='progress-bar-striped') or
                 below_threshold(build.find(class_='progress-bar-striped'))]
 
