@@ -744,12 +744,7 @@ class ProductReport(object):
         self.args = args
         self.job_group_url = job_group_url
         self.group = job_group_url.split('/')[-1]
-
-        try:
-            current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
-        except ValueError as e:
-            raise NotEnoughBuildsError(e)
-
+        current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
         # read last finished
         current_details = browser.get_soup(current_url)
         previous_details = browser.get_soup(previous_url)
