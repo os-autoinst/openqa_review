@@ -24,18 +24,10 @@
         </div>
         <div class="col-md-8">
                 <div class="progress build-dashboard">
-                    <div class="progress-bar progress-bar-passed" style="width: 40.7766990291262%">
-                        42 passed
-                    </div>
-                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 4.85436893203883%">
-                        5 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-softfailed" style="width: 36.8932038834951%">
-                        38 softfailed
-                    </div>
-                    <div class="progress-bar progress-bar-failed" style="width: 15.5339805825243%">
-                        16 failed
-                    </div>
+                    <div class="progress-bar progress-bar-passed" style="width: 40.7766990291262%;">42 passed</div>
+                    <div class="progress-bar progress-bar-unfinished progress-bar-striped" style="width: 4.85436893203883%;">5 unfinished</div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 36.8932038834951%;">38 softfailed</div>
+                    <div class="progress-bar progress-bar-failed" style="width: 15.5339805825243%;">16 failed</div>
                 </div>
         </div>
     </div>
@@ -50,18 +42,9 @@
         </div>
         <div class="col-md-8">
                 <div class="progress build-dashboard">
-                    <div class="progress-bar progress-bar-passed" style="width: 53.3980582524272%">
-                        55 passed
-                    </div>
-                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
-                        0 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
-                        43 softfailed
-                    </div>
-                    <div class="progress-bar progress-bar-failed" style="width: 4.85436893203883%">
-                        5 failed
-                    </div>
+                    <div class="progress-bar progress-bar-passed" style="width: 53.3980582524272%;">55 passed</div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%;">43 softfailed</div>
+                    <div class="progress-bar progress-bar-failed" style="width: 4.85436893203883%;">5 failed</div>
                 </div>
         </div>
     </div>
@@ -76,18 +59,9 @@
         </div>
         <div class="col-md-8">
                 <div class="progress build-dashboard">
-                    <div class="progress-bar progress-bar-passed" style="width: 51.4563106796116%">
-                        53 passed
-                    </div>
-                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
-                        0 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
-                        43 softfailed
-                    </div>
-                    <div class="progress-bar progress-bar-failed" style="width: 5.8252427184466%">
-                        6 failed
-                    </div>
+                    <div class="progress-bar progress-bar-passed" style="width: 51.4563106796116%;">53 passed</div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%;">43 softfailed</div>
+                    <div class="progress-bar progress-bar-failed" style="width: 5.8252427184466%;">6 failed</div>
                 </div>
         </div>
     </div>
@@ -102,18 +76,9 @@
         </div>
         <div class="col-md-8">
                 <div class="progress build-dashboard">
-                    <div class="progress-bar progress-bar-passed" style="width: 50.4854368932039%">
-                        52 passed
-                    </div>
-                    <div class="progress-bar progress-bar-running progress-bar-striped" style="width: 0%">
-                        0 unfinished
-                    </div>
-                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%">
-                        43 softfailed
-                    </div>
-                    <div class="progress-bar progress-bar-failed" style="width: 7.76699029126214%">
-                        8 failed
-                    </div>
+                    <div class="progress-bar progress-bar-passed" style="width: 50.4854368932039%;">52 passed</div>
+                    <div class="progress-bar progress-bar-softfailed" style="width: 41.747572815534%;"> 43 softfailed</div>
+                    <div class="progress-bar progress-bar-failed" style="width: 7.76699029126214%;">8 failed</div>
                 </div>
         </div>
     </div>
