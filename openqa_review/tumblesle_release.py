@@ -168,7 +168,7 @@ class TumblesleRelease(object):
         jobs_by_result['last'] = self.retrieve_jobs_by_result(build['last'])
         passed, failed = {}, {}
         passed['last'] = len(jobs_by_result['last']['passed'])
-        failed['last'] = len(jobs_by_result['last']['failed'])
+        failed['last'] = len(jobs_by_result['last']['failed']) + len(jobs_by_result['last']['softfailed'])
         log.info('Most recent build %s: passed: %s, failed: %s' % (build['last'], passed['last'], failed['last']))
 
         # IF NOT last_stored_finish_build
@@ -195,7 +195,7 @@ class TumblesleRelease(object):
         # TODO whitelist could contain either bugs or scenarios while I prefer bugrefs :-)
         hard_failed_jobs = {k: self._filter_whitelisted_fails(jobs_by_result[k]['failed']) for k in ['released', 'last']}
         # count passed, failed for both released/new
-        passed['released'] = len(jobs_by_result['released']['passed'])
+        passed['released'] = len(jobs_by_result['released']['passed']) + len(jobs_by_result['released']['softfailed'])
         hard_failed = {k: len(v) for k, v in iteritems(hard_failed_jobs)}
         whitelisted = {'last': failed['last'] - hard_failed['last']}
         passed['last'] += whitelisted['last']
