@@ -170,7 +170,7 @@ def test_specified_job_group_yields_single_product_report():
     args = cache_test_args_factory()
     args.job_group_urls = None
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'single_job_group')
-    args.job_groups = 'openSUSE Tumbleweed  1.Gnome'
+    args.job_groups = 'openSUSE Argon'
     report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
@@ -183,7 +183,7 @@ def test_specified_job_group_yields_single_product_report():
     assert 'No job group' in str(e.value)
 
     # Multiple job groups can be specified
-    args.job_groups = 'openSUSE Tumbleweed  1.Gnome,openSUSE Tumbleweed  2.KDE'
+    args.job_groups = 'openSUSE Argon,openSUSE Leap 42.2 Updates'
     # we don't actually need to check the parsing just make sure
     # openqa_review tries to parse all and as there is no cache page
     # for 'openSUSE Tumbleweed  2.KDE' saved, we assume its corresponding
@@ -196,7 +196,7 @@ def test_specified_job_group_yields_single_product_report():
     assert 'group_overview:26' in str(e.value)
 
     # job groups can also be used as an incomplete search tags or regex
-    args.job_groups = '(Gnome|KDE)'
+    args.job_groups = '(42.2 Updates|Argon)'
     # To increase statement and branch coverage we enable progress report here.
     # It will be invisible but executed.
     args.no_progress = False
@@ -206,7 +206,7 @@ def test_specified_job_group_yields_single_product_report():
     assert 'group_overview:26' in str(e.value)
 
     # job group with only a single recent build yields empty report
-    args.job_groups = 'x-released openSUSE Tumbleweed GA JeOS'
+    args.job_groups = 'openSUSE Leap 42.2 AArch64'
     report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
@@ -287,21 +287,21 @@ def test_get_job_groups_yields_job_groups_in_page():
     root_url = urljoin(args.host, args.base_url)
     browser = browser_factory(args)
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
-    assert len(job_groups.keys()) == 8
+    assert len(job_groups.keys()) == 14
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_4.4_dashboard')
     browser = browser_factory(args)
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
     assert sorted(job_groups.keys()) == sorted([
-        'Open Build Service',
         'Staging Projects',
-        'openSUSE 13.2 Updates',
+        'openSUSE Argon',
+        'openSUSE Krypton',
         'openSUSE Leap 42.1 JeOS',
         'openSUSE Leap 42.1 Maintenance',
-        'openSUSE Leap 42.1 Test Updates',
         'openSUSE Leap 42.1 Updates',
         'openSUSE Leap 42.2',
         'openSUSE Leap 42.2 AArch64',
-        'openSUSE Leap 42.2 PowerPC',
+        'openSUSE Leap 42.2 Maintenance',
+        'openSUSE Leap 42.2 Updates',
         'openSUSE Leap Staging Projects',
         'openSUSE Tumbleweed',
         'openSUSE Tumbleweed AArch64',
