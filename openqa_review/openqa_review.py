@@ -367,12 +367,16 @@ def find_builds(soup, running_threshold=0):
         log.debug('Could not find builds, reverting to old-style openQA (pre 61b4db60c42da81cffdaa4cd484c0a0db4f98690 #912)')
         finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
-    def not_empty_build(bar):
+    def empty_build(bar):
         passed = re.compile("progress-bar-(success|passed|softfailed)")
         failed = re.compile("progress-bar-(danger|failed)")
-        return not bar.find(class_=passed, style="width: 0%") or not bar.find(class_=failed, style="width: 0%")
+        # pre 61b4db openQA always had progress bars but with zero width, new
+        # style does not show them at all if they don't contain job but
+        # additionally shows "skipped" jobs
+        return (bar.find(class_=passed, style="width: 0%") and bar.find(class_=failed, style="width: 0%")) \
+            or not (bar.find(class_=passed) or bar.find(class_=failed))
     # filter out empty builds
-    builds = [bar.find('a') for bar in finished if not_empty_build(bar)]
+    builds = [bar.find('a') for bar in finished if not empty_build(bar)]
     log.debug("Found the following finished non-empty builds: %s" % ', '.join(build_id(b) for b in builds))
     return builds
 
