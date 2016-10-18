@@ -368,6 +368,9 @@ def find_builds(soup, running_threshold=0):
         finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
 
     def empty_build(bar):
+        # BUG in the intermediate state of openQA which added softfailed,
+        # builds that are composed of only passed or only failed would be
+        # regarded as empty.
         passed = re.compile("progress-bar-(success|passed|softfailed)")
         failed = re.compile("progress-bar-(danger|failed)")
         # pre 61b4db openQA always had progress bars but with zero width, new
