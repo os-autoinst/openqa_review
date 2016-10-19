@@ -1,0 +1,5 @@
+#!/bin/sh -e
+old=$(find /srv/www/tumblesle -maxdepth 1 | head -n -3 | grep '[0-9]\+$')
+chmod -R +w ${old}
+rm -rf ${old}
+sudo -u wwwrun /srv/jekyll-source/.git/hooks/post-merge
