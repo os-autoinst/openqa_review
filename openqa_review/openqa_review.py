@@ -884,11 +884,11 @@ def get_job_groups(browser, root_url, args):
         job_groups = {i: url for i, url in enumerate(job_group_urls)}
     else:
         if args.no_progress or not humanfriendly_available:
-            soup = browser.get_soup(root_url)
+            results = browser.get_json(urljoin(root_url, 'index.json'))['results']
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
-                soup = browser.get_soup(root_url)
-        job_groups = {i.text: absolute_url(root_url, i) for i in soup.select('h2 a[href^="/group_overview/"]')}
+                results = browser.get_json(urljoin(root_url, 'index.json'))['results']
+        job_groups = {i['_group']['name']: urljoin(root_url, '/group_overview/%i' % i['_group']['id']) for i in results}
         log.debug("job groups found: %s" % job_groups.keys())
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
