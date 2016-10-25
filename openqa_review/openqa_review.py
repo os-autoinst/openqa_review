@@ -888,7 +888,8 @@ def get_job_groups(browser, root_url, args):
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
                 results = browser.get_json(urljoin(root_url, 'index.json'))['results']
-        job_groups = {i['_group']['name']: urljoin(root_url, '/group_overview/%i' % i['_group']['id']) for i in results}
+        # Support both old and new json: Old key was '_group' - new key is 'group'
+        job_groups = {i.get('_group', i.get('group'))['name']: urljoin(root_url, '/group_overview/%i' % i.get('_group', i.get('group'))['id']) for i in results}
         log.debug("job groups found: %s" % job_groups.keys())
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
