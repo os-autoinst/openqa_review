@@ -8,6 +8,7 @@ import json
 import logging
 import os.path
 import sys
+import errno
 from urllib.parse import quote, unquote, urljoin
 
 import requests
@@ -77,7 +78,16 @@ class Browser(object):
         filename = url_to_filename(url)
         if self.load:
             log.info("Loading content instead of URL %s from filename %s" % (url, filename))
-            raw = open(os.path.join(self.load_dir, filename)).read()
+            try:
+                raw = open(os.path.join(self.load_dir, filename)).read()
+            except IOError as e:
+                if e.errno == errno.ENOENT:
+                    msg = "Request to %s was not successful, file %s not found" % (url, filename)
+                    log.info(msg)
+                    # as 'load' simulates downloading we also have to simulate an appropriate error
+                    raise DownloadError(msg)
+                else:  # pragma: no cover
+                    raise
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(self.root_url, str(url))
