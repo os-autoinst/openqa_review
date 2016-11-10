@@ -401,9 +401,9 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md')).read()
     compare_report(report, ref_report)
 
-    # report generated when no todo items are left
+    # report generated when no todo items are left and some bugref is not accessible
     args.builds = '1508,1500'
-    args.query_issue_status = False
+    args.query_issue_status = True
     report = openqa_review.generate_report(args)
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_build1508.md')).read()
     compare_report(report, ref_report)
