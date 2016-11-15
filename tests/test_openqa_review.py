@@ -236,16 +236,6 @@ def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     assert '=0307' in reviewed
 
 
-def test_get_build_urls_on_openqa_dashboard_after_61b4db60():
-    args = cache_test_args_factory()
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_dashboard_after_61b4db60')
-    args.job_group_urls = args.host + '/group_overview/1'
-    browser = browser_factory(args)
-    current, last = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls)
-    assert '=20160927' in current
-    assert '=20160926' in last
-
-
 def test_non_number_build_nr_also_finds_valid_review_build_urls():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live')

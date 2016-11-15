@@ -1,0 +1,39 @@
+{
+	"comments": [],
+	"pinned_comments": [],
+	"description": "",
+	"max_jobs": 91,
+	"group": {"id": 25, "name": "openSUSE Tumbleweed 1.Gnome"},
+	"result": {
+		"0389": {
+			"distri": "opensuse",
+			"version": "42.1",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_id": "0299",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 49,
+			"passed": 42,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 0,
+			"total": 91
+		},
+		"0405": {
+			"distri": "opensuse",
+			"version": "42.1",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_id": "0300",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 48,
+			"passed": 40,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 4,
+			"total": 92
+		}
+	}
+}
