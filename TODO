@@ -1,3 +1,4 @@
+ - fix travis build for py2.7 configparser missing
  - report_links: previous builds can be in wrong order, should be sorted by
    build, see https://openqa.suse.de/tests/588121#previous
 
