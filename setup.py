@@ -28,6 +28,7 @@ setup(
     version="{ver}".format(ver=version_git),
     install_requires=[
         "beautifulsoup4",
+        "configparser",
         "future",
         "sortedcontainers",
         "humanfriendly",
