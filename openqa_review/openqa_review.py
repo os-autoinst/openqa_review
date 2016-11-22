@@ -884,13 +884,13 @@ def get_job_groups(browser, root_url, args):
         job_groups = {i: url for i, url in enumerate(job_group_urls)}
     else:
         if args.no_progress or not humanfriendly_available:
-            results = browser.get_json(urljoin(root_url, 'index.json'))['results']
+            results = browser.get_json(urljoin(root_url, 'api/v1/job_groups'))
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
-                results = browser.get_json(urljoin(root_url, 'index.json'))['results']
-        # Support both old and new json: Old key was '_group' - new key is 'group'
-        job_groups = {i.get('_group', i.get('group'))['name']: urljoin(root_url, '/group_overview/%i' % i.get('_group', i.get('group'))['id']) for i in results}
-        log.debug("job groups found: %s" % job_groups.keys())
+                results = browser.get_json(urljoin(root_url, 'api/v1/job_groups'))
+        job_groups = {}
+        for job_group in results:
+            job_groups[job_group['name']] = urljoin(root_url, '/group_overview/%i' % job_group['id'])
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
