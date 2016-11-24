@@ -350,38 +350,19 @@ def set_status_badge(states):
         return 'RED'
 
 
-def build_id(build_tag):
-    return build_tag.text.lstrip('Build')
-
-
-def find_builds(soup, running_threshold=0):
+def find_builds(builds, running_threshold=0):
     """Find finished builds, ignore still running or empty."""
-    def below_threshold(bar):
-        threshold = float(running_threshold) if running_threshold is not None else 0
-        return float(bar['style'].lstrip('width: ').rstrip(';').rstrip('%')) <= threshold
-    builds = [bar.parent.parent for bar in soup.find_all(class_='progress build-dashboard')]
-    finished = [build for build in builds if not build.find(class_='progress-bar-striped') or
-                below_threshold(build.find(class_='progress-bar-striped'))]
+    threshold = float(running_threshold) if running_threshold is not None else 0
 
-    if not finished:
-        log.debug('Could not find builds, reverting to old-style openQA (pre 61b4db60c42da81cffdaa4cd484c0a0db4f98690 #912)')
-        finished = [bar.parent.parent.parent for bar in soup.find_all(class_=re.compile("progress-bar-striped")) if below_threshold(bar)]
-
-    def empty_build(bar):
-        # BUG in the intermediate state of openQA which added softfailed,
-        # builds that are composed of only passed or only failed would be
-        # regarded as empty.
-        passed = re.compile("progress-bar-(success|passed|softfailed)")
-        failed = re.compile("progress-bar-(danger|failed)")
-        # pre 61b4db openQA always had progress bars but with zero width, new
-        # style does not show them at all if they don't contain job but
-        # additionally shows "skipped" jobs
-        return (bar.find(class_=passed, style="width: 0%") and bar.find(class_=failed, style="width: 0%")) \
-            or not (bar.find(class_=passed) or bar.find(class_=failed))
     # filter out empty builds
-    builds = [bar.find('a') for bar in finished if not empty_build(bar)]
-    log.debug("Found the following finished non-empty builds: %s" % ', '.join(build_id(b) for b in builds))
-    return builds
+    builds = {build: result for build, result in iteritems(builds) if result['total'] != 0}
+
+    finished = {build: result for build, result in iteritems(builds) if not result['unfinished'] or
+                (100 * float(result['unfinished']) / result['total']) <= threshold}
+
+    log.debug("Found the following finished non-empty builds: %s" % ', '.join(finished.keys()))
+    assert len(finished) > 0, "no finished builds found"
+    return finished.keys()
 
 
 def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None, running_threshold=0):
@@ -395,45 +376,47 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
            finished
     @param running_threshold: Threshold of which percentage of jobs may still be running for the build to be considered 'finished' anyway
     """
-    soup = browser.get_soup(job_group_url)
-    finished_builds = find_builds(soup, running_threshold)
-    build_url_pattern = re.compile('(?<=build=)([^&]*)')
+    job_group = browser.get_json('%s.json' % job_group_url)
+
+    def build_url(build):
+        b = next(iter(job_group['result'].values()))
+        return '/tests/overview?distri=%s&version=%s&build=%s&groupid=%i' % (b['distri'], b['version'], quote(build), job_group['group']['id'])
+
+    finished_builds = find_builds(job_group['result'], running_threshold)
+    # find last finished and previous one
+    builds_to_compare = sorted(finished_builds, reverse=True)[0:2]
+
     if builds:
-        build_list = builds.split(',')
         # User has to be careful here. A page for non-existant builds is always
         # existant.
-        for b in build_list:
-            if len(b) < 4:
-                log.warning("A build number of at least four digits is expected with leading zero, expect weird results.")  # pragma: no cover
+        builds_to_compare = builds.split(',')
+        if min(map(len, builds_to_compare)) < 4:
+            log.warning("A build number of at least four digits is expected with leading zero, expect weird results.")  # pragma: no cover
     elif against_reviewed:
         # Could also find previous one with a comment on the build status,
         # i.e. a reviewed finished build
         # The build number itself might be prefixed with a redundant 'Build' which we ignore
-        build_re = re.compile('[bB]uild: *(Build)?([\w@]*)(.*reference.*)?\n')
+        build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@]*)(.*reference.*)?(\*\*)?\r\n')
         # Assuming the most recent with a build number also has the most recent review
         try:
-            last_reviewed = [build_re.search(i.text) for i in soup.find_all(class_='media-comment')][0].groups()[1]
-        except (AttributeError, IndexError):
-            log.info("No last reviewed build found for URL {}, reverting to two last finished".format(job_group_url))
-            against_reviewed = None
-        else:
-            log.debug("Comparing specified build {} against last reviewed {}".format(against_reviewed, last_reviewed))
-            build_to_review = build_id(finished_builds[0]) if against_reviewed == 'last' else against_reviewed
+            for c in reversed(job_group['comments']):
+                match = build_re.search(c['text'])
+                if match:
+                    last_reviewed = match.group(3)
+                    break
+            log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
+            build_to_review = max(finished_builds) if against_reviewed == 'last' else against_reviewed
             assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
-            build_list = build_to_review, last_reviewed
+            builds_to_compare = build_to_review, last_reviewed
+        except (NameError, AttributeError, IndexError):
+            log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
 
-    if builds or against_reviewed:
-        assert len(finished_builds) > 0, "no finished builds found"
-        current_url, previous_url = [build_url_pattern.sub(quote(i), finished_builds[0]['href']) for i in build_list]
-    else:
-        # find last finished and previous one
-        if len(finished_builds) <= 1:
-            raise NotEnoughBuildsError("not enough finished builds found")
+    if len(builds_to_compare) != 2:
+        raise NotEnoughBuildsError("not enough finished builds found")
 
-        builds_to_compare = finished_builds[0:2]
-        log.debug("Comparing build {} against {}".format(*[build_id(b) for b in builds_to_compare]))
-        current_url, previous_url = [build.get('href') for build in builds_to_compare]
-    log.debug("Found two build URLS, current: {} previous: {}".format(current_url, previous_url))
+    log.debug("Comparing build %s against %s" % tuple(builds_to_compare))
+    current_url, previous_url = map(build_url, builds_to_compare)
+    log.debug("Found two build URLS, current: %s previous: %s" % (current_url, previous_url))
     return current_url, previous_url
 
 
