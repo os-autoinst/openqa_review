@@ -516,7 +516,7 @@ Always latest result in this scenario: [latest](%s)
         ('bug_file_loc', urljoin(root_url, str(url))),
         ('comment', description)
     ])
-    product_bug = urljoin(config.get('product_issues', 'report_url'), 'enter_bug.cgi') + '?' + urlencode(product_entries)
+    product_bug = urljoin(str(config.get('product_issues', 'report_url')), 'enter_bug.cgi') + '?' + urlencode(product_entries)
     test_entries = OrderedDict([
         ('issue[subject]', '[Build %s] test %sfails' % (build, module + ' ' if module else '')),
         ('issue[description]', description)
