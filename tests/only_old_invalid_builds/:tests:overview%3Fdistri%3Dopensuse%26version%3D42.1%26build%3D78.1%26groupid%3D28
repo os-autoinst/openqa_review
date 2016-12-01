@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-success">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/28">Staging: openSUSE Tumbleweed </a></b>
+            build 78.1
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">0</span>
+
+            Failed: <span class="badge">0</span>
+
+                None:
+                <span class="badge">8</span>
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD-Staging:E</h3>
+        <table id="results_Gnome-DVD-Staging:E" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_Gnome-DVD-Staging:E_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_RAID1">
+
+             <a href="/tests/628410">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm_minimal_x</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_cryptlvm_minimal_x">
+
+             <a href="/tests/628411">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">default_install</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_default_install">
+
+             <a href="/tests/628412">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4@uefi-staging</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_ext4@uefi-staging">
+
+             <a href="/tests/628407">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_gnome">
+
+             <a href="/tests/628405">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">installcheck</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_installcheck">
+
+             <a href="/tests/628406">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_minimal+base">
+
+             <a href="/tests/628408">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system_13.1</td>
+
+                            <td id="res_Gnome-DVD-Staging:E_x86_64_rescue_system_13.1">
+
+             <a href="/tests/628409">
+                 <i class="status state_cancelled fa fa-circle" title="cancelled"></i>
+             </a>
+         
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>

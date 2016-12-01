@@ -355,13 +355,14 @@ def find_builds(builds, running_threshold=0):
     threshold = float(running_threshold) if running_threshold is not None else 0
 
     # filter out empty builds
-    builds = {build: result for build, result in iteritems(builds) if result['total'] != 0}
+    builds = {build: result for build, result in iteritems(builds) if result['total'] != 0 and result['total'] > result['skipped']}
 
     finished = {build: result for build, result in iteritems(builds) if not result['unfinished'] or
                 (100 * float(result['unfinished']) / result['total']) <= threshold}
 
     log.debug("Found the following finished non-empty builds: %s" % ', '.join(finished.keys()))
-    assert len(finished) > 0, "no finished builds found"
+    if len(finished) < 2:
+        raise NotEnoughBuildsError("not enough finished builds found")
     return finished.keys()
 
 
@@ -410,9 +411,6 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
             builds_to_compare = build_to_review, last_reviewed
         except (NameError, AttributeError, IndexError):
             log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
-
-    if len(builds_to_compare) != 2:
-        raise NotEnoughBuildsError("not enough finished builds found")
 
     log.debug("Comparing build %s against %s" % tuple(builds_to_compare))
     current_url, previous_url = map(build_url, builds_to_compare)
@@ -740,7 +738,8 @@ class ProductReport(object):
         previous_details = browser.get_soup(previous_url)
         for details in current_details, previous_details:
             assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0, \
-                "invalid page with no test results found, make sure you specified valid builds (leading zero missing?)"
+                "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)" \
+                % (current_url, previous_url)
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 

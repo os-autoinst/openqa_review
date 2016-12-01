@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+    <h2>Test result overview</h2>
+    <div id="summary" class="panel panel-success">
+        <div class="panel-heading">
+            Overall Summary of
+                <b><a href="/group_overview/28">Staging: openSUSE Tumbleweed </a></b>
+            build 76.2
+        </div>
+        <div class="panel-body">
+            Passed: <span class="badge">0</span>
+
+            Failed: <span class="badge">0</span>
+
+        </div>
+    </div>
+        <h3>Flavor: Gnome-DVD-Staging:A</h3>
+        <table id="results_Gnome-DVD-Staging:A" class="overview table table-striped table-hover">
+            <thead>
+                <tr id="flavors">
+                    <th>Test</th>
+                        <th id="flavor_Gnome-DVD-Staging:A_arch_x86_64">x86_64</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td class="name">RAID1</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_RAID1">
+
+             <span id="res-628375">
+                 <a href="/tests/628375">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">cryptlvm_minimal_x</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_cryptlvm_minimal_x">
+
+             <span id="res-628376">
+                 <a href="/tests/628376">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">default_install</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_default_install">
+
+             <span id="res-628377">
+                 <a href="/tests/628377">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">ext4@uefi-staging</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_ext4@uefi-staging">
+
+             <span id="res-628378">
+                 <a href="/tests/628378">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">gnome</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_gnome">
+
+             <span id="res-628381">
+                 <a href="/tests/628381">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">installcheck</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_installcheck">
+
+             <span id="res-628374">
+                 <a href="/tests/628374">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">minimal+base</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_minimal+base">
+
+             <span id="res-628379">
+                 <a href="/tests/628379">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+                    <tr>
+                        <td class="name">rescue_system_13.1</td>
+
+                            <td id="res_Gnome-DVD-Staging:A_x86_64_rescue_system_13.1">
+
+             <span id="res-628380">
+                 <a href="/tests/628380">
+                     <i class="status fa fa-circle result_user_cancelled" title="Done: user_cancelled"></i>
+                 </a>
+             </span>
+            
+
+         
+</td>
+
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>

@@ -252,6 +252,13 @@ def test_non_number_build_nr_also_finds_valid_review_build_urls():
     assert '=0104%400351' in current  # i.e. escaped '0104@0351'
     assert '=0104%400350' in reviewed  # no review comments found, reverting to last two finished
 
+    # builds with no finished results are catched
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'only_old_invalid_builds')
+    args.job_group_urls = args.host + '/group_overview/28'
+    browser = browser_factory(args)
+    with pytest.raises(openqa_review.NotEnoughBuildsError):
+        current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
+
 
 def test_generate_report_with_progress_notification_does_not_fail():
     args = cache_test_args_factory()
@@ -319,6 +326,7 @@ def test_new_tests_appearing_in_builds_are_supported():
     args.job_groups = None
     args.builds = '0405,0389'
     args.arch = 'i586'
+    args.running_threshold = 10
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'differing_tests')
     report = str(openqa_review.generate_report(args))
     # There should be one new test which is failing and has not been there in before
