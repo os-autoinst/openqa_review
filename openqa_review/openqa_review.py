@@ -540,8 +540,10 @@ class Issue(object):
         self.priority = None
         self.queried = False
         if query_issue_status and progress_browser and bugzilla_browser:
+            log.debug("Retrieving bug data for %s" % bugref)
             try:
                 if bugref.startswith('poo#'):
+                    log.debug("Test issue discovered, looking on progress")
                     self.json = progress_browser.get_json(bugref_href + '.json')['issue']
                     self.status = self.json['status']['name']
                     self.assignee = self.json['assigned_to']['name'] if 'assigned_to' in self.json else 'None'
@@ -549,6 +551,7 @@ class Issue(object):
                     self.priority = self.json['priority']['name']
                 # bugref.startswith('bsc#') or bugref.startswith('boo#')
                 else:
+                    log.debug("Product bug discovered, looking on bugzilla")
                     bugid = int(re.search('(?<=(bsc|boo)#)([0-9]+)', bugref).group())
                     self.json = bugzilla_browser.get_json('/jsonrpc.cgi?method=Bug.get&params=[{"ids":[%s]}]' % bugid)['result']['bugs'][0]
                     self.status = self.json['status']
@@ -559,8 +562,10 @@ class Issue(object):
                     self.priority = self.json['priority'].split(' ')[0]
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
+                log.info("A download error has been encountered for bugref %s (%s): %s" % (bugref, bugref_href, e))
                 self.msg = str(e)
-            except (TypeError, ValueError):
+            except TypeError as e:
+                log.error("Error retrieving details for bugref %s (%s): %s" % (bugref, bugref_href, e))
                 self.msg = "Ticket not found"
 
     @property

@@ -90,7 +90,7 @@ class Browser(object):
                     raise
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
-            absolute_url = url if not url.startswith('/') else urljoin(self.root_url, str(url))
+            absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
             r = requests.get(absolute_url)
             if r.status_code != 200:
                 msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
