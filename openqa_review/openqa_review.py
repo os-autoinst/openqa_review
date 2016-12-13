@@ -864,20 +864,38 @@ def parse_args():
     return args
 
 
+def get_parent_job_groups(browser, root_url, args):
+    pgroup_api_url = urljoin(root_url, 'api/v1/parent_groups')
+    if args.no_progress or not humanfriendly_available:
+        response = browser.get_json(pgroup_api_url)
+    else:
+        with AutomaticSpinner(label='Retrieving parent job groups'):
+            response = browser.get_json(pgroup_api_url)
+    return {p['id']: p['name'] for p in response}
+
+
 def get_job_groups(browser, root_url, args):
     if args.job_group_urls:
         job_group_urls = args.job_group_urls.split(',')
         log.info("Acting on specified job group URL(s): %s" % ', '.join(job_group_urls))
         job_groups = {i: url for i, url in enumerate(job_group_urls)}
     else:
+        parent_groups = get_parent_job_groups(browser, root_url, args)
         if args.no_progress or not humanfriendly_available:
             results = browser.get_json(urljoin(root_url, 'api/v1/job_groups'))
         else:
             with AutomaticSpinner(label='Retrieving job groups'):
                 results = browser.get_json(urljoin(root_url, 'api/v1/job_groups'))
+
+        def _pgroup_prefix(group):
+            try:
+                return '%s / %s' % (parent_groups[group['parent_id']], group['name'])
+            except KeyError:
+                return group['name']
+
         job_groups = {}
         for job_group in results:
-            job_groups[job_group['name']] = urljoin(root_url, '/group_overview/%i' % job_group['id'])
+            job_groups[_pgroup_prefix(job_group)] = urljoin(root_url, '/group_overview/%i' % job_group['id'])
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
