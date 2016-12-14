@@ -290,7 +290,7 @@ def test_get_job_groups_yields_job_groups_in_page():
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
     assert sorted(job_groups.keys()) == sorted([
         'Staging Projects',
-        'openSUSE Argon',
+        'Test Parent Group / openSUSE Argon',
         'openSUSE Krypton',
         'openSUSE Leap 42.1 JeOS',
         'openSUSE Leap 42.1 Maintenance',
