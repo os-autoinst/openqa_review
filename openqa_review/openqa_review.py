@@ -381,6 +381,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
 
     def build_url(build):
         b = job_group['result'].get(build, next(iter(job_group['result'].values())))
+        build = b.get('build', build)
         return '/tests/overview?distri=%s&version=%s&build=%s&groupid=%i' % (b['distri'], b['version'], quote(build), job_group['group']['id'])
 
     finished_builds = find_builds(job_group['result'], running_threshold)
