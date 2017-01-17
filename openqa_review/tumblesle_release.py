@@ -29,7 +29,9 @@ import argparse
 import fnmatch
 import glob
 import logging
+import json
 import os.path
+import pika
 import re
 import sys
 import time
@@ -56,6 +58,8 @@ Example:
 # example scenario: openSUSE-Tumbleweed-DVD-x86_64-gnome@64bit
 whitelist = arm7l-foo,bar@uefi
 
+#[notification]
+#host = localhost
 """
 
 
@@ -101,6 +105,27 @@ class TumblesleRelease(object):
         log.info("Whitelist content for %s: %s" % (self.args.product, self.whitelist))
         self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
         self.browser = Browser(args, args.openqa_host)
+        if not config.has_section('notification'):
+            return
+        notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
+        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=notify_host))
+        self.notify_channel = self.notify_connection.channel()
+        self.notify_channel.exchange_declare(exchange='pubsub', type='topic')
+        self.notify_topic = 'suse.tumblesle'
+
+    def __del__(self):
+        """Cleanup notification objects."""
+        if not hasattr(self, 'notify_connection'):
+            return
+        self.notify_connection.close()
+
+    def notify(self, message, topic='info'):
+        """Send notification over messaging bus."""
+        if not hasattr(self, 'notify_channel'):
+            log.debug("No notification channel enabled, discarding notify.")
+            return
+        body = json.dumps(message)
+        self.notify_channel.basic_publish(exchange='pubsub', routing_key='.'.join([self.notify_topic, topic]), body=body)
 
     def run(self, do_run=True):
         """Continously run while 'do_run' is True, check for last build and release if satisfying."""
@@ -215,6 +240,7 @@ class TumblesleRelease(object):
             new_fixed = sets['released'].difference(sets['last'])
             log.info("Regression in new build %s, new failures: %s" % (build['last'], ', '.join(new_failures)))
             log.debug("new fixed: %s" % ', '.join(new_fixed))
+            self.notify({'build': build['last'], 'new_failures': list(new_failures)}, topic='regression')
 
         # # assuming every job in released_failed is in whitelist
         # if len(hard_failed) > previous_hard_failed:
@@ -280,6 +306,7 @@ class TumblesleRelease(object):
         self.update_symlinks(build_dest)
         self.update_release_info()
         log.debug("Release DONE")
+        self.notify({'build': self.release_build}, topic='release')
         if self.args.post_release_hook:
             log.debug("Calling post_release_hook '%s'" % self.args.post_release_hook)
             check_call(self.args.post_release_hook)

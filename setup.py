@@ -34,6 +34,10 @@ setup(
         "humanfriendly",
         "requests",
         "PyYAML",
+        "pika",
+    ],
+    test_require=[
+        "pytest-mock",
     ],
     author="Oliver kurz",
     author_email="okurz@suse.com",

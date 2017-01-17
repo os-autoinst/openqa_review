@@ -175,3 +175,16 @@ def test_softfailed_state_is_regarded_as_passed_with_newer_openqa(args):
     tr = tumblesle_release.TumblesleRelease(args)
     tr.check_last_builds()
     assert tr.release_build == '0215'
+
+
+def test_notifications_are_sent(args, mocker):
+    with TumblesleDirectory(args) as tmp_dir:
+        config_path = os.path.join(tmp_dir, 'config_file')
+        with open(config_path, 'a') as config:
+            config.write("""
+[notification]
+host = localhost
+""")
+        mocker.patch('pika.BlockingConnection')
+        tr = tumblesle_release.TumblesleRelease(args)
+        tr.one_run()
