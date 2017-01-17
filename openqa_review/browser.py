@@ -13,6 +13,7 @@ from urllib.parse import quote, unquote, urljoin
 
 import requests
 from bs4 import BeautifulSoup
+from sortedcontainers import SortedDict
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
@@ -48,13 +49,15 @@ class Browser(object):
 
     """download relative or absolute url and return soup."""
 
-    def __init__(self, args, root_url):
+    def __init__(self, args, root_url, auth=None):
         """Construct a browser object with options."""
         self.save = args.save if hasattr(args, 'save') else False
         self.load = args.load if hasattr(args, 'load') else False
         self.load_dir = args.load_dir if hasattr(args, 'load_dir') else '.'
         self.save_dir = args.save_dir if hasattr(args, 'save_dir') else '.'
+        self.dry_run = args.dry_run if hasattr(args, 'dry_run') else False
         self.root_url = root_url
+        self.auth = auth
         self.cache = {}
 
     def get_soup(self, url):
@@ -62,21 +65,21 @@ class Browser(object):
         assert url, "url can not be None"
         return BeautifulSoup(self.get_page(url), "html.parser")
 
-    def get_json(self, url):
+    def get_json(self, url, cache=True):
         """Wrapper method for get_page retrieving json API output."""
-        return self.get_page(url, as_json=True)
+        return self.get_page(url, as_json=True, cache=cache)
 
-    def get_page(self, url, as_json=False):
+    def get_page(self, url, as_json=False, cache=True):
         """Return content from URL as string.
 
         If object parameter 'load' was specified, the URL content is loaded
         from a file.
         """
-        if url in self.cache:
+        if url in self.cache and cache:
             log.info("Loading content instead of URL %s from in-memory cache" % url)
             return json.loads(self.cache[url]) if as_json else self.cache[url]
         filename = url_to_filename(url)
-        if self.load:
+        if self.load and cache:
             log.info("Loading content instead of URL %s from filename %s" % (url, filename))
             try:
                 raw = open(os.path.join(self.load_dir, filename)).read()
@@ -91,7 +94,7 @@ class Browser(object):
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
-            r = requests.get(absolute_url)
+            r = requests.get(absolute_url, auth=self.auth)
             if r.status_code != 200:
                 msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
                 log.info(msg)
@@ -103,6 +106,34 @@ class Browser(object):
             codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf-8').write(raw)
         self.cache[url] = raw
         return content
+
+    def json_rpc_get(self, url, method, params, cache=True):
+        absolute_url = url if not url.startswith('/') else urljoin('http://dummy/', str(url))
+        get_params = SortedDict({'method': method, 'params': json.dumps([params])})
+        get_url = requests.Request('GET', absolute_url, params=get_params).prepare().url
+        return self.get_json(get_url.replace('http://dummy', ''), cache)
+
+    def json_rpc_post(self, url, method, params):
+        if self.dry_run:
+            log.warning("NOT sending '%s' request to '%s' with params %r" % (method, url, params))
+            return {}
+        else:  # pragma: no cover
+            absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
+            data = json.dumps({'method': method, 'params': [params]})
+            r = requests.post(absolute_url, data=data, auth=self.auth, headers={'content-type': 'application/json'})
+            r.raise_for_status()
+            return r.json() if r.text else None
+
+    def json_rest(self, url, method, data):
+        if self.dry_run and method.upper() != 'GET':
+            log.warning("NOT sending '%s' request to '%s' with params %r" % (method, url, data))
+            return {}
+        else:  # pragma: no cover
+            absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
+            data = json.dumps(data)
+            r = requests.request(method, absolute_url, data=data, auth=self.auth, headers={'content-type': 'application/json'})
+            r.raise_for_status()
+            return r.json() if r.text else None
 
 
 def add_load_save_args(parser):

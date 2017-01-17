@@ -8,6 +8,7 @@ isort:skip_file
 
 # see http://python-future.org/compatible_idioms.html
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
+from future.utils import iteritems
 
 install_aliases()
 import contextlib
@@ -87,6 +88,18 @@ def test_query_issue_status_help_shows_config_help():
     with pytest.raises(SystemExit):
         # we are not actually testing the content of help, just that it does not fail
         openqa_review.main()
+
+
+def test_args_implicit():
+    sys.argv[1:] = ['--reminder-comment-on-issues']
+    args = openqa_review.parse_args()
+    assert args.reminder_comment_on_issues
+    assert args.query_issue_status
+    assert args.bugrefs
+
+    sys.argv[1:] = ['--report-links']
+    args = openqa_review.parse_args()
+    assert not args.bugrefs
 
 
 def cache_test_args_factory():
@@ -347,7 +360,7 @@ def test_bugrefs_are_used_for_triaging():
     args.verbose_test = 1
     openqa_review.config = ConfigParser()
     openqa_review.config.add_section('product_issues')
-    openqa_review.config.set('product_issues', 'base_url', 'https://%(username)s:%(password)s@apibugzilla.suse.com')
+    openqa_review.config.set('product_issues', 'base_url', 'https://apibugzilla.suse.com')
     openqa_review.config.set('product_issues', 'username', 'user')
     openqa_review.config.set('product_issues', 'password', 'pass')
     openqa_review.config.set('product_issues', 'report_url', 'https://bugzilla.opensuse.org')
@@ -356,6 +369,7 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:component_mapping')
     openqa_review.config.set('product_issues:https://openqa.opensuse.org:component_mapping', 'installation-bootloader', 'Bootloader')
     openqa_review.config.add_section('test_issues')
+    openqa_review.config.set('test_issues', 'api_key', '0123456789ABCDEF')
     openqa_review.config.set('test_issues', 'report_url', 'https://progress.opensuse.org/projects/openqatests/issues/new')
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
@@ -388,7 +402,19 @@ def test_bugrefs_are_used_for_triaging():
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
     compare_report(report, ref_report)
 
+    # reminder comments
+    args.dry_run = True
+    report = openqa_review.generate_report(args)
+
+    # test double comment prevention code
+    p, pr = list(iteritems(report.report))[0]
+    report.report[p+237] = pr
+
+    openqa_review.reminder_comment_on_issues(report)
+    args.dry_run = False
+
     # now, try filtering: unassigned
+    report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
     ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md')).read()
     compare_report(report, ref_report)
