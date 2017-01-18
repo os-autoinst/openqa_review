@@ -124,6 +124,10 @@ except ImportError:  # pragma: no cover
     def pluralize(_1, _2, plural):
         return plural
 
+
+# minimum number of days an issue is unchanged before putting a reminder comment
+MIN_DAYS_UNCHANGED = 14
+
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
@@ -919,12 +923,15 @@ def parse_args():
                         bugrefs attached to these failures in most cases but
                         they should already carry bug references by other
                         means anyway.""")
-    parser.add_argument('--reminder-comment-on-issues', action='store_true', default=False,
-                        help="""Go through bugrefs and write an actual comment on the ticket with a corresponding
-                        current job URL in the ticket if it has not been updated for some time.
-                        Implies '--query-issue-status'.""")
-    parser.add_argument('--dry-run', action='store_true', default=False,
-                        help="""Do not actually change any tickets.""")
+    reminder_comments = parser.add_argument_group('Reminder comments on found issues')
+    reminder_comments.add_argument('--reminder-comment-on-issues', action='store_true', default=False,
+                                   help="""Go through bugrefs and write an actual comment on the ticket with a corresponding
+                                   current job URL in the ticket if it has not been updated for some time.
+                                   Implies '--query-issue-status'.""")
+    reminder_comments.add_argument('--dry-run', action='store_true', default=False,
+                                   help="""Do not actually change any tickets.""")
+    reminder_comments.add_argument('--min-days-unchanged', default=MIN_DAYS_UNCHANGED,
+                                   help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""")
     add_load_save_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
@@ -1075,7 +1082,7 @@ def filter_report(report, iefilter):
     report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if pr.reports})
 
 
-def reminder_comment_on_issue(ie, min_days_unchanged=14):
+def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
     issue = ie.bug
     if issue.error:
         return
@@ -1085,7 +1092,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged=14):
         issue.add_comment(comment)
 
 
-def reminder_comment_on_issues(report):
+def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if isinstance(pr, ProductReport)})
     for product, pr in iteritems(report.report):
@@ -1108,7 +1115,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report)
+        reminder_comment_on_issues(report, args.min_days_unchanged)
 
     if args.filter:
         try:
