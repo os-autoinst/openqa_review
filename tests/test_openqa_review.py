@@ -408,7 +408,7 @@ def test_bugrefs_are_used_for_triaging():
 
     # test double comment prevention code
     p, pr = list(iteritems(report.report))[0]
-    report.report[p+237] = pr
+    report.report[p + 237] = pr
 
     openqa_review.reminder_comment_on_issues(report)
     args.dry_run = False

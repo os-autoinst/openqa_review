@@ -201,6 +201,7 @@ def parse_summary(details):
     """Parse and return build summary as dict."""
     return {i.previous.strip().rstrip(':').lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")}
 
+
 change_state = {
     ('result_passed', 'result_failed'): 'NEW_ISSUE',
     ('result_softfailed', 'result_failed'): 'NEW_ISSUE',
@@ -590,6 +591,7 @@ class Issue(object):
                 self.error = True
 
     def add_comment(self, comment):
+        """Add a comment to an issue with RPC/REST operations."""
         if self.issue_type == 'bugzilla':
             self.bugzilla_browser.json_rpc_post('/jsonrpc.cgi', 'Bug.add_comment', {
                 "id": self.bugid,
@@ -627,6 +629,7 @@ class Issue(object):
 
     @property
     def last_comment(self):
+        """Return datetime object of last comment retrieved from an issue."""
         if not self.last_comment_date:
             assert self.issue_type == 'bugzilla'
             res = self.bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.comments', {"ids": [self.bugid]})

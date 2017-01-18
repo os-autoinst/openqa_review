@@ -108,12 +108,17 @@ class Browser(object):
         return content
 
     def json_rpc_get(self, url, method, params, cache=True):
+        """Execute JSON RPC GET request."""
         absolute_url = url if not url.startswith('/') else urljoin('http://dummy/', str(url))
         get_params = SortedDict({'method': method, 'params': json.dumps([params])})
         get_url = requests.Request('GET', absolute_url, params=get_params).prepare().url
         return self.get_json(get_url.replace('http://dummy', ''), cache)
 
     def json_rpc_post(self, url, method, params):
+        """Execute JSON RPC POST request.
+
+        Supports a 'dry-run' which is only simulating the request with a log message.
+        """
         if self.dry_run:
             log.warning("NOT sending '%s' request to '%s' with params %r" % (method, url, params))
             return {}
@@ -125,6 +130,10 @@ class Browser(object):
             return r.json() if r.text else None
 
     def json_rest(self, url, method, data):
+        """Execute JSON REST request.
+
+        Supports a 'dry-run' which is only simulating the request with a log message.
+        """
         if self.dry_run and method.upper() != 'GET':
             log.warning("NOT sending '%s' request to '%s' with params %r" % (method, url, data))
             return {}
