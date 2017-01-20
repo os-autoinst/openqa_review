@@ -370,7 +370,9 @@ def find_builds(builds, running_threshold=0):
     threshold = float(running_threshold) if running_threshold is not None else 0
 
     # filter out empty builds
-    builds = {build: result for build, result in iteritems(builds) if result['total'] != 0 and result['total'] > result['skipped']}
+    def non_empty(r):
+        return r['total'] != 0 and r['total'] > r['skipped'] and not ('build' in r.keys() and r['build'] is None)
+    builds = {build: result for build, result in iteritems(builds) if non_empty(result)}
 
     finished = {build: result for build, result in iteritems(builds) if not result['unfinished'] or
                 (100 * float(result['unfinished']) / result['total']) <= threshold}
