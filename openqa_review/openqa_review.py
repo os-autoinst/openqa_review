@@ -374,7 +374,23 @@ def find_builds(builds, running_threshold=0):
     log.debug("Found the following finished non-empty builds: %s" % ', '.join(finished.keys()))
     if len(finished) < 2:
         raise NotEnoughBuildsError("not enough finished builds found")
+    assert len(finished.keys()) >= 2
     return finished.keys()
+
+
+def find_last_reviewed_build(comments):
+    """Find last reviewed build within job group comments."""
+    # Could also find previous one with a comment on the build status,
+    # i.e. a reviewed finished build
+    # The build number itself might be prefixed with a redundant 'Build' which we ignore
+    build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@]*)(.*reference.*)?(\*\*)?\r\n')
+    # Assuming the most recent with a build number also has the most recent review
+    for c in reversed(comments):
+        match = build_re.search(c['text'])
+        if match:
+            last_reviewed = match.group(3)
+            break
+    return last_reviewed
 
 
 def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewed=None, running_threshold=0):
@@ -390,12 +406,21 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     """
     job_group = browser.get_json('%s.json' % job_group_url)
 
+    def get_group_result(job_group):
+        try:
+            results_list = job_group['build_results']
+            return {i['build']: i for i in results_list}
+        except KeyError:
+            log.debug("Reverting to old openQA behaviour before openQA#9b50b22")
+            return job_group['result']
+
     def build_url(build):
-        b = job_group['result'].get(build, next(iter(job_group['result'].values())))
+        r = get_group_result(job_group)
+        b = r.get(build, next(iter(r.values())))
         build = b.get('build', build)
         return '/tests/overview?distri=%s&version=%s&build=%s&groupid=%i' % (b['distri'], b['version'], quote(build), job_group['group']['id'])
 
-    finished_builds = find_builds(job_group['result'], running_threshold)
+    finished_builds = find_builds(get_group_result(job_group), running_threshold)
     # find last finished and previous one
     builds_to_compare = sorted(finished_builds, reverse=True)[0:2]
 
@@ -406,17 +431,8 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         if min(map(len, builds_to_compare)) < 4:
             log.warning("A build number of at least four digits is expected with leading zero, expect weird results.")  # pragma: no cover
     elif against_reviewed:
-        # Could also find previous one with a comment on the build status,
-        # i.e. a reviewed finished build
-        # The build number itself might be prefixed with a redundant 'Build' which we ignore
-        build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@]*)(.*reference.*)?(\*\*)?\r\n')
-        # Assuming the most recent with a build number also has the most recent review
         try:
-            for c in reversed(job_group['comments']):
-                match = build_re.search(c['text'])
-                if match:
-                    last_reviewed = match.group(3)
-                    break
+            last_reviewed = find_last_reviewed_build(job_group['comments'])
             log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
             build_to_review = max(finished_builds) if against_reviewed == 'last' else against_reviewed
             assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
