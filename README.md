@@ -6,11 +6,19 @@ For more details read the documentation within `openqa_review/openqa_review.py`.
 
 ## Usage
 
-* Install requirements and package, e.g.
+* Install requirements and package, using an isolated Python environment
+  such as [VirtualEnv](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
 
 ```
-sudo pip install -r requirements.txt
-sudo pip install .
+pip install -r requirements.txt
+pip install .
+```
+
+or if you are using openSUSE distribution, it is recommended to use `zypper`,
+e.g.:
+
+```
+zypper in python-openqa_review
 ```
 
 * Call `openqa-review` from PATH, e.g. with `--help`
