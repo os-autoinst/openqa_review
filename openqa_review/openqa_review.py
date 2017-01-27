@@ -614,6 +614,7 @@ class Issue(object):
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""
+        log.info("Posting a comment on %s ticket [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
         if self.issue_type == 'bugzilla':
             self.bugzilla_browser.json_rpc_post('/jsonrpc.cgi', 'Bug.add_comment', {
                 "id": self.bugid,
