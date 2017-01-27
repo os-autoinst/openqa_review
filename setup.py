@@ -35,6 +35,7 @@ setup(
         "requests",
         "PyYAML",
         "pika",
+        "certifi",
     ],
     test_require=[
         "pytest-mock",
