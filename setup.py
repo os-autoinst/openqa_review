@@ -34,6 +34,7 @@ setup(
         "humanfriendly",
         "requests",
         "PyYAML",
+        "certifi",
     ],
     author="Oliver kurz",
     author_email="okurz@suse.com",
