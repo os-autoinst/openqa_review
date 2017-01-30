@@ -16,6 +16,10 @@ The script is expected to be executed on the host on where the TumbleSLE target
 directory structure is available on. The source, i.e. where to copy assets from,
 can be remote and the path can be specified in an rsync-compatible way, e.g.
 "openqa:/var/lib/openqa/factory/"
+
+Notifications over AMQP are sent out if a host has been configured
+appropriately in the configuration file (see config file example). The
+notifications are serialized in JSON strings.
 """
 
 # Python 2 and 3: easiest option
