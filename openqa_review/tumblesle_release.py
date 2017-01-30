@@ -39,7 +39,7 @@ import pika
 import re
 import sys
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 from configparser import ConfigParser
 from subprocess import check_call
 
@@ -116,6 +116,7 @@ class TumblesleRelease(object):
         self.notify_channel = self.notify_connection.channel()
         self.notify_channel.exchange_declare(exchange='pubsub', type='topic')
         self.notify_topic = 'suse.tumblesle'
+        self.notify_seen = deque(maxlen=args.seen_maxlen)
 
     def __del__(self):
         """Cleanup notification objects."""
@@ -129,6 +130,10 @@ class TumblesleRelease(object):
             log.debug("No notification channel enabled, discarding notify.")
             return
         body = json.dumps(message)
+        if body in self.notify_seen:
+            log.debug("notification message already sent out recently, not resending: %s" % body)
+            return
+        self.notify_seen.append(body)
         self.notify_channel.basic_publish(exchange='pubsub', routing_key='.'.join([self.notify_topic, topic]), body=body)
 
     def run(self, do_run=True):
@@ -374,6 +379,12 @@ def parse_args():
     parser.add_argument('--post-release-hook',
                         help="Specify application path for a post-release hook which is called after every successful release",
                         default=None)
+    parser.add_argument('--seen-maxlen', type=int,
+                        help="""The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and
+                        before sending it is checked if the notification was already sent out recently with same content.
+                        Together with '--sleeptime' the interval under which the same message would be resent can be configured,
+                        e.g. maxlen*sleeptime = minimum time of reappearence (s)""",
+                        default=500)
     add_load_save_args(parser)
     return parser.parse_args()
 

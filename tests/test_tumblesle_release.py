@@ -73,6 +73,7 @@ def args():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tumblesle/0046_0056_new_release')
     args.dest = '/tmp/'
     args.post_release_hook = None
+    args.seen_maxlen = 1
     # Enable saving and disable loading if you want to add new test data downloaded from hosts
     #  args.save = True
     #  args.save_dir = args.load_dir
@@ -188,3 +189,7 @@ host = localhost
         mocker.patch('pika.BlockingConnection')
         tr = tumblesle_release.TumblesleRelease(args)
         tr.one_run()
+        assert '{"build": "0056"}' in tr.notify_seen
+        # this will yield the same message and is therefore not sent out again
+        tr.one_run()
+        assert '{"build": "0056"}' in tr.notify_seen
