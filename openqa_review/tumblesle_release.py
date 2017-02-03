@@ -29,7 +29,7 @@ from future.standard_library import install_aliases  # isort:skip to keep 'insta
 install_aliases()
 from future.utils import iteritems
 
-import argparse
+import configargparse
 import fnmatch
 import glob
 import logging
@@ -40,7 +40,6 @@ import re
 import sys
 import time
 from collections import defaultdict, deque
-from configparser import ConfigParser
 from subprocess import check_call
 
 import yaml
@@ -98,8 +97,6 @@ class TumblesleRelease(object):
         log.setLevel(logging_level)
         log.debug("args: %s" % args)
         self.args = args
-        config = ConfigParser()
-        config_entries = config.read(self.args.config_path)
         self.whitelist = [i.strip() for i in args.whitelist.split(',')]
         if config_entries:
             self.whitelist += [i.strip() for i in config.get(self.args.product, 'whitelist').split(',')]
@@ -340,71 +337,71 @@ class TumblesleRelease(object):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-v', '--verbose',
-                        help="Increase verbosity level, specify multiple times to increase verbosity",
-                        action='count', default=1)
-    parser.add_argument('-n', '--dry-run', action='store_true',
-                        help="Only do read-only or simulate actions, does not release TumbleSLE")
-    parser.add_argument('--dry-run-rsync', action='store_true',
-                        help="Execute rsync with dry-run. Should be specified additionally to '--dry-run'")
-    parser.add_argument('--openqa-host',
-                        help="openQA host to retrieve results from",
-                        default='https://openqa.opensuse.org')
-    parser.add_argument('--group-id',
-                        help="Group id to search in from openQA host",
-                        default=19)
-    parser.add_argument('--product',
-                        help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).",
-                        default="Leap 42.2")
-    parser.add_argument('--check-build',
-                        help="""If specified, checks specified build number (integer) instead of 'last' finished.""",
-                        default='last')
-    parser.add_argument('--check-against-build',
-                        help="""If specified, checks against specified build number (integer).
-                        Specify 'release_info' for reading release info file from destination folder, see '--release-file' and '--dest'.
-                        Specify 'tagged' for last tagged on group overview page within openQA""",
-                        default='release_info')
-    parser.add_argument('--run-once', action='store_true',
-                        help="Only run once, not continuously")
-    parser.add_argument('--config-path',
-                        help="Path to config file with whitelist.",
-                        default=CONFIG_PATH)
-    parser.add_argument('--whitelist',
-                        help="Whitelist entries as for the config file (comma separated). Additional to config file entries",
-                        default='')
-    parser.add_argument('--src',
-                        help="""Source directory for rsync call pointing to factory subdir within openQA.
-                        Make sure to end the path with '/'. Can be anything rsync understands""",
-                        default='/var/lib/openqa/factory/')
-    parser.add_argument('--dest',
-                        help="""Target directory for rsync call where to put TumbleSLE assets. Make sure to end the path with '/'.
-                        Can be anything rsync understands but must be local.""",
-                        default='/srv/www/tumblesle/')
-    parser.add_argument('--match',
-                        help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
-                        default='open*-42.2*x86_64*')
-    parser.add_argument('--match-hdds',
-                        help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
-                        default=None)
-    parser.add_argument('--release-file',
-                        help="""Name of release file including the build number. This file is read from the path specified by '--dest'
-                        and is written back to it.""",
-                        default='.release_info')
-    parser.add_argument('--sleeptime',
-                        help="Time to sleep between runs in seconds. Has no effect with '--run-once'",
-                        default=240)
-    parser.add_argument('--post-release-hook',
-                        help="Specify application path for a post-release hook which is called after every successful release",
-                        default=None)
-    parser.add_argument('--seen-maxlen', type=int,
-                        help="""The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and
-                        before sending it is checked if the notification was already sent out recently with same content.
-                        Together with '--sleeptime' the interval under which the same message would be resent can be configured,
-                        e.g. maxlen*sleeptime = minimum time of reappearence (s)""",
-                        default=500)
+    parser = configargparse.ArgumentParser(formatter_class=configargparse.ArgumentDefaultsHelpFormatter)
+    parser.add('-v', '--verbose',
+               help="Increase verbosity level, specify multiple times to increase verbosity",
+               action='count', default=1)
+    parser.add('-n', '--dry-run', action='store_true',
+               help="Only do read-only or simulate actions, does not release TumbleSLE")
+    parser.add('--dry-run-rsync', action='store_true',
+               help="Execute rsync with dry-run. Should be specified additionally to '--dry-run'")
+    parser.add('--openqa-host',
+               help="openQA host to retrieve results from",
+               default='https://openqa.opensuse.org')
+    parser.add('--group-id',
+               help="Group id to search in from openQA host",
+               default=19)
+    parser.add('--product',
+               help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).",
+               default="Leap 42.2")
+    parser.add('--check-build',
+               help="""If specified, checks specified build number (integer) instead of 'last' finished.""",
+               default='last')
+    parser.add('--check-against-build',
+               help="""If specified, checks against specified build number (integer).
+               Specify 'release_info' for reading release info file from destination folder, see '--release-file' and '--dest'.
+               Specify 'tagged' for last tagged on group overview page within openQA""",
+               default='release_info')
+    parser.add('--run-once', action='store_true',
+               help="Only run once, not continuously")
+    parser.add('--config-path',
+               help="Path to config file with whitelist.",
+               default=CONFIG_PATH, is_config_file=True)
+    parser.add('--whitelist',
+               help="Whitelist entries as for the config file (comma separated). Additional to config file entries",
+               default='')
+    parser.add('--src',
+               help="""Source directory for rsync call pointing to factory subdir within openQA.
+               Make sure to end the path with '/'. Can be anything rsync understands""",
+               default='/var/lib/openqa/factory/')
+    parser.add('--dest',
+               help="""Target directory for rsync call where to put TumbleSLE assets. Make sure to end the path with '/'.
+               Can be anything rsync understands but must be local.""",
+               default='/srv/www/tumblesle/')
+    parser.add('--match',
+               help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
+               default='open*-42.2*x86_64*')
+    parser.add('--match-hdds',
+               help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
+               default=None)
+    parser.add('--release-file',
+               help="""Name of release file including the build number. This file is read from the path specified by '--dest'
+               and is written back to it.""",
+               default='.release_info')
+    parser.add('--sleeptime',
+               help="Time to sleep between runs in seconds. Has no effect with '--run-once'",
+               default=240)
+    parser.add('--post-release-hook',
+               help="Specify application path for a post-release hook which is called after every successful release",
+               default=None)
+    parser.add('--seen-maxlen', type=int,
+               help="""The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and
+               before sending it is checked if the notification was already sent out recently with same content.
+               Together with '--sleeptime' the interval under which the same message would be resent can be configured,
+               e.g. maxlen*sleeptime = minimum time of reappearence (s)""",
+               default=500)
     add_load_save_args(parser)
-    return parser.parse_args()
+    return parser.parse()
 
 
 def main():  # pragma: no cover, only interactive
