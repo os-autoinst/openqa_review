@@ -162,7 +162,7 @@ class TumblesleRelease(object):
         def is_matching_iso(i):
             return 'iso' in i['type'] and 'Staging' not in i['name'] and re.match(match_re, i['name'])
         log.debug("Finding most recent ISO matching regex '%s'" % match_re)
-        assets = self.browser.get_json('/api/v1/assets')['assets']
+        assets = self.browser.get_json('/api/v1/assets', cache=self.args.load)['assets']
         isos = [i['name'] for i in assets if is_matching_iso(i)]
         return isos
 
@@ -170,7 +170,7 @@ class TumblesleRelease(object):
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
         group_id = int(self.args.group_id)
         log.debug("Getting jobs in build %s ..." % build)
-        jobs_build = self.browser.get_json('/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s' % (build, group_id))['jobs']
+        jobs_build = self.browser.get_json('/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s' % (build, group_id), cache=self.args.load)['jobs']
         jobs_in_build_product = [i for i in jobs_build if i['group_id'] == group_id]
         jobs_by_result = defaultdict(list)
         for job in jobs_in_build_product:
