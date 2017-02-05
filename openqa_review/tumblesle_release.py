@@ -114,7 +114,7 @@ class TumblesleRelease(object):
         notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
         self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=notify_host))
         self.notify_channel = self.notify_connection.channel()
-        self.notify_channel.exchange_declare(exchange='pubsub', type='topic')
+        self.notify_channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
         self.notify_topic = 'suse.tumblesle'
         self.notify_seen = deque(maxlen=args.seen_maxlen)
 
