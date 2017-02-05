@@ -133,8 +133,8 @@ class TumblesleRelease(object):
         if body in self.notify_seen:
             log.debug("notification message already sent out recently, not resending: %s" % body)
             return
-        self.notify_seen.append(body)
         self.notify_channel.basic_publish(exchange='pubsub', routing_key='.'.join([self.notify_topic, topic]), body=body)
+        self.notify_seen.append(body)
 
     def run(self, do_run=True):
         """Continously run while 'do_run' is True, check for last build and release if satisfying."""
