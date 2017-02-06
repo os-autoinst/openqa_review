@@ -25,6 +25,11 @@ class DownloadError(Exception):
     pass
 
 
+class CacheNotFoundError(DownloadError):
+    """content could not retrieved from cache."""
+    pass
+
+
 def url_to_filename(url):
     """
     Convert URL to a valid, unambigous filename.
@@ -88,7 +93,7 @@ class Browser(object):
                     msg = "Request to %s was not successful, file %s not found" % (url, filename)
                     log.info(msg)
                     # as 'load' simulates downloading we also have to simulate an appropriate error
-                    raise DownloadError(msg)
+                    raise CacheNotFoundError(msg)
                 else:  # pragma: no cover
                     raise
             content = json.loads(raw) if as_json else raw
