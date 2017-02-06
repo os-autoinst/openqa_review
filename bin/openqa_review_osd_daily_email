@@ -9,7 +9,7 @@ openqa_review_args="${openqa_review_args:-"--host http://openqa.suse.de -n -r -T
 load_args="${load_args:-"--load --load-dir=${tmp}"}"
 openqa_review_email_args="${openqa_review_email_args:-"${load_args}"}"
 openqa_review_html_args="${openqa_review_html_args:-"${load_args} --report-links"}"
-openqa_review_save_args="${openqa_review_save_args:-"--report-links --save --save-dir ${tmp}"}"
+openqa_review_save_args="${openqa_review_save_args:-"--report-links --reminder-comment-on-issues --dry-run --save --save-dir ${tmp}"}"
 openqa_review_reminder_args="${openqa_review_reminder_args:-"${load_args} --reminder-comment-on-issues"}"
 openqa_review="${openqa_review:-"$(which openqa-review)"}"
 TPL="${TPL:-"dashboard_files/dashboard.html.in"}"
