@@ -64,6 +64,8 @@ whitelist = arm7l-foo,bar@uefi
 
 #[notification]
 #host = localhost
+#username = guest
+#password = guest
 """
 
 
@@ -111,8 +113,9 @@ class TumblesleRelease(object):
         self.browser = Browser(args, args.openqa_host)
         if not config.has_section('notification'):
             return
+        credentials = pika.PlainCredentials(config.get('notification', 'username', fallback='guest'), config.get('notification', 'password', fallback='guest'))
         notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
-        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=notify_host))
+        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=notify_host, credentials=credentials))
         self.notify_channel = self.notify_connection.channel()
         self.notify_channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
         self.notify_topic = 'suse.tumblesle'
