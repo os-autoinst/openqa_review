@@ -1,4 +1,4 @@
-# openqa_review_script [![Build Status](https://travis-ci.org/okurz/openqa_review.svg?branch=master)](https://travis-ci.org/okurz/openqa_review)
+# openqa_review_script [![Build Status](https://travis-ci.org/okurz/openqa_review.svg?branch=master)](https://travis-ci.org/okurz/openqa_review) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/699/badge)](https://bestpractices.coreinfrastructure.org/projects/699)
 
 A review helper script for openQA.
 
