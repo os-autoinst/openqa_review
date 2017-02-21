@@ -36,9 +36,9 @@ If you have questions, visit me on irc.freenode.net in #opensuse-factory
 
 This project lives in https://github.com/okurz/openqa_review
 
-Feel free to add issues in gitlab or send pull requests.
+Feel free to add issues in github or send pull requests.
 
-TODOs and ideas are tracked in the file `TODO` as well as gitlab issues.
+TODOs and ideas are tracked in the file `TODO` as well as github issues.
 
 ### Rules for commits
 

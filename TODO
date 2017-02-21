@@ -9,14 +9,9 @@
  - think about updating a wiki page on redmine with a report
    http://www.redmine.org/projects/redmine/wiki/Rest_WikiPages
 
- - Review https://gitlab.suse.de/security/tools/tree/master and
-   especially https://gitlab.suse.de/security/tools/blob/master/bzmass for
-   mass filing bugs
-
  - Add mode to count bug occurences (e.g. parse previous)
 
- - check install error when cloned from gitlab w/o tags maybe based on pylibrary cookiecutter template? missing tag is causing version to fail
-  - tags added but should also work without, try "bumpversion"? see cookiecutter-pylibrary template
+ - try pylibrary cookiecutter template or "bumpversion"? see cookiecutter-pylibrary template
 
  - offer to automatically post comment on webpage
 
