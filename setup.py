@@ -16,7 +16,7 @@ try:
     version_git = check_output(["git", "describe", "--tags"]).rstrip().decode('ascii')
 except:
     try:
-        version_git = open(version_py).read().strip().split('=')[-1].replace('"', '')
+        version_git = open(version_py).read().strip().split('=')[-1].replace('\'', '').strip()
     except:
         version_git = '0.0.0'
 
