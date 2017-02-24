@@ -113,13 +113,16 @@ class TumblesleRelease(object):
         self.browser = Browser(args, args.openqa_host)
         if not config.has_section('notification'):
             return
-        credentials = pika.PlainCredentials(config.get('notification', 'username', fallback='guest'), config.get('notification', 'password', fallback='guest'))
-        notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
-        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=notify_host, credentials=credentials))
+        self.credentials = pika.PlainCredentials(config.get('notification', 'username', fallback='guest'), config.get('notification', 'password', fallback='guest'))
+        self.notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
+        self.notify_connect()
+
+    def notify_connect(self):
+        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat_interval=10))
         self.notify_channel = self.notify_connection.channel()
         self.notify_channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
         self.notify_topic = 'suse.tumblesle'
-        self.notify_seen = deque(maxlen=args.seen_maxlen)
+        self.notify_seen = deque(maxlen=self.args.seen_maxlen)
 
     def __del__(self):
         """Cleanup notification objects."""
@@ -136,7 +139,17 @@ class TumblesleRelease(object):
         if body in self.notify_seen:
             log.debug("notification message already sent out recently, not resending: %s" % body)
             return
-        self.notify_channel.basic_publish(exchange='pubsub', routing_key='.'.join([self.notify_topic, topic]), body=body)
+        tries = 7  # arbitrary
+        for t in range(tries):
+            try:
+                self.notify_channel.basic_publish(exchange='pubsub', routing_key='.'.join([self.notify_topic, topic]), body=body)
+                break
+            except pika.exceptions.ConnectionClosed as e:  # pragma: no cover
+                log.warn('sending notification did not work: %s. Retrying try %s out of %s' % (e, t, tries))
+                self.notify_connect()
+        else:  # pragma: no cover
+            log.error('could not send out notification for %s tries, aborting.' % tries)
+            raise pika.exceptions.ConnectionClosed()
         self.notify_seen.append(body)
 
     def run(self, do_run=True):
