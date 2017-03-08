@@ -6,7 +6,7 @@
 	"pinned_comments": [],
 	"description": "",
 	"max_jobs": 91,
-	"group": {"id": 22, "name": "x-released openSUSE Tumbleweed GA JeOS"},
+	"group": {"id": 22, "name": "openSUSE Leap 42.2 AArch64"},
 	"result": {
 		"1.64": {
 			"distri": "opensuse",

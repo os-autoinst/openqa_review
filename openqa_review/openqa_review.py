@@ -881,6 +881,8 @@ def parse_args():
     parser.add_argument('-j', '--job-groups',
                         help="""Only handle selected job group(s), comma separated, e.g. \'openSUSE Tumbleweed Gnome\'.
                         A regex also works, e.g. \'openSUSE Tumbleweed\' or \'(Gnome|KDE)\'.""")
+    parser.add_argument('--exclude-job-groups',
+                        help="""Exclude selected job groups by regex, inverse of '--job-groups'.""")
     parser.add_argument('-J', '--job-group-urls',
                         help="""Only handle selected job group(s) specified by URL, comma separated. Overwrites "--host" argument.
                         Skips parsing on main page and can actually save some seconds.""")
@@ -984,6 +986,10 @@ def get_job_groups(browser, root_url, args):
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
             log.info("Job group URL for %s: %s" % (args.job_groups, job_groups))
+        if args.exclude_job_groups:
+            job_pattern = re.compile('(%s)' % '|'.join(args.exclude_job_groups.split(',')))
+            job_groups = {k: v for k, v in iteritems(job_groups) if not job_pattern.search(k)}
+            log.info("Job group URL excluding %s: %s" % (args.exclude_job_groups, job_groups))
     return SortedDict(job_groups)
 
 

@@ -32,6 +32,7 @@ def args_factory():
     args.host = 'https://openqa.opensuse.org'
     args.job_group_urls = None
     args.job_groups = None
+    args.exclude_job_groups = None
     args.no_progress = True
     args.verbose = 1
     args.output_state_results = False
@@ -322,6 +323,14 @@ def test_get_job_groups_yields_job_groups_in_page():
         'openSUSE Leap 42.2 Maintenance',
         'openSUSE Leap 42.2 Updates',
         'openSUSE Leap Staging Projects',
+        'openSUSE Tumbleweed',
+        'openSUSE Tumbleweed AArch64',
+        'openSUSE Tumbleweed PowerPC'])
+    args.exclude_job_groups = '(Krypton|Leap)'
+    job_groups = openqa_review.get_job_groups(browser, root_url, args)
+    assert sorted(job_groups.keys()) == sorted([
+        'Staging Projects',
+        'Test Parent Group / openSUSE Argon',
         'openSUSE Tumbleweed',
         'openSUSE Tumbleweed AArch64',
         'openSUSE Tumbleweed PowerPC'])
