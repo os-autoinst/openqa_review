@@ -113,11 +113,13 @@ class TumblesleRelease(object):
         self.browser = Browser(args, args.openqa_host)
         if not config.has_section('notification'):
             return
-        self.credentials = pika.PlainCredentials(config.get('notification', 'username', fallback='guest'), config.get('notification', 'password', fallback='guest'))
+        self.credentials = pika.PlainCredentials(config.get('notification', 'username', fallback='guest'),
+                                                 config.get('notification', 'password', fallback='guest'))
         self.notify_host = config.get('notification', 'host', fallback='kazhua.suse.de')
         self.notify_connect()
 
     def notify_connect(self):
+        """Connect to notification bus."""
         self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat_interval=10))
         self.notify_channel = self.notify_connection.channel()
         self.notify_channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
