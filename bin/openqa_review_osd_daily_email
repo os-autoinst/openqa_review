@@ -5,7 +5,7 @@ setup_tmpdir
 
 recv="${recv:-"openqa-suse-status@suse.de"}"
 html_target="${html_target:-"/suse/okurz/Export/openqa_suse_de_status.html"}"
-openqa_review_args="${openqa_review_args:-"--host http://openqa.suse.de -n -r -T --query-issue-status --no-empty-sections --include-softfails --running-threshold=2 $@"}"
+openqa_review_args="${openqa_review_args:-"--host http://openqa.suse.de -n -r -T --query-issue-status --no-empty-sections --include-softfails --running-threshold=2 --exclude-job-groups '^(Released|Development)' $@"}"
 load_args="${load_args:-"--load --load-dir=${tmp}"}"
 openqa_review_email_args="${openqa_review_email_args:-"${load_args}"}"
 openqa_review_html_args="${openqa_review_html_args:-"${load_args} --report-links"}"
