@@ -1,2 +1,0 @@
-#!/bin/sh -e
-PYTHONPATH=.:$PYTHONPATH py.test -m "not webtest" "$@"
