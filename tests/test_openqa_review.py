@@ -458,29 +458,3 @@ def test_arch_distinguish():
 
     report = str(openqa_review.generate_report(args))
     assert 'ppc64le' in report
-
-
-@pytest.mark.webtest
-def test_default_returns_valid_markdown_document():
-    args = args_factory()
-    report = openqa_review.generate_report(args)
-    assert '**Common issues:**' in report
-
-
-@pytest.mark.webtest
-def test_single_job_group_with_extended_test_output_returns_valid_markdown_document():
-    args = args_factory()
-    args.job_group_urls = args.host + '/group_overview/25'
-    report = openqa_review.generate_report(args)
-    assert '**Common issues:**' in report
-
-
-@pytest.mark.webtest
-def test_single_job_group_pages_can_be_cached_from_web():
-    args = args_factory()
-    args.job_group_urls = args.host + '/group_overview/25'
-
-    with TemporaryDirectory() as tmp_dir:
-        args.save_dir = tmp_dir
-        report = openqa_review.generate_report(args)
-    assert '**Common issues:**' in report

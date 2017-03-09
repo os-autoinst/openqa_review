@@ -55,9 +55,8 @@ authentication and only reads the webpage. No harm should be done :-)
  - Human friendly progress notification and wait spinner
  - Accept multiple entries for '--job-group(-urls)'
  - Ensure report entries are in same alphabetical order with OrderedDict
- - tox.ini: Local tests, webtests, doctests, check with flake8
+ - tox.ini: Local tests, doctests, check with flake8
  - Generate version based on git describe
- - tests: Make slow webtests ignorable by marker
  - Add support to parse all job groups
 
 
