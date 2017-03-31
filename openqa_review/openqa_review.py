@@ -644,7 +644,7 @@ class Issue(object):
         """Issue is still open."""
         assert self.queried
         s = self.status.upper()
-        if s in ["RESOLVED", "REJECTED", "VERIFIED"]:
+        if s in ["RESOLVED", "REJECTED", "VERIFIED", "CLOSED"]:
             return False
         else:
             return True
