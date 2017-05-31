@@ -11,7 +11,7 @@
 ---
 
 **Arch:** x86_64
-**Status: <font color="red">Red</font>**
+**Status: <span style="color: red;">Red</span>**
 
 **New Product bugs:**
 

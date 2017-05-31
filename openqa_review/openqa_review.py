@@ -189,9 +189,9 @@ $url
 """)
 
 status_badge_str = {
-    'GREEN': '<font color="green">Green</font>',
-    'AMBER': '<font color="#FFBF00">Amber</font>',
-    'RED': '<font color="red">Red</font>',
+    'GREEN': '<span style="color: green;">Green</span>',
+    'AMBER': '<span style="color: #FFBF00;">Amber</span>',
+    'RED': '<span style="color: red;">Red</span>',
 }
 
 
@@ -856,7 +856,7 @@ class ProductReport(object):
             'now': now_str,
             'build': build_str,
             'common_issues': common_issues(missing_archs_str, self.args.show_empty),
-            'arch_report': '<hr>'.join(map(str, self.reports.values()))
+            'arch_report': '\n---\n'.join(map(str, self.reports.values()))
         })
         return openqa_review_report_product
 

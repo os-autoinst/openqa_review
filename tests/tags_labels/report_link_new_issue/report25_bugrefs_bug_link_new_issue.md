@@ -11,7 +11,7 @@
 ---
 
 **Arch:** arm
-**Status: <font color="red">Red</font>**
+**Status: <span style="color: red;">Red</span>**
 
 **TODO: review**
 
