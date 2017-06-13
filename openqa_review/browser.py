@@ -99,10 +99,19 @@ class Browser(object):
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
-            r = requests.get(absolute_url, auth=self.auth)
-            if r.status_code != 200:
-                msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
-                log.info(msg)
+            for i in range(1, 7):
+                r = requests.get(absolute_url, auth=self.auth)
+                if r.status_code == 502:
+                    log.info("Request to %s failed with status code 502, retrying try %s" % (absolute_url, i))
+                    continue
+                if r.status_code != 200:
+                    msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
+                    log.info(msg)
+                    raise DownloadError(msg)
+                break
+            else:
+                msg = "Request to %s was not successful after multiple retries, giving up. Status code: %s" % (absolute_url, r.status_code)
+                log.warn(msg)
                 raise DownloadError(msg)
             content = r.json() if as_json else r.content.decode('utf8')
         raw = json.dumps(content) if as_json else content
