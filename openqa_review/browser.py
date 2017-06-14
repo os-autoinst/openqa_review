@@ -71,7 +71,7 @@ class Browser(object):
         return BeautifulSoup(self.get_page(url), "html.parser")
 
     def get_json(self, url, cache=True):
-        """Wrapper method for get_page retrieving json API output."""
+        """Call get_page retrieving json API output."""
         return self.get_page(url, as_json=True, cache=cache)
 
     def get_page(self, url, as_json=False, cache=True):

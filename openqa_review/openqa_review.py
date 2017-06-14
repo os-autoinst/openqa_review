@@ -772,7 +772,7 @@ class ArchReport(object):
 
     @property
     def total_issues(self):
-        """Number of issue entries for this arch."""
+        """Return Number of issue entries for this arch."""
         total = 0
         for issue_status, issue_types in iteritems(self.issues):
             for issue_type, ies in iteritems(issue_types):
