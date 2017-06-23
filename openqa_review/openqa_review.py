@@ -277,7 +277,7 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     states = SortedDict(get_state(v, test_results_previous_dict) for k, v in iteritems(test_results_dict))
     # intermediate step:
     # - print report of differences
-    interesting_states = SortedDict({k.split(arch + '_')[1]: v for k, v in iteritems(states) if v != 'STABLE'})
+    interesting_states = SortedDict({k.split(arch + '_')[1]: v for k, v in iteritems(states) if v['state'] != 'STABLE'})
     if output_state_results:
         print("arch: %s" % arch)
         for state in interesting_states_names:
