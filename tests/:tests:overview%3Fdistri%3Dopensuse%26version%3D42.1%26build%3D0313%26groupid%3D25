@@ -268,24 +268,6 @@
                             </td>
                     </tr>
                     <tr>
-                        <td width="10%" class="name">cryptlvm</td>
-
-                            <td id="res_Gnome-DVD_x86_64_cryptlvm">
-
-                                        <span id="res-169796">
-                                            <a href="/tests/169796">
-                                                <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
-                                            </a>
-                                        </span>
-
-                                            <span title='<p>Failed needles:</p><ul><li>password-prompt-20141126</li><li>password-prompt-20150730</li><li>password-prompt-xterm-20150818</li></ul>' data-toggle='tooltip' class="failedmodule" >
-                                                <a href="/tests/169796/modules/zypper_in/steps/1">
-                                                    zypper_in
-                                                </a>
-                                            </span>
-                            </td>
-                    </tr>
-                    <tr>
                         <td width="10%" class="name">cryptlvm_minimal_x</td>
 
                             <td id="res_Gnome-DVD_x86_64_cryptlvm_minimal_x">

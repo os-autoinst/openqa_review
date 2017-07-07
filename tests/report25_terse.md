@@ -20,7 +20,7 @@
 
 **Existing Product bugs:**
 
-* soft fails: autoupgrade_13.1, cryptlvm, cryptlvm_minimal_x, textmode+awesome
+* soft fails: autoupgrade_13.1, cryptlvm_minimal_x, textmode+awesome
 
 
 **New openQA-issues:**

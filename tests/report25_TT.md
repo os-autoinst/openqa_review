@@ -20,7 +20,7 @@
 
 **Existing Product bugs:**
 
-* soft fails: [autoupgrade_13.1](https://openqa.opensuse.org/tests/169791) [(ref)](https://openqa.opensuse.org/tests/169596 "Previous test"), [cryptlvm](https://openqa.opensuse.org/tests/169796 "Failed modules: zypper_in") [(ref)](https://openqa.opensuse.org/tests/169601 "Previous test"), [cryptlvm_minimal_x](https://openqa.opensuse.org/tests/169797) [(ref)](https://openqa.opensuse.org/tests/169602 "Previous test"), [textmode+awesome](https://openqa.opensuse.org/tests/169828) [(ref)](https://openqa.opensuse.org/tests/169633 "Previous test")
+* soft fails: [autoupgrade_13.1](https://openqa.opensuse.org/tests/169791) [(ref)](https://openqa.opensuse.org/tests/169596 "Previous test"), [cryptlvm_minimal_x](https://openqa.opensuse.org/tests/169797) [(ref)](https://openqa.opensuse.org/tests/169602 "Previous test"), [textmode+awesome](https://openqa.opensuse.org/tests/169828) [(ref)](https://openqa.opensuse.org/tests/169633 "Previous test")
 
 
 **New openQA-issues:**
