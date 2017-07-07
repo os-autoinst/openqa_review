@@ -111,7 +111,10 @@ def cache_test_args_factory():
     return args
 
 
-def compare_report(report, ref_report):
+def compare_report(report, ref_report_path):
+    # If the reference report should be written initially or updated one can just write the report as string to file
+    #  open(os.path.join(os.path.dirname(os.path.realpath(ref_port_path)), ref_report_filename), 'w').write(str(report))
+    ref_report = open(ref_report_path).read()
     # for simpler display of the diff in case of differences it helps to have
     # both reports in same encoding, i.e. casting to str
     lines = str(report).splitlines()
@@ -128,8 +131,7 @@ def test_previously_loaded_cache_file_is_generated_into_valid_verbose_report_if_
     assert '**Common issues:**' in report
     # Missing architecture is reported
     assert re.search("Missing arch.*i586", report)
-    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TTT.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TTT.md'))
 
 
 def test_previously_loaded_cache_file_is_generated_into_valid_terse_report_by_default():
@@ -137,24 +139,21 @@ def test_previously_loaded_cache_file_is_generated_into_valid_terse_report_by_de
     args.verbose_test = 1
     report = str(openqa_review.generate_report(args))
     assert '**Common issues:**' in report
-    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_terse.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_terse.md'))
 
 
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l2():
     args = cache_test_args_factory()
     args.verbose_test = 2
     report = str(openqa_review.generate_report(args))
-    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_T.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_T.md'))
 
 
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l3():
     args = cache_test_args_factory()
     args.verbose_test = 3
     report = str(openqa_review.generate_report(args))
-    ref_report = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TT.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TT.md'))
 
 
 def test_builds_can_be_specified_and_appear_in_report():
@@ -394,21 +393,18 @@ def test_bugrefs_are_used_for_triaging():
     assert 'bsc#' in report
     # and references to 'test issues'
     assert 'poo#' in report
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs.md'))
 
     args.verbose_test = 2
     args.report_links = True
     report = str(openqa_review.generate_report(args))
-    ref_report = open(os.path.join(args.load_dir, 'report25_T_bugrefs.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs.md'))
 
     # report bug link(s) with 'new issue'
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report_link_new_issue')
     args.arch = 'arm'
     report = str(openqa_review.generate_report(args))
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_bug_link_new_issue.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_bug_link_new_issue.md'))
 
     # now, with query issues
     args.verbose_test = 1
@@ -416,9 +412,8 @@ def test_bugrefs_are_used_for_triaging():
     args.query_issue_status = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.arch = 'i586'
-    report = openqa_review.generate_report(args)
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md')).read()
-    compare_report(report, ref_report)
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md'))
 
     # reminder comments
     args.dry_run = True
@@ -434,21 +429,18 @@ def test_bugrefs_are_used_for_triaging():
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md'))
 
     # 2nd filter: closed
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
 
     # report generated when no todo items are left and some bugref is not accessible
     args.builds = '1508,1500'
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
-    ref_report = open(os.path.join(args.load_dir, 'report25_bugrefs_build1508.md')).read()
-    compare_report(report, ref_report)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
 
 
 def test_arch_distinguish():
