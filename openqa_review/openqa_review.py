@@ -346,7 +346,7 @@ def get_results_by_bugref(results, args):
     for k, v in iteritems(results):
         if not re.match('(' + '|'.join(todo_ignore_tags) + ')', v['state']):
             continue
-        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'TODO'
+        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'todo'
         v.update({'name': k})
         results_by_bugref[new_key].append(v)
 
@@ -756,10 +756,10 @@ class ArchReport(object):
             issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
             self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
 
-        # left do handle are the issues marked with 'TODO'
-        new_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'NEW_ISSUE')
+        # left to handle are the issues marked with 'todo'
+        new_issues = (r for r in results_by_bugref.get('todo', []) if r['state'] == 'NEW_ISSUE')
         self.issues['new']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, test_browser))
-        existing_issues = (r for r in results_by_bugref.get('TODO', []) if r['state'] == 'STILL_FAILING')
+        existing_issues = (r for r in results_by_bugref.get('todo', []) if r['state'] == 'STILL_FAILING')
         self.issues['existing']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser))
 
         if self.args.include_softfails:
