@@ -750,22 +750,8 @@ class ArchReport(object):
 
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
 
-        # searching for bugref for softfailures
-        for k, v in iteritems(results):
-            if v['state'] in soft_fail_states:
-                try:
-                    module_url = self._get_url_to_softfailed_module(v)
-                    if not module_url:
-                        continue
-                    module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
-                    v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
-                    if re.match('(bsc|boo)#', v['bugref']):
-                        v['bugref_href'] = "https://bugzilla.suse.com/show_bug.cgi?id=%s" % re.search("[0-9]*$", v['bugref']).group(0)
-                    else:
-                        log.error("Unexpected bugref %s in %s" % (v['bugref'], v))
-                    v['softfailedmodule'] = {'href': module_url, 'name': module_name, 'needles': []}
-                except DownloadError as e:
-                    log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
+        if self.args.bugrefs and self.args.include_softfails:
+            self._search_for_bugrefs_for_softfailures(results)
 
         results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
@@ -796,6 +782,23 @@ class ArchReport(object):
                 self.issues['new']['product'].append(IssueEntry(self.args, self.root_url, new_soft_fails))
             if existing_soft_fails:
                 self.issues['existing']['product'].append(IssueEntry(self.args, self.root_url, existing_soft_fails))
+
+    def _search_for_bugrefs_for_softfailures(self, results):
+        for k, v in iteritems(results):
+            if v['state'] in soft_fail_states:
+                try:
+                    module_url = self._get_url_to_softfailed_module(v)
+                    if not module_url:
+                        continue
+                    module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
+                    v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
+                    if re.match('(bsc|boo)#', v['bugref']):
+                        v['bugref_href'] = "https://bugzilla.suse.com/show_bug.cgi?id=%s" % re.search("[0-9]*$", v[
+                            'bugref']).group(0)
+                    else:
+                        log.error("Unexpected bugref %s in %s" % (v['bugref'], v))
+                except DownloadError as e:
+                    log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
 
     @property
     def total_issues(self):
