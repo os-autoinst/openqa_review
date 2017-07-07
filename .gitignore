@@ -1,6 +1,7 @@
 .tox/
 dist/
 .cache/
+.idea/
 *__pycache__/
 *.egg-info/
 *.pyc
