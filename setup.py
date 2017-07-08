@@ -28,9 +28,8 @@ setup(
     version="{ver}".format(ver=version_git),
     install_requires=[
         "beautifulsoup4",
-        # specify both versions of configparser backports to make sure the backports are installed and the import can be found
+        # there is also a new version 'configparser2' to resolve the name ambuigity but that package might not be available everywhere
         "configparser",
-        "configparser2",
         "future",
         "sortedcontainers",
         "humanfriendly",
