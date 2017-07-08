@@ -339,17 +339,17 @@ def issue_state(result_list):
 
 
 def get_results_by_bugref(results, args):
-    todo_ignore_tags = ['STILL_FAILING', 'NEW_ISSUE']
+    include_tags = ['STILL_FAILING', 'NEW_ISSUE']
     if args.include_softfails:
-        todo_ignore_tags += ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE']
+        include_tags += ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE']
+
+    # plain for-loop with append is most efficient: https://stackoverflow.com/questions/11276473/append-to-a-dict-of-lists-with-a-dict-comprehension
     results_by_bugref = defaultdict(list)
     for k, v in iteritems(results):
-        if not re.match('(' + '|'.join(todo_ignore_tags) + ')', v['state']):
+        if not re.match('(' + '|'.join(include_tags) + ')', v['state']):
             continue
-        new_key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'todo'
-        v.update({'name': k})
-        results_by_bugref[new_key].append(v)
-
+        key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'todo'
+        results_by_bugref[key].append(dict(v, **{'name': k}))
     return results_by_bugref
 
 
@@ -750,21 +750,20 @@ class ArchReport(object):
             # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
             if not re.match('(poo|bsc|boo)#', bugref):
                 continue
-            # if any result was still failing the issue is regarded as existing
 
             bug = result_list[0]
             issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
             self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
 
         # left to handle are the issues marked with 'todo'
-        new_issues = (r for r in results_by_bugref.get('todo', []) if r['state'] == 'NEW_ISSUE')
+        todo_results = results_by_bugref.get('todo', [])
+        new_issues = (r for r in todo_results if r['state'] == 'NEW_ISSUE')
         self.issues['new']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, test_browser))
-        existing_issues = (r for r in results_by_bugref.get('todo', []) if r['state'] == 'STILL_FAILING')
+        existing_issues = (r for r in todo_results if r['state'] == 'STILL_FAILING')
         self.issues['existing']['todo'].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser))
-
         if self.args.include_softfails:
-            new_soft_fails = [r for r in results.values() if r['state'] == 'NEW_SOFT_ISSUE']
-            existing_soft_fails = [r for r in results.values() if r['state'] == 'STILL_SOFT_FAILING']
+            new_soft_fails = [r for r in todo_results if r['state'] == 'NEW_SOFT_ISSUE']
+            existing_soft_fails = [r for r in todo_results if r['state'] == 'STILL_SOFT_FAILING']
             if new_soft_fails:
                 self.issues['new']['product'].append(IssueEntry(self.args, self.root_url, new_soft_fails, soft=True))
             if existing_soft_fails:
