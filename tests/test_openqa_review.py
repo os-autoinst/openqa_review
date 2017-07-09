@@ -400,7 +400,14 @@ def test_bugrefs_are_used_for_triaging():
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs.md'))
 
+    args.include_softfails = True
+    args.report_links = False
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs_softfails.md'))
+
     # report bug link(s) with 'new issue'
+    args.report_links = True
+    args.include_softfails = False
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report_link_new_issue')
     args.arch = 'arm'
     report = str(openqa_review.generate_report(args))
