@@ -15,12 +15,14 @@
 
 **New Product bugs:**
 
-* soft fails: upgrade_offline_13.1_allpatterns
 
 
 **Existing Product bugs:**
 
-* soft fails: autoupgrade_13.1, cryptlvm_minimal_x, textmode+awesome
+* soft fails: upgrade_offline_13.1_allpatterns
+* soft fails: autoupgrade_13.1
+* soft fails: cryptlvm_minimal_x
+* soft fails: textmode+awesome
 
 
 **New openQA-issues:**
