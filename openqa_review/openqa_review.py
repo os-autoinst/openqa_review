@@ -684,12 +684,12 @@ class IssueEntry(object):
 
     """List of failed test scenarios with corresponding bug."""
 
-    def __init__(self, args, root_url, failures, test_browser=None, bug=None, soft=False):
+    def __init__(self, args, root_url, failures, test_browser=None, bug=None):
         """Construct an issueentry object with options."""
         self.args = args
         self.failures = [f for f in failures]
         self.bug = bug
-        self.soft = soft
+        self.soft = self.failures[0]['state'] in soft_fail_states
         self.root_url = root_url
         self.test_browser = test_browser
 
@@ -767,9 +767,9 @@ class ArchReport(object):
             new_soft_fails = [r for r in todo_results if r['state'] == 'NEW_SOFT_ISSUE']
             existing_soft_fails = [r for r in todo_results if r['state'] == 'STILL_SOFT_FAILING']
             if new_soft_fails:
-                self.issues['new']['product'].append(IssueEntry(self.args, self.root_url, new_soft_fails, soft=True))
+                self.issues['new']['product'].append(IssueEntry(self.args, self.root_url, new_soft_fails))
             if existing_soft_fails:
-                self.issues['existing']['product'].append(IssueEntry(self.args, self.root_url, existing_soft_fails, soft=True))
+                self.issues['existing']['product'].append(IssueEntry(self.args, self.root_url, existing_soft_fails))
 
     @property
     def total_issues(self):
