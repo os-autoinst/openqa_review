@@ -2677,19 +2677,7 @@
                                 <td>-</td>
 
                                 <td>-</td>
-
-                            <td id="res_Gnome-DVD_i586_gcc5-ftp@i586--l3">
-
-             <span id="res-384323">
-                 <a href="/tests/384323">
-                     <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
-                 </a>
-             </span>
-
-
-
-</td>
-
+                                <td>-</td>
 
                                 <td>-</td>
                     </tr>
@@ -3507,18 +3495,8 @@
 
 </td>
 
+<td>-</td>
 
-                            <td id="res_Gnome-DVD_i586_xfs">
-
-             <span id="res-384341">
-                 <a href="/tests/384341">
-                     <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
-                 </a>
-             </span>
-
-
-
-</td>
 
 
                             <td id="res_Gnome-DVD_x86_64_xfs">
@@ -3540,18 +3518,8 @@
                                 <td>-</td>
 
                                 <td>-</td>
+                                <td>-</td>
 
-                            <td id="res_Gnome-DVD_i586_xfs@i586--l2">
-
-             <span id="res-384328">
-                 <a href="/tests/384328">
-                     <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
-                 </a>
-             </span>
-
-
-
-</td>
 
 
                                 <td>-</td>
