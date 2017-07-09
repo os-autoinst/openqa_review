@@ -15,12 +15,14 @@
 
 **New Product bugs:**
 
-* soft fails: [upgrade_offline_13.1_allpatterns](https://openqa.opensuse.org/tests/169809)
 
 
 **Existing Product bugs:**
 
-* soft fails: [autoupgrade_13.1](https://openqa.opensuse.org/tests/169791), [cryptlvm_minimal_x](https://openqa.opensuse.org/tests/169797), [textmode+awesome](https://openqa.opensuse.org/tests/169828)
+* soft fails: [upgrade_offline_13.1_allpatterns](https://openqa.opensuse.org/tests/169809)
+* soft fails: [autoupgrade_13.1](https://openqa.opensuse.org/tests/169791)
+* soft fails: [cryptlvm_minimal_x](https://openqa.opensuse.org/tests/169797)
+* soft fails: [textmode+awesome](https://openqa.opensuse.org/tests/169828)
 
 
 **New openQA-issues:**
