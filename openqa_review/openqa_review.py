@@ -217,6 +217,8 @@ change_state = {
     ('result_passed', 'result_passed'): 'STABLE',  # ignore or crosscheck if not fals positive
 }
 
+soft_fail_states = ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE', 'IMPROVED']
+
 interesting_states_names = [i for i in set(change_state.values()) if i != 'STABLE'] + ['INCOMPLETE']
 
 
@@ -341,7 +343,7 @@ def issue_state(result_list):
 def get_results_by_bugref(results, args):
     include_tags = ['STILL_FAILING', 'NEW_ISSUE']
     if args.include_softfails:
-        include_tags += ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE']
+        include_tags += soft_fail_states
 
     # plain for-loop with append is most efficient: https://stackoverflow.com/questions/11276473/append-to-a-dict-of-lists-with-a-dict-comprehension
     results_by_bugref = defaultdict(list)
