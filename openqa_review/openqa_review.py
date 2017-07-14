@@ -100,6 +100,7 @@ import logging
 import os.path
 import re
 import sys
+import json
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
 from string import Template
@@ -337,7 +338,10 @@ def issue_type(bugref):
 
 def issue_state(result_list):
     # if any result was still failing the issue is regarded as existing
-    return 'existing' if [i for i in result_list if i['state'] == 'STILL_FAILING'] else 'new'
+    if [i for i in result_list if re.match(i['state'], '(STILL|IMPROVED)')]:
+        return 'existing'
+    else:
+        return 'new'
 
 
 def get_results_by_bugref(results, args):
@@ -741,21 +745,31 @@ class ArchReport(object):
         self.root_url = root_url
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
+        self.test_browser = test_browser
 
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
 
-        results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
+        if self.args.bugrefs and self.args.include_softfails:
+            self._search_for_bugrefs_for_softfailures(results)
+
+        # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
+        # scenarios, ...
+        # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
+        results_labeled_or_todo = {'labeled' if (args.bugrefs and 'bugref' in v) else 'todo': v for k, v in iteritems(results)}
+        results_by_bugref = SortedDict(get_results_by_bugref(results_labeled_or_todo.values(), self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
+
         for bugref, result_list in iteritems(results_by_bugref):
-            # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
-            # scenarios, ...
-            # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
             if not re.match('(poo|bsc|boo)#', bugref):
+                # skip unknown references
                 continue
 
             bug = result_list[0]
-            issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
-            self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
+            if (bug['state'] in soft_fail_states and args.include_softfails) or bug['state'] not in soft_fail_states:
+                issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status,
+                              self.progress_browser, self.bugzilla_browser)
+                self.issues[issue_state(result_list)][issue_type(bugref)]\
+                    .append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
 
         # left to handle are the issues marked with 'todo'
         todo_results = results_by_bugref.get('todo', [])
@@ -771,6 +785,23 @@ class ArchReport(object):
             if existing_soft_fails:
                 self.issues['existing']['product'].append(IssueEntry(self.args, self.root_url, existing_soft_fails))
 
+    def _search_for_bugrefs_for_softfailures(self, results):
+        for k, v in iteritems(results):
+            if v['state'] in soft_fail_states:
+                try:
+                    module_url = self._get_url_to_softfailed_module(v)
+                    if not module_url:
+                        continue
+                    module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
+                    v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
+                    if re.match('(bsc|boo)#', v['bugref']):
+                        v['bugref_href'] = "https://bugzilla.suse.com/show_bug.cgi?id=%s" % re.search("[0-9]*$", v[
+                            'bugref']).group(0)
+                    else:
+                        log.error("Unexpected bugref %s in %s" % (v['bugref'], v))
+                except DownloadError as e:
+                    log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
+
     @property
     def total_issues(self):
         """Return Number of issue entries for this arch."""
@@ -779,6 +810,21 @@ class ArchReport(object):
             for issue_type, ies in iteritems(issue_types):
                 total += len(ies)
         return total
+
+    def _get_url_to_softfailed_module(self, result_item):
+        test_details_html = self.test_browser.get_soup(result_item['href']).find(title="Soft Failed")
+        # TODO currently this is workaround for softfailed needles need to handle this too
+        if test_details_html is None:
+            log.error("No soft failure while status is in %s for %s" % (soft_fail_states, result_item))
+            return None
+        return test_details_html.get('data-url')
+
+    def _get_bugref_for_softfailed_module(self, result_item, module_name):
+        details_json = json.loads(self.test_browser.get_soup("%s/file/details-%s.json" % (result_item['href'], module_name)).getText())
+        for field in details_json:
+            if 'title' in field and 'Soft Fail' in field['title']:
+                unformated_str = self.test_browser.get_soup("%s/file/%s" % (result_item['href'], field['text'])).getText()
+                return re.search("Soft Failure:\n([^/]*)", unformated_str.strip()).group(1)
 
     def __str__(self):
         """Return as markdown."""
