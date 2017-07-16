@@ -102,6 +102,7 @@ import re
 import sys
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
+from requests.exceptions import HTTPError
 from string import Template
 from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
 
@@ -1113,7 +1114,11 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
                         if issue:
                             bugref = issue.bugref.replace('bnc', 'bsc').replace('boo', 'bsc')
                             if bugref not in processed_issues:
-                                reminder_comment_on_issue(ie)
+                                try:
+                                    reminder_comment_on_issue(ie)
+                                except HTTPError as e:  # pragma: no cover
+                                    log.error("Encountered error trying to post a reminder comment on issue '%s': %s. Skipping." % (ie, e))
+                                    continue
                                 processed_issues.add(bugref)
 
 
