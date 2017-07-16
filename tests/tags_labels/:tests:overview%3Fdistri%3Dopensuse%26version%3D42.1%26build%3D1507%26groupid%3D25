@@ -2808,11 +2808,11 @@
 
                     </tr>
                     <tr>
-                        <td class="name">leap12_gnome_create_hdd</td>
+                        <td class="name">create_hdd_textmode</td>
 
                                 <td>-</td>
 
-                            <td id="res_Gnome-DVD_arm_leap12_gnome_create_hdd">
+                            <td id="res_Gnome-DVD_arm_create_hdd_textmode">
 
              <span id="res-384285">
                  <a href="/tests/384285">
@@ -2824,10 +2824,16 @@
 
 </td>
 
+                            <td id="res_Gnome-DVD_i586_create_hdd_textmode">
 
-                                <td>-</td>
+             <span id="res-447901">
+                 <a href="/tests/447901">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
+                 </a>
+             </span>
+</td>
 
-                            <td id="res_Gnome-DVD_x86_64_leap12_gnome_create_hdd">
+                            <td id="res_Gnome-DVD_x86_64_create_hdd_textmode">
 
              <span id="res-384361">
                  <a href="/tests/384361">

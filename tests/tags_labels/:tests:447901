@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+  <body>
+      <nav class="navbar navbar-static-top navbar-default">
+          <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/"><img src="/asset/3137d8fd56/logo.svg" alt="openQA"></a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+
+                      <li>
+                          <a href="/tests">All Tests</a>
+                      </li>
+
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-submenu>Job Groups<span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+
+<li id='current-group-overview'><a href="/group_overview/1">openSUSE Tumbleweed (current)</a></li>
+<li id='current-build-overview'><a href="/tests/overview?distri=opensuse&amp;build=20170712&amp;groupid=1&amp;version=Tumbleweed"><i class="glyphicon glyphicon-arrow-right"></i> Build 20170712</a></li>
+<li role='separator' class='divider'></li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                  </ul>
+              </div><!-- /.navbar-collapse -->
+          </div>
+      </nav>
+      <div class="container" id="content">
+<div class="row" id="result-row">
+    <div class="col-sm-12">
+                <div class="panel panel-warning" id="info_box">
+            <div class="panel-heading">
+                Results for
+                opensuse-Tumbleweed-DVD-x86_64-Build20170712-create_hdd_textmode@64bit
+            </div>
+            <div class="panel-body">
+                <div>
+                        Result: <b>softfailed</b>
+                        finished
+                        <abbr class="timeago" title="2017-07-13T19:37:47Z">2017-07-13 19:37:47 +0000</abbr>
+                        (
+                        19:37 minutes
+                        )
+                        <a data-method="post" data-remote="true" href="/api/v1/jobs/447901/restart" id="restart-result">
+                            <i class="fa fa-2 fa-repeat" title="Restart Job"></i>
+                        </a>
+                </div>
+                <div>
+                        Clone of
+                        <a href="/tests/447690">447690</a>
+                </div>
+                    <div>
+                        Assigned worker:
+                        <span title="VNC port: 96">
+                            <a href="/admin/workers/106">openqaworker4:6</a>
+                        </span>
+                    </div>
+            </div>
+        </div>
+
+        <div role="tabpanel">
+
+            <ul class="nav nav-tabs" role="tablist" id="result_tabs">
+                <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a></li>
+                <li role="presentation"><a href="#downloads" aria-controls="downloads" role="tab" data-toggle="tab">Logs &amp; Assets</a></li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+                <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments (0)</a></li>
+                <li role="presentation"><a href="#previous" aria-controls="previous" role="tab" data-toggle="tab">Previous results (9)</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="details">
+                        <table id="results" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Test</th>
+                <th>Result</th>
+                <th style="width: 100%">References</th>
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                            installation
+                        </td>
+                    </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/isosize/steps/1/src">isosize</a>
+                        </div>
+                        <div class="flags">
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/isosize/steps/1" href="#step/isosize/1" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/29e/328/.thumbs/50478011f9ddd98948593de9d7.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/bootloader/steps/1/src">bootloader</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/1" href="#step/bootloader/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/eec/4bb/.thumbs/ff3d3d25c02de90629bc8f6725.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/2" href="#step/bootloader/2" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/eec/4bb/.thumbs/ff3d3d25c02de90629bc8f6725.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/3" href="#step/bootloader/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/9bc/949/.thumbs/a9584809d3340e8e74a9744677.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/4" href="#step/bootloader/4" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/5c9/c39/.thumbs/340f8860fdf1c3e57ff91909e7.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/5" href="#step/bootloader/5" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/9bd/011/.thumbs/688577c8693795efcbc52f1178.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/6" href="#step/bootloader/6" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/16f/025/.thumbs/2c7797fbabefd76368207aef43.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/7" href="#step/bootloader/7" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/fb7/d31/.thumbs/9e4933fd43a12d859e77e59c85.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/8" href="#step/bootloader/8" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/ed1/523/.thumbs/780da6dc017b15c3c4b96fcff2.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/9" href="#step/bootloader/9" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/0d7/837/.thumbs/dc140d75528ccb8dc923c2de00.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/bootloader/steps/10" href="#step/bootloader/10" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/2f5/f87/.thumbs/fc94f0297be88b47fc7b7300f6.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/welcome/steps/1/src">welcome</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultsoftfailed">
+                        soft-failed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/welcome/steps/1" href="#step/welcome/1" title>
+                                        <img alt class="resborder resborder_softfailed" height="45" src="/image/6d6/b08/.thumbs/a085cc3fc1fc9f4905cb2db038.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/welcome/steps/2" href="#step/welcome/2" title>
+                                        <img alt class="resborder resborder_softfailed" height="45" src="/image/6d6/b08/.thumbs/a085cc3fc1fc9f4905cb2db038.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/welcome/steps/3" href="#step/welcome/3" title>
+                                        <img alt class="resborder resborder_softfailed" height="45" src="/image/6d6/b08/.thumbs/a085cc3fc1fc9f4905cb2db038.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/welcome/steps/4" href="#step/welcome/4" title>
+                                        <img alt class="resborder resborder_softfailed" height="45" src="/image/6d6/b08/.thumbs/a085cc3fc1fc9f4905cb2db038.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/welcome/steps/5" href="#step/welcome/5" title>
+                                        <img alt class="resborder resborder_softfailed" height="45" src="/image/6d6/b08/.thumbs/a085cc3fc1fc9f4905cb2db038.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/installation_mode/steps/1/src">installation_mode</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installation_mode/steps/1" href="#step/installation_mode/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/296/71f/.thumbs/d574b49a6806481d4d116b3325.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/partitioning/steps/1/src">partitioning</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/partitioning/steps/1" href="#step/partitioning/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/296/71f/.thumbs/d574b49a6806481d4d116b3325.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/partitioning_togglehome/steps/1/src">partitioning_togglehome</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/partitioning_togglehome/steps/1" href="#step/partitioning_togglehome/1" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/ce9/95a/.thumbs/f1c66965c95c02aa7a1cfb2dd6.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/partitioning_togglehome/steps/2" href="#step/partitioning_togglehome/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/ce9/95a/.thumbs/f1c66965c95c02aa7a1cfb2dd6.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/partitioning_togglehome/steps/3" href="#step/partitioning_togglehome/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/824/c05/.thumbs/8adb0f73001f9d121135324faf.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/partitioning_finish/steps/1/src">partitioning_finish</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/partitioning_finish/steps/1" href="#step/partitioning_finish/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/a0f/f99/.thumbs/42e64d4216b05fa747399a60cf.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/installer_timezone/steps/1/src">installer_timezone</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_timezone/steps/1" href="#step/installer_timezone/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/a0f/f99/.thumbs/42e64d4216b05fa747399a60cf.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/logpackages/steps/1/src">logpackages</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/1" href="#step/logpackages/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/e66/cb1/.thumbs/48706bd5e4f691c8bb1db3e19f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/2" href="#step/logpackages/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/142/09a/.thumbs/03641b34f0db5506e3ec178ef3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/3" href="#step/logpackages/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/142/09a/.thumbs/03641b34f0db5506e3ec178ef3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/4" href="#step/logpackages/4" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/379/60d/.thumbs/4be72e61a494b8dbe7db92b4d0.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/5" href="#step/logpackages/5" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/6" href="#step/logpackages/6" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/58e/3d7/.thumbs/8c2179b41f7e3bc089e30588cd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/7" href="#step/logpackages/7" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/8" href="#step/logpackages/8" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/58e/3d7/.thumbs/8c2179b41f7e3bc089e30588cd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/logpackages/steps/9" href="#step/logpackages/9" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/e66/cb1/.thumbs/48706bd5e4f691c8bb1db3e19f.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/installer_desktopselection/steps/1/src">installer_desktopselection</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/1" href="#step/installer_desktopselection/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/e66/cb1/.thumbs/48706bd5e4f691c8bb1db3e19f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/2" href="#step/installer_desktopselection/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/156/0ab/.thumbs/e6cdccf10a8c6d18f41b68af85.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/3" href="#step/installer_desktopselection/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/24c/ff0/.thumbs/93e2d3dadb5682c6e65d41d55d.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/4" href="#step/installer_desktopselection/4" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/24c/ff0/.thumbs/93e2d3dadb5682c6e65d41d55d.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/5" href="#step/installer_desktopselection/5" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/e66/cb1/.thumbs/48706bd5e4f691c8bb1db3e19f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/6" href="#step/installer_desktopselection/6" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/53e/c15/.thumbs/276b449f57415c0cdc51747c6f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/7" href="#step/installer_desktopselection/7" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/e00/b99/.thumbs/e28badc592da8eb360521d930b.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/8" href="#step/installer_desktopselection/8" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/123/2af/.thumbs/fbf91ec94c8674a2bf56a91abd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/9" href="#step/installer_desktopselection/9" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/435/602/.thumbs/fe18ab7f1d8f713e688375d35a.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/10" href="#step/installer_desktopselection/10" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/317/3b8/.thumbs/c737305a10f8ae938a869f407f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/11" href="#step/installer_desktopselection/11" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/a26/bf1/.thumbs/09a302dd077a1baed2f1a40a5f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/12" href="#step/installer_desktopselection/12" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/d33/e87/.thumbs/bab889578d763d81a2a11473de.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/13" href="#step/installer_desktopselection/13" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/d81/555/.thumbs/051a9e575c8b2c978edd92611d.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installer_desktopselection/steps/14" href="#step/installer_desktopselection/14" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/435/602/.thumbs/fe18ab7f1d8f713e688375d35a.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/user_settings/steps/1/src">user_settings</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/user_settings/steps/1" href="#step/user_settings/1" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/4d6/487/.thumbs/1bbdca21289119da31d7d2dfd5.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/user_settings/steps/2" href="#step/user_settings/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/4d6/487/.thumbs/1bbdca21289119da31d7d2dfd5.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/user_settings/steps/3" href="#step/user_settings/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/d53/b09/.thumbs/b7c80b37be1ecc27a1e0fb1217.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/user_settings/steps/4" href="#step/user_settings/4" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/c66/5dc/.thumbs/175f486396cf7626a9dab0c708.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/installation_overview/steps/1/src">installation_overview</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installation_overview/steps/1" href="#step/installation_overview/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/f3e/3aa/.thumbs/8a99dfa0dcda7e8426b89dce98.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installation_overview/steps/2" href="#step/installation_overview/2" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/f3e/3aa/.thumbs/8a99dfa0dcda7e8426b89dce98.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/installation_overview/steps/3" href="#step/installation_overview/3" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/f3e/3aa/.thumbs/8a99dfa0dcda7e8426b89dce98.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/start_install/steps/1/src">start_install</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/start_install/steps/1" href="#step/start_install/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/503/c20/.thumbs/312b8c1938cd2cfa1514cef5bd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/start_install/steps/2" href="#step/start_install/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/503/c20/.thumbs/312b8c1938cd2cfa1514cef5bd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/start_install/steps/3" href="#step/start_install/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/c17/4c6/.thumbs/73aa5638f79218f13fad1fc892.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/install_and_reboot/steps/1/src">install_and_reboot</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/1" href="#step/install_and_reboot/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/a5a/606/.thumbs/b737d373bf8205f402044a2837.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/2" href="#step/install_and_reboot/2" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/9bb/f9e/.thumbs/99a5e7515a7ce029fb9479424a.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/3" href="#step/install_and_reboot/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/f1f/dca/.thumbs/38830bf09fb9e45471f2842ffd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/4" href="#step/install_and_reboot/4" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/bfb/daa/.thumbs/758ce7eadfccaedf2d0860c8e7.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/5" href="#step/install_and_reboot/5" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/6" href="#step/install_and_reboot/6" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/7ff/9f2/.thumbs/8d1f83263f2433bfe5de6abc30.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/7" href="#step/install_and_reboot/7" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/8" href="#step/install_and_reboot/8" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/015/5d2/.thumbs/4df6750c7813dc5c2ed1fa9fcb.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/9" href="#step/install_and_reboot/9" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/ede/9ea/.thumbs/17acc7d37fccc5cf18ce080ea3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/10" href="#step/install_and_reboot/10" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/11" href="#step/install_and_reboot/11" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/ede/9ea/.thumbs/17acc7d37fccc5cf18ce080ea3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/12" href="#step/install_and_reboot/12" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/b67/97e/.thumbs/aea8a29bcc8027c3edec11964b.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/13" href="#step/install_and_reboot/13" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/14" href="#step/install_and_reboot/14" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/b67/97e/.thumbs/aea8a29bcc8027c3edec11964b.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/15" href="#step/install_and_reboot/15" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/06e/a9d/.thumbs/52c888e8f29a3d5c40aa34edab.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/16" href="#step/install_and_reboot/16" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/17" href="#step/install_and_reboot/17" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/e21/978/.thumbs/28a686be4c22475584268d756b.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/18" href="#step/install_and_reboot/18" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/19" href="#step/install_and_reboot/19" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/890/0fd/.thumbs/f2984cc6b9739ad478ed1fcd95.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/20" href="#step/install_and_reboot/20" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/21" href="#step/install_and_reboot/21" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/890/0fd/.thumbs/f2984cc6b9739ad478ed1fcd95.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/22" href="#step/install_and_reboot/22" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/4bc/716/.thumbs/e3629b93ac874c5d9d05624c8f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/23" href="#step/install_and_reboot/23" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/24" href="#step/install_and_reboot/24" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/815/ef0/.thumbs/4755ad784645db3582b266cecc.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/25" href="#step/install_and_reboot/25" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/26" href="#step/install_and_reboot/26" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/8f7/271/.thumbs/9f6eafd8e54d1cc73cd27611d6.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/27" href="#step/install_and_reboot/27" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/28" href="#step/install_and_reboot/28" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/c06/89f/.thumbs/9bab27da31cbf7d8c47cd1ac73.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/29" href="#step/install_and_reboot/29" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/30" href="#step/install_and_reboot/30" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/a8a/b0a/.thumbs/c8f08b5db0d0b2dff56fff442f.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/31" href="#step/install_and_reboot/31" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/32" href="#step/install_and_reboot/32" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/e69/2dd/.thumbs/9c000deca5691dee4f23e75d82.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/33" href="#step/install_and_reboot/33" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/34" href="#step/install_and_reboot/34" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/dc2/09a/.thumbs/db2c1b15a642a644e9cab93635.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/35" href="#step/install_and_reboot/35" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/36" href="#step/install_and_reboot/36" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/64a/21c/.thumbs/0a8cbd3ebb35f130cc65e8619a.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/37" href="#step/install_and_reboot/37" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/38" href="#step/install_and_reboot/38" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/054/ee4/.thumbs/6eede2304469eeed26575e2fec.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/39" href="#step/install_and_reboot/39" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/40" href="#step/install_and_reboot/40" title="Other error in YaST2 detected">
+                                           <span class="resborder resborder_ok" >Other error in YaST2 detected</span>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/install_and_reboot/steps/41" href="#step/install_and_reboot/41" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/9bb/f9e/.thumbs/99a5e7515a7ce029fb9479424a.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/grub_test/steps/1/src">grub_test</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_test/steps/1" href="#step/grub_test/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/9f9/908/.thumbs/93e346116cadeac0c136060f56.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/first_boot/steps/1/src">first_boot</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                                <i class="flag fa fa-anchor" title="Milestone: snapshot the state after this test for restoring"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/first_boot/steps/1" href="#step/first_boot/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/3e2/cd3/.thumbs/1632a8e01f18ecdd2c05f4857f.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                            shutdown
+                        </td>
+                    </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/grub_set_bootargs/steps/1/src">grub_set_bootargs</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/1" href="#step/grub_set_bootargs/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/0f0/e72/.thumbs/4812bcb27f775c6a2d91351bd3.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/2" href="#step/grub_set_bootargs/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/56e/17d/.thumbs/25164a253e07148c6d0c9be9bd.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/3" href="#step/grub_set_bootargs/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/738/aa1/.thumbs/8552d510706b4c879e74cbe1c4.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/4" href="#step/grub_set_bootargs/4" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/7aa/189/.thumbs/51298f9e36664c6ed15113e868.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/5" href="#step/grub_set_bootargs/5" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/f4d/1aa/.thumbs/ddfac544528cd693a122d93164.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/6" href="#step/grub_set_bootargs/6" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/7" href="#step/grub_set_bootargs/7" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/f4d/1aa/.thumbs/ddfac544528cd693a122d93164.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/8" href="#step/grub_set_bootargs/8" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/16a/8b9/.thumbs/eadf89d06567daa07a2b6ff8a1.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/9" href="#step/grub_set_bootargs/9" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/10" href="#step/grub_set_bootargs/10" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/9ce/260/.thumbs/23b065f829ba0d42edbe94611e.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/11" href="#step/grub_set_bootargs/11" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/12" href="#step/grub_set_bootargs/12" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/858/4ff/.thumbs/3c8d90c9ffe2e965fca434d67a.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/13" href="#step/grub_set_bootargs/13" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/14" href="#step/grub_set_bootargs/14" title>
+                                        <img alt class="resborder resborder_unk" height="45" src="/image/890/6a5/.thumbs/41d18ab8434b0a7b329966d2fe.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/grub_set_bootargs/steps/15" href="#step/grub_set_bootargs/15" title="wait_serial">
+                                           <img src="/asset/3b4f4543b3/terminal.svg" width="60" height="45" alt="" class="resborder resborder_ok"/>
+</a>                          </div>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="component">
+                        <div>
+                            <a href="/tests/447901/modules/shutdown/steps/1/src">shutdown</a>
+                        </div>
+                        <div class="flags">
+                                <i class="flag fa fa-plug" title="Fatal: testsuite is aborted if this test fails"></i>
+                        </div>
+                    </td>
+                    <td class="result resultok">
+                        passed
+                    </td>
+                    <td class="links">
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/shutdown/steps/1" href="#step/shutdown/1" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/890/6a5/.thumbs/41d18ab8434b0a7b329966d2fe.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/shutdown/steps/2" href="#step/shutdown/2" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/890/6a5/.thumbs/41d18ab8434b0a7b329966d2fe.png" width="60">
+</a>                          </div>
+                            <div class="links_a">
+                                <div class="fa fa-caret-up"></div>
+                                <a class="no_hover" data-url="/tests/447901/modules/shutdown/steps/3" href="#step/shutdown/3" title>
+                                        <img alt class="resborder resborder_ok" height="45" src="/image/158/0c2/.thumbs/465877b160ffc638300eb96bbe.png" width="60">
+</a>                          </div>
+                   </td>
+                </tr>
+        </tbody>
+    </table>
+
+                </div>
+
+
+                <div role="tabpanel" class="tab-pane" id="downloads">
+                        <div class="h5">Result Files</div>
+    <ul>
+            <li>
+                    <a href="/tests/447901/file/video.ogv">
+                        <i title="ogg/theora video of this testrun" class="fa fa-file-video-o"></i> Video
+                    </a>
+            </li>
+            <li>
+                    <a href="/tests/447901/file/vars.json">
+                        vars.json
+                    </a>
+            </li>
+            <li>
+                    <a href="/tests/447901/file/serial0.txt">
+                        serial0.txt
+                    </a>
+            </li>
+            <li>
+                    <a href="/tests/447901/file/autoinst-log.txt">
+                        autoinst-log.txt
+                    </a>
+            </li>
+    </ul>
+
+    <div class="h6">Uploaded Logs</div>
+    <ul>
+                <li>
+            <a href="/tests/447901/file/install_and_reboot-y2logs.tar.bz2">install_and_reboot-y2logs.tar.bz2</a>
+        </li>
+
+    </ul>
+
+
+    <div class="h5">Assets</div>
+    <ul>
+                    <li>
+                <a href="/tests/447901/asset/hdd/opensuse-Tumbleweed-x86_64-20170712-textmode@64bit.qcow2" id="asset_66681">
+                    opensuse-Tumbleweed-x86_64-20170712-textmode@64bit.qcow2
+</a>            </li>
+            <li>
+                <a href="/tests/447901/asset/iso/openSUSE-Tumbleweed-DVD-x86_64-Snapshot20170712-Media.iso" id="asset_66613">
+                    openSUSE-Tumbleweed-DVD-x86_64-Snapshot20170712-Media.iso
+</a>            </li>
+
+    </ul>
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="settings">
+                    <table class="infotbl table table-striped" id="settings_box">
+    <thead>
+        <tr>
+            <th colspan="2">Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: left;">ARCH</td>
+            <td style="text-align: left;">x86_64</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BACKEND</td>
+            <td style="text-align: left;">qemu</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">BUILD</td>
+            <td style="text-align: left;">20170712</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">DESKTOP</td>
+            <td style="text-align: left;">textmode</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">DISTRI</td>
+            <td style="text-align: left;">opensuse</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">DVD</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">FLAVOR</td>
+            <td style="text-align: left;">DVD</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">FULLURL</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">HDDSIZEGB</td>
+            <td style="text-align: left;">22</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">INSTALLONLY</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">ISO</td>
+            <td style="text-align: left;">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20170712-Media.iso</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">ISO_MAXSIZE</td>
+            <td style="text-align: left;">4700372992</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">MACHINE</td>
+            <td style="text-align: left;">64bit</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">MIRROR_HTTP</td>
+            <td style="text-align: left;">http://openqa.opensuse.org/assets/repo/openSUSE-Tumbleweed-oss-i586-x86_64-Snapshot20170712</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">NAME</td>
+            <td style="text-align: left;">00447901-opensuse-Tumbleweed-DVD-x86_64-Build20170712-create_hdd_textmode@64bit</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">PUBLISH_HDD_1</td>
+            <td style="text-align: left;">opensuse-Tumbleweed-x86_64-20170712-textmode@64bit.qcow2</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">QEMUCPU</td>
+            <td style="text-align: left;">qemu64</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">QEMU_COMPRESS_QCOW2</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_0</td>
+            <td style="text-align: left;">openSUSE-Tumbleweed-oss-i586-x86_64-Snapshot20170712</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">REPO_0_DEBUGINFO</td>
+            <td style="text-align: left;">openSUSE-Tumbleweed-oss-i586-x86_64-Snapshot20170712-debuginfo</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">SUSEMIRROR</td>
+            <td style="text-align: left;">http://openqa.opensuse.org/assets/repo/openSUSE-Tumbleweed-oss-i586-x86_64-Snapshot20170712</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">TEST</td>
+            <td style="text-align: left;">create_hdd_textmode</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">TOGGLEHOME</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">VERSION</td>
+            <td style="text-align: left;">Tumbleweed</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">VIDEOMODE</td>
+            <td style="text-align: left;">text</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">VIRTIO_CONSOLE</td>
+            <td style="text-align: left;">1</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">WORKER_CLASS</td>
+            <td style="text-align: left;">qemu_x86_64</td>
+        </tr>
+    </tbody>
+</table>
+
+                    <div class="box box-shadow" id="parents_info_box">
+    <div class="box-header aligncenter">Children</div>
+    <table class="infotbl">
+
+        <tr>
+            <td style="width: 40%;"><a href="/tests/447836" title="opensuse-Tumbleweed-DVD-x86_64-Build20170712-extra_test_filesystem@64bit">Chained</a></td>
+            <td>
+                    <span style="padding: 0 10%; display: inline-block;
+                        text-align: center;"
+                        class="resultok">passed</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 40%;"><a href="/tests/447899" title="opensuse-Tumbleweed-DVD-x86_64-Build20170712-install_ltp+opensuse+DVD@64bit">Chained</a></td>
+            <td>
+                    <span style="padding: 0 10%; display: inline-block;
+                        text-align: center;"
+                        class="resultok">passed</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 40%;"><a href="/tests/447900" title="opensuse-Tumbleweed-DVD-x86_64-Build20170712-extra_tests_in_textmode@64bit">Chained</a></td>
+            <td>
+                    <span style="padding: 0 10%; display: inline-block;
+                        text-align: center;"
+                        class="resultfailed">failed</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 40%;"><a href="/tests/448073" title="opensuse-Tumbleweed-DVD-x86_64-Build20170712-extra_tests_in_textmode@64bit">Chained</a></td>
+            <td>
+                    <span style="padding: 0 10%; display: inline-block;
+                        text-align: center;"
+                        class="resultfailed">failed</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="width: 40%;"><a href="/tests/448129" title="opensuse-Tumbleweed-DVD-x86_64-Build20170712-extra_tests_in_textmode@64bit">Chained</a></td>
+            <td>
+                    <span style="padding: 0 10%; display: inline-block;
+                        text-align: center;"
+                        class="resultfailed">failed</span>
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane" id="comments">
+                    <div class="comments">
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="previous">
+                    <div class="previous">
+                        <div id="scenario">
+    <div class="h5">Results for <i>opensuse-Tumbleweed-DVD-x86_64-create_hdd_textmode@64bit</i> (<a href="/tests/latest?distri=opensuse&amp;flavor=DVD&amp;machine=64bit&amp;arch=x86_64&amp;test=create_hdd_textmode&amp;version=Tumbleweed">latest job for this scenario</a>)</div>
+</div>
+<div>
+<table id="previous_results" class="overview table table-striped no-wrap" style="width: 100%">
+    <thead>
+        <tr>
+            <th class="job">Result</th>
+            <th>Build</th>
+            <th>Finished</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="res_447690">
+                <span id="res-447690">
+                    <a href="/tests/447690">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447690/modules/install_and_reboot/fails">
+        <a href="/tests/447690#step/install_and_reboot/1">install_and_reboot</a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=Tumbleweed&amp;build=20170712&amp;distri=opensuse">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T14:50:06Z">2017-07-13 14:50:06 +0000</abbr>
+                (
+                40:23 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447585">
+                <span id="res-447585">
+                    <a href="/tests/447585">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447585/modules/install_and_reboot/fails">
+        <a href="/tests/447585#step/install_and_reboot/1">install_and_reboot</a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=Tumbleweed&amp;distri=opensuse&amp;build=20170712">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T14:02:11Z">2017-07-13 14:02:11 +0000</abbr>
+                (
+                40:28 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447483">
+                <span id="res-447483">
+                    <a href="/tests/447483">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447483/modules/install_and_reboot/fails">
+        <a href="/tests/447483#step/install_and_reboot/1">install_and_reboot</a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=Tumbleweed&amp;distri=opensuse&amp;build=20170712">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T13:04:39Z">2017-07-13 13:04:39 +0000</abbr>
+                (
+                40:26 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447416">
+                <span id="res-447416">
+                    <a href="/tests/447416">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447416/modules/installer_desktopselection/fails">
+        <a href="/tests/447416#step/installer_desktopselection/1"><span title="installer_desktopselection">installer_desktopsele ...</span></a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?version=Tumbleweed&amp;distri=opensuse&amp;build=20170712">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T12:04:26Z">2017-07-13 12:04:26 +0000</abbr>
+                (
+                05:37 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447350">
+                <span id="res-447350">
+                    <a href="/tests/447350">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447350/modules/installer_desktopselection/fails">
+        <a href="/tests/447350#step/installer_desktopselection/1"><span title="installer_desktopselection">installer_desktopsele ...</span></a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=20170712&amp;version=Tumbleweed">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T11:58:29Z">2017-07-13 11:58:29 +0000</abbr>
+                (
+                05:31 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447207">
+                <span id="res-447207">
+                    <a href="/tests/447207">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447207/modules/install_and_reboot/fails">
+        <a href="/tests/447207#step/install_and_reboot/1">install_and_reboot</a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=20170712&amp;version=Tumbleweed">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T11:37:44Z">2017-07-13 11:37:44 +0000</abbr>
+                (
+                40:59 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_447083">
+                <span id="res-447083">
+                    <a href="/tests/447083">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/447083/modules/installer_desktopselection/fails">
+        <a href="/tests/447083#step/installer_desktopselection/1"><span title="installer_desktopselection">installer_desktopsele ...</span></a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?distri=opensuse&amp;build=20170712&amp;version=Tumbleweed">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T08:33:33Z">2017-07-13 08:33:33 +0000</abbr>
+                (
+                05:42 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_446864">
+                <span id="res-446864">
+                    <a href="/tests/446864">
+                        <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                    </a>
+                </span>
+
+
+    <span title="<i class='fa fa-refresh fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>" data-toggle="tooltip" class="failedmodule" data-async="/tests/446864/modules/install_and_reboot/fails">
+        <a href="/tests/446864#step/install_and_reboot/1">install_and_reboot</a>
+    </span>
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?build=20170712&amp;distri=opensuse&amp;version=Tumbleweed">20170712</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-13T07:43:26Z">2017-07-13 07:43:26 +0000</abbr>
+                (
+                40:31 minutes
+                )
+            </td>
+        </tr>
+        <tr>
+            <td id="res_446228">
+                <span id="res-446228">
+                    <a href="/tests/446228">
+                        <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                    </a>
+                </span>
+
+
+
+            </td>
+            <td class="build"><a href="/tests/overview?build=20170711&amp;distri=opensuse&amp;version=Tumbleweed">20170711</a></td>
+            <td class="t_finished">
+                <abbr class="timeago" title="2017-07-12T17:32:11Z">2017-07-12 17:32:11 +0000</abbr>
+                (
+                15:48 minutes
+                )
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div id="more_results">
+    Limit to <b>10</b> / <a href="/tests/447901?version=Tumbleweed&test=create_hdd_textmode&arch=x86_64&machine=64bit&limit_previous=20&flavor=DVD&distri=opensuse#previous">20</a> / <a href="/tests/447901?distri=opensuse&flavor=DVD&limit_previous=50&test=create_hdd_textmode&arch=x86_64&version=Tumbleweed&machine=64bit#previous">50</a> / <a href="/tests/447901?limit_previous=100&test=create_hdd_textmode&version=Tumbleweed&arch=x86_64&machine=64bit&distri=opensuse&flavor=DVD#previous">100</a> / <a href="/tests/447901?flavor=DVD&distri=opensuse&test=create_hdd_textmode&arch=x86_64&version=Tumbleweed&machine=64bit&limit_previous=400#previous">400</a> previous results
+</div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="preview_container_out">
+    <div id="preview_container_in" class="well well-lg">
+    </div>
+</div>
+
+      </div>
+
+      <footer class='footer'>
+        <div class='container'>
+          <div id='footer-legal' class="text-center">
+              openQA is licensed
+              <a href="https://github.com/os-autoinst/openQA">GPL-2.0</a>
+                  - Version
+                  4.4.1497437103.e9fd0d3a
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>

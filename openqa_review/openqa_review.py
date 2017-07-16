@@ -352,7 +352,7 @@ def get_results_by_bugref(results, args):
     for k, v in iteritems(results):
         if not re.match('(' + '|'.join(include_tags) + ')', v['state']):
             continue
-        key = v['bugref'] if (args.bugrefs and 'bugref' in v) else 'todo'
+        key = v['bugref'] if (args.bugrefs and 'bugref' in v and v['bugref']) else 'todo'
         results_by_bugref[key].append(dict(v, **{'name': k}))
     return results_by_bugref
 
@@ -757,7 +757,7 @@ class ArchReport(object):
         self.issues = defaultdict(lambda: defaultdict(list))
         for bugref, result_list in iteritems(results_by_bugref):
             if not re.match('(poo|bsc|boo)#', bugref):
-                # skip unknown references
+                log.info('Skipping unknown bugref \'%s\' in \'%s\'' % (bugref, result_list))
                 continue
             bug = result_list[0]
             issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
@@ -781,12 +781,15 @@ class ArchReport(object):
         for k, v in iteritems(results):
             if v['state'] in soft_fail_states:
                 try:
-                    module_url = self._get_url_to_softfailed_module(v)
-                    if not module_url:  # pragma: no cover
-                        continue
+                    module_url = self._get_url_to_softfailed_module(v['href'])
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
+                    assert module_name, 'could not find a module name within %s in job %s' % (module_url, v['href'])
                     v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
-                    assert re.match('(bsc|boo)#', v['bugref']), 'TODO implement: more bugref matching'
+                    if not v['bugref']:  # pragma: no cover
+                        continue
+                    assert re.match('(bsc|boo)#?', v['bugref']), 'TODO implement: more bugref matching'
+                    # TODO the following re.search fails to find the bugref in e.g. https://openqa.opensuse.org/tests/447927#step/bootloader/7 where the bugref
+                    # is not at the end of line
                     v['bugref_href'] = "https://bugzilla.suse.com/show_bug.cgi?id=%s" % re.search("[0-9]*$", v['bugref']).group(0)
                 except DownloadError as e:  # pragma: no cover
                     log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
@@ -801,20 +804,29 @@ class ArchReport(object):
                 total += len(ies)
         return total
 
-    def _get_url_to_softfailed_module(self, result_item):
-        test_details_html = self.test_browser.get_soup(result_item['href']).find(title="Soft Failed")
-        # TODO currently this is workaround for softfailed needles need to handle this too
-        if test_details_html is None:  # pragma: no cover
-            log.error("TODO implement: No soft failure info box could be parsed while status is in %s for %s" % (soft_fail_states, result_item))
-            return None
+    def _get_url_to_softfailed_module(self, job_url):
+        test_details_html = self.test_browser.get_soup(job_url).find(title="Soft Failed")
+        if test_details_html is None:
+            log.debug('Could not find soft failed info box, looking for workaround needle in job %s' % job_url)
+            test_details_html = self.test_browser.get_soup(job_url).find(class_='resborder_softfailed').parent
+        assert test_details_html, 'Found neither soft failed info box nor workaround needle'
         return test_details_html.get('data-url')
 
     def _get_bugref_for_softfailed_module(self, result_item, module_name):
         details_json = json.loads(self.test_browser.get_soup("%s/file/details-%s.json" % (result_item['href'], module_name)).getText())
-        for field in details_json:  # pragma: no cover, TODO revisit after implementing multiple softfails per job and workaround needles
+        for field in details_json:
             if 'title' in field and 'Soft Fail' in field['title']:
                 unformated_str = self.test_browser.get_soup("%s/file/%s" % (result_item['href'], field['text'])).getText()
                 return re.search("Soft Failure:\n([^/]*)", unformated_str.strip()).group(1)
+            elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
+                log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
+                match = re.search('([a-z]{3})([0-9]+)-[0-9]+', field['needle'])
+                if not match:  # pragma: no cover
+                    log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any)')
+                    continue
+                return match.group(1) + '#' + match.group(2)
+        else:  # pragma: no cover
+            log.error('Could not find any soft failure reference within details, workaround needle without bugref that could be understood')
 
     def __str__(self):
         """Return as markdown."""
