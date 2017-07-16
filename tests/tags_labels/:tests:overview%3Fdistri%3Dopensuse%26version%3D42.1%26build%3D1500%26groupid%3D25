@@ -2325,9 +2325,9 @@
 
                     </tr>
                     <tr>
-                        <td class="name">leap12_gnome_create_hdd</td>
+                        <td class="name">create_hdd_textmode</td>
 
-                            <td id="res_Gnome-DVD_arm_leap12_gnome_create_hdd">
+                            <td id="res_Gnome-DVD_arm_create_hdd_textmode">
 
              <span id="res-382450">
                  <a href="/tests/382450">
@@ -2342,7 +2342,7 @@
 
                                 <td>-</td>
 
-                            <td id="res_Gnome-DVD_x86_64_leap12_gnome_create_hdd">
+                            <td id="res_Gnome-DVD_x86_64_create_hdd_textmode">
 
              <span id="res-382526">
                  <a href="/tests/382526">
