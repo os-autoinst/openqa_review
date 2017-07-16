@@ -363,9 +363,7 @@ def test_new_tests_appearing_in_builds_are_supported():
     assert '* [btrfs@zkvm](https://openqa.opensuse.org/tests/181148 "Failed modules: livecdreboot")' in report
 
 
-def test_bugrefs_are_used_for_triaging():
-    # python openqa_review/openqa_review.py --load-dir tests/tags_labels --host https://openqa.opensuse.org -J https://openqa.opensuse.org/group_overview/25 -b
-    # 1507,1500 --load -n > tests/tags_labels/report25_bugrefs.md
+def bugrefs_test_args_factory():
     args = cache_test_args_factory()
     args.job_groups = None
     args.bugrefs = True
@@ -374,7 +372,7 @@ def test_bugrefs_are_used_for_triaging():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.show_empty = False
     args.include_softfails = False
-    args.verbose_test = 1
+    args.verbose_test = 2
     openqa_review.config = ConfigParser()
     openqa_review.config.add_section('product_issues')
     openqa_review.config.set('product_issues', 'base_url', 'https://apibugzilla.suse.com')
@@ -388,6 +386,12 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.config.add_section('test_issues')
     openqa_review.config.set('test_issues', 'api_key', '0123456789ABCDEF')
     openqa_review.config.set('test_issues', 'report_url', 'https://progress.opensuse.org/projects/openqatests/issues/new')
+    return args
+
+
+def test_bugrefs_are_used_for_triaging():
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
     assert 'bsc#' in report
@@ -395,17 +399,23 @@ def test_bugrefs_are_used_for_triaging():
     assert 'poo#' in report
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs.md'))
 
-    args.verbose_test = 2
+
+def test_bugrefs_with_report_links():
+    args = bugrefs_test_args_factory()
     args.report_links = True
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs.md'))
 
+
+def test_bugrefs_including_softfails():
+    args = bugrefs_test_args_factory()
     args.include_softfails = True
-    args.report_links = False
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs_softfails.md'))
 
-    # report bug link(s) with 'new issue'
+
+def test_bugrefs_with_report_links_new_issue():
+    args = bugrefs_test_args_factory()
     args.report_links = True
     args.include_softfails = False
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report_link_new_issue')
@@ -413,16 +423,25 @@ def test_bugrefs_are_used_for_triaging():
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_bug_link_new_issue.md'))
 
-    # now, with query issues
+
+def test_issue_status_can_be_queried_from_bugrefs():
+    args = bugrefs_test_args_factory()
     args.verbose_test = 1
-    args.report_links = False
     args.query_issue_status = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.arch = 'i586'
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md'))
+    # report generated when no todo items are left and some bugref is not accessible
+    args.builds = '1508,1500'
+    report = openqa_review.generate_report(args)
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
 
-    # reminder comments
+
+def test_reminder_comments_on_referenced_bugs_are_posted():
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
+    args.query_issue_status = True
     args.dry_run = True
     report = openqa_review.generate_report(args)
 
@@ -433,6 +452,11 @@ def test_bugrefs_are_used_for_triaging():
     openqa_review.reminder_comment_on_issues(report)
     args.dry_run = False
 
+
+def test_custom_reports_based_on_issue_status():
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
+    args.query_issue_status = True
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
@@ -442,12 +466,6 @@ def test_bugrefs_are_used_for_triaging():
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
-
-    # report generated when no todo items are left and some bugref is not accessible
-    args.builds = '1508,1500'
-    args.query_issue_status = True
-    report = openqa_review.generate_report(args)
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
 
 
 def test_arch_distinguish():
