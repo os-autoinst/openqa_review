@@ -268,7 +268,7 @@ def get_state(cur, prev_dict):
         state_dict = {'state': change_state.get(('result_passed', status(cur)), 'INCOMPLETE')}
     state_dict.update(get_test_details(cur))
     state_dict.update(get_test_bugref(cur))
-    return (cur['id'], state_dict)
+    return cur['id'], state_dict
 
 
 def get_arch_state_results(arch, current_details, previous_details, output_state_results=False):
@@ -415,7 +415,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     """
     job_group = browser.get_json('%s.json' % job_group_url)
 
-    def get_group_result(job_group):
+    def get_group_result():
         try:
             results_list = job_group['build_results']
             return {i['build']: i for i in results_list}
@@ -424,12 +424,12 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
             return job_group['result']
 
     def build_url(build):
-        r = get_group_result(job_group)
+        r = get_group_result()
         b = r.get(build, next(iter(r.values())))
         build = b.get('build', build)
         return '/tests/overview?distri=%s&version=%s&build=%s&groupid=%i' % (b['distri'], b['version'], quote(build), job_group['group']['id'])
 
-    finished_builds = find_builds(get_group_result(job_group), running_threshold)
+    finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
     builds_to_compare = sorted(finished_builds, reverse=True)[0:2]
 
@@ -449,28 +449,28 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         except (NameError, AttributeError, IndexError):
             log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
 
-    log.debug("Comparing build %s against %s" % tuple(builds_to_compare))
+    log.debug("Comparing build %s against %s" % (builds_to_compare[0], builds_to_compare[1]))
     current_url, previous_url = map(build_url, builds_to_compare)
     log.debug("Found two build URLS, current: %s previous: %s" % (current_url, previous_url))
     return current_url, previous_url
 
 
-def get_failed_module_details_for_report(f, root_url):
+def get_failed_module_details_for_report(f):
     try:
         failed_module = f['failedmodules'][0]
     except IndexError:
         log.debug("%s does not have failed module, taking complete job." % f['href'])
-        module = ''
+        name = ''
         url = f['href']
         details = ''
     else:
-        module = failed_module['name']
+        name = failed_module['name']
         url = failed_module['href']
         details = '\nwith failed needles: %s' % failed_module['needles']
-    return module, url, details
+    return name, url, details
 
 
-def issue_report_link(args, root_url, f, test_browser=None):
+def issue_report_link(root_url, f, test_browser=None):
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
     # It might not be the fatal one but better be safe and assume the first
@@ -484,7 +484,7 @@ def issue_report_link(args, root_url, f, test_browser=None):
     scenario_div = test_details_page.find(class_='previous').div.div
     scenario = re.findall('Results for (.*) \(', scenario_div.text)[0]
     latest_link = absolute_url(root_url, scenario_div.a)
-    module, url, details = get_failed_module_details_for_report(f, root_url)
+    module, url, details = get_failed_module_details_for_report(f)
     previous_results = test_details_page.find(id='previous_results', class_='overview').find_all('tr')[1:]
     previous_results_list = [(i.td['id'], {'status': status(i),
                                            'details': get_test_details(i),
@@ -705,7 +705,7 @@ class IssueEntry(object):
     def _format_failure(self, f):
         """Yield a report entry for one new issue based on verbosity."""
         failure_modules_str = ' "Failed modules: %s"' % self._format_failure_modules(f['failedmodules']) if f['failedmodules'] else ''
-        report_str = issue_report_link(self.args, self.root_url, f, self.test_browser) if (self.args.report_links and self.test_browser) else ''
+        report_str = issue_report_link(self.root_url, f, self.test_browser) if (self.args.report_links and self.test_browser) else ''
         if self.args.verbose_test >= 3 and 'prev' in f:
             return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
                 f['name'], self._url(f),
@@ -1049,11 +1049,11 @@ class Report(object):
             if args.no_progress or not humanfriendly_available:
                 self.report[k] = self._one_report(v)
             else:
-                with AutomaticSpinner(label=self._next_label(self._progress)):
+                with AutomaticSpinner(label=self._next_label()):
                     self.report[k] = self._one_report(v)
             self._progress += 1
         if not args.no_progress:
-            sys.stderr.write("\r%s\n" % self._next_label(self._progress))  # It's nice to see 100%, too :-)
+            sys.stderr.write("\r%s\n" % self._next_label())  # It's nice to see 100%, too :-)
 
     def _one_report(self, job_group_url):
         # for each job group on openqa.opensuse.org
@@ -1063,7 +1063,7 @@ class Report(object):
             log.debug("Catched 'not enough builds': %s" % e)
             return "Not enough finished builds found"
 
-    def _next_label(self, progress):
+    def _next_label(self):
         return '%s %i%%' % (self._label, self._progress * 100 / len(self.job_groups.keys()))
 
     def __str__(self):
@@ -1150,7 +1150,7 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
                             bugref = issue.bugref.replace('bnc', 'bsc').replace('boo', 'bsc')
                             if bugref not in processed_issues:
                                 try:
-                                    reminder_comment_on_issue(ie)
+                                    reminder_comment_on_issue(ie, min_days_unchanged)
                                 except HTTPError as e:  # pragma: no cover
                                     log.error("Encountered error trying to post a reminder comment on issue '%s': %s. Skipping." % (ie, e))
                                     continue
@@ -1164,7 +1164,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report, args.min_days_unchanged)
+        reminder_comment_on_issues(report)
 
     if args.filter:
         try:
