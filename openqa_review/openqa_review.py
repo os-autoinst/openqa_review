@@ -223,6 +223,11 @@ soft_fail_states = ['STILL_SOFT_FAILING', 'NEW_SOFT_ISSUE', 'IMPROVED']
 
 interesting_states_names = [i for i in set(change_state.values()) if i != 'STABLE'] + ['INCOMPLETE']
 
+issue_tracker = {  # pragma: no branch
+    'bsc': lambda i: 'https://bugzilla.suse.com/show_bug.cgi?id=%s' % i,
+    'boo': lambda i: 'https://bugzilla.opensuse.org/show_bug.cgi?id=%s' % i,
+    'poo': lambda i: 'https://progress.opensuse.org/issues/%s' % i,
+}
 
 def status(entry):
     """Return test status from entry, e.g. 'result_passed'."""
@@ -787,13 +792,21 @@ class ArchReport(object):
                     v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
                     if not v['bugref']:  # pragma: no cover
                         continue
-                    assert re.match('(bsc|boo)#?', v['bugref']), 'TODO implement: more bugref matching'
-                    # TODO the following re.search fails to find the bugref in e.g. https://openqa.opensuse.org/tests/447927#step/bootloader/7 where the bugref
-                    # is not at the end of line
-                    v['bugref_href'] = "https://bugzilla.suse.com/show_bug.cgi?id=%s" % re.search("[0-9]*$", v['bugref']).group(0)
+                except AttributeError:  # pragma: no cover
+                    log.info('Could find neither soft failed info box nor needle, assuming an old openQA job, skipping.')
+                    continue
                 except DownloadError as e:  # pragma: no cover
                     log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
                     continue
+                match = re.search('([a-z]{3})#?([0-9]+)', v['bugref'])
+                if not match:  # pragma: no cover
+                    log.info('Could not find bug reference in text \'%s\', skipping.' % v['bugref'])
+                    continue
+                bugref, bug_id = match.group(1), match.group(2)
+                assert bugref, "No bugref found for %s" % v
+                assert bug_id, "No bug_id found for %s" % v
+                v['bugref_href'] = issue_tracker[bugref](bug_id)
+
 
     @property
     def total_issues(self):
@@ -820,7 +833,7 @@ class ArchReport(object):
                 return re.search("Soft Failure:\n([^/]*)", unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
-                match = re.search('([a-z]{3})([0-9]+)-[0-9]+', field['needle'])
+                match = re.search('([a-z]{3})#?([0-9]+)-[0-9]+', field['needle'])
                 if not match:  # pragma: no cover
                     log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any)')
                     continue
