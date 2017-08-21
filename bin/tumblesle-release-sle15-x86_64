@@ -1,0 +1,1 @@
+flock -n /tmp/tumblesle_release.lock -c "tumblesle-release --openqa-host http://openqa.suse.de --group-id 55 --product 'Server' --src openqa:/var/lib/openqa/factory/ --match '*SP3*Server*x86_64*' --match-hdd 'SLES-12-SP3-x86_64*' -vvvv --post-release-hook /home/tumblesle/bin/update_jekyll --seen-maxlen=24 $@" 2>&1 | tee -a /var/log/tumblesle/tumblesle-release.log
