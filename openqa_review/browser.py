@@ -154,7 +154,7 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
             data = json.dumps(data)
-            r = requests.request(method, absolute_url, data=data, auth=self.auth, headers={'content-type': 'application/json'})
+            r = requests.request(method, absolute_url, data=data, headers={'X-Redmine-API-Key': self.auth[0], 'content-type': 'application/json'})
             r.raise_for_status()
             return r.json() if r.text else None
 
