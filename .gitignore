@@ -8,3 +8,4 @@ dist/
 version.py
 coverage_html/
 .*.swp
+cscope.out
