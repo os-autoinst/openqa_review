@@ -282,6 +282,15 @@ def test_non_number_build_nr_also_finds_valid_review_build_urls():
         current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
 
 
+def test_also_dotted_builds_can_be_specified_and_appear_in_report():
+    args = cache_test_args_factory()
+    args.job_group_urls = args.host + '/group_overview/26'
+    browser = browser_factory(args)
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
+    assert '=170.1' in current
+    assert '=162.2' in reviewed
+
+
 def test_generate_report_with_progress_notification_does_not_fail():
     args = cache_test_args_factory()
     # Not easy to test automatically but at least we can call it and assume it also gives valid results

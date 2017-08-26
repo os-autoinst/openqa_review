@@ -1,0 +1,77 @@
+{
+	"comments": [
+		{"created": "2015-12-17T15:46:59", "user": "bar", "text": "**Date: 2015-12-17 - 16:45**\r\n**Build: 162.1**\r\n\r\n**Common issues:** baz\r\n<hr>"},
+		{"created": "2015-12-18T13:28:20", "user": "foo", "text": "**Date: 2015-12-18 - 11:16**\r\n**Build: 162.2 (reference 162.1)**\r\n\r\n**Common issues:**\r\n"},
+		{"created": "2015-12-19T13:28:20", "user": "baz", "text": "Some other comment"}
+	],
+	"pinned_comments": [],
+	"description": "",
+	"max_jobs": 91,
+	"group": {"id": 26, "name": "openSUSE Leap"},
+	"result": {
+		"162.1": {
+			"distri": "opensuse",
+			"version": "15",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_build": "162_1",
+			"escaped_id": "15-162_1",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 20,
+			"passed": 39,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 0,
+			"total": 59
+		},
+		"162.2": {
+			"distri": "opensuse",
+			"version": "15",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_build": "162_2",
+			"escaped_id": "15-162_2",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 9,
+			"passed": 38,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 0,
+			"total": 47
+		},
+		"170.1": {
+			"distri": "opensuse",
+			"version": "15",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_build": "170_1",
+			"escaped_id": "15-170_1",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 9,
+			"passed": 38,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 0,
+			"total": 47
+		},
+		"170.4": {
+			"distri": "opensuse",
+			"version": "15",
+			"reviewed": "",
+			"reviewed_all_passed": "",
+			"escaped_build": "170_4",
+			"escaped_id": "15-170_4",
+			"labeled": 0,
+			"oldest": "2016-11-08T16:59:11",
+			"failed": 21,
+			"passed": 37,
+			"skipped": 0,
+			"softfailed": 0,
+			"unfinished": 33,
+			"total": 91
+		}
+	}
+}
