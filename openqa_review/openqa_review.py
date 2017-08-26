@@ -229,6 +229,7 @@ issue_tracker = {  # pragma: no branch
     'poo': lambda i: 'https://progress.opensuse.org/issues/%s' % i,
 }
 
+
 def status(entry):
     """Return test status from entry, e.g. 'result_passed'."""
     return [s for s in entry.i['class'] if re.search('(state|result)_', s)][0]
@@ -397,7 +398,7 @@ def find_last_reviewed_build(comments):
     # Could also find previous one with a comment on the build status,
     # i.e. a reviewed finished build
     # The build number itself might be prefixed with a redundant 'Build' which we ignore
-    build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@]*)(.*reference.*)?(\*\*)?\r\n')
+    build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@.]*)(.*reference.*)?(\*\*)?\r\n')
     # Assuming the most recent with a build number also has the most recent review
     for c in reversed(comments):
         match = build_re.search(c['text'])
@@ -806,7 +807,6 @@ class ArchReport(object):
                 assert bugref, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
                 v['bugref_href'] = issue_tracker[bugref](bug_id)
-
 
     @property
     def total_issues(self):
