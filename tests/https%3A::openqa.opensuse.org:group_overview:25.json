@@ -10,7 +10,7 @@
 	"group": {"id": 25, "name": "openSUSE Tumbleweed Gnome"},
 	"result": {
 		"0299": {
-			"distri": "opensuse",
+			"distris": {"opensuse": 1, "kubic": 1},
 			"version": "42.1",
 			"reviewed": "",
 			"reviewed_all_passed": "",

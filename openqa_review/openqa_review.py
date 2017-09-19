@@ -433,7 +433,9 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         r = get_group_result()
         b = r.get(build, next(iter(r.values())))
         build = b.get('build', build)
-        return '/tests/overview?distri=%s&version=%s&build=%s&groupid=%i' % (b['distri'], b['version'], quote(build), job_group['group']['id'])
+        # openQA introduced multi-distri support for the job groups with openQA#037ffd33
+        distri_str = 'distri=%s' % b['distri'] if 'distri' in b.keys() else 'distri=' + '&distri='.join(sorted(b['distris'].keys()))
+        return '/tests/overview?%s&version=%s&build=%s&groupid=%i' % (distri_str, b['version'], quote(build), job_group['group']['id'])
 
     finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
