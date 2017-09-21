@@ -837,11 +837,13 @@ class ArchReport(object):
                 log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
                 match = re.search('([a-z]{3})#?([0-9]+)-[0-9]+', field['needle'])
                 if not match:  # pragma: no cover
-                    log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any)')
+                    log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for \'%s\'' %
+                             result_item['href'])
                     continue
                 return match.group(1) + '#' + match.group(2)
         else:  # pragma: no cover
-            log.error('Could not find any soft failure reference within details, workaround needle without bugref that could be understood')
+            log.error('Could not find any soft failure reference within details of soft-failed job \'%s\'. Could be deleted workaround needle?.' %
+                      absolute_url(self.root_url, result_item))
 
     def __str__(self):
         """Return as markdown."""
