@@ -1,0 +1,4 @@
+#!/bin/sh -e
+cmd="${cmd:-"openqa-review"}"
+args="--host http://openqa.suse.de --against-reviewed last -vvvv -s -n -T --bugrefs --no-empty-sections --include-softfails --query-issue-status $@"
+$cmd -j 'SLE.*/ Functional' $args | tee $(date +%F)_functional.md
