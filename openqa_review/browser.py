@@ -99,26 +99,34 @@ class Browser(object):
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
-            for i in range(1, 7):
-                r = requests.get(absolute_url, auth=self.auth)
-                if r.status_code == 502:
-                    log.info("Request to %s failed with status code 502, retrying try %s" % (absolute_url, i))
-                    continue
-                if r.status_code != 200:
-                    msg = "Request to %s was not successful, status code: %s" % (absolute_url, r.status_code)
-                    log.info(msg)
-                    raise DownloadError(msg)
-                break
-            else:
-                msg = "Request to %s was not successful after multiple retries, giving up. Status code: %s" % (absolute_url, r.status_code)
-                log.warn(msg)
-                raise DownloadError(msg)
-            content = r.json() if as_json else r.content.decode('utf8')
+            content = self._get(absolute_url, as_json=as_json)
         raw = json.dumps(content) if as_json else content
         if self.save:
             log.info("Saving content instead from URL %s from filename %s" % (url, filename))
             codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf-8').write(raw)
         self.cache[url] = raw
+        return content
+
+    def _get(self, url, as_json=False):  # pragma: no cover
+        for i in range(1, 7):
+            try:
+                r = requests.get(url, auth=self.auth)
+            except requests.exceptions.ConnectionError:
+                log.info("Connection error encountered accessing %s, retrying try %s" % (url, i))
+                continue
+            if r.status_code == 502:
+                log.info("Request to %s failed with status code 502, retrying try %s" % (url, i))
+                continue
+            if r.status_code != 200:
+                msg = "Request to %s was not successful, status code: %s" % (url, r.status_code)
+                log.info(msg)
+                raise DownloadError(msg)
+            break
+        else:
+            msg = "Request to %s was not successful after multiple retries, giving up. Status code: %s" % (url, r.status_code)
+            log.warn(msg)
+            raise DownloadError(msg)
+        content = r.json() if as_json else r.content.decode('utf8')
         return content
 
     def json_rpc_get(self, url, method, params, cache=True):
