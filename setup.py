@@ -51,7 +51,7 @@ setup(
     py_modules=['version'],
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
     ],
