@@ -123,7 +123,7 @@ class Browser(object):
                 raise DownloadError(msg)
             break
         else:
-            msg = "Request to %s was not successful after multiple retries, giving up. Status code: %s" % (url, r.status_code)
+            msg = "Request to %s was not successful after multiple retries, giving up" % url
             log.warn(msg)
             raise DownloadError(msg)
         content = r.json() if as_json else r.content.decode('utf8')
