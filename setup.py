@@ -38,7 +38,7 @@ setup(
         "pika",
         "certifi",
     ],
-    test_require=[
+    tests_require=[
         "pytest-mock",
     ],
     author="Oliver kurz",
