@@ -36,7 +36,7 @@ install_requires = [
 ]
 
 # there is also a new version 'configparser2' to resolve the name ambuigity but that package might not be available everywhere
-if sys.version_info >= (3, 2):
+if sys.version_info < (3, 0):
     install_requires += ["configparser"]
 
 setup(
