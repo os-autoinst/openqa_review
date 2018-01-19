@@ -809,7 +809,11 @@ class ArchReport(object):
                 bugref, bug_id = match.group(1), match.group(2)
                 assert bugref, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
-                v['bugref_href'] = issue_tracker[bugref](bug_id)
+                try:
+                    v['bugref_href'] = issue_tracker[bugref](bug_id)
+                except KeyError as e:  # pragma: no cover
+                    log.error("Failed to find valid bug tracker URL for %s with error %s. Skipping current result" % (v, e))
+                    continue
 
     @property
     def total_issues(self):
