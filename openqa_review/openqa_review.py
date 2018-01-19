@@ -227,6 +227,7 @@ issue_tracker = {  # pragma: no branch
     'bsc': lambda i: 'https://bugzilla.suse.com/show_bug.cgi?id=%s' % i,
     'boo': lambda i: 'https://bugzilla.opensuse.org/show_bug.cgi?id=%s' % i,
     'poo': lambda i: 'https://progress.opensuse.org/issues/%s' % i,
+    'bgo': lambda i: 'https://bugzilla.gnome.org/show_bug.cgi?id=%s' % i,
 }
 
 
