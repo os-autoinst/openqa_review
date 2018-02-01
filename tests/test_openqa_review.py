@@ -48,6 +48,8 @@ def args_factory():
     args.show_empty = True
     args.bugrefs = False
     args.include_softfails = True
+    args.short_failure_str = False
+    args.abbreviate_test_issues = False
     args.query_issue_status = False
     args.query_issue_status_help = True
     args.report_links = False
@@ -407,6 +409,15 @@ def test_bugrefs_are_used_for_triaging():
     # and references to 'test issues'
     assert 'poo#' in report
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs.md'))
+
+
+def test_bugrefs_with_abbreviated_format_can_be_used():
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
+    args.short_failure_str = True
+    args.abbreviate_test_issues = True
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_abbreviated.md'))
 
 
 def test_bugrefs_with_report_links():
