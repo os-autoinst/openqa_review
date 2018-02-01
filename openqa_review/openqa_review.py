@@ -729,10 +729,14 @@ class IssueEntry(object):
 
     def __str__(self):
         """Return as markdown."""
-        return '* %s%s%s\n' % (
-            'soft fails: ' if self.soft else '',
+        test_bug_str = '%s%s' % (
             ', '.join(map(self._format_failure, self.failures)),
             ' -> %s' % self.bug if self.bug else ''
+        )
+        short_str = self.bug if self.bug else ', '.join(i['name'] for i in self.failures)
+        return '* %s%s\n' % (
+            'soft fails: ' if self.soft else '',
+            short_str if self.args.short_failure_str else test_bug_str
         )
 
     @classmethod
@@ -850,22 +854,29 @@ class ArchReport(object):
             log.error('Could not find any soft failure reference within details of soft-failed job \'%s\'. Could be deleted workaround needle?.' %
                       absolute_url(self.root_url, result_item))
 
-    def __str__(self):
-        """Return as markdown."""
+    def _todo_issues_str(self):
+        if self.args.abbreviate_test_issues:
+            return issue_listing('### Test issues', self.issues['new']['openqa'] + self.issues['existing']['openqa'] + self.issues['new']['todo'] +
+                                 self.issues['existing']['todo'], self.args.show_empty)
         todo_issues = todo_review_template.substitute({
             'new_issues': issue_listing('***new issues***', self.issues['new']['todo'], self.args.show_empty),
             'existing_issues': issue_listing('***existing issues***', self.issues['existing']['todo'], self.args.show_empty),
         })
+        return todo_issues if (self.issues['new']['todo'] or self.issues['existing']['todo']) else ''
+
+    def __str__(self):
+        """Return as markdown."""
+        abbrev = self.args.abbreviate_test_issues
         return openqa_review_report_arch_template.substitute({
             'arch': self.arch,
             'status_badge': status_badge_str[self.status_badge],
             # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
             # For now we can just not easily decide unless we use the 'bugrefs' mode
-            'new_openqa_issues': issue_listing('**New openQA-issues:**', self.issues['new']['openqa'], self.args.show_empty),
-            'existing_openqa_issues': issue_listing('**Existing openQA-issues:**', self.issues['existing']['openqa'], self.args.show_empty),
+            'new_openqa_issues': '' if abbrev else issue_listing('**New openQA-issues:**', self.issues['new']['openqa'], self.args.show_empty),
+            'existing_openqa_issues': '' if abbrev else issue_listing('**Existing openQA-issues:**', self.issues['existing']['openqa'], self.args.show_empty),
             'new_product_issues': issue_listing('**New Product bugs:**', self.issues['new']['product'], self.args.show_empty),
             'existing_product_issues': issue_listing('**Existing Product bugs:**', self.issues['existing']['product'], self.args.show_empty),
-            'todo_issues': todo_issues if (self.issues['new']['todo'] or self.issues['existing']['todo']) else '',
+            'todo_issues': self._todo_issues_str(),
         })
 
 
@@ -975,6 +986,12 @@ def parse_args():
                         help="""Parse \'bugrefs\' from test results comments and triage issues accordingly.
                         See https://progress.opensuse.org/projects/openqav3/wiki/Wiki#Show-bug-or-label-icon-on-overview-if-labeled-gh550
                         for details about bugrefs in openQA""")
+    parser.add_argument('--short-failure-str', action='store_true',
+                        help="""Instead of the default long failure description use a short version only outputting the referenced bug or the failing test in
+                        case of failure without bugref.""")
+    parser.add_argument('--abbreviate-test-issues', action='store_true',
+                        help="""If requested abbreviate all 'test issue' related reporting sections and instead only show a short list of these next to the
+                        full-detail product issues. Useful to focus on product-related reports.""")
     parser.add_argument('-R', '--query-issue-status', action='store_true',
                         help="""Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs" and
                         needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(CONFIG_PATH))
