@@ -4,6 +4,13 @@
 **Date:** 2016-09-19 - 14:35
 **Build:** 0313 (reference 0311)
 
+***Changes since reference build***
+
+* failed: -11
+* passed: 0
+* soft failure: -1
+
+
 **Common issues:**
 
  * **Missing architectures**: i586
