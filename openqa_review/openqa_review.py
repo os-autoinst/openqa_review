@@ -613,7 +613,7 @@ class Issue(object):
                         self.resolution = self.json['resolution']
                     self.assignee = self.json['assigned_to'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['summary']
-                    self.priority = self.json['priority'].split(' ')[0]
+                    self.priority = self.json['priority'].split(' ')[0] + '/' + self.json['severity']
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
                 log.info("A download error has been encountered for bugref %s (%s): %s" % (bugref, bugref_href, e))
@@ -680,7 +680,7 @@ class Issue(object):
             status = self.status
             if self.resolution:
                 status += ' (%s)' % self.resolution
-            msg = 'Ticket status: %s, prio: %s, assignee: %s' % (status, self.priority, self.assignee)
+            msg = 'Ticket status: %s, prio/severity: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None
         return '[%s](%s%s)%s' % (
