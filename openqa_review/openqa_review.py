@@ -680,6 +680,8 @@ class Issue(object):
             status = self.status
             if self.resolution:
                 status += ' (%s)' % self.resolution
+            if status.startswith('VERIFIED') or status.startswith('Resolved'):
+                status = '<span style="color: red;">%s</span>' % status
             msg = 'Ticket status: %s, prio/severity: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None

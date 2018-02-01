@@ -472,6 +472,33 @@
                                 <td>-</td>
                     </tr>
                     <tr>
+                        <td class="name"><span title="allpatterns2@i586--l2">allpatterns2@i586--vswi ...</span></td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_allpatterns2@i586--l2">
+
+             <span id="res-384339">
+                 <a href="/tests/384339">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+             <span id="bug-384339">
+        <a href="https://progress.opensuse.org/issues/9773">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: poo#9773"></i>
+        </a>
+    </span>
+
+
+</td>
+
+
+                                <td>-</td>
+                    </tr>
+                    <tr>
                         <td class="name">autoupgrade_13.1</td>
 
                                 <td>-</td>
