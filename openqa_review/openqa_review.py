@@ -900,8 +900,9 @@ class ProductReport(object):
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 
-        changes = {k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary) if k != 'none' and k != 'incomplete'}
-        log.info("Changes since last build:\n\t%s" % '\n\t'.join("%s: %s" % (k, v) for k, v in iteritems(changes)))
+        changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary) if k != 'none'})
+        self.changes_str = '***Changes since reference build***\n\n* ' + '\n* '.join("%s: %s" % (k, v) for k, v in iteritems(changes)) + '\n'
+        log.info("%s" % self.changes_str)
 
         self.build = get_build_nr(current_url)
         self.ref_build = get_build_nr(previous_url)
@@ -933,6 +934,8 @@ class ProductReport(object):
         build_str = self.build
         if self.args.verbose_test and self.args.verbose_test > 1:
             build_str += ' (reference %s)' % self.ref_build
+        if self.args.verbose_test and self.args.verbose_test > 3:
+            build_str += '\n\n' + self.changes_str
 
         openqa_review_report_product = openqa_review_report_product_template.substitute({
             'now': now_str,
