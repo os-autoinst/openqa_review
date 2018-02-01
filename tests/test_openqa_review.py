@@ -115,7 +115,7 @@ def cache_test_args_factory():
 
 def compare_report(report, ref_report_path):
     # If the reference report should be written initially or updated one can just write the report as string to file
-    #  open(os.path.join(os.path.dirname(os.path.realpath(ref_port_path)), ref_report_filename), 'w').write(str(report))
+    # open(ref_report_path, 'w').write(str(report))
     ref_report = open(ref_report_path).read()
     # for simpler display of the diff in case of differences it helps to have
     # both reports in same encoding, i.e. casting to str
