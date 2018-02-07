@@ -9,6 +9,12 @@ from setuptools import setup
 # Also, when git is not available (PyPi package), use stored version.py.
 version_py = os.path.join(os.path.dirname(__file__), 'version.py')
 
+# python2 backwards craft
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
 try:
     # This will not generate PEP440 compliant version strings for any commit
     # that is not on the tag itself. setuptools/dist will give a warning.
