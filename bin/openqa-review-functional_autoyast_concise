@@ -1,0 +1,6 @@
+#!/bin/sh -e
+new="${1:?"Need build id of 'new' build, e.g. 451.2"}"
+old="${2:?"Need build id of 'old' build, e.g. 438.1"}"
+for group in Functional Autoyast; do
+    openqa-review --host http://openqa.suse.de -vvvv -s -n -T --bugrefs --no-empty-sections --include-softfails --query-issue-status -j "SLE 15 / $group" --short-failure-str --abbreviate-test-issues --builds $new,$old $args | tee $(date +%F)_${group,,}_$new.md
+done
