@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+      <div class="container" id="content">
+          
+
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+            Overall Summary of
+                <b><a href="/group_overview/41">Development Kubic</a></b>
+                build 20180424
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">0</span>
+
+            Failed: <span class="badge badge-danger">1</span>
+
+        </div>
+    </div>
+                <h3>Flavor: DVD</h3>
+                <table id="results_DVD" class="overview table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="MicroOS-autoyast-minimal">MicroOS-autoyast-minimal</span>
+                </td>
+
+
+                    <td id="res_DVD_x86_64_MicroOS-autoyast-minimal">
+
+             <span id="res-662477">
+                 <a href="/tests/662477">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_x86_64_MicroOS-autoyast-minimal"
+        data-async="/tests/662477/modules/installation/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/662477#step/installation/1"
+    >
+        <span title="installation">installation</span>
+    </a>
+
+         
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+      </div>
+  </body>
+</html>

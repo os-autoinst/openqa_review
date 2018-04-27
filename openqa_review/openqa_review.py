@@ -246,8 +246,16 @@ def get_failed_needles(m):
 
 def get_test_details(entry):
     failedmodules = entry.find_all(class_='failedmodule')
+
+    def find_module_href(m):
+        # optional fallback to old openQA code, 4.5, pre bootstrap4
+        try:
+            return m['href']
+        except KeyError:
+            return m.a['href']
+
     return {'href': entry.a['href'],
-            'failedmodules': [{'href': m.a['href'], 'name': m.text.strip(), 'needles': get_failed_needles(m)} for m in failedmodules]
+            'failedmodules': [{'href': find_module_href(m), 'name': m.text.strip(), 'needles': get_failed_needles(m)} for m in failedmodules]
             }
 
 
