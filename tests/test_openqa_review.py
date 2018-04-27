@@ -237,6 +237,15 @@ def test_new_job_group_json_syntax_after_openqa_9b50b22():
     assert 'Green' in report
 
 
+def test_openqa_45_bootstrap_4_can_parse_failed_modules():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_4.5_dashboard')
+    args.job_group_urls = 'https://openqa.opensuse.org/group_overview/41'
+    report = str(openqa_review.generate_report(args))
+    assert '20180424' in report
+    assert 'installation' in report
+
+
 def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     args = cache_test_args_factory()
     browser = browser_factory(args)
