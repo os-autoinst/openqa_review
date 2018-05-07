@@ -9,7 +9,8 @@ import logging
 import os.path
 import sys
 import errno
-from urllib.parse import quote, unquote, urljoin
+from urllib.parse import quote, unquote, urljoin, urlparse
+import ssl
 
 import requests
 from bs4 import BeautifulSoup
@@ -111,6 +112,24 @@ class Browser(object):
         for i in range(1, 7):
             try:
                 r = requests.get(url, auth=self.auth)
+            except requests.exceptions.SSLError as e:
+                try:
+                    import OpenSSL
+                except ImportError:
+                    raise e
+                # as we go one layer deeper from http now, we're just interested in the hostname
+                server_name = urlparse(url).netloc
+                cert = ssl.get_server_certificate((server_name, 443))
+                x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
+                issuer_components = x509.get_issuer().get_components()
+                # we're only interested in the b'O'rganizational unit
+                issuers = filter(lambda component: component[0] == b'O', issuer_components)
+                issuer = next(issuers)[1].decode('utf-8', 'ignore')
+                sha1digest = x509.digest('sha1').decode('utf-8', 'ignore')
+                sha256digest = x509.digest('sha256').decode('utf-8', 'ignore')
+                msg = 'Certificate for "%s" from "%s" (sha1: %s, sha256 %s) is not trusted by the system' % (server_name, issuer, sha1digest, sha256digest)
+                log.error(msg)
+                raise DownloadError(msg)
             except requests.exceptions.ConnectionError:
                 log.info('Connection error encountered accessing %s, retrying try %s' % (url, i))
                 continue
