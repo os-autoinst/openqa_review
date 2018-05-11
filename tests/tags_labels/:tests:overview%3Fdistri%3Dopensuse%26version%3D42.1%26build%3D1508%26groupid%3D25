@@ -391,6 +391,7 @@
         </a>
     </span>
 
+
 </td>
 
 
@@ -422,9 +423,9 @@
         </a>
     </span>
 
-             <span id="bug-384333">
-        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=822770">
-            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#822770"></i>
+             <span id="bug-0">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=0">
+            <i class="test-label label_bug fa fa-bug" title="Bug(s) referenced: bsc#0"></i>
         </a>
     </span>
 

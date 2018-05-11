@@ -602,7 +602,11 @@ class Issue(object):
         if query_issue_status and progress_browser and bugzilla_browser:
             log.debug("Retrieving bug data for %s" % bugref)
             try:
-                if bugref.startswith('poo#'):
+                if self.bugid == 0:
+                    log.debug("#0 ticket id reference found")
+                    self.msg = 'NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation'
+                    return
+                elif bugref.startswith('poo#'):
                     log.debug("Test issue discovered, looking on progress")
                     self.issue_type = 'redmine'
                     self.json = progress_browser.get_json(bugref_href + '.json')['issue']
