@@ -27,6 +27,16 @@ zypper in python-openqa_review
 openqa-review --help
 ```
 
+If `openqa-review` has to access non public servers which make use of custom
+*Certificate Authorities* (CA's), it can happen that it fails because it can
+not verify the TLS certificate. By setting the environment variable
+`REQUESTS_CA_BUNDLE`, one can supply a custom ca-certificate store to
+`openqa-review` e.g.:
+
+```
+REQUESTS_CA_BUNDLE="/my/custom/ca-bundle.pem" openqa-review
+```
+
 ## Communication
 
 If you have questions, visit me on irc.freenode.net in #opensuse-factory
