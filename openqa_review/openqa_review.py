@@ -230,6 +230,8 @@ issue_tracker = {  # pragma: no branch
     'bgo': lambda i: 'https://bugzilla.gnome.org/show_bug.cgi?id=%s' % i,
 }
 
+bugref_regex = '(poo|boo|bsc|bgo)#?([0-9]+)'
+
 
 def status(entry):
     """Return test status from entry, e.g. 'result_passed'."""
@@ -585,7 +587,9 @@ class Issue(object):
         """Construct an issue object with options."""
         self.bugref = bugref
         self.bugref_href = bugref_href
-        self.bugid = int(re.search('[a-zA-Z]*#([0-9]+)', bugref).group(1))
+        bugid_match = re.search(bugref_regex, bugref)
+        if bugid_match:
+            self.bugid = int(bugid_match.group(2))
         self.msg = None
         self.json = None
         self.subject = None
@@ -697,12 +701,10 @@ class Issue(object):
             msg = 'Ticket status: %s, prio/severity: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None
-        return '[%s](%s%s)%s' % (
-            self.bugref,
-            self.bugref_href,
-            ' "%s"' % self.subject.replace(')', '&#41;') if self.subject else '',
-            ' (%s)' % msg if msg else '',
-        )
+        title_str = ' "%s"' % self.subject.replace(')', '&#41;') if self.subject else ''
+        bugref_str = '[%s](%s%s)' % (self.bugref, self.bugref_href, title_str) if self.bugref_href else self.bugref
+        msg_str = ' (%s)' % msg if msg else ''
+        return '%s%s' % (bugref_str, msg_str)
 
 
 class IssueEntry(object):
@@ -783,11 +785,11 @@ class ArchReport(object):
         results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
         for bugref, result_list in iteritems(results_by_bugref):
-            if not re.match('(poo|bsc|boo)#', bugref):
-                log.info('Skipping unknown bugref \'%s\' in \'%s\'' % (bugref, result_list))
+            if re.match('todo', bugref):
+                log.info('Skipping "todo" bugref \'%s\' in \'%s\'' % (bugref, result_list))
                 continue
             bug = result_list[0]
-            issue = Issue(bug['bugref'], bug['bugref_href'], self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
+            issue = Issue(bug['bugref'], bug.get('bugref_href', None), self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
             self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
 
         # left to handle are the issues marked with 'todo'
@@ -820,7 +822,7 @@ class ArchReport(object):
                 except DownloadError as e:  # pragma: no cover
                     log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
                     continue
-                match = re.search('([a-z]{3})#?([0-9]+)', v['bugref'])
+                match = re.search(bugref_regex, v['bugref'])
                 if not match:  # pragma: no cover
                     log.info('Could not find bug reference in text \'%s\', skipping.' % v['bugref'])
                     continue
@@ -855,10 +857,10 @@ class ArchReport(object):
         for field in details_json:
             if 'title' in field and 'Soft Fail' in field['title']:
                 unformated_str = self.test_browser.get_soup("%s/file/%s" % (result_item['href'], field['text'])).getText()
-                return re.search("Soft Failure:\n([^/]*)", unformated_str.strip()).group(1)
+                return re.search("Soft Failure:\n(.*)", unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
-                match = re.search('([a-z]{3})#?([0-9]+)-[0-9]+', field['needle'])
+                match = re.search(bugref_regex + '-[0-9]+', field['needle'])
                 if not match:  # pragma: no cover
                     log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for \'%s\'' %
                              result_item['href'])
