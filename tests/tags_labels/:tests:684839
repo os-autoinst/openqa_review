@@ -1,0 +1,20 @@
+<tr>
+    <td class="component">
+        <div>
+            <a href="/tests/684839/modules/zypper_info/steps/1/src">zypper_info</a>
+        </div>
+        <div class="flags">
+        </div>
+    </td>
+    <td class="result resultsoftfailed">
+        soft-failed
+    </td>
+    <td class="links">
+        <div class="links_a">
+            <div class="fa fa-caret-up"></div>
+            <a class="no_hover" data-url="/tests/684839/modules/zypper_info/steps/3" href="#step/zypper_info/3"
+               title="Soft Failed">
+                <span class="resborder resborder_hash(0x9c726c8)">Soft Failed</span>
+            </a></div>
+    </td>
+</tr>

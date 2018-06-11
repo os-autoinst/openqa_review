@@ -1,0 +1,15 @@
+[
+  {
+    "needles": [],
+    "result": {
+      "screenshot": "zypper_info-3.png",
+      "frametime": [
+        "153.08",
+        "153.12"
+      ],
+      "result": "unk"
+    },
+    "title": "Soft Failed",
+    "text": "zypper_info-4.txt"
+  }
+]
