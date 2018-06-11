@@ -1,0 +1,2 @@
+# Soft Failure:
+for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for solved issue https://progress.opensuse.org/issues/36256

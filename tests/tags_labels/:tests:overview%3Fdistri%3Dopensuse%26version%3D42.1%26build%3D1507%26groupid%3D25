@@ -2846,6 +2846,26 @@
 </td>
 
                     </tr>
+
+                    <tr>
+                        <td class="name">zypper_info</td>
+
+                                <td>-</td>
+
+                                <td>-</td>
+
+                            <td id="res_Gnome-DVD_i586_soft_fail_without_bugref">
+
+             <span id="res-684839">
+                 <a href="/tests/684839">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
+                 </a>
+             </span>
+</td>
+
+                                <td>-</td>
+
+                    </tr>
                     <tr>
                         <td class="name"><span title="leap12_minimal_base+gcc5_create_hdd">leap12_minimal_base+gcc5_cr ...</span></td>
 
