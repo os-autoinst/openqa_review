@@ -588,8 +588,7 @@ class Issue(object):
         self.bugref = bugref
         self.bugref_href = bugref_href
         bugid_match = re.search(bugref_regex, bugref)
-        if bugid_match:
-            self.bugid = int(bugid_match.group(2))
+        self.bugid = int(bugid_match.group(2)) if bugid_match else None
         self.msg = None
         self.json = None
         self.subject = None
@@ -619,8 +618,7 @@ class Issue(object):
                     self.subject = self.json['subject']
                     self.priority = self.json['priority']['name']
                     self.last_comment_date = datetime.datetime.strptime(self.json['updated_on'], "%Y-%m-%dT%H:%M:%SZ")
-                # bugref.startswith('bsc#') or bugref.startswith('boo#')
-                else:
+                elif bugref.startswith(('boo#', 'bsc#', 'bgo#')):
                     log.debug("Product bug discovered, looking on bugzilla")
                     self.issue_type = 'bugzilla'
                     self.json = bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.get', {"ids": [self.bugid]})['result']['bugs'][0]
@@ -630,6 +628,8 @@ class Issue(object):
                     self.assignee = self.json['assigned_to'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['summary']
                     self.priority = self.json['priority'].split(' ')[0] + '/' + self.json['severity']
+                else:
+                    log.debug('No valid bugref found. Bugref found: "%s"' % bugref)
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
                 log.info("A download error has been encountered for bugref %s (%s): %s" % (bugref, bugref_href, e))
