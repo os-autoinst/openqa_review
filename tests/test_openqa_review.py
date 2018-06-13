@@ -457,12 +457,14 @@ def test_issue_status_can_be_queried_from_bugrefs():
     args = bugrefs_test_args_factory()
     args.verbose_test = 1
     args.query_issue_status = True
+    args.include_softfails = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
     args.arch = 'i586'
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md'))
     # report generated when no todo items are left and some bugref is not accessible
     args.builds = '1508,1500'
+    args.include_softfails = False
     report = openqa_review.generate_report(args)
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
 

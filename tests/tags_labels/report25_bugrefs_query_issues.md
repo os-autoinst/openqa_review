@@ -13,10 +13,13 @@
 
 * toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
 * toolchain_zypper@bar -> [boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)
+* soft fails: create_hdd_textmode -> [boo#931572](https://bugzilla.opensuse.org/show_bug.cgi?id=931572 "no space left on device when upgrading") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
+* soft fails: soft_fail_without_bugref -> for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for solved issue https://progress.opensuse.org/issues/36256
 
 
 **Existing Product bugs:**
 
+* soft fails: btrfs, zfcp@i586-zfcp -> [bsc#1029660](https://bugzilla.suse.com/show_bug.cgi?id=1029660) (Request to /jsonrpc.cgi?method=Bug.get&params=%5B%7B%22ids%22%3A+%5B1029660%5D%7D%5D was not successful, file :jsonrpc.cgi%3Fmethod%3DBug.get%26params%3D%255B%257B%2522ids%2522%253A%2B%255B1029660%255D%257D%255D not found)
 * allpatterns, ext4@i586--l2, gnome, minimal+base -> [bsc#822770](https://bugzilla.opensuse.org/show_bug.cgi?id=822770 "Install of grub2-efi failed") (Ticket status: RESOLVED (FOOBAR), prio/severity: P5/Normal, assignee: bazifoo@gmail.com)
 
 
