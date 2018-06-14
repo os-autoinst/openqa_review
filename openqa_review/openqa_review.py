@@ -1201,6 +1201,8 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
     issue = ie.bug
     if issue.error:
         return
+    if not issue.issue_type:
+        return
     if (datetime.datetime.utcnow() - issue.last_comment).days >= min_days_unchanged:
         f = ie.failures[0]
         comment = openqa_issue_comment.substitute({'name': f['name'], 'url': ie._url(f)}).strip()
