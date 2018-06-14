@@ -474,6 +474,7 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     args.verbose_test = 1
     args.query_issue_status = True
     args.dry_run = True
+    args.include_softfails = True
     report = openqa_review.generate_report(args)
 
     # test double comment prevention code
