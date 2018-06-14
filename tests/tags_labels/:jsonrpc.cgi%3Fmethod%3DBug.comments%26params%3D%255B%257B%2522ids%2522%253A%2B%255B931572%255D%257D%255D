@@ -1,0 +1,25 @@
+{
+  "error": null,
+  "id": "http://bugzilla.opensuse.org/",
+  "result": {
+    "bugs": {
+      "931572": {
+        "comments": [
+          {
+            "is_private": false,
+            "count": 0,
+            "creator": "john.doe@suse.com",
+            "attachment_id": null,
+            "time": "2015-05-19T23:54:05Z",
+            "bug_id": 931572,
+            "author": "john.doe@suse.com",
+            "text": "User-Agent:       Mozilla/5.0 (X11; Linux x86_64; rv:37.0) Gecko/20100101 Firefox/37.0\nBuild Identifier: \n\nWhen installing using yast one click, a message comes up saying that it cannot access installation media and to check whether or not the server is available and \"Bad media attach point: http://download.opensuse.org/update/13.2/\". I hit skip and then that same message comes right back up, several times.\n\nReproducible: Always\n\n\n\nExpected Results:  \nThe same message should not come up over and over when skip is selected.",
+            "creation_time": "2015-05-19T23:54:05Z",
+            "id": 6378371
+          }
+        ]
+      }
+    },
+    "comments": {}
+  }
+}
