@@ -489,6 +489,7 @@ def test_custom_reports_based_on_issue_status():
     args = bugrefs_test_args_factory()
     args.verbose_test = 1
     args.query_issue_status = True
+    args.include_softfails = True
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
