@@ -661,7 +661,7 @@ class Issue(object):
     def is_assigned(self):
         """Issue has been assigned."""
         assert self.queried
-        if self.assignee == 'None':
+        if self.assignee in ('None', None):
             return False
         elif "@forge.provo.novell.com" in self.assignee:
             return False
@@ -672,7 +672,7 @@ class Issue(object):
     def is_open(self):
         """Issue is still open."""
         assert self.queried
-        s = self.status.upper()
+        s = (self.status or '').upper()
         if s in ["RESOLVED", "REJECTED", "VERIFIED", "CLOSED"]:
             return False
         else:
