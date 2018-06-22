@@ -3636,12 +3636,12 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="previous">
-                    <div class="previous">
+                    <div class="next_previous">
                         <div id="scenario">
-    <div class="h5">Results for <i>openSUSE-42.1-Gnome-DVD-arm-gcc5+allpatterns@arm</i> (<a href="/tests/latest?machine=arm&amp;arch=arm&amp;distri=opensuse&amp;flavor=Gnome-DVD&amp;test=gcc5%2Ballpatterns&amp;version=42.1">latest job for this scenario</a>)</div>
+    <div class="h5">Next & previous results for <i>openSUSE-42.1-Gnome-DVD-arm-gcc5+allpatterns@arm</i> (<a href="/tests/latest?machine=arm&amp;arch=arm&amp;distri=opensuse&amp;flavor=Gnome-DVD&amp;test=gcc5%2Ballpatterns&amp;version=42.1">latest job for this scenario</a>)</div>
 </div>
 <div>
-<table id="previous_results" class="overview table table-striped no-wrap" style="width: 100%">
+<table id="job_next_previous_table" class="overview table table-striped no-wrap" style="width: 100%">
     <thead>
         <tr>
             <th class="job">Result</th>
