@@ -612,12 +612,12 @@
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="previous">
-                    <div class="previous">
+                    <div class="next_previous">
                         <div id="scenario">
-    <div class="h5">Results for <i>opensuse-42.1-Gnome-DVD-i586-ssh-X@i586--l3</i> (<a href="/tests/latest?flavor=Gnome-DVD&amp;version=42.1&amp;test=ssh-X&amp;machine=i586--l3&amp;distri=opensuse&amp;arch=i586">latest job for this scenario</a>)</div>
+    <div class="h5">Next & previous results for <i>opensuse-42.1-Gnome-DVD-i586-ssh-X@i586--l3</i> (<a href="/tests/latest?flavor=Gnome-DVD&amp;version=42.1&amp;test=ssh-X&amp;machine=i586--l3&amp;distri=opensuse&amp;arch=i586">latest job for this scenario</a>)</div>
 </div>
 <div>
-<table id="previous_results" class="overview table table-striped no-wrap" style="width: 100%">
+<table id="job_next_previous_table" class="overview table table-striped no-wrap" style="width: 100%">
     <thead>
         <tr>
             <th class="job">Result</th>

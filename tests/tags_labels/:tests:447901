@@ -1191,12 +1191,12 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="previous">
-                    <div class="previous">
+                    <div class="next_previous">
                         <div id="scenario">
-    <div class="h5">Results for <i>opensuse-Tumbleweed-DVD-x86_64-create_hdd_textmode@64bit</i> (<a href="/tests/latest?distri=opensuse&amp;flavor=DVD&amp;machine=64bit&amp;arch=x86_64&amp;test=create_hdd_textmode&amp;version=Tumbleweed">latest job for this scenario</a>)</div>
+    <div class="h5">Next & previous results for <i>opensuse-Tumbleweed-DVD-x86_64-create_hdd_textmode@64bit</i> (<a href="/tests/latest?distri=opensuse&amp;flavor=DVD&amp;machine=64bit&amp;arch=x86_64&amp;test=create_hdd_textmode&amp;version=Tumbleweed">latest job for this scenario</a>)</div>
 </div>
 <div>
-<table id="previous_results" class="overview table table-striped no-wrap" style="width: 100%">
+<table id="job_next_previous_table" class="overview table table-striped no-wrap" style="width: 100%">
     <thead>
         <tr>
             <th class="job">Result</th>
