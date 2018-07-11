@@ -860,7 +860,7 @@ class ArchReport(object):
                 return re.search("Soft Failure:\n(.*)", unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
-                match = re.search(bugref_regex + '-[0-9]+', field['needle'])
+                match = re.search(bugref_regex, field['needle'])
                 if not match:  # pragma: no cover
                     log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for \'%s\'' %
                              result_item['href'])
