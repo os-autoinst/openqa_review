@@ -489,7 +489,7 @@ def get_failed_module_details_for_report(f):
     return name, url, details
 
 
-def issue_report_link(root_url, f, test_browser=None):
+def issue_report_link(root_url, f, test_browser=None):  # noqa: C901  # too complex, we might want to remove this function anyway as openQA has it already
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
     # It might not be the fatal one but better be safe and assume the first
@@ -500,8 +500,13 @@ def issue_report_link(root_url, f, test_browser=None):
     overview_params = parse_qs(current_build_overview[-1])
     group = overview_params['groupid'][0]
     build = overview_params['build'][0]
-    scenario_div = test_details_page.find(class_='next_previous').div.div
-    scenario = re.findall('Next & previous results for (.*) \(', scenario_div.text)[0]
+    try:
+        scenario_div = test_details_page.find(class_='next_previous').div.div
+        scenario = re.findall('Next & previous results for (.*) \(', scenario_div.text)[0]
+    except AttributeError:  # pragma: no cover
+        # pre-4.6
+        scenario_div = test_details_page.find(class_='previous').div.div
+        scenario = re.findall('[Rr]esults for (.*) \(', scenario_div.text)[0]
     latest_link = absolute_url(root_url, scenario_div.a)
     module, url, details = get_failed_module_details_for_report(f)
     previous_results = test_details_page.find(id='job_next_previous_table', class_='overview').find_all('tr')[1:]
