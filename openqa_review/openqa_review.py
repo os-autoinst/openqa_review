@@ -509,7 +509,11 @@ def issue_report_link(root_url, f, test_browser=None):  # noqa: C901  # too comp
         scenario = re.findall('[Rr]esults for (.*) \(', scenario_div.text)[0]
     latest_link = absolute_url(root_url, scenario_div.a)
     module, url, details = get_failed_module_details_for_report(f)
-    previous_results = test_details_page.find(id='job_next_previous_table', class_='overview').find_all('tr')[1:]
+    try:
+        previous_results = test_details_page.find(id='job_next_previous_table', class_='overview').find_all('tr')[1:]
+    except AttributeError:  # pragma: no cover
+        # pre-4.6
+        previous_results = test_details_page.find(id='previous_results', class_='overview').find_all('tr')[1:]
     previous_results_list = [(i.td['id'], {'status': status(i),
                                            'details': get_test_details(i),
                                            'build': i.find(class_='build').text}) for i in previous_results]
