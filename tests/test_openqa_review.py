@@ -7,10 +7,12 @@ isort:skip_file
 """
 
 # see http://python-future.org/compatible_idioms.html
+from __future__ import unicode_literals
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
 from future.utils import iteritems
 
 install_aliases()
+import codecs
 import contextlib
 import os.path
 import re
@@ -18,6 +20,7 @@ import shutil
 import sys
 import tempfile
 from argparse import Namespace
+from builtins import str
 from openqa_review.browser import filename_to_url
 from urllib.parse import urljoin, urlparse
 from configparser import ConfigParser  # isort:skip can not make isort happy here
@@ -115,8 +118,8 @@ def cache_test_args_factory():
 
 def compare_report(report, ref_report_path):
     # If the reference report should be written initially or updated one can just write the report as string to file
-    # open(ref_report_path, 'w').write(str(report))
-    ref_report = open(ref_report_path).read()
+    # codecs.open(ref_report_path, 'w', 'utf-8').write(report)
+    ref_report = codecs.open(ref_report_path, 'r', 'utf-8').read()
     # for simpler display of the diff in case of differences it helps to have
     # both reports in same encoding, i.e. casting to str
     lines = str(report).splitlines()
@@ -465,7 +468,7 @@ def test_issue_status_can_be_queried_from_bugrefs():
     # report generated when no todo items are left and some bugref is not accessible
     args.builds = '1508,1500'
     args.include_softfails = False
-    report = openqa_review.generate_report(args)
+    report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
 
 
@@ -493,12 +496,12 @@ def test_custom_reports_based_on_issue_status():
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md'))
+    compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md'))
 
     # 2nd filter: closed
     report = openqa_review.generate_report(args)
     openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
+    compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
 
 
 def test_arch_distinguish():

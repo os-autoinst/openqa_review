@@ -89,7 +89,7 @@ Alternatives could have been and still are for further extensions or reworks:
 
 # Python 2 and 3: easiest option
 # see http://python-future.org/compatible_idioms.html
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
 install_aliases()
 from future.utils import iteritems
@@ -101,6 +101,7 @@ import os.path
 import re
 import sys
 import json
+from builtins import str
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
 from requests.exceptions import HTTPError
