@@ -23,7 +23,7 @@
 
 **Existing openQA-issues:**
 
-* ssh-X@i586--l3, textmode -> [poo#11948](https://progress.opensuse.org/issues/11948 "can not boot pre-installed image") (Ticket status: New, prio/severity: Normal, assignee: user1)
+* ssh-X@i586--l3, textmode -> [poo#11948](https://progress.opensuse.org/issues/11948 "can not boot pre-installed image, test non-ascii: “0”") (Ticket status: New, prio/severity: Normal, assignee: user1)
 * allpatterns@i586--l2 -> [poo#9772](https://progress.opensuse.org/issues/9772 "Nothing works") (Ticket status: New, prio/severity: High, assignee: None)
 
 
