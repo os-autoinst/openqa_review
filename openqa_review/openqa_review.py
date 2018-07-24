@@ -457,8 +457,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         # User has to be careful here. A page for non-existant builds is always
         # existant.
         builds_to_compare = builds.split(',')
-        if min(map(len, builds_to_compare)) < 4:
-            log.warning("A build number of at least four digits is expected with leading zero, expect weird results.")  # pragma: no cover
+        log.debug("Specified builds %s, parsed to %s" % (builds, ', '.join(builds_to_compare)))
     elif against_reviewed:
         try:
             last_reviewed = find_last_reviewed_build(job_group['comments'])
