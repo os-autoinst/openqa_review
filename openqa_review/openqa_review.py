@@ -1170,7 +1170,7 @@ def generate_report(args):
     if args.job_group_urls:
         root_url = urljoin('/'.join(args.job_group_urls.split("/")[0:3]), '/')
     else:
-        root_url = urljoin(args.host, '/')
+        root_url = urljoin(str(args.host), '/')
 
     browser = Browser(args, root_url)
     job_groups = get_job_groups(browser, root_url, args)
