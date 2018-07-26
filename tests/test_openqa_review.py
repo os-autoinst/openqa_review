@@ -82,7 +82,7 @@ def test_help():
 
 
 def test_missing_config():
-    openqa_review.CONFIG_PATH = "/dev/null/.missing_file"
+    openqa_review.CONFIG_PATH = '/dev/null/.missing_file'
     sys.argv[1:] = ['--query-issue-status']
     with pytest.raises(SystemExit) as excinfo:
         openqa_review.main()
@@ -135,7 +135,7 @@ def test_previously_loaded_cache_file_is_generated_into_valid_verbose_report_if_
     report = str(openqa_review.generate_report(args))
     assert '**Common issues:**' in report
     # Missing architecture is reported
-    assert re.search("Missing arch.*i586", report)
+    assert re.search('Missing arch.*i586', report)
     compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TTT.md'))
 
 
@@ -505,12 +505,12 @@ def test_custom_reports_based_on_issue_status():
     args.include_softfails = True
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
-    openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
+    openqa_review.filter_report(report, openqa_review.ie_filters['unassigned'])
     compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md'))
 
     # 2nd filter: closed
     report = openqa_review.generate_report(args)
-    openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
+    openqa_review.filter_report(report, openqa_review.ie_filters['closed'])
     compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
 
 
