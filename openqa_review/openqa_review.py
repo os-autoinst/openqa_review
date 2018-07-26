@@ -711,8 +711,13 @@ class Issue(object):
             msg = 'Ticket status: %s, prio/severity: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None
+
+        def _format_all_urls_using_markdown(string):
+            url_pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+            return re.sub(url_pattern, r'[\g<0>](\g<0>)', string)
+
         title_str = ' "%s"' % self.subject.replace(')', '&#41;') if self.subject else ''
-        bugref_str = '[%s](%s%s)' % (self.bugref, self.bugref_href, title_str) if self.bugref_href else self.bugref
+        bugref_str = '[%s](%s%s)' % (self.bugref, self.bugref_href, title_str) if self.bugref_href else _format_all_urls_using_markdown(self.bugref)
         msg_str = ' (%s)' % msg if msg else ''
         return '%s%s' % (bugref_str, msg_str)
 
