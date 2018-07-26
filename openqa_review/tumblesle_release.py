@@ -49,7 +49,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from openqa_review.browser import Browser, add_load_save_args
 
 logging.basicConfig()
-log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
+log = logging.getLogger(sys.argv[0] if __name__ == '__main__' else __name__)
 
 
 CONFIG_PATH = os.path.expanduser('~') + '/.tumblesle_releaserc'
@@ -96,7 +96,7 @@ class TumblesleRelease(object):
         }
         logging_level = logging.DEBUG if args.verbose > 4 else verbose_to_log[args.verbose]
         log.setLevel(logging_level)
-        log.debug("args: %s" % args)
+        log.debug('args: %s' % args)
         self.args = args
         config = ConfigParser()
         config_entries = config.read(self.args.config_path)
@@ -108,7 +108,7 @@ class TumblesleRelease(object):
             log.debug(CONFIG_USAGE)
         # does not look so nice, can be improved. Removing empty string entries.
         self.whitelist = [i for i in self.whitelist if i]
-        log.info("Whitelist content for %s: %s" % (self.args.product, self.whitelist))
+        log.info('Whitelist content for %s: %s' % (self.args.product, self.whitelist))
         self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
         self.browser = Browser(args, args.openqa_host)
         if not config.has_section('notification'):
@@ -140,11 +140,11 @@ class TumblesleRelease(object):
     def notify(self, message, topic='info'):
         """Send notification over messaging bus."""
         if not hasattr(self, 'notify_channel'):
-            log.debug("No notification channel enabled, discarding notify.")
+            log.debug('No notification channel enabled, discarding notify.')
             return
         body = json.dumps(message)
         if body in self.notify_seen:
-            log.debug("notification message already sent out recently, not resending: %s" % body)
+            log.debug('notification message already sent out recently, not resending: %s' % body)
             return
         tries = 7  # arbitrary
         for t in range(tries):
@@ -163,13 +163,13 @@ class TumblesleRelease(object):
         """Continously run while 'do_run' is True, check for last build and release if satisfying."""
         while do_run:
             if self.args.run_once:
-                log.debug("Requested to run only once")
+                log.debug('Requested to run only once')
                 do_run = False
             self.one_run()
             if not self.args.run_once:  # pragma: no cover
-                log.debug("Waiting for new check %s seconds" % self.args.sleeptime)
+                log.debug('Waiting for new check %s seconds' % self.args.sleeptime)
                 time.sleep(self.args.sleeptime)
-        log.debug("Stopping")
+        log.debug('Stopping')
 
     def one_run(self):
         """Like run but only one run, not continuous execution."""
@@ -192,7 +192,7 @@ class TumblesleRelease(object):
     def retrieve_jobs_by_result(self, build):
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
         group_id = int(self.args.group_id)
-        log.debug("Getting jobs in build %s ..." % build)
+        log.debug('Getting jobs in build %s ...' % build)
         jobs_build = self.browser.get_json('/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s' % (build, group_id), cache=self.args.load)['jobs']
         jobs_in_build_product = [i for i in jobs_build if i['group_id'] == group_id]
         jobs_by_result = defaultdict(list)
@@ -204,7 +204,7 @@ class TumblesleRelease(object):
         def whitelisted(job):
             for entry in self.whitelist:
                 if entry in scenario(job):
-                    log.debug("Found whitelist failed job %s because it matches %s" % (job['name'], entry))
+                    log.debug('Found whitelist failed job %s because it matches %s' % (job['name'], entry))
                     return True
             return False
         failed_jobs_without_whitelisted = [job for job in failed_jobs if not whitelisted(job)]
@@ -213,14 +213,14 @@ class TumblesleRelease(object):
     def check_last_builds(self):
         """Check last builds and return releasable build(s)."""
         self.release_build = None
-        log.debug("Checking last builds on %s ..." % self.args.openqa_host)
+        log.debug('Checking last builds on %s ...' % self.args.openqa_host)
         isos = self.retrieve_server_isos()
         last_iso = sorted(isos)[-1]
-        log.debug("Found last ISO %s" % last_iso)
+        log.debug('Found last ISO %s' % last_iso)
         build = {}
         # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explictly abort faster
         build['last'] = re.search('(?<=-Build)[0-9@]+', last_iso).group() if self.args.check_build == 'last' else self.args.check_build
-        log.debug("Found last build %s" % build['last'])
+        log.debug('Found last build %s' % build['last'])
         jobs_by_result = {}
         jobs_by_result['last'] = self.retrieve_jobs_by_result(build['last'])
         passed, failed = {}, {}
@@ -233,7 +233,7 @@ class TumblesleRelease(object):
         #    last_stored_finish_build = last tumblesle build aka. "released"
         #
         if self.args.check_against_build == 'tagged':
-            raise NotImplementedError("tag check not implemented")
+            raise NotImplementedError('tag check not implemented')
         elif self.args.check_against_build == 'release_info':
             with open(self.release_info_path, 'r') as release_info_file:
                 release_info = yaml.load(release_info_file)
@@ -244,9 +244,9 @@ class TumblesleRelease(object):
         #    continue wait
         #
         if build['last'] <= build['released']:
-            log.info("Specified last build {last} is not newer than released {released}, skipping".format(**build))
+            log.info('Specified last build {last} is not newer than released {released}, skipping'.format(**build))
             return
-        log.debug("Retrieving results for released build %s" % build['released'])
+        log.debug('Retrieving results for released build %s' % build['released'])
         jobs_by_result['released'] = self.retrieve_jobs_by_result(build['released'])
         # read whitelist from tumblesle
         # TODO whitelist could contain either bugs or scenarios while I prefer bugrefs :-)
@@ -262,7 +262,7 @@ class TumblesleRelease(object):
         log.debug('%s: %s/%s vs. %s: %s/%s' % (build['last'], passed['last'], hard_failed['last'],
                                                build['released'], passed['released'], hard_failed['released']))
         if passed['last'] >= passed['released'] and hard_failed['last'] <= hard_failed['released']:
-            log.info("Found new good build %s" % build['last'])
+            log.info('Found new good build %s' % build['last'])
             self.release_build = build['last']
             # TODO auto-remove entries from whitelist which are passed now
         else:
@@ -270,8 +270,8 @@ class TumblesleRelease(object):
             sets = {k: set(v) for k, v in iteritems(hard_failed_jobs_by_scenario)}
             new_failures = sets['last'].difference(sets['released'])
             new_fixed = sets['released'].difference(sets['last'])
-            log.info("Regression in new build %s, new failures: %s" % (build['last'], ', '.join(new_failures)))
-            log.debug("new fixed: %s" % ', '.join(new_fixed))
+            log.info('Regression in new build %s, new failures: %s' % (build['last'], ', '.join(new_failures)))
+            log.debug('new fixed: %s' % ', '.join(new_fixed))
             self.notify({'build': build['last'], 'new_failures': list(new_failures)}, topic='regression')
 
         # # assuming every job in released_failed is in whitelist
@@ -289,37 +289,37 @@ class TumblesleRelease(object):
 
         if not self.args.src.endswith('/') or not self.args.dest.endswith('/'):
             raise UnsupportedRsyncArgsError()
-        rsync_opts += ["--include=**/%s%s*" % (self.args.match, self.release_build)]
+        rsync_opts += ['--include=**/%s%s*' % (self.args.match, self.release_build)]
         if self.args.match_hdds:
-            rsync_opts += ["--include=**/%s%s*" % (self.args.match_hdds, self.release_build)]
-        rsync_opts += ["--include=iso/", "--include=hdd/", "--include=repo/"]
-        rsync_opts += ["--filter=+ repo/%s%s*/**" % (self.args.match, self.release_build)]
-        rsync_opts += ["--exclude=*"]
-        cmd = ["rsync"] + rsync_opts + [self.args.src, build_dest]
+            rsync_opts += ['--include=**/%s%s*' % (self.args.match_hdds, self.release_build)]
+        rsync_opts += ['--include=iso/', '--include=hdd/', '--include=repo/']
+        rsync_opts += ['--filter=+ repo/%s%s*/**' % (self.args.match, self.release_build)]
+        rsync_opts += ['--exclude=*']
+        cmd = ['rsync'] + rsync_opts + [self.args.src, build_dest]
         log.debug("Calling '%s'" % ' '.join(cmd))
         if not self.args.dry_run or self.args.dry_run_rsync:
             check_call(cmd)
 
     def update_release_info(self):
         """Update release info file on destination."""
-        log.debug("Updating release_info file")
+        log.debug('Updating release_info file')
         release_info = {self.args.product: {'build': self.release_build}}
         release_info_dump = yaml.safe_dump(release_info)
-        log.debug("New release info as yaml: %s" % release_info_dump)
+        log.debug('New release info as yaml: %s' % release_info_dump)
         if not self.args.dry_run:
             open(self.release_info_path, 'w').write(release_info_dump)
 
     def update_symlinks(self, build_dest):
         """Update symlinks to 'current' and 'release' on destination."""
-        log.debug("Updating symlinks within %s/ for each asset (Build%s->current)" % (self.release_build, self.release_build))
+        log.debug('Updating symlinks within %s/ for each asset (Build%s->current)' % (self.release_build, self.release_build))
         for i in glob.glob(build_dest + '*/*'):
             tgt = os.path.join(os.path.dirname(i), os.path.basename(i).replace(self.release_build, 'CURRENT'))
             if not os.path.exists(tgt):
                 os.symlink(i, tgt)
-        log.debug("Updating folder symlinks %s/ -> release/" % self.release_build)
+        log.debug('Updating folder symlinks %s/ -> release/' % self.release_build)
         release_tgt = os.path.join(self.args.dest, 'release')
         if self.args.dry_run:
-            log.info("Would symlink %s -> %s" % (build_dest, release_tgt))
+            log.info('Would symlink %s -> %s' % (build_dest, release_tgt))
         else:
             if os.path.exists(release_tgt):
                 os.remove(release_tgt)
@@ -327,7 +327,7 @@ class TumblesleRelease(object):
 
     def release(self):
         """Release new version of TumbleSLE by syncing from openQA instance to TumbleSLE server."""
-        log.debug("Releasing new TumbleSLE: Build %s" % self.release_build)
+        log.debug('Releasing new TumbleSLE: Build %s' % self.release_build)
         # # do release
         # TODO in openQA as soon as there is comment access over API:
         #   - tag new build
@@ -337,7 +337,7 @@ class TumblesleRelease(object):
         self.sync(build_dest)
         self.update_symlinks(build_dest)
         self.update_release_info()
-        log.debug("Release DONE")
+        log.debug('Release DONE')
         self.notify({'build': self.release_build}, topic='release')
         if self.args.post_release_hook:
             log.debug("Calling post_release_hook '%s'" % self.args.post_release_hook)
@@ -347,21 +347,21 @@ class TumblesleRelease(object):
 def parse_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-v', '--verbose',
-                        help="Increase verbosity level, specify multiple times to increase verbosity",
+                        help='Increase verbosity level, specify multiple times to increase verbosity',
                         action='count', default=1)
     parser.add_argument('-n', '--dry-run', action='store_true',
-                        help="Only do read-only or simulate actions, does not release TumbleSLE")
+                        help='Only do read-only or simulate actions, does not release TumbleSLE')
     parser.add_argument('--dry-run-rsync', action='store_true',
                         help="Execute rsync with dry-run. Should be specified additionally to '--dry-run'")
     parser.add_argument('--openqa-host',
-                        help="openQA host to retrieve results from",
+                        help='openQA host to retrieve results from',
                         default='https://openqa.opensuse.org')
     parser.add_argument('--group-id',
-                        help="Group id to search in from openQA host",
+                        help='Group id to search in from openQA host',
                         default=19)
     parser.add_argument('--product',
-                        help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).",
-                        default="Leap 42.2")
+                        help='The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).',
+                        default='Leap 42.2')
     parser.add_argument('--check-build',
                         help="""If specified, checks specified build number (integer) instead of 'last' finished.""",
                         default='last')
@@ -371,12 +371,12 @@ def parse_args():
                         Specify 'tagged' for last tagged on group overview page within openQA""",
                         default='release_info')
     parser.add_argument('--run-once', action='store_true',
-                        help="Only run once, not continuously")
+                        help='Only run once, not continuously')
     parser.add_argument('--config-path',
-                        help="Path to config file with whitelist.",
+                        help='Path to config file with whitelist.',
                         default=CONFIG_PATH)
     parser.add_argument('--whitelist',
-                        help="Whitelist entries as for the config file (comma separated). Additional to config file entries",
+                        help='Whitelist entries as for the config file (comma separated). Additional to config file entries',
                         default='')
     parser.add_argument('--src',
                         help="""Source directory for rsync call pointing to factory subdir within openQA.
@@ -387,7 +387,7 @@ def parse_args():
                         Can be anything rsync understands but must be local.""",
                         default='/srv/www/tumblesle/')
     parser.add_argument('--match',
-                        help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
+                        help='Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release',
                         default='open*-42.2*x86_64*')
     parser.add_argument('--match-hdds',
                         help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
@@ -400,7 +400,7 @@ def parse_args():
                         help="Time to sleep between runs in seconds. Has no effect with '--run-once'",
                         default=240)
     parser.add_argument('--post-release-hook',
-                        help="Specify application path for a post-release hook which is called after every successful release",
+                        help='Specify application path for a post-release hook which is called after every successful release',
                         default=None)
     parser.add_argument('--seen-maxlen', type=int,
                         help="""The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and
@@ -418,5 +418,5 @@ def main():  # pragma: no cover, only interactive
     tr.run()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -90,6 +90,7 @@ Alternatives could have been and still are for further extensions or reworks:
 # Python 2 and 3: easiest option
 # see http://python-future.org/compatible_idioms.html
 from __future__ import absolute_import, unicode_literals
+
 from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
 install_aliases()
 from future.utils import iteritems
@@ -133,7 +134,7 @@ except ImportError:  # pragma: no cover
 MIN_DAYS_UNCHANGED = 14
 
 logging.basicConfig()
-log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
+log = logging.getLogger(sys.argv[0] if __name__ == '__main__' else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
 
 config = None
@@ -208,7 +209,7 @@ class NotEnoughBuildsError(Exception):
 
 def parse_summary(details):
     """Parse and return build summary as dict."""
-    return {i.previous.strip().rstrip(':').lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")}
+    return {i.previous.strip().rstrip(':').lower(): int(i.text) for i in details.find(id='summary').find_all(class_='badge')}
 
 
 change_state = {
@@ -308,9 +309,9 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     interesting_states = SortedDict({k.split(arch + '_')[1]: v for k, v in iteritems(states) if v['state'] != 'STABLE'})
 
     if output_state_results:
-        print("arch: %s" % arch)
+        print('arch: %s' % arch)
         for state in interesting_states_names:
-            print("\n%s:\n\t%s\n" % (state, ', '.join(k for k, v in iteritems(interesting_states) if v['state'] == state)))
+            print('\n%s:\n\t%s\n' % (state, ', '.join(k for k, v in iteritems(interesting_states) if v['state'] == state)))
     interesting_states.update({'skipped': skipped})
     return interesting_states
 
@@ -322,7 +323,7 @@ def absolute_url(root, v):
 def progress_browser_factory(args):
     return Browser(args, '', auth=(
         config.get('test_issues', 'api_key'),
-        "foobar",
+        'foobar',
     ))
 
 
@@ -405,9 +406,9 @@ def find_builds(builds, running_threshold=0):
     finished = {build: result for build, result in iteritems(builds) if not result['unfinished']
                 or (100 * float(result['unfinished']) / result['total']) <= threshold}
 
-    log.debug("Found the following finished non-empty builds: %s" % ', '.join(finished.keys()))
+    log.debug('Found the following finished non-empty builds: %s' % ', '.join(finished.keys()))
     if len(finished) < 2:
-        raise NotEnoughBuildsError("not enough finished builds found")
+        raise NotEnoughBuildsError('not enough finished builds found')
     assert len(finished.keys()) >= 2
     return finished.keys()
 
@@ -445,7 +446,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
             results_list = job_group['build_results']
             return {i['key']: i for i in results_list}
         except KeyError:
-            log.debug("Reverting to old openQA behaviour before openQA#9b50b22")
+            log.debug('Reverting to old openQA behaviour before openQA#9b50b22')
             return job_group['result']
 
     def build_url(build):
@@ -464,20 +465,20 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         # User has to be careful here. A page for non-existant builds is always
         # existant.
         builds_to_compare = builds.split(',')
-        log.debug("Specified builds %s, parsed to %s" % (builds, ', '.join(builds_to_compare)))
+        log.debug('Specified builds %s, parsed to %s' % (builds, ', '.join(builds_to_compare)))
     elif against_reviewed:
         try:
             last_reviewed = find_last_reviewed_build(job_group['comments'])
-            log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
+            log.debug('Comparing specified build %s against last reviewed %s' % (against_reviewed, last_reviewed))
             build_to_review = builds_to_compare[0] if against_reviewed == 'last' else against_reviewed
-            assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
+            assert len(build_to_review) <= len(last_reviewed) + 1, 'build_to_review and last_reviewed differ too much to make sense'
             builds_to_compare = build_to_review, last_reviewed
         except (NameError, AttributeError, IndexError):
-            log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
+            log.info('No last reviewed build found for URL %s, reverting to two last finished' % job_group_url)
 
-    log.debug("Comparing build %s against %s" % (builds_to_compare[0], builds_to_compare[1]))
+    log.debug('Comparing build %s against %s' % (builds_to_compare[0], builds_to_compare[1]))
     current_url, previous_url = map(build_url, builds_to_compare)
-    log.debug("Found two build URLS, current: %s previous: %s" % (current_url, previous_url))
+    log.debug('Found two build URLS, current: %s previous: %s' % (current_url, previous_url))
     return current_url, previous_url
 
 
@@ -485,7 +486,7 @@ def get_failed_module_details_for_report(f):
     try:
         failed_module = f['failedmodules'][0]
     except IndexError:
-        log.debug("%s does not have failed module, taking complete job." % f['href'])
+        log.debug('%s does not have failed module, taking complete job.' % f['href'])
         name = ''
         url = f['href']
         details = ''
@@ -565,7 +566,7 @@ Always latest result in this scenario: [latest](%s)
         module_folder = start_of_current_module.parent.parent.parent.parent.find(class_='glyphicon-folder-open').parent.text.strip()
     except AttributeError:  # pragma: no cover
         module_folder = ''
-        log.warn("Could not find module folder on test details page searching for parents of %s" % first_step_url)
+        log.warn('Could not find module folder on test details page searching for parents of %s' % first_step_url)
     complete_module = module_folder + '-' + module
     component_config_section = 'product_issues:%s:component_mapping' % root_url.rstrip('/')
     try:
@@ -577,7 +578,7 @@ Always latest result in this scenario: [latest](%s)
     try:
         product = config.get(config_section, group)
     except NoOptionError as e:  # pragma: no cover
-        log.info("%s. Reporting link for product will not work." % e)
+        log.info('%s. Reporting link for product will not work.' % e)
         product = ''
     product_entries = OrderedDict([
         ('product', product),
@@ -619,25 +620,25 @@ class Issue(object):
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
         if query_issue_status and progress_browser and bugzilla_browser:
-            log.debug("Retrieving bug data for %s" % bugref)
+            log.debug('Retrieving bug data for %s' % bugref)
             try:
                 if self.bugid == 0:
-                    log.debug("#0 ticket id reference found")
+                    log.debug('#0 ticket id reference found')
                     self.msg = 'NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation'
                     return
                 elif bugref.startswith('poo#'):
-                    log.debug("Test issue discovered, looking on progress")
+                    log.debug('Test issue discovered, looking on progress')
                     self.issue_type = 'redmine'
                     self.json = progress_browser.get_json(bugref_href + '.json')['issue']
                     self.status = self.json['status']['name']
                     self.assignee = self.json['assigned_to']['name'] if 'assigned_to' in self.json else 'None'
                     self.subject = self.json['subject']
                     self.priority = self.json['priority']['name']
-                    self.last_comment_date = datetime.datetime.strptime(self.json['updated_on'], "%Y-%m-%dT%H:%M:%SZ")
+                    self.last_comment_date = datetime.datetime.strptime(self.json['updated_on'], '%Y-%m-%dT%H:%M:%SZ')
                 elif bugref.startswith(('boo#', 'bsc#', 'bgo#')):
-                    log.debug("Product bug discovered, looking on bugzilla")
+                    log.debug('Product bug discovered, looking on bugzilla')
                     self.issue_type = 'bugzilla'
-                    self.json = bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.get', {"ids": [self.bugid]})['result']['bugs'][0]
+                    self.json = bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.get', {'ids': [self.bugid]})['result']['bugs'][0]
                     self.status = self.json['status']
                     if self.json.get('resolution'):
                         self.resolution = self.json['resolution']
@@ -648,28 +649,28 @@ class Issue(object):
                     log.debug('No valid bugref found. Bugref found: "%s"' % bugref)
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
-                log.info("A download error has been encountered for bugref %s (%s): %s" % (bugref, bugref_href, e))
+                log.info('A download error has been encountered for bugref %s (%s): %s' % (bugref, bugref_href, e))
                 self.msg = str(e)
                 self.error = True
             except TypeError as e:
-                log.error("Error retrieving details for bugref %s (%s): %s" % (bugref, bugref_href, e))
-                self.msg = "Ticket not found"
+                log.error('Error retrieving details for bugref %s (%s): %s' % (bugref, bugref_href, e))
+                self.msg = 'Ticket not found'
                 self.error = True
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""
-        log.info("Posting a comment on %s ticket [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
+        log.info('Posting a comment on %s ticket [%s](%s)' % (self.issue_type, self.bugref, self.bugref_href))
         if self.issue_type == 'bugzilla':
             self.bugzilla_browser.json_rpc_post('/jsonrpc.cgi', 'Bug.add_comment', {
-                "id": self.bugid,
-                "comment": comment,
-                "is_private": True,
+                'id': self.bugid,
+                'comment': comment,
+                'is_private': True,
             })
         # self.issue_type == 'redmine':
         else:
             self.progress_browser.json_rest(self.bugref_href + '.json', 'PUT', {
-                "issue": {
-                    "notes": comment
+                'issue': {
+                    'notes': comment
                 }
             })
 
@@ -679,7 +680,7 @@ class Issue(object):
         assert self.queried
         if self.assignee in ('None', None):
             return False
-        elif "@forge.provo.novell.com" in self.assignee:
+        elif '@forge.provo.novell.com' in self.assignee:
             return False
         else:
             return True
@@ -689,7 +690,7 @@ class Issue(object):
         """Issue is still open."""
         assert self.queried
         s = (self.status or '').upper()
-        if s in ["RESOLVED", "REJECTED", "VERIFIED", "CLOSED"]:
+        if s in ['RESOLVED', 'REJECTED', 'VERIFIED', 'CLOSED']:
             return False
         else:
             return True
@@ -699,9 +700,9 @@ class Issue(object):
         """Return datetime object of last comment retrieved from an issue."""
         if not self.last_comment_date:
             assert self.issue_type == 'bugzilla'
-            res = self.bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.comments', {"ids": [self.bugid]})
+            res = self.bugzilla_browser.json_rpc_get('/jsonrpc.cgi', 'Bug.comments', {'ids': [self.bugid]})
             comments = res['result']['bugs'][str(self.bugid)]['comments']
-            self.last_comment_date = datetime.datetime.strptime(comments[-1]['creation_time'], "%Y-%m-%dT%H:%M:%SZ")
+            self.last_comment_date = datetime.datetime.strptime(comments[-1]['creation_time'], '%Y-%m-%dT%H:%M:%SZ')
         return self.last_comment_date
 
     def __str__(self):
@@ -856,7 +857,7 @@ class ArchReport(object):
             if v['state'] in soft_fail_states:
                 try:
                     module_url = self._get_url_to_softfailed_module(v['href'])
-                    module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
+                    module_name = re.search('[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*', module_url).group(1)
                     assert module_name, 'could not find a module name within %s in job %s' % (module_url, v['href'])
                     v['bugref'] = self._get_bugref_for_softfailed_module(v, module_name)
                     if not v['bugref']:  # pragma: no cover
@@ -865,19 +866,19 @@ class ArchReport(object):
                     log.info('Could find neither soft failed info box nor needle, assuming an old openQA job, skipping.')
                     continue
                 except DownloadError as e:  # pragma: no cover
-                    log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
+                    log.error('Failed to process %s with error %s. Skipping current result' % (v, e))
                     continue
                 match = re.search(bugref_regex, v['bugref'])
                 if not match:  # pragma: no cover
                     log.info('Could not find bug reference in text \'%s\', skipping.' % v['bugref'])
                     continue
                 bugref, bug_id = match.group(1), match.group(2)
-                assert bugref, "No bugref found for %s" % v
-                assert bug_id, "No bug_id found for %s" % v
+                assert bugref, 'No bugref found for %s' % v
+                assert bug_id, 'No bug_id found for %s' % v
                 try:
                     v['bugref_href'] = issue_tracker[bugref](bug_id)
                 except KeyError as e:  # pragma: no cover
-                    log.error("Failed to find valid bug tracker URL for %s with error %s. Skipping current result" % (v, e))
+                    log.error('Failed to find valid bug tracker URL for %s with error %s. Skipping current result' % (v, e))
                     continue
 
     @property
@@ -890,7 +891,7 @@ class ArchReport(object):
         return total
 
     def _get_url_to_softfailed_module(self, job_url):
-        test_details_html = self.test_browser.get_soup(job_url).find(title="Soft Failed")
+        test_details_html = self.test_browser.get_soup(job_url).find(title='Soft Failed')
         if test_details_html is None:
             log.debug('Could not find soft failed info box, looking for workaround needle in job %s' % job_url)
             test_details_html = self.test_browser.get_soup(job_url).find(class_='resborder_softfailed').parent
@@ -898,11 +899,11 @@ class ArchReport(object):
         return test_details_html.get('data-url')
 
     def _get_bugref_for_softfailed_module(self, result_item, module_name):
-        details_json = json.loads(self.test_browser.get_soup("%s/file/details-%s.json" % (result_item['href'], module_name)).getText())
+        details_json = json.loads(self.test_browser.get_soup('%s/file/details-%s.json' % (result_item['href'], module_name)).getText())
         for field in details_json:
             if 'title' in field and 'Soft Fail' in field['title']:
-                unformated_str = self.test_browser.get_soup("%s/file/%s" % (result_item['href'], field['text'])).getText()
-                return re.search("Soft Failure:\n(.*)", unformated_str.strip()).group(1)
+                unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], field['text'])).getText()
+                return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
                 match = re.search(bugref_regex, field['needle'])
@@ -957,14 +958,14 @@ class ProductReport(object):
         previous_details = browser.get_soup(previous_url)
         for details in current_details, previous_details:
             assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0, \
-                "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)" \
+                'invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)' \
                 % (current_url, previous_url)
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 
         changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary)})
-        self.changes_str = '***Changes since reference build***\n\n* ' + '\n* '.join("%s: %s" % (k, v) for k, v in iteritems(changes)) + '\n'
-        log.info("%s" % self.changes_str)
+        self.changes_str = '***Changes since reference build***\n\n* ' + '\n* '.join('%s: %s' % (k, v) for k, v in iteritems(changes)) + '\n'
+        log.info('%s' % self.changes_str)
 
         self.build = get_build_nr(current_url)
         self.ref_build = get_build_nr(previous_url)
@@ -973,12 +974,12 @@ class ProductReport(object):
         cur_archs, prev_archs = (set(arch.text for arch in details.find_all('th', id=re.compile('flavor_'))) for details in [current_details, previous_details])
         archs = cur_archs
         if args.arch:
-            assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(args.arch, cur_archs)
+            assert args.arch in cur_archs, 'Selected arch {} was not found in test results {}'.format(args.arch, cur_archs)
             archs = [args.arch]
         self.missing_archs = sorted(prev_archs - cur_archs)
         if self.missing_archs:
-            log.info("%s missing completely from current run: %s" %
-                     (pluralize(len(self.missing_archs), "architecture is", "architectures are"), ', '.join(self.missing_archs)))
+            log.info('%s missing completely from current run: %s' %
+                     (pluralize(len(self.missing_archs), 'architecture is', 'architectures are'), ', '.join(self.missing_archs)))
 
         # create arch reports
         self.reports = SortedDict()
@@ -1016,10 +1017,10 @@ class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescri
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=CustomFormatter)
     parser.add_argument('-v', '--verbose',
-                        help="Increase verbosity level, specify multiple times to increase verbosity",
+                        help='Increase verbosity level, specify multiple times to increase verbosity',
                         action='count', default=1)
     parser.add_argument('-n', '--no-progress', action='store_true',
-                        help="Be terse and only output the report, no progress indication")
+                        help='Be terse and only output the report, no progress indication')
     parser.add_argument('-s', '--output-state-results', action='store_true',
                         help='Additional plain text output of arch-specific state results, e.g. all NEW_ISSUE; on for "verbose" mode')
     parser.add_argument('--host', default='https://openqa.opensuse.org',
@@ -1093,7 +1094,7 @@ def parse_args():
     args = parser.parse_args()
     if args.query_issue_status_help:
         print(CONFIG_USAGE)
-        print("Expected file path: {}".format(CONFIG_PATH))
+        print('Expected file path: {}'.format(CONFIG_PATH))
         sys.exit(0)
     if args.reminder_comment_on_issues:
         args.query_issue_status = True
@@ -1115,7 +1116,7 @@ def get_parent_job_groups(browser, root_url, args):
 def get_job_groups(browser, root_url, args):
     if args.job_group_urls:
         job_group_urls = args.job_group_urls.split(',')
-        log.info("Acting on specified job group URL(s): %s" % ', '.join(job_group_urls))
+        log.info('Acting on specified job group URL(s): %s' % ', '.join(job_group_urls))
         job_groups = {i: url for i, url in enumerate(job_group_urls)}
     else:
         parent_groups = get_parent_job_groups(browser, root_url, args)
@@ -1137,11 +1138,11 @@ def get_job_groups(browser, root_url, args):
         if args.job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
-            log.info("Job group URL for %s: %s" % (args.job_groups, job_groups))
+            log.info('Job group URL for %s: %s' % (args.job_groups, job_groups))
         if args.exclude_job_groups:
             job_pattern = re.compile('(%s)' % '|'.join(args.exclude_job_groups.split(',')))
             job_groups = {k: v for k, v in iteritems(job_groups) if not job_pattern.search(k)}
-            log.info("Job group URL excluding %s: %s" % (args.exclude_job_groups, job_groups))
+            log.info('Job group URL excluding %s: %s' % (args.exclude_job_groups, job_groups))
     return SortedDict(job_groups)
 
 
@@ -1169,7 +1170,7 @@ class Report(object):
                     self.report[k] = self._one_report(v)
             self._progress += 1
         if not args.no_progress:
-            sys.stderr.write("\r%s\n" % self._next_label())  # It's nice to see 100%, too :-)
+            sys.stderr.write('\r%s\n' % self._next_label())  # It's nice to see 100%, too :-)
 
     def _one_report(self, job_group_url):
         # for each job group on openqa.opensuse.org
@@ -1177,14 +1178,14 @@ class Report(object):
             return ProductReport(self.browser, job_group_url, self.root_url, self.args)
         except NotEnoughBuildsError as e:
             log.debug("Catched 'not enough builds': %s" % e)
-            return "Not enough finished builds found"
+            return 'Not enough finished builds found'
 
     def _next_label(self):
         return '%s %i%%' % (self._label, self._progress * 100 / len(self.job_groups.keys()))
 
     def __str__(self):
         """Generate markdown."""
-        report_str = ""
+        report_str = ''
         for k, v in iteritems(self.report):
             report_str += '# %s\n\n%s\n---\n' % (k, v)
         return report_str
@@ -1200,17 +1201,17 @@ def generate_report(args):
     }
     logging_level = logging.DEBUG if args.verbose > 4 else verbose_to_log[args.verbose]
     log.setLevel(logging_level)
-    log.debug("args: %s" % args)
+    log.debug('args: %s' % args)
     args.output_state_results = True if args.verbose > 1 else args.output_state_results
 
     if args.job_group_urls:
-        root_url = urljoin('/'.join(args.job_group_urls.split("/")[0:3]), '/')
+        root_url = urljoin('/'.join(args.job_group_urls.split('/')[0:3]), '/')
     else:
         root_url = urljoin(str(args.host), '/')
 
     browser = Browser(args, root_url)
     job_groups = get_job_groups(browser, root_url, args)
-    assert not (args.builds and len(job_groups) > 1), "builds option and multiple job groups not supported"
+    assert not (args.builds and len(job_groups) > 1), 'builds option and multiple job groups not supported'
     assert len(job_groups) > 0, "No job groups were found, maybe misspecified '--job-groups'?"
     return Report(browser, args, root_url, job_groups)
 
@@ -1226,8 +1227,8 @@ def load_config():
 
 
 ie_filters = {
-    "closed": lambda ie: ie.bug and ie.bug.queried and not ie.bug.is_open,
-    "unassigned": lambda ie: ie.bug and ie.bug.queried and ie.bug.is_open and not ie.bug.is_assigned
+    'closed': lambda ie: ie.bug and ie.bug.queried and not ie.bug.is_open,
+    'unassigned': lambda ie: ie.bug and ie.bug.queried and ie.bug.is_open and not ie.bug.is_assigned
 }
 
 
@@ -1288,7 +1289,7 @@ def main():  # pragma: no cover, only interactive
             filter_report(report, ie_filters[args.filter])
         except KeyError:
             print("No such filter '%s'" % args.filter)
-            print("Available filters: %s" % ', '.join(ie_filters.keys()))
+            print('Available filters: %s' % ', '.join(ie_filters.keys()))
             sys.exit(1)
 
     try:
@@ -1308,5 +1309,5 @@ def main():  # pragma: no cover, only interactive
             print(unicode(report))  # noqa: F821
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

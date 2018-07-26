@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 from sortedcontainers import SortedDict
 
 logging.basicConfig()
-log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
+log = logging.getLogger(sys.argv[0] if __name__ == '__main__' else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
 
 
@@ -67,8 +67,8 @@ class Browser(object):
 
     def get_soup(self, url):
         """Return content from URL as 'BeautifulSoup' output."""
-        assert url, "url can not be None"
-        return BeautifulSoup(self.get_page(url), "html.parser")
+        assert url, 'url can not be None'
+        return BeautifulSoup(self.get_page(url), 'html.parser')
 
     def get_json(self, url, cache=True):
         """Call get_page retrieving json API output."""
@@ -81,16 +81,16 @@ class Browser(object):
         from a file.
         """
         if url in self.cache and cache:
-            log.info("Loading content instead of URL %s from in-memory cache" % url)
+            log.info('Loading content instead of URL %s from in-memory cache' % url)
             return json.loads(self.cache[url]) if as_json else self.cache[url]
         filename = url_to_filename(url)
         if self.load and cache:
-            log.info("Loading content instead of URL %s from filename %s" % (url, filename))
+            log.info('Loading content instead of URL %s from filename %s' % (url, filename))
             try:
                 raw = codecs.open(os.path.join(self.load_dir, filename), 'r', 'utf8').read()
             except IOError as e:
                 if e.errno == errno.ENOENT:
-                    msg = "Request to %s was not successful, file %s not found" % (url, filename)
+                    msg = 'Request to %s was not successful, file %s not found' % (url, filename)
                     log.info(msg)
                     # as 'load' simulates downloading we also have to simulate an appropriate error
                     raise CacheNotFoundError(msg)
@@ -102,7 +102,7 @@ class Browser(object):
             content = self._get(absolute_url, as_json=as_json)
         raw = json.dumps(content) if as_json else content
         if self.save:
-            log.info("Saving content instead from URL %s from filename %s" % (url, filename))
+            log.info('Saving content instead from URL %s from filename %s' % (url, filename))
             codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf8').write(raw)
         self.cache[url] = raw
         return content
@@ -112,18 +112,18 @@ class Browser(object):
             try:
                 r = requests.get(url, auth=self.auth)
             except requests.exceptions.ConnectionError:
-                log.info("Connection error encountered accessing %s, retrying try %s" % (url, i))
+                log.info('Connection error encountered accessing %s, retrying try %s' % (url, i))
                 continue
             if r.status_code in {502, 503, 504}:
-                log.info("Request to %s failed with status code %s, retrying try %s" % (url, r.status_code, i))
+                log.info('Request to %s failed with status code %s, retrying try %s' % (url, r.status_code, i))
                 continue
             if r.status_code != 200:
-                msg = "Request to %s was not successful, status code: %s" % (url, r.status_code)
+                msg = 'Request to %s was not successful, status code: %s' % (url, r.status_code)
                 log.info(msg)
                 raise DownloadError(msg)
             break
         else:
-            msg = "Request to %s was not successful after multiple retries, giving up" % url
+            msg = 'Request to %s was not successful after multiple retries, giving up' % url
             log.warn(msg)
             raise DownloadError(msg)
         content = r.json() if as_json else r.content.decode('utf8')
