@@ -1261,7 +1261,7 @@ def main():  # pragma: no cover, only interactive
             print("Available filters: %s" % ', '.join(ie_filters.keys()))
             sys.exit(1)
 
-    print(report)
+    print(str(report))
 
 
 if __name__ == "__main__":
