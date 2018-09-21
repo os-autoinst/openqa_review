@@ -114,7 +114,7 @@ class Browser(object):
             except requests.exceptions.ConnectionError:
                 log.info("Connection error encountered accessing %s, retrying try %s" % (url, i))
                 continue
-            if r.status_code in {502, 504}:
+            if r.status_code in {502, 503, 504}:
                 log.info("Request to %s failed with status code %s, retrying try %s" % (url, r.status_code, i))
                 continue
             if r.status_code != 200:
