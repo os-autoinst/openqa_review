@@ -147,8 +147,18 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith('/') else urljoin(str(self.root_url), str(url))
             data = json.dumps({'method': method, 'params': [params]})
-            r = requests.post(absolute_url, data=data, auth=self.auth, headers={'content-type': 'application/json'})
-            r.raise_for_status()
+            for i in range(1, 7):
+                try:
+                    r = requests.post(absolute_url, data=data, auth=self.auth, headers={'content-type': 'application/json'})
+                    r.raise_for_status()
+                except requests.exceptions.ConnectionError:
+                    log.info("Connection error encountered accessing %s, retrying try %s" % (absolute_url, i))
+                    continue
+                break
+            else:
+                msg = "Request to %s was not successful after multiple retries, giving up" % absolute_url
+                log.warn(msg)
+                return None
             return r.json() if r.text else None
 
     def json_rest(self, url, method, data):
