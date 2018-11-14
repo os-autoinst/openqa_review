@@ -17,7 +17,7 @@ openqa_review_html_args="${openqa_review_html_args:-"${load_args} --report-links
 # duplicate reminder comments
 openqa_review_save_args="${openqa_review_save_args:-"--report-links --reminder-comment-on-issues --save --save-dir ${tmp}"}"
 openqa_review="${openqa_review:-"$(which openqa-review)"}"
-TPL="${TPL:-"dashboard_files/dashboard.html.in"}"
+TPL="${TPL:-"$(dirname $0)/../dashboard_files/dashboard.html.in"}"
 # We have to preserve the '$@' until here to prevent too early evaluation of parameters with spaces
 save_report="$(${openqa_review} ${openqa_review_args} ${openqa_review_save_args} "$@")"
 email_report="$(${openqa_review} $openqa_review_args $openqa_review_email_args "$@")"
