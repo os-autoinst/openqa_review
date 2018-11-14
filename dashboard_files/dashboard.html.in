@@ -75,15 +75,8 @@
 
         </div>
     </div>
-</div>
-
-${TPL_OPENQA_CONTENT}
-
-      </div>
-
-      <footer class="footer">
         <div class="container">
-          <div id="footer-explanation" class="text-center">
+          <div id="explanation" class="text-center">
               <b>Explanation for the status fields:</b><br/>
               The status Green/Amber/Red is set simply based on the number of
               failed test scenarios. If there are any issues reported as "New
@@ -98,5 +91,9 @@ ${TPL_OPENQA_CONTENT}
               Any feedback regarding the script processing or contact can be communicated using issues on the github repo <a href="https://github.com/okurz/openqa_review">okurz/openqa_review</a> or directly to okurz@suse.de
           </div>
         </div>
-      </footer>
+</div>
+
+${TPL_OPENQA_CONTENT}
+
+      </div>
 </body></html>
