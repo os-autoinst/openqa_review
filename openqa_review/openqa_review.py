@@ -436,7 +436,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
     def get_group_result():
         try:
             results_list = job_group['build_results']
-            return {i['build']: i for i in results_list}
+            return {i['key']: i for i in results_list}
         except KeyError:
             log.debug("Reverting to old openQA behaviour before openQA#9b50b22")
             return job_group['result']
