@@ -305,6 +305,15 @@ def test_also_dotted_builds_can_be_specified_and_appear_in_report():
     assert '=162.2' in reviewed
 
 
+def test_builds_with_lower_number_but_more_recent_version_get_compared_correctly():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'multi_version')
+    args.job_group_urls = 'http://openqa.suse.de/group_overview/139'
+    browser = browser_factory(args)
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls)
+    assert '=0109' in current
+    assert '=0456' in reviewed
+
 def test_generate_report_with_progress_notification_does_not_fail():
     args = cache_test_args_factory()
     # Not easy to test automatically but at least we can call it and assume it also gives valid results
