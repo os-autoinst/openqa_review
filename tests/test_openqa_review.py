@@ -314,6 +314,7 @@ def test_builds_with_lower_number_but_more_recent_version_get_compared_correctly
     assert '=0109' in current
     assert '=0456' in reviewed
 
+
 def test_generate_report_with_progress_notification_does_not_fail():
     args = cache_test_args_factory()
     # Not easy to test automatically but at least we can call it and assume it also gives valid results
