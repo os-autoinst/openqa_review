@@ -267,7 +267,7 @@ def get_test_bugref(entry):
     if not bugref:
         return {}
     # work around openQA providing incorrect URLs (e.g. following whitespace)
-    return {'bugref': re.search('\S+#([0-9]+)', bugref.i['title']).group(),
+    return {'bugref': re.search(r'\S+#([0-9]+)', bugref.i['title']).group(),
             'bugref_href': bugref.a['href'].strip()
             }
 
@@ -395,8 +395,8 @@ def find_builds(builds, running_threshold=0):
         return r['total'] != 0 and r['total'] > r['skipped'] and not ('build' in r.keys() and r['build'] is None)
     builds = {build: result for build, result in iteritems(builds) if non_empty(result)}
 
-    finished = {build: result for build, result in iteritems(builds) if not result['unfinished'] or
-                (100 * float(result['unfinished']) / result['total']) <= threshold}
+    finished = {build: result for build, result in iteritems(builds) if not result['unfinished']
+                or (100 * float(result['unfinished']) / result['total']) <= threshold}
 
     log.debug("Found the following finished non-empty builds: %s" % ', '.join(finished.keys()))
     if len(finished) < 2:
@@ -410,7 +410,7 @@ def find_last_reviewed_build(comments):
     # Could also find previous one with a comment on the build status,
     # i.e. a reviewed finished build
     # The build number itself might be prefixed with a redundant 'Build' which we ignore
-    build_re = re.compile('[bB]uild:(\*\*)? *(Build)?([\w@.]*)(.*reference.*)?(\*\*)?\r\n')
+    build_re = re.compile(r'[bB]uild:(\*\*)? *(Build)?([\w@.]*)(.*reference.*)?(\*\*)?\r\n')
     # Assuming the most recent with a build number also has the most recent review
     for c in reversed(comments):
         match = build_re.search(c['text'])
@@ -502,11 +502,11 @@ def issue_report_link(root_url, f, test_browser=None):  # noqa: C901  # too comp
     build = overview_params['build'][0]
     try:
         scenario_div = test_details_page.find(class_='next_previous').div.div
-        scenario = re.findall('Next & previous results for (.*) \(', scenario_div.text)[0]
+        scenario = re.findall(r'Next & previous results for (.*) \(', scenario_div.text)[0]
     except AttributeError:  # pragma: no cover
         # pre-4.6
         scenario_div = test_details_page.find(class_='previous').div.div
-        scenario = re.findall('[Rr]esults for (.*) \(', scenario_div.text)[0]
+        scenario = re.findall(r'[Rr]esults for (.*) \(', scenario_div.text)[0]
     latest_link = absolute_url(root_url, scenario_div.a)
     module, url, details = get_failed_module_details_for_report(f)
     try:
@@ -886,8 +886,8 @@ class ArchReport(object):
 
     def _todo_issues_str(self):
         if self.args.abbreviate_test_issues:
-            return issue_listing('### Test issues', self.issues['new']['openqa'] + self.issues['existing']['openqa'] + self.issues['new']['todo'] +
-                                 self.issues['existing']['todo'], self.args.show_empty)
+            return issue_listing('### Test issues', self.issues['new']['openqa'] + self.issues['existing']['openqa']
+                                 + self.issues['new']['todo'] + self.issues['existing']['todo'], self.args.show_empty)
         todo_issues = todo_review_template.substitute({
             'new_issues': issue_listing('***new issues***', self.issues['new']['todo'], self.args.show_empty),
             'existing_issues': issue_listing('***existing issues***', self.issues['existing']['todo'], self.args.show_empty),
