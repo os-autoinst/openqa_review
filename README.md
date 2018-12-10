@@ -1,4 +1,4 @@
-# openqa_review_script [![Build Status](https://travis-ci.org/okurz/openqa_review.svg?branch=master)](https://travis-ci.org/okurz/openqa_review) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/699/badge)](https://bestpractices.coreinfrastructure.org/projects/699)
+# openqa_review_script [![Build Status](https://travis-ci.org/os-autoinst/openqa_review.svg?branch=master)](https://travis-ci.org/os-autoinst/openqa_review) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/699/badge)](https://bestpractices.coreinfrastructure.org/projects/699)
 
 A review helper script for openQA.
 
@@ -44,7 +44,7 @@ If you have questions, visit me on irc.freenode.net in #opensuse-factory
 
 ## Contribute
 
-This project lives in https://github.com/okurz/openqa_review
+This project lives in https://github.com/os-autoinst/openqa_review
 
 Feel free to add issues in github or send pull requests.
 

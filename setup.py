@@ -57,7 +57,7 @@ setup(
     description="review helper script for openQA",
     license="MIT",
     keywords="openQA webscraping script helper review",
-    url="https://github.com/okurz/openqa_review",
+    url="https://github.com/os-autoinst/openqa_review",
     packages=['openqa_review'],
     py_modules=['version'],
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
