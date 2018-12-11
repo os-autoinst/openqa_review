@@ -109,6 +109,7 @@ from string import Template
 from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
 
 from bs4 import BeautifulSoup
+from pkg_resources import parse_version
 from sortedcontainers import SortedDict
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -451,7 +452,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
 
     finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
-    builds_to_compare = sorted(finished_builds, reverse=True)[0:2]
+    builds_to_compare = sorted(finished_builds, key=parse_version, reverse=True)[0:2]
 
     if builds:
         # User has to be careful here. A page for non-existant builds is always
@@ -462,7 +463,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds='', against_reviewe
         try:
             last_reviewed = find_last_reviewed_build(job_group['comments'])
             log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
-            build_to_review = max(finished_builds) if against_reviewed == 'last' else against_reviewed
+            build_to_review = builds_to_compare[0] if against_reviewed == 'last' else against_reviewed
             assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
             builds_to_compare = build_to_review, last_reviewed
         except (NameError, AttributeError, IndexError):

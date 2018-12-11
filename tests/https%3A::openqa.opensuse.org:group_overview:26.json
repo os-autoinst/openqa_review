@@ -9,13 +9,13 @@
 	"max_jobs": 91,
 	"group": {"id": 26, "name": "openSUSE Leap"},
 	"result": {
-		"162.1": {
+		"62.1": {
 			"distri": "opensuse",
 			"version": "15",
 			"reviewed": "",
 			"reviewed_all_passed": "",
-			"escaped_build": "162_1",
-			"escaped_id": "15-162_1",
+			"escaped_build": "62_1",
+			"escaped_id": "15-62_1",
 			"labeled": 0,
 			"oldest": "2016-11-08T16:59:11",
 			"failed": 20,
