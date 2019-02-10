@@ -214,7 +214,7 @@ class TumblesleRelease(object):
         log.debug("Found last ISO %s" % last_iso)
         build = {}
         # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explictly abort faster
-        build['last'] = re.search('(?<=-Build)[0-9@]+', last_iso).group() if self.args.check_build is 'last' else self.args.check_build
+        build['last'] = re.search('(?<=-Build)[0-9@]+', last_iso).group() if self.args.check_build == 'last' else self.args.check_build
         log.debug("Found last build %s" % build['last'])
         jobs_by_result = {}
         jobs_by_result['last'] = self.retrieve_jobs_by_result(build['last'])
