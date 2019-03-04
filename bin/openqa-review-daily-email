@@ -12,12 +12,12 @@ html_target="${html_target:-"/suse/okurz/Export/${html_target_file}"}"
 openqa_review_args="${openqa_review_args:-"--host ${openqa_host} -n -r -T --query-issue-status --no-empty-sections --include-softfails --running-threshold=2 --exclude-job-groups ^(Released|Development|old)"}"
 load_args="${load_args:-"--load --load-dir=${tmp}"}"
 openqa_review_email_args="${openqa_review_email_args:-"${load_args}"}"
-openqa_review_html_args="${openqa_review_html_args:-"${load_args} --report-links"}"
+openqa_review_html_args="${openqa_review_html_args:-"${load_args}"}"
 # this is also putting reminder comments on issues. We can not do this in an
 # explicit later steps as we need all requests to be done when saving the data
 # and if we call it here and also in a later step we would end up with
 # duplicate reminder comments
-openqa_review_save_args="${openqa_review_save_args:-"--report-links --reminder-comment-on-issues --save --save-dir ${tmp}"}"
+openqa_review_save_args="${openqa_review_save_args:-"--reminder-comment-on-issues --save --save-dir ${tmp}"}"
 openqa_review="${openqa_review:-"$(which openqa-review)"}"
 TPL="${TPL:-"$(dirname $0)/../dashboard_files/dashboard.html.in"}"
 # We have to preserve the '$@' until here to prevent too early evaluation of parameters with spaces
