@@ -1,7 +1,9 @@
 #!/bin/sh -e
 
 . $(dirname $0)/_common
-setup_tmpdir
+if [ -z ${tmp+x} ]; then
+    setup_tmpdir
+fi
 
 openqa_host="${openqa_host:-"https://openqa.suse.de"}"
 recv="${recv:-"openqa-suse-status@suse.de"}"
