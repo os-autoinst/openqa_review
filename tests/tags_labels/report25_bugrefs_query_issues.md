@@ -13,8 +13,8 @@
 
 * toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading ✓") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
 * toolchain_zypper@bar -> [boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)
-* soft fails: soft_fail_without_bugref -> for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for [https://progress.opensuse.org/issues/36256](https://progress.opensuse.org/issues/36256) to be solved, and also [http://fate.suse.com/12345](http://fate.suse.com/12345)
 * soft fails: create_hdd_textmode -> [boo#931572](https://bugzilla.opensuse.org/show_bug.cgi?id=931572 "no space left on device when upgrading ✓") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
+* soft fails: soft_fail_without_bugref -> for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for [https://progress.opensuse.org/issues/36256](https://progress.opensuse.org/issues/36256) to be solved, and also [http://fate.suse.com/12345](http://fate.suse.com/12345) ✓
 
 
 **Existing Product bugs:**

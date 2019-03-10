@@ -95,6 +95,7 @@ install_aliases()
 from future.utils import iteritems
 
 import argparse
+import codecs
 import datetime
 import logging
 import os.path
@@ -1261,8 +1262,21 @@ def main():  # pragma: no cover, only interactive
             print("Available filters: %s" % ', '.join(ie_filters.keys()))
             sys.exit(1)
 
-    report_str = str(report)
-    print(report_str.encode('utf-8'))
+    try:
+        print(report)
+    except UnicodeEncodeError as e:
+        log.error("Encountered UnicodeEncodeError: %s" % e)
+        log.error("type of 'report': %s" % report)
+        log.error("Trying workaround, explicit utf8 writer to stdout")
+        try:
+            utf8writer = codecs.getwriter('utf8')
+            sys.stdout = utf8writer(sys.stdout)
+            print(report)
+        except UnicodeEncodeError as e:
+            log.error("Encountered UnicodeEncodeError: %s" % e)
+            log.error("type of 'report': %s" % report)
+            log.error("Trying workaround, conversion to unicode object")
+            print(unicode(report))  # noqa: F821
 
 
 if __name__ == "__main__":
