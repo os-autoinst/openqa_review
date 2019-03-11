@@ -118,8 +118,8 @@ def cache_test_args_factory():
 
 def compare_report(report, ref_report_path):
     # If the reference report should be written initially or updated one can just write the report as string to file
-    # codecs.open(ref_report_path, 'w', 'utf-8').write(report)
-    ref_report = codecs.open(ref_report_path, 'r', 'utf-8').read()
+    # codecs.open(ref_report_path, 'w', 'utf8').write(report)
+    ref_report = codecs.open(ref_report_path, 'r', 'utf8').read()
     # for simpler display of the diff in case of differences it helps to have
     # both reports in same encoding, i.e. casting to str
     lines = str(report).splitlines()

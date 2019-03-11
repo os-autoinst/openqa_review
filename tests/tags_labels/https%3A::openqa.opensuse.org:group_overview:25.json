@@ -3,7 +3,7 @@
 	"pinned_comments": [],
 	"description": "",
 	"max_jobs": 91,
-	"group": {"id": 25, "name": "openSUSE Tumbleweed 1.Gnome"},
+	"group": {"id": 25, "name": "openSUSE Tumbleweed 1.Gnome ✓"},
 	"result": {
 		"1500": {
 			"distri": "opensuse",

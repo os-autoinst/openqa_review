@@ -87,7 +87,7 @@ class Browser(object):
         if self.load and cache:
             log.info("Loading content instead of URL %s from filename %s" % (url, filename))
             try:
-                raw = open(os.path.join(self.load_dir, filename)).read()
+                raw = codecs.open(os.path.join(self.load_dir, filename), 'r', 'utf8').read()
             except IOError as e:
                 if e.errno == errno.ENOENT:
                     msg = "Request to %s was not successful, file %s not found" % (url, filename)
@@ -103,7 +103,7 @@ class Browser(object):
         raw = json.dumps(content) if as_json else content
         if self.save:
             log.info("Saving content instead from URL %s from filename %s" % (url, filename))
-            codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf-8').write(raw)
+            codecs.open(os.path.join(self.save_dir, filename), 'w', 'utf8').write(raw)
         self.cache[url] = raw
         return content
 

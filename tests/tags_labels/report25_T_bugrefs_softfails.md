@@ -14,7 +14,7 @@
 * [toolchain_zypper](https://openqa.opensuse.org/tests/384324 "Failed modules: install") -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571)
 * [toolchain_zypper@bar](https://openqa.opensuse.org/tests/3843245 "Failed modules: install") -> [boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715)
 * soft fails: [create_hdd_textmode](https://openqa.opensuse.org/tests/447901) -> [boo#931572](https://bugzilla.opensuse.org/show_bug.cgi?id=931572)
-* soft fails: [soft_fail_without_bugref](https://openqa.opensuse.org/tests/684839) -> for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for [https://progress.opensuse.org/issues/36256](https://progress.opensuse.org/issues/36256) to be solved, and also [http://fate.suse.com/12345](http://fate.suse.com/12345)
+* soft fails: [soft_fail_without_bugref](https://openqa.opensuse.org/tests/684839) -> for Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for [https://progress.opensuse.org/issues/36256](https://progress.opensuse.org/issues/36256) to be solved, and also [http://fate.suse.com/12345](http://fate.suse.com/12345) ✓
 
 
 **Existing Product bugs:**
