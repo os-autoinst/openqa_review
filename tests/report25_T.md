@@ -13,6 +13,11 @@
 **Arch:** x86_64
 **Status: <span style="color: red;">Red</span>**
 
+**Skipped Test:**
+
+
+
+
 **New Product bugs:**
 
 * soft fails: [upgrade_offline_13.1_allpatterns](https://openqa.opensuse.org/tests/169809)

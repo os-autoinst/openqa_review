@@ -184,6 +184,7 @@ $new_issues$existing_issues""")
 openqa_review_report_arch_template = Template("""
 **Arch:** $arch
 **Status: $status_badge**
+$skipped_test
 $new_product_issues$existing_product_issues$new_openqa_issues$existing_openqa_issues$todo_issues""")
 
 openqa_issue_comment = Template("""
@@ -297,15 +298,20 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     test_results_previous = previous_details.find_all('td', id=result_re)
     # find differences from previous to current (result_X)
     test_results_dict = {i['id']: i for i in test_results}
+    skipped = get_skipped_list(current_details)
+
     test_results_previous_dict = {i['id']: i for i in test_results_previous if i['id'] in test_results_dict.keys()}
     states = SortedDict(get_state(v, test_results_previous_dict) for k, v in iteritems(test_results_dict))
+
     # intermediate step:
     # - print report of differences
     interesting_states = SortedDict({k.split(arch + '_')[1]: v for k, v in iteritems(states) if v['state'] != 'STABLE'})
+
     if output_state_results:
         print("arch: %s" % arch)
         for state in interesting_states_names:
             print("\n%s:\n\t%s\n" % (state, ', '.join(k for k, v in iteritems(interesting_states) if v['state'] == state)))
+    interesting_states.update({'skipped': skipped})
     return interesting_states
 
 
@@ -396,7 +402,6 @@ def find_builds(builds, running_threshold=0):
     def non_empty(r):
         return r['total'] != 0 and r['total'] > r['skipped'] and not ('build' in r.keys() and r['build'] is None)
     builds = {build: result for build, result in iteritems(builds) if non_empty(result)}
-
     finished = {build: result for build, result in iteritems(builds) if not result['unfinished']
                 or (100 * float(result['unfinished']) / result['total']) <= threshold}
 
@@ -777,6 +782,14 @@ class IssueEntry(object):
         return map(lambda f: cls(args, root_url, [f], test_browser), failures)
 
 
+def get_skipped_list(soup):
+    matches = soup.find_all(title='cancelled')
+    results = []
+    for s in matches:
+        results.append(s.find_previous(class_='name').get_text().strip('\n'))
+    return results
+
+
 class ArchReport(object):
 
     """Report for a single architecture."""
@@ -789,7 +802,7 @@ class ArchReport(object):
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
         self.test_browser = test_browser
-
+        self.skipped_test = ['* %s\n' % test_str for test_str in results.pop('skipped')]
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
 
         if self.args.bugrefs and self.args.include_softfails:
@@ -909,6 +922,7 @@ class ArchReport(object):
             'new_product_issues': issue_listing('**New Product bugs:**', self.issues['new']['product'], self.args.show_empty),
             'existing_product_issues': issue_listing('**Existing Product bugs:**', self.issues['existing']['product'], self.args.show_empty),
             'todo_issues': self._todo_issues_str(),
+            'skipped_test': issue_listing('**Skipped Test:**', self.skipped_test, self.args.show_empty),
         })
 
 
@@ -932,7 +946,7 @@ class ProductReport(object):
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 
-        changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary) if k != 'none'})
+        changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary)})
         self.changes_str = '***Changes since reference build***\n\n* ' + '\n* '.join("%s: %s" % (k, v) for k, v in iteritems(changes)) + '\n'
         log.info("%s" % self.changes_str)
 
@@ -1135,8 +1149,8 @@ class Report(object):
             if args.no_progress or not humanfriendly_available:
                 self.report[k] = self._one_report(v)
             else:
-                with AutomaticSpinner(label=self._next_label()):
-                    self.report[k] = self._one_report(v)
+                #with AutomaticSpinner(label=self._next_label()):
+                self.report[k] = self._one_report(v)
             self._progress += 1
         if not args.no_progress:
             sys.stderr.write("\r%s\n" % self._next_label())  # It's nice to see 100%, too :-)
@@ -1266,7 +1280,7 @@ def main():  # pragma: no cover, only interactive
         print(report)
     except UnicodeEncodeError as e:
         log.error("Encountered UnicodeEncodeError: %s" % e)
-        log.error("type of 'report': %s" % report)
+        log.error("type of 'report': %s" % type(report))
         log.error("Trying workaround, explicit utf8 writer to stdout")
         try:
             utf8writer = codecs.getwriter('utf8')
@@ -1274,7 +1288,7 @@ def main():  # pragma: no cover, only interactive
             print(report)
         except UnicodeEncodeError as e:
             log.error("Encountered UnicodeEncodeError: %s" % e)
-            log.error("type of 'report': %s" % report)
+            log.error("type of 'report': %s" % type(report))
             log.error("Trying workaround, conversion to unicode object")
             print(unicode(report))  # noqa: F821
 

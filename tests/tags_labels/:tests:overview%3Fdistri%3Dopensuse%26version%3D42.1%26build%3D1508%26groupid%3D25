@@ -2420,7 +2420,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline</span></td>
 
                                 <td>-</td>
 
@@ -2451,7 +2451,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2_arm">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2_arm">rollback_upgrade_offline</span></td>
 
                                 <td>-</td>
 
@@ -2469,7 +2469,7 @@
                                 <td>-</td>
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline</span></td>
 
                                 <td>-</td>
 
@@ -2502,7 +2502,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1_arm">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1_arm">rollback_upgrade_offline</span></td>
 
                                 <td>-</td>
 
