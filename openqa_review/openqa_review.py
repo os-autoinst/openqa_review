@@ -1266,7 +1266,7 @@ def main():  # pragma: no cover, only interactive
         print(report)
     except UnicodeEncodeError as e:
         log.error("Encountered UnicodeEncodeError: %s" % e)
-        log.error("type of 'report': %s" % report)
+        log.error("type of 'report': %s" % type(report))
         log.error("Trying workaround, explicit utf8 writer to stdout")
         try:
             utf8writer = codecs.getwriter('utf8')
@@ -1274,7 +1274,7 @@ def main():  # pragma: no cover, only interactive
             print(report)
         except UnicodeEncodeError as e:
             log.error("Encountered UnicodeEncodeError: %s" % e)
-            log.error("type of 'report': %s" % report)
+            log.error("type of 'report': %s" % type(report))
             log.error("Trying workaround, conversion to unicode object")
             print(unicode(report))  # noqa: F821
 
