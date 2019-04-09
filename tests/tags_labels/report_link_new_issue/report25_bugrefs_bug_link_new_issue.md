@@ -13,6 +13,25 @@
 **Arch:** arm
 **Status: <span style="color: red;">Red</span>**
 
+**Skipped Test:**
+
+* RAID6
+* cryptlvm+activate_existing
+* cryptlvm+activate_existing+force_recompute
+* cryptlvm+activate_existing+import_users
+* cryptlvm+cancel_existing
+* installcheck
+* rollback_upgrade_offline_13.2
+* rollback_upgrade_offline_13.2sp1
+* gcc5-http
+* leap+extratests
+* xfs
+* yast_hostname
+* yast_hostname+linuxrc_hostname
+* yast_no_self_update
+
+
+
 **TODO: review**
 
 ***new issues***

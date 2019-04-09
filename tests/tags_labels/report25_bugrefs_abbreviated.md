@@ -9,6 +9,12 @@
 **Arch:** i586
 **Status: <span style="color: red;">Red</span>**
 
+**Skipped Test:**
+
+* rollback_upgrade_offline
+
+
+
 **New Product bugs:**
 
 * [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571)

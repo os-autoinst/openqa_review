@@ -9,6 +9,12 @@
 **Arch:** i586
 **Status: <span style="color: red;">Red</span>**
 
+**Skipped Test:**
+
+* rollback_upgrade_offline
+
+
+
 **Existing Product bugs:**
 
 * allpatterns -> [bsc#0](https://bugzilla.opensuse.org/show_bug.cgi?id=0) (NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation)

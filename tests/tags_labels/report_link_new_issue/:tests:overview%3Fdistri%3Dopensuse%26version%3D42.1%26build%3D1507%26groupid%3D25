@@ -298,7 +298,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="cryptlvm+activate_existing+force_recompute">cryptlvm+activate_existing ...</span></td>
+                        <td class="name"><span title="cryptlvm+activate_existing+force_recompute">cryptlvm+activate_existing+force_recompute</span></td>
 
                             <td id="res_Gnome-DVD_arm_cryptlvm+activate_existing+force_recompute">
 
@@ -310,7 +310,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="cryptlvm+activate_existing+import_users">cryptlvm+activate_existing ...</span></td>
+                        <td class="name"><span title="cryptlvm+activate_existing+import_users">cryptlvm+activate_existing+import_users</span></td>
 
                             <td id="res_Gnome-DVD_arm_cryptlvm+activate_existing+import_users">
 
@@ -622,7 +622,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2">rollback_upgrade_offline_13.2</span></td>
 
                             <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2">
 
@@ -634,7 +634,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline ...</span></td>
+                        <td class="name"><span title="rollback_upgrade_offline_13.2sp1">rollback_upgrade_offline_13.2sp1</span></td>
 
                             <td id="res_Gnome-DVD_arm_rollback_upgrade_offline_13.2sp1">
 
@@ -852,7 +852,7 @@
 
                     </tr>
                     <tr>
-                        <td class="name"><span title="yast_hostname+linuxrc_hostname">yast_hostname+linuxrc_host ...</span></td>
+                        <td class="name"><span title="yast_hostname+linuxrc_hostname">yast_hostname+linuxrc_hostname</span></td>
 
                             <td id="res_Gnome-DVD_arm_yast_hostname+linuxrc_hostname">
 
