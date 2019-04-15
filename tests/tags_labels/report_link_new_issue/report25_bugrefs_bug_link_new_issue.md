@@ -15,20 +15,20 @@
 
 **Skipped Test:**
 
-* RAID6
-* cryptlvm+activate_existing
-* cryptlvm+activate_existing+force_recompute
-* cryptlvm+activate_existing+import_users
-* cryptlvm+cancel_existing
-* installcheck
-* rollback_upgrade_offline_13.2
-* rollback_upgrade_offline_13.2sp1
-* gcc5-http
-* leap+extratests
-* xfs
-* yast_hostname
-* yast_hostname+linuxrc_hostname
-* yast_no_self_update
+* [RAID6](https://openqa.opensuse.org/tests/585967)
+* [cryptlvm+activate_existing](https://openqa.opensuse.org/tests/585949)
+* [cryptlvm+activate_existing+force_recompute](https://openqa.opensuse.org/tests/585948)
+* [cryptlvm+activate_existing+import_users](https://openqa.opensuse.org/tests/585950)
+* [cryptlvm+cancel_existing](https://openqa.opensuse.org/tests/585951)
+* [gcc5-http](https://openqa.opensuse.org/tests/585838)
+* [installcheck](https://openqa.opensuse.org/tests/585850)
+* [leap+extratests](https://openqa.opensuse.org/tests/585940)
+* [rollback_upgrade_offline_13.2](https://openqa.opensuse.org/tests/585930)
+* [rollback_upgrade_offline_13.2sp1](https://openqa.opensuse.org/tests/585935)
+* [xfs](https://openqa.opensuse.org/tests/585964)
+* [yast_hostname](https://openqa.opensuse.org/tests/585843)
+* [yast_hostname+linuxrc_hostname](https://openqa.opensuse.org/tests/585924)
+* [yast_no_self_update](https://openqa.opensuse.org/tests/585842)
 
 
 

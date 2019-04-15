@@ -298,7 +298,7 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     test_results_previous = previous_details.find_all('td', id=result_re)
     # find differences from previous to current (result_X)
     test_results_dict = {i['id']: i for i in test_results}
-    skipped = get_skipped_list(current_details)
+    skipped = get_skipped_dict(arch, current_details)
 
     test_results_previous_dict = {i['id']: i for i in test_results_previous if i['id'] in test_results_dict.keys()}
     states = SortedDict(get_state(v, test_results_previous_dict) for k, v in iteritems(test_results_dict))
@@ -782,12 +782,28 @@ class IssueEntry(object):
         return map(lambda f: cls(args, root_url, [f], test_browser), failures)
 
 
-def get_skipped_list(soup):
-    matches = soup.find_all(title='cancelled')
-    results = []
-    for s in matches:
-        results.append(s.find_previous(class_='name').get_text().strip('\n'))
+def get_skipped_dict(arch, soup):
+    """Get a dict of the skipped tests per arch
+    parsing the bs4 instance"""
+    re_arch = re.compile(arch + '_')
+    arch_findings = soup.find_all('td', id=re_arch)
+    results = SortedDict()
+    for arch_item in arch_findings:
+        match = arch_item.find(title='cancelled')
+        if match:
+            moduleName = arch_item.find_previous(class_='name').get_text().strip('\n')
+            testLink = arch_item.a['href']
+            results.update({moduleName: testLink})
     return results
+
+
+def format_skipped_output(findings, root_url):
+    """Format the output as a markdown page for each skipped test."""
+    skipped_output = []
+    for k, v in findings.items():
+        skipped_output.append('* [%s](%s)\n' %
+                              (k, ''.join([root_url[:-1], v])))
+    return skipped_output
 
 
 class ArchReport(object):
@@ -802,9 +818,11 @@ class ArchReport(object):
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
         self.test_browser = test_browser
-        self.skipped_test = ['* %s\n' % test_str for test_str in results.pop('skipped')]
-        self.status_badge = set_status_badge([i['state'] for i in results.values()])
+        skipped_dict = results.pop('skipped')
 
+        self.skipped_test = format_skipped_output(skipped_dict,
+                                                  self.root_url)
+        self.status_badge = set_status_badge([i['state'] for i in results.values()])
         if self.args.bugrefs and self.args.include_softfails:
             self._search_for_bugrefs_for_softfailures(results)
 
@@ -922,7 +940,7 @@ class ArchReport(object):
             'new_product_issues': issue_listing('**New Product bugs:**', self.issues['new']['product'], self.args.show_empty),
             'existing_product_issues': issue_listing('**Existing Product bugs:**', self.issues['existing']['product'], self.args.show_empty),
             'todo_issues': self._todo_issues_str(),
-            'skipped_test': issue_listing('**Skipped Test:**', self.skipped_test, self.args.show_empty),
+            'skipped_test': issue_listing('**Skipped Test:**', self.skipped_test),
         })
 
 
@@ -1149,8 +1167,8 @@ class Report(object):
             if args.no_progress or not humanfriendly_available:
                 self.report[k] = self._one_report(v)
             else:
-                #with AutomaticSpinner(label=self._next_label()):
-                self.report[k] = self._one_report(v)
+                with AutomaticSpinner(label=self._next_label()):
+                    self.report[k] = self._one_report(v)
             self._progress += 1
         if not args.no_progress:
             sys.stderr.write("\r%s\n" % self._next_label())  # It's nice to see 100%, too :-)
@@ -1196,7 +1214,6 @@ def generate_report(args):
     job_groups = get_job_groups(browser, root_url, args)
     assert not (args.builds and len(job_groups) > 1), "builds option and multiple job groups not supported"
     assert len(job_groups) > 0, "No job groups were found, maybe misspecified '--job-groups'?"
-
     return Report(browser, args, root_url, job_groups)
 
 

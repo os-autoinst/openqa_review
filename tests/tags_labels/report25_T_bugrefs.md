@@ -11,7 +11,6 @@
 
 **Skipped Test:**
 
-* rollback_upgrade_offline
 
 
 
