@@ -783,17 +783,16 @@ class IssueEntry(object):
 
 
 def get_skipped_dict(arch, soup):
-    """Get a dict of the skipped tests per arch
-    parsing the bs4 instance"""
+    """Get a dict of the skipped tests per arch parsing the bs4 instance."""
     re_arch = re.compile(arch + '_')
     arch_findings = soup.find_all('td', id=re_arch)
     results = SortedDict()
     for arch_item in arch_findings:
         match = arch_item.find(title='cancelled')
         if match:
-            moduleName = arch_item.find_previous(class_='name').get_text().strip('\n')
-            testLink = arch_item.a['href']
-            results.update({moduleName: testLink})
+            module_name = arch_item.find_previous(class_='name').get_text().strip('\n')
+            test_link = arch_item.a['href']
+            results.update({module_name: test_link})
     return results
 
 
@@ -807,7 +806,6 @@ def format_skipped_output(findings, root_url):
 
 
 class ArchReport(object):
-
     """Report for a single architecture."""
 
     def __init__(self, arch, results, args, root_url, progress_browser, bugzilla_browser, test_browser):
