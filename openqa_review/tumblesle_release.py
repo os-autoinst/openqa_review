@@ -120,7 +120,12 @@ class TumblesleRelease(object):
 
     def notify_connect(self):
         """Connect to notification bus."""
-        self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat_interval=10))
+        # 'heartbeat_interval' renamed in pika 1.0, see https://pika.readthedocs.io/en/stable/version_history.html#id2
+        try:
+            self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat=10))
+        except TypeError:  # pragma: no cover
+            self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials,
+                                                                                       heartbeat_interval=10))
         self.notify_channel = self.notify_connection.channel()
         self.notify_channel.exchange_declare(exchange='pubsub', type='topic', passive=True, durable=True)
         self.notify_topic = 'suse.tumblesle'
