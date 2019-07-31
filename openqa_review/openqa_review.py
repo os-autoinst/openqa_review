@@ -195,9 +195,9 @@ $url
 """)
 
 status_badge_str = {
-    'GREEN': '<span style="color: green;">Green</span>',
-    'AMBER': '<span style="color: #FFBF00;">Amber</span>',
-    'RED': '<span style="color: red;">Red</span>',
+    'GREEN': '{{color:#008000|Green}}',
+    'AMBER': '{{color:#FFBF00|Amber}}',
+    'RED': '{{color:#FF0000|Red}}',
 }
 
 
@@ -713,7 +713,7 @@ class Issue(object):
             if self.resolution:
                 status += ' (%s)' % self.resolution
             if status.startswith('VERIFIED') or status.startswith('Resolved'):
-                status = '<span style="color: red;">%s</span>' % status
+                status = '{{color:#FF0000|%s}}' % status
             msg = 'Ticket status: %s, prio/severity: %s, assignee: %s' % (status, self.priority, self.assignee)
         else:
             msg = None
