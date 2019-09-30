@@ -817,7 +817,6 @@ class ArchReport(object):
         self.bugzilla_browser = bugzilla_browser
         self.test_browser = test_browser
         skipped_dict = results.pop('skipped')
-
         self.skipped_tests = format_skipped_output(skipped_dict,
                                                    self.root_url)
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
