@@ -31,7 +31,6 @@
 * [yast_no_self_update](https://openqa.opensuse.org/tests/585842)
 
 
-
 **TODO: review**
 
 ***new issues***

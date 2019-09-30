@@ -13,7 +13,6 @@
 
 
 
-
 **New Product bugs:**
 
 * [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571)
