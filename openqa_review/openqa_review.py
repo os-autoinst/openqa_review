@@ -868,7 +868,7 @@ class ArchReport(object):
                     continue
                 match = re.search(bugref_regex, v['bugref'])
                 if not match:  # pragma: no cover
-                    log.info('Could not find bug reference in text \'%s\', skipping.' % v['bugref'])
+                    log.info("Could not find bug reference in text \'%s\', skipping." % v['bugref'])
                     continue
                 bugref, bug_id = match.group(1), match.group(2)
                 assert bugref, 'No bugref found for %s' % v
@@ -903,15 +903,15 @@ class ArchReport(object):
                 unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], field['text'])).getText()
                 return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
-                log.debug('Evaluating potential workaround needle \'%s\'' % field['needle'])
+                log.debug("Evaluating potential workaround needle '%s'" % field['needle'])
                 match = re.search(bugref_regex, field['needle'])
                 if not match:  # pragma: no cover
-                    log.warn('Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for \'%s\'' %
+                    log.warn("Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for '%s'" %
                              result_item['href'])
                     continue
                 return match.group(1) + '#' + match.group(2)
         else:  # pragma: no cover
-            log.error('Could not find any soft failure reference within details of soft-failed job \'%s\'. Could be deleted workaround needle?.' %
+            log.error("Could not find any soft failure reference within details of soft-failed job '%s'. Could be deleted workaround needle?." %
                       absolute_url(self.root_url, result_item))
 
     def _todo_issues_str(self):
@@ -1065,11 +1065,11 @@ def parse_args():
                         help="""Generate issue reporting links into report. Needs configuration file for product mapping,
                         see '--query-issue-status-help'.""")
     parser.add_argument('-a', '--arch',
-                        help='Only single architecture, e.g. \'x86_64\', not all')
+                        help="Only single architecture, e.g. 'x86_64', not all")
     parser.add_argument('-f', '--filter',
-                        help='Filter for \'closed\' or \'unassigned\' issues.')
+                        help="Filter for 'closed' or 'unassigned' issues.")
     parser.add_argument('--running-threshold', default=0,
-                        help='Percentage of jobs that may still be running for the build to be considered \'finished\' anyway')
+                        help="Percentage of jobs that may still be running for the build to be considered 'finished' anyway")
     parser.add_argument('--no-empty-sections', action='store_false', default=True, dest='show_empty',
                         help='Only show sections in report with content')
     parser.add_argument('--include-softfails', action='store_true', default=False,
