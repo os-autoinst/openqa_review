@@ -23,7 +23,7 @@ try:
     version_git = check_output(['git', 'describe', '--tags']).rstrip().decode('ascii')
 except (CalledProcessError, OSError):
     try:
-        version_git = open(version_py).read().strip().split('=')[-1].replace('\'', '').strip()
+        version_git = open(version_py).read().strip().split('=')[-1].replace("'", '').strip()
     except FileNotFoundError:
         version_git = '0.0.0'
 
