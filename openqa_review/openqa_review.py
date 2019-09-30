@@ -184,7 +184,7 @@ $new_issues$existing_issues""")
 openqa_review_report_arch_template = Template("""
 **Arch:** $arch
 **Status: $status_badge**
-$skipped_test
+$skipped_tests
 $new_product_issues$existing_product_issues$new_openqa_issues$existing_openqa_issues$todo_issues""")
 
 openqa_issue_comment = Template("""
@@ -818,8 +818,8 @@ class ArchReport(object):
         self.test_browser = test_browser
         skipped_dict = results.pop('skipped')
 
-        self.skipped_test = format_skipped_output(skipped_dict,
-                                                  self.root_url)
+        self.skipped_tests = format_skipped_output(skipped_dict,
+                                                   self.root_url)
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
         if self.args.bugrefs and self.args.include_softfails:
             self._search_for_bugrefs_for_softfailures(results)
@@ -938,7 +938,7 @@ class ArchReport(object):
             'new_product_issues': issue_listing('**New Product bugs:**', self.issues['new']['product'], self.args.show_empty),
             'existing_product_issues': issue_listing('**Existing Product bugs:**', self.issues['existing']['product'], self.args.show_empty),
             'todo_issues': self._todo_issues_str(),
-            'skipped_test': issue_listing('**Skipped Test:**', self.skipped_test),
+            'skipped_tests': issue_listing('**Skipped tests:**', self.skipped_tests),
         })
 
 
