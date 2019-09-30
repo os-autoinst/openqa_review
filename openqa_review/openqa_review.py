@@ -936,7 +936,7 @@ class ArchReport(object):
             'new_product_issues': issue_listing('**New Product bugs:**', self.issues['new']['product'], self.args.show_empty),
             'existing_product_issues': issue_listing('**Existing Product bugs:**', self.issues['existing']['product'], self.args.show_empty),
             'todo_issues': self._todo_issues_str(),
-            'skipped_tests': issue_listing('**Skipped tests:**', self.skipped_tests),
+            'skipped_tests': issue_listing('**Skipped tests:**', self.skipped_tests, self.args.show_empty),
         })
 
 
