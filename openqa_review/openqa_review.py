@@ -565,7 +565,7 @@ Always latest result in this scenario: [latest](%s)
         module_folder = start_of_current_module.parent.parent.parent.parent.find(class_='glyphicon-folder-open').parent.text.strip()
     except AttributeError:  # pragma: no cover
         module_folder = ''
-        log.warn("Could not find module folder on test details page searching for parents of %s" % first_step_url)
+        log.warning("Could not find module folder on test details page searching for parents of %s" % first_step_url)
     complete_module = module_folder + '-' + module
     component_config_section = 'product_issues:%s:component_mapping' % root_url.rstrip('/')
     try:
