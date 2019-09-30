@@ -17,7 +17,6 @@
 
 
 
-
 **New Product bugs:**
 
 * soft fails: [upgrade_offline_13.1_allpatterns](https://openqa.opensuse.org/tests/169809) [(ref)](https://openqa.opensuse.org/tests/169614 "Previous test")

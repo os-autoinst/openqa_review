@@ -13,7 +13,6 @@
 
 
 
-
 **New Product bugs:**
 
 * toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading ✓") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
