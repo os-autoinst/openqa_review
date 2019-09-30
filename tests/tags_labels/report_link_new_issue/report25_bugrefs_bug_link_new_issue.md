@@ -13,7 +13,7 @@
 **Arch:** arm
 **Status: <span style="color: red;">Red</span>**
 
-**Skipped Test:**
+**Skipped tests:**
 
 * [RAID6](https://openqa.opensuse.org/tests/585967)
 * [cryptlvm+activate_existing](https://openqa.opensuse.org/tests/585949)

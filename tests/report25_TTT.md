@@ -20,7 +20,7 @@
 **Arch:** x86_64
 **Status: <span style="color: red;">Red</span>**
 
-**Skipped Test:**
+**Skipped tests:**
 
 
 
