@@ -960,7 +960,9 @@ class ProductReport(object):
         current_details = browser.get_soup(current_url)
         previous_details = browser.get_soup(previous_url)
         for details in current_details, previous_details:
-            assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0, \
+            # build pages matching no tests show no job as well as builds only consisting of incomplete jobs
+            # see https://progress.opensuse.org/issues/60458
+            assert sum(int(badge.text) for badge in details.find_all(class_='badge')) > 0 or len(details.find_all(class_='status')) > 0, \
                 'invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)' \
                 % (current_url, previous_url)
         current_summary = parse_summary(current_details)
