@@ -905,7 +905,7 @@ class ArchReport(object):
         details_json = json.loads(self.test_browser.get_soup('%s/file/details-%s.json' % (result_item['href'], module_name)).getText())
         for field in details_json:
             if 'title' in field and 'Soft Fail' in field['title']:
-                unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], field['text'])).getText()
+                unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], quote(field['text']))).getText()
                 return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug("Evaluating potential workaround needle '%s'" % field['needle'])
