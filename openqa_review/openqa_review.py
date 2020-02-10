@@ -803,11 +803,7 @@ def get_skipped_dict(arch, soup):
 
 def format_skipped_output(findings, root_url):
     """Format the output as a markdown page for each skipped test."""
-    skipped_output = []
-    for k, v in findings.items():
-        skipped_output.append('* [%s](%s)\n' %
-                              (k, ''.join([root_url[:-1], v])))
-    return skipped_output
+    return ['* [%s](%s)\n' % (k, ''.join([root_url[:-1], v])) for k, v in findings.items()]
 
 
 class ArchReport(object):
@@ -821,9 +817,7 @@ class ArchReport(object):
         self.progress_browser = progress_browser
         self.bugzilla_browser = bugzilla_browser
         self.test_browser = test_browser
-        skipped_dict = results.pop('skipped')
-        self.skipped_tests = format_skipped_output(skipped_dict,
-                                                   self.root_url)
+        self.skipped_tests = format_skipped_output(results.pop('skipped'), self.root_url)
         self.status_badge = set_status_badge([i['state'] for i in results.values()])
         if self.args.bugrefs and self.args.include_softfails:
             self._search_for_bugrefs_for_softfailures(results)
