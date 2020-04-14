@@ -896,8 +896,11 @@ class ArchReport(object):
         return test_details_html.get('data-url')
 
     def _get_bugref_for_softfailed_module(self, result_item, module_name):
-        details_json = json.loads(self.test_browser.get_soup('%s/file/details-%s.json' % (result_item['href'], module_name)).getText())
-        for field in details_json:
+        details_url = '%s/file/details-%s.json' % (result_item['href'], module_name)
+        log.debug("Retrieving '%s'" % details_url)
+        details_json = json.loads(self.test_browser.get_soup(details_url).getText())
+        details = details_json['details'] if 'details' in details_json else details_json
+        for field in details:
             if 'title' in field and 'Soft Fail' in field['title']:
                 unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], quote(field['text']))).getText()
                 return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
