@@ -888,10 +888,17 @@ class ArchReport(object):
         return total
 
     def _get_url_to_softfailed_module(self, job_url):
-        test_details_html = self.test_browser.get_soup(job_url).find(title='Soft Failed')
+        log.debug('job_url %s' % job_url)
+        url = job_url + '/details_ajax'
+        try:
+            test_details_html = self.test_browser.get_soup(url).find(title='Soft Failed')
+        except DownloadError:
+            log.debug('Found older openQA, before https://github.com/os-autoinst/openQA/pull/2932')
+            url = job_url
+            test_details_html = self.test_browser.get_soup(url).find(title='Soft Failed')
         if test_details_html is None:
-            log.debug('Could not find soft failed info box, looking for workaround needle in job %s' % job_url)
-            test_details_html = self.test_browser.get_soup(job_url).find(class_='resborder_softfailed').parent
+            log.debug('Could not find soft failed info box, looking for workaround needle in job %s' % url)
+            test_details_html = self.test_browser.get_soup(url).find(class_='resborder_softfailed').parent
         assert test_details_html, 'Found neither soft failed info box nor workaround needle'
         return test_details_html.get('data-url')
 
