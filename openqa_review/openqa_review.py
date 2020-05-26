@@ -889,9 +889,13 @@ class ArchReport(object):
 
     def _get_url_to_softfailed_module(self, job_url):
         log.debug('job_url %s' % job_url)
-        url = job_url + '/details_ajax'
+        url = job_url + '/module_components_ajax'
         try:
             test_details_html = self.test_browser.get_soup(url).find(title='Soft Failed')
+            if test_details_html is None:  # pragma: no cover
+                log.debug('Found older openQA, before https://github.com/os-autoinst/openQA/pull/3080')
+                url = job_url + '/details_ajax'
+                test_details_html = self.test_browser.get_soup(url).find(title='Soft Failed')
         except DownloadError:
             log.debug('Found older openQA, before https://github.com/os-autoinst/openQA/pull/2932')
             url = job_url
