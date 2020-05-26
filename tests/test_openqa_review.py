@@ -192,7 +192,7 @@ def test_specified_job_group_yields_single_product_report():
     report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
-    assert len([l for l in report.splitlines() if l.startswith('#')]) == 1
+    assert len([line for line in report.splitlines() if line.startswith('#')]) == 1
 
     # Invalid name should yield assertion with helpful message
     args.job_groups = 'openSUSE Tumbleweed FOO'
