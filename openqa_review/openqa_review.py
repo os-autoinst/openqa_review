@@ -913,7 +913,10 @@ class ArchReport(object):
         details = details_json['details'] if 'details' in details_json else details_json
         for field in details:
             if 'title' in field and 'Soft Fail' in field['title']:
-                unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], quote(field['text']))).getText()
+                if 'text_data' in field:
+                    unformated_str = field['text_data']
+                else:
+                    unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], quote(field['text']))).getText()
                 return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug("Evaluating potential workaround needle '%s'" % field['needle'])
