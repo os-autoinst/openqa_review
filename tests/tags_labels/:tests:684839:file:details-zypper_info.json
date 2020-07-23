@@ -10,6 +10,7 @@
       "result": "unk"
     },
     "title": "Soft Failed",
-    "text": "zypper_info-4.txt"
+    "text": "zypper_info-4.txt",
+    "text_data": "# Soft Failure:\nfor Leap:15.0:Ports aarch64 and ppc64le, do not enable source repo, waiting for https://progress.opensuse.org/issues/36256 to be solved, and also http://fate.suse.com/12345 ✓"
   }
 ]
