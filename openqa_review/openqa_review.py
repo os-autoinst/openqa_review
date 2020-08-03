@@ -102,7 +102,6 @@ import logging
 import os.path
 import re
 import sys
-import json
 from builtins import str
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
