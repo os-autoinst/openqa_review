@@ -1,0 +1,2 @@
+{"dents": 0, "details": [{"result": "softfail", "text": "shutdown-9.txt", "title": "rogue workqueue lockup boo#1126782"}], "result": "softfail"}
+

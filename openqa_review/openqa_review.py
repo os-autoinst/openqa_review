@@ -903,7 +903,8 @@ class ArchReport(object):
         return test_details_html.get('data-url')
 
     def _get_bugref_for_softfailed_module(self, result_item, module_name):
-        details_url = '%s/file/details-%s.json' % (result_item['href'], module_name)
+        rel_job_url = result_item['href']
+        details_url = '%s/file/details-%s.json' % (rel_job_url, module_name)
         log.debug("Retrieving '%s'" % details_url)
         details_json = self.test_browser.get_json(details_url)
         details = details_json['details'] if 'details' in details_json else details_json
@@ -912,14 +913,18 @@ class ArchReport(object):
                 if 'text_data' in field:
                     unformated_str = field['text_data']
                 else:
-                    unformated_str = self.test_browser.get_soup('%s/file/%s' % (result_item['href'], quote(field['text']))).getText()
+                    unformated_str = self.test_browser.get_soup('%s/file/%s' % (rel_job_url, quote(field['text']))).getText()
                 return re.search('Soft Failure:\n(.*)', unformated_str.strip()).group(1)
+            # custom results can have soft-fail as well
+            if 'result' in field and 'softfail' in field['result']:
+                match = re.search(bugref_regex, field['title'])
+                return match.group(1) + '#' + match.group(2)
             elif 'properties' in field and len(field['properties']) > 0 and field['properties'][0] == 'workaround':
                 log.debug("Evaluating potential workaround needle '%s'" % field['needle'])
                 match = re.search(bugref_regex, field['needle'])
                 if not match:  # pragma: no cover
-                    log.warn("Found workaround needle without bugref that could be understood, looking for a better bugref (if any) for '%s'" %
-                             result_item['href'])
+                    log.warn("Found workaround key without bugref that could be understood, looking for a better bugref (if any) for '%s'" %
+                             rel_job_url)
                     continue
                 return match.group(1) + '#' + match.group(2)
         else:  # pragma: no cover
