@@ -11,6 +11,7 @@
 
 **New Product bugs:**
 
+* soft fails: custom_bugref -> [boo#1126782](https://bugzilla.opensuse.org/show_bug.cgi?id=1126782) (Request to /jsonrpc.cgi?method=Bug.get&params=%5B%7B%22ids%22%3A+%5B1126782%5D%7D%5D was not successful, file :jsonrpc.cgi%3Fmethod%3DBug.get%26params%3D%255B%257B%2522ids%2522%253A%2B%255B1126782%255D%257D%255D not found)
 * toolchain_zypper -> [boo#931571](https://bugzilla.opensuse.org/show_bug.cgi?id=931571 "no space left on device when upgrading ✓") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)
 * toolchain_zypper@bar -> [boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)
 * soft fails: create_hdd_textmode -> [boo#931572](https://bugzilla.opensuse.org/show_bug.cgi?id=931572 "no space left on device when upgrading ✓") (Ticket status: NEW, prio/severity: P2/Major, assignee: kernel-maintainers@forge.provo.novell.com)

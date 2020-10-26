@@ -2866,6 +2866,21 @@
                                 <td>-</td>
 
                     </tr>
+
+                    <tr>
+                        <td class="name">custom_bugref</td>
+                                <td>-</td>
+                                <td>-</td>
+                            <td id="res_Gnome-DVD-i586_custom_bugref">
+                         <span id="res-1316928">
+                             <a href="/tests/1316928">
+                                 <i class="status fa fa-circle result_softfailed" title="Done: softfail"></i>
+                             </a>
+                         </span>
+            </td>
+<td>-</td>
+</tr>
+
                     <tr>
                         <td class="name"><span title="leap12_minimal_base+gcc5_create_hdd">leap12_minimal_base+gcc5_cr ...</span></td>
 
