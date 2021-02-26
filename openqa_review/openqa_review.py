@@ -667,7 +667,7 @@ class Issue(object):
             self.bugzilla_browser.json_rpc_post('/jsonrpc.cgi', 'Bug.add_comment', {
                 'id': self.bugid,
                 'comment': comment,
-                'is_private': True,
+                'is_private': False,
             })
         # self.issue_type == 'redmine':
         else:
