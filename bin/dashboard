@@ -5,11 +5,7 @@
 
 TPL="${TPL:-"dashboard_files/dashboard.html.in"}"
 OUT="${OUT:-"dashboard.html"}"
-if command -v openqa-review >/dev/null ; then
-    OPENQA_REVIEW="${OPENQA_REVIEW:-"openqa-review"}"
-else
-    OPENQA_REVIEW="${OPENQA_REVIEW:-"./openqa_review/openqa_review.py"}"
-fi
+OPENQA_REVIEW="${OPENQA_REVIEW:-"./openqa_review/openqa_review.py"}"
 
 openqa_host="${openqa_host:-"http://openqa.suse.de/"}"
 

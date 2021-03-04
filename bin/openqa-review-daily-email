@@ -18,7 +18,7 @@ openqa_review_html_args="${openqa_review_html_args:-"${load_args}"}"
 # and if we call it here and also in a later step we would end up with
 # duplicate reminder comments
 openqa_review_save_args="${openqa_review_save_args:-"--reminder-comment-on-issues --save --save-dir ${tmp}"}"
-openqa_review="${openqa_review:-"$(command -v openqa-review)"}"
+openqa_review="${openqa_review:-"./openqa_review/openqa_review.py"}"
 TPL="${TPL:-"$(dirname $0)/../dashboard_files/dashboard.html.in"}"
 # We have to preserve the '$@' until here to prevent too early evaluation of parameters with spaces
 save_report="$(${openqa_review} ${openqa_review_args} ${openqa_review_save_args} "$@")"
