@@ -10,8 +10,8 @@ For more details read the documentation within `openqa_review/openqa_review.py`.
   such as [VirtualEnv](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
 
 ```
-pip install -r requirements.txt
-pip install .
+pip3 install -r requirements.txt
+pip3 install .
 ```
 
 or if you are using openSUSE distribution, it is recommended to use `zypper`,
