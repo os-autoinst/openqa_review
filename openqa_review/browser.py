@@ -130,7 +130,12 @@ class Browser(object):
                 issuer = next(issuers)[1].decode("utf-8", "ignore")
                 sha1digest = x509.digest("sha1").decode("utf-8", "ignore")
                 sha256digest = x509.digest("sha256").decode("utf-8", "ignore")
-                msg = 'Certificate for "%s" from "%s" (sha1: %s, sha256 %s) is not trusted by the system' % (server_name, issuer, sha1digest, sha256digest)
+                msg = 'Certificate for "%s" from "%s" (sha1: %s, sha256 %s) is not trusted by the system' % (
+                    server_name,
+                    issuer,
+                    sha1digest,
+                    sha256digest,
+                )
                 log.error(msg)
                 raise DownloadError(msg)
             except requests.exceptions.ConnectionError:
@@ -171,7 +176,9 @@ class Browser(object):
             data = json.dumps({"method": method, "params": [params]})
             for i in range(1, 7):
                 try:
-                    r = requests.post(absolute_url, data=data, auth=self.auth, headers={"content-type": "application/json"})
+                    r = requests.post(
+                        absolute_url, data=data, auth=self.auth, headers={"content-type": "application/json"}
+                    )
                     r.raise_for_status()
                 except requests.exceptions.ConnectionError:
                     log.info("Connection error encountered accessing %s, retrying try %s" % (absolute_url, i))
@@ -194,7 +201,12 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith("/") else urljoin(str(self.root_url), str(url))
             data = json.dumps(data)
-            r = requests.request(method, absolute_url, data=data, headers={"X-Redmine-API-Key": self.auth[0], "content-type": "application/json"})
+            r = requests.request(
+                method,
+                absolute_url,
+                data=data,
+                headers={"X-Redmine-API-Key": self.auth[0], "content-type": "application/json"},
+            )
             r.raise_for_status()
             return r.json() if r.text else None
 

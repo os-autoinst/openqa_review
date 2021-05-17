@@ -224,7 +224,9 @@ class NotEnoughBuildsError(Exception):
 
 def parse_summary(details):
     """Parse and return build summary as dict."""
-    return {i.previous.strip().rstrip(":").lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")}
+    return {
+        i.previous.strip().rstrip(":").lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")
+    }
 
 
 change_state = {
@@ -278,7 +280,10 @@ def get_test_details(entry):
 
     return {
         "href": entry.a["href"],
-        "failedmodules": [{"href": find_module_href(m), "name": m.text.strip(), "needles": get_failed_needles(m)} for m in failedmodules],
+        "failedmodules": [
+            {"href": find_module_href(m), "name": m.text.strip(), "needles": get_failed_needles(m)}
+            for m in failedmodules
+        ],
     }
 
 
@@ -325,7 +330,9 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     if output_state_results:
         print("arch: %s" % arch)
         for state in interesting_states_names:
-            print("\n%s:\n\t%s\n" % (state, ", ".join(k for k, v in iteritems(interesting_states) if v["state"] == state)))
+            print(
+                "\n%s:\n\t%s\n" % (state, ", ".join(k for k, v in iteritems(interesting_states) if v["state"] == state))
+            )
     interesting_states.update({"skipped": skipped})
     return interesting_states
 
@@ -427,7 +434,9 @@ def find_builds(builds, running_threshold=0):
 
     builds = {build: result for build, result in iteritems(builds) if non_empty(result)}
     finished = {
-        build: result for build, result in iteritems(builds) if not result["unfinished"] or (100 * float(result["unfinished"]) / result["total"]) <= threshold
+        build: result
+        for build, result in iteritems(builds)
+        if not result["unfinished"] or (100 * float(result["unfinished"]) / result["total"]) <= threshold
     }
 
     log.debug("Found the following finished non-empty builds: %s" % ", ".join(finished.keys()))
@@ -478,8 +487,17 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
         b = r.get(build, next(iter(r.values())))
         build = b.get("build", build)
         # openQA introduced multi-distri support for the job groups with openQA#037ffd33
-        distri_str = "distri=%s" % b["distri"] if "distri" in b.keys() else "distri=" + "&distri=".join(sorted(b["distris"].keys()))
-        return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (distri_str, b["version"], quote(build), job_group["group"]["id"])
+        distri_str = (
+            "distri=%s" % b["distri"]
+            if "distri" in b.keys()
+            else "distri=" + "&distri=".join(sorted(b["distris"].keys()))
+        )
+        return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (
+            distri_str,
+            b["version"],
+            quote(build),
+            job_group["group"]["id"],
+        )
 
     finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
@@ -495,7 +513,9 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
             last_reviewed = find_last_reviewed_build(job_group["comments"])
             log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
             build_to_review = builds_to_compare[0] if against_reviewed == "last" else against_reviewed
-            assert len(build_to_review) <= len(last_reviewed) + 1, "build_to_review and last_reviewed differ too much to make sense"
+            assert (
+                len(build_to_review) <= len(last_reviewed) + 1
+            ), "build_to_review and last_reviewed differ too much to make sense"
             builds_to_compare = build_to_review, last_reviewed
         except (NameError, AttributeError, IndexError):
             log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
@@ -521,7 +541,9 @@ def get_failed_module_details_for_report(f):
     return name, url, details
 
 
-def issue_report_link(root_url, f, test_browser=None):  # noqa: C901  # too complex, we might want to remove this function anyway as openQA has it already
+def issue_report_link(
+    root_url, f, test_browser=None
+):  # noqa: C901  # too complex, we might want to remove this function anyway as openQA has it already
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
     # It might not be the fatal one but better be safe and assume the first
@@ -547,7 +569,8 @@ def issue_report_link(root_url, f, test_browser=None):  # noqa: C901  # too comp
         # pre-4.6
         previous_results = test_details_page.find(id="previous_results", class_="overview").find_all("tr")[1:]
     previous_results_list = [
-        (i.td["id"], {"status": status(i), "details": get_test_details(i), "build": i.find(class_="build").text}) for i in previous_results
+        (i.td["id"], {"status": status(i), "details": get_test_details(i), "build": i.find(class_="build").text})
+        for i in previous_results
     ]
     good = re.compile("(?<=_)(passed|softfailed)")
 
@@ -595,7 +618,9 @@ Always latest result in this scenario: [latest](%s)
     first_step_url = urljoin(str(url), "1/src")
     start_of_current_module = test_details_page.find("a", {"href": first_step_url})
     try:
-        module_folder = start_of_current_module.parent.parent.parent.parent.find(class_="glyphicon-folder-open").parent.text.strip()
+        module_folder = start_of_current_module.parent.parent.parent.parent.find(
+            class_="glyphicon-folder-open"
+        ).parent.text.strip()
     except AttributeError:  # pragma: no cover
         module_folder = ""
         log.warning("Could not find module folder on test details page searching for parents of %s" % first_step_url)
@@ -605,7 +630,10 @@ Always latest result in this scenario: [latest](%s)
         components_config_dict = dict(config.items(component_config_section))
         component = [v for k, v in iteritems(components_config_dict) if re.match(k, complete_module)][0]
     except (NoSectionError, IndexError) as e:  # pragma: no cover
-        log.info("No matching component could be found for the module_folder '%s' and module name '%s' in the config section '%s'" % (module_folder, module, e))
+        log.info(
+            "No matching component could be found for the module_folder '%s' and module name '%s' in the config section '%s'"
+            % (module_folder, module, e)
+        )
         component = ""
     try:
         product = config.get(config_section, group)
@@ -621,8 +649,15 @@ Always latest result in this scenario: [latest](%s)
             ("comment", description),
         ]
     )
-    product_bug = urljoin(str(config.get("product_issues", "report_url")), "enter_bug.cgi") + "?" + urlencode(product_entries)
-    test_entries = OrderedDict([("issue[subject]", "[Build %s] test %sfails" % (build, module + " " if module else "")), ("issue[description]", description)])
+    product_bug = (
+        urljoin(str(config.get("product_issues", "report_url")), "enter_bug.cgi") + "?" + urlencode(product_entries)
+    )
+    test_entries = OrderedDict(
+        [
+            ("issue[subject]", "[Build %s] test %sfails" % (build, module + " " if module else "")),
+            ("issue[description]", description),
+        ]
+    )
     test_issue = config.get("test_issues", "report_url") + "?" + urlencode(test_entries)
     return ": report [product bug](%s) / [openQA issue](%s)" % (product_bug, test_issue)
 
@@ -669,7 +704,9 @@ class Issue(object):
                 elif bugref.startswith(("boo#", "bsc#", "bgo#")):
                     log.debug("Product bug discovered, looking on bugzilla")
                     self.issue_type = "bugzilla"
-                    self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})["result"]["bugs"][0]
+                    self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})[
+                        "result"
+                    ]["bugs"][0]
                     self.status = self.json["status"]
                     if self.json.get("resolution"):
                         self.resolution = self.json["resolution"]
@@ -755,7 +792,11 @@ class Issue(object):
             return re.sub(url_pattern, r"[\g<0>](\g<0>)", string)
 
         title_str = ' "%s"' % self.subject.replace(")", "&#41;") if self.subject else ""
-        bugref_str = "[%s](%s%s)" % (self.bugref, self.bugref_href, title_str) if self.bugref_href else _format_all_urls_using_markdown(self.bugref)
+        bugref_str = (
+            "[%s](%s%s)" % (self.bugref, self.bugref_href, title_str)
+            if self.bugref_href
+            else _format_all_urls_using_markdown(self.bugref)
+        )
         msg_str = " (%s)" % msg if msg else ""
         return "%s%s" % (bugref_str, msg_str)
 
@@ -782,10 +823,22 @@ class IssueEntry(object):
 
     def _format_failure(self, f):
         """Yield a report entry for one new issue based on verbosity."""
-        failure_modules_str = ' "Failed modules: %s"' % self._format_failure_modules(f["failedmodules"]) if f["failedmodules"] else ""
-        report_str = issue_report_link(self.root_url, f, self.test_browser) if (self.args.report_links and self.test_browser) else ""
+        failure_modules_str = (
+            ' "Failed modules: %s"' % self._format_failure_modules(f["failedmodules"]) if f["failedmodules"] else ""
+        )
+        report_str = (
+            issue_report_link(self.root_url, f, self.test_browser)
+            if (self.args.report_links and self.test_browser)
+            else ""
+        )
         if self.args.verbose_test >= 3 and "prev" in f:
-            return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (f["name"], self._url(f), failure_modules_str, self._url(f["prev"]), report_str)
+            return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
+                f["name"],
+                self._url(f),
+                failure_modules_str,
+                self._url(f["prev"]),
+                report_str,
+            )
         elif self.args.verbose_test >= 2:
             return "[%s](%s%s)%s" % (f["name"], self._url(f), failure_modules_str, report_str)
         else:
@@ -793,9 +846,15 @@ class IssueEntry(object):
 
     def __str__(self):
         """Return as markdown."""
-        test_bug_str = "%s%s" % (", ".join(map(self._format_failure, self.failures)), " -> %s" % self.bug if self.bug else "")
+        test_bug_str = "%s%s" % (
+            ", ".join(map(self._format_failure, self.failures)),
+            " -> %s" % self.bug if self.bug else "",
+        )
         short_str = self.bug if self.bug else ", ".join(i["name"] for i in self.failures)
-        return "* %s%s\n" % ("soft fails: " if self.soft else "", short_str if self.args.short_failure_str else test_bug_str)
+        return "* %s%s\n" % (
+            "soft fails: " if self.soft else "",
+            short_str if self.args.short_failure_str else test_bug_str,
+        )
 
     @classmethod
     def for_each(cls, args, root_url, failures, test_browser):
@@ -848,15 +907,25 @@ class ArchReport(object):
                 log.info("Skipping \"todo\" bugref '%s' in '%s'" % (bugref, result_list))
                 continue
             bug = result_list[0]
-            issue = Issue(bug["bugref"], bug.get("bugref_href", None), self.args.query_issue_status, self.progress_browser, self.bugzilla_browser)
-            self.issues[issue_state(result_list)][issue_type(bugref)].append(IssueEntry(self.args, self.root_url, result_list, bug=issue))
+            issue = Issue(
+                bug["bugref"],
+                bug.get("bugref_href", None),
+                self.args.query_issue_status,
+                self.progress_browser,
+                self.bugzilla_browser,
+            )
+            self.issues[issue_state(result_list)][issue_type(bugref)].append(
+                IssueEntry(self.args, self.root_url, result_list, bug=issue)
+            )
 
         # left to handle are the issues marked with 'todo'
         todo_results = results_by_bugref.get("todo", [])
         new_issues = (r for r in todo_results if r["state"] == "NEW_ISSUE")
         self.issues["new"]["todo"].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, test_browser))
         existing_issues = (r for r in todo_results if r["state"] == "STILL_FAILING")
-        self.issues["existing"]["todo"].extend(IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser))
+        self.issues["existing"]["todo"].extend(
+            IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser)
+        )
         if self.args.include_softfails:
             new_soft_fails = [r for r in todo_results if r["state"] == "NEW_SOFT_ISSUE"]
             existing_soft_fails = [r for r in todo_results if r["state"] == "STILL_SOFT_FAILING"]
@@ -876,7 +945,9 @@ class ArchReport(object):
                     if not v["bugref"]:  # pragma: no cover
                         continue
                 except AttributeError:  # pragma: no cover
-                    log.info("Could find neither soft failed info box nor needle, assuming an old openQA job, skipping.")
+                    log.info(
+                        "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
+                    )
                     continue
                 except DownloadError as e:  # pragma: no cover
                     log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
@@ -891,7 +962,9 @@ class ArchReport(object):
                 try:
                     v["bugref_href"] = issue_tracker[bugref](bug_id)
                 except KeyError as e:  # pragma: no cover
-                    log.error("Failed to find valid bug tracker URL for %s with error %s. Skipping current result" % (v, e))
+                    log.error(
+                        "Failed to find valid bug tracker URL for %s with error %s. Skipping current result" % (v, e)
+                    )
                     continue
 
     @property
@@ -908,7 +981,9 @@ class ArchReport(object):
         try:
             details = self.test_browser.get_json("/api/v1/jobs/" + job_url.split("/")[-1] + "/details")
             # fake an older module URL including the name, see https://progress.opensuse.org/issues/72292
-            return format("///%s//" % [i for i in details["job"]["testresults"] if i["result"] == "softfailed"][0]["name"])  # pragma: no cover
+            return format(
+                "///%s//" % [i for i in details["job"]["testresults"] if i["result"] == "softfailed"][0]["name"]
+            )  # pragma: no cover
         except DownloadError:
             log.debug("Found older openQA, before https://github.com/os-autoinst/openQA/pull/2932")
             url = job_url
@@ -930,7 +1005,9 @@ class ArchReport(object):
                 if "text_data" in field:
                     unformated_str = field["text_data"]
                 else:
-                    unformated_str = self.test_browser.get_soup("%s/file/%s" % (rel_job_url, quote(field["text"]))).getText()
+                    unformated_str = self.test_browser.get_soup(
+                        "%s/file/%s" % (rel_job_url, quote(field["text"]))
+                    ).getText()
                 return re.search("Soft Failure:\n(.*)", unformated_str.strip()).group(1)
             # custom results can have soft-fail as well
             if "result" in field and "softfail" in field["result"]:
@@ -940,7 +1017,10 @@ class ArchReport(object):
                 log.debug("Evaluating potential workaround needle '%s'" % field["needle"])
                 match = re.search(bugref_regex, field["needle"])
                 if not match:  # pragma: no cover
-                    log.warn("Found workaround key without bugref that could be understood, looking for a better bugref (if any) for '%s'" % rel_job_url)
+                    log.warn(
+                        "Found workaround key without bugref that could be understood, looking for a better bugref (if any) for '%s'"
+                        % rel_job_url
+                    )
                     continue
                 return match.group(1) + "#" + match.group(2)
         else:  # pragma: no cover
@@ -953,13 +1033,18 @@ class ArchReport(object):
         if self.args.abbreviate_test_issues:
             return issue_listing(
                 "### Test issues",
-                self.issues["new"]["openqa"] + self.issues["existing"]["openqa"] + self.issues["new"]["todo"] + self.issues["existing"]["todo"],
+                self.issues["new"]["openqa"]
+                + self.issues["existing"]["openqa"]
+                + self.issues["new"]["todo"]
+                + self.issues["existing"]["todo"],
                 self.args.show_empty,
             )
         todo_issues = todo_review_template.substitute(
             {
                 "new_issues": issue_listing("***new issues***", self.issues["new"]["todo"], self.args.show_empty),
-                "existing_issues": issue_listing("***existing issues***", self.issues["existing"]["todo"], self.args.show_empty),
+                "existing_issues": issue_listing(
+                    "***existing issues***", self.issues["existing"]["todo"], self.args.show_empty
+                ),
             }
         )
         return todo_issues if (self.issues["new"]["todo"] or self.issues["existing"]["todo"]) else ""
@@ -973,12 +1058,20 @@ class ArchReport(object):
                 "status_badge": status_badge_str[self.status_badge],
                 # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
                 # For now we can just not easily decide unless we use the 'bugrefs' mode
-                "new_openqa_issues": "" if abbrev else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty),
+                "new_openqa_issues": ""
+                if abbrev
+                else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty),
                 "existing_openqa_issues": ""
                 if abbrev
-                else issue_listing("**Existing openQA-issues:**", self.issues["existing"]["openqa"], self.args.show_empty),
-                "new_product_issues": issue_listing("**New Product bugs:**", self.issues["new"]["product"], self.args.show_empty),
-                "existing_product_issues": issue_listing("**Existing Product bugs:**", self.issues["existing"]["product"], self.args.show_empty),
+                else issue_listing(
+                    "**Existing openQA-issues:**", self.issues["existing"]["openqa"], self.args.show_empty
+                ),
+                "new_product_issues": issue_listing(
+                    "**New Product bugs:**", self.issues["new"]["product"], self.args.show_empty
+                ),
+                "existing_product_issues": issue_listing(
+                    "**Existing Product bugs:**", self.issues["existing"]["product"], self.args.show_empty
+                ),
                 "todo_issues": self._todo_issues_str(),
                 "skipped_tests": issue_listing("**Skipped tests:**", self.skipped_tests, self.args.show_empty),
             }
@@ -994,7 +1087,9 @@ class ProductReport(object):
         self.args = args
         self.job_group_url = job_group_url
         self.group = job_group_url.split("/")[-1]
-        current_url, previous_url = get_build_urls_to_compare(browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold)
+        current_url, previous_url = get_build_urls_to_compare(
+            browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold
+        )
         # read last finished
         current_details = browser.get_soup(current_url)
         previous_details = browser.get_soup(previous_url)
@@ -1002,7 +1097,8 @@ class ProductReport(object):
             # build pages matching no tests show no job as well as builds only consisting of incomplete jobs
             # see https://progress.opensuse.org/issues/60458
             assert (
-                sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0 or len(details.find_all(class_="status")) > 0
+                sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0
+                or len(details.find_all(class_="status")) > 0
             ), "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)" % (
                 current_url,
                 previous_url,
@@ -1011,23 +1107,35 @@ class ProductReport(object):
         previous_summary = parse_summary(previous_details)
 
         changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary)})
-        self.changes_str = "***Changes since reference build***\n\n* " + "\n* ".join("%s: %s" % (k, v) for k, v in iteritems(changes)) + "\n"
+        self.changes_str = (
+            "***Changes since reference build***\n\n* "
+            + "\n* ".join("%s: %s" % (k, v) for k, v in iteritems(changes))
+            + "\n"
+        )
         log.info("%s" % self.changes_str)
 
         self.build = get_build_nr(current_url)
         self.ref_build = get_build_nr(previous_url)
 
         # for each architecture iterate over all
-        cur_archs, prev_archs = (set(arch.text for arch in details.find_all("th", id=re.compile("flavor_"))) for details in [current_details, previous_details])
+        cur_archs, prev_archs = (
+            set(arch.text for arch in details.find_all("th", id=re.compile("flavor_")))
+            for details in [current_details, previous_details]
+        )
         archs = cur_archs
         if args.arch:
-            assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(args.arch, cur_archs)
+            assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(
+                args.arch, cur_archs
+            )
             archs = [args.arch]
         self.missing_archs = sorted(prev_archs - cur_archs)
         if self.missing_archs:
             log.info(
                 "%s missing completely from current run: %s"
-                % (pluralize(len(self.missing_archs), "architecture is", "architectures are"), ", ".join(self.missing_archs))
+                % (
+                    pluralize(len(self.missing_archs), "architecture is", "architectures are"),
+                    ", ".join(self.missing_archs),
+                )
             )
 
         # create arch reports
@@ -1041,7 +1149,9 @@ class ProductReport(object):
     def __str__(self):
         """Return report for product."""
         now_str = datetime.datetime.now().strftime("%Y-%m-%d - %H:%M")
-        missing_archs_str = "\n * **Missing architectures**: %s" % ", ".join(self.missing_archs) if self.missing_archs else ""
+        missing_archs_str = (
+            "\n * **Missing architectures**: %s" % ", ".join(self.missing_archs) if self.missing_archs else ""
+        )
 
         build_str = self.build
         if self.args.verbose_test and self.args.verbose_test > 1:
@@ -1068,8 +1178,16 @@ class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescri
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=CustomFormatter)
-    parser.add_argument("-v", "--verbose", help="Increase verbosity level, specify multiple times to increase verbosity", action="count", default=1)
-    parser.add_argument("-n", "--no-progress", action="store_true", help="Be terse and only output the report, no progress indication")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="Increase verbosity level, specify multiple times to increase verbosity",
+        action="count",
+        default=1,
+    )
+    parser.add_argument(
+        "-n", "--no-progress", action="store_true", help="Be terse and only output the report, no progress indication"
+    )
     parser.add_argument(
         "-s",
         "--output-state-results",
@@ -1083,7 +1201,9 @@ def parse_args():
         help="""Only handle selected job group(s), comma separated, e.g. \'openSUSE Tumbleweed Gnome\'.
                         A regex also works, e.g. \'openSUSE Tumbleweed\' or \'(Gnome|KDE)\'.""",
     )
-    parser.add_argument("--exclude-job-groups", help="""Exclude selected job groups by regex, inverse of '--job-groups'.""")
+    parser.add_argument(
+        "--exclude-job-groups", help="""Exclude selected job groups by regex, inverse of '--job-groups'."""
+    )
     parser.add_argument(
         "-J",
         "--job-group-urls",
@@ -1110,7 +1230,11 @@ def parse_args():
                         Special argument 'last' will compare the last finished build against the last reviewed one.""",
     )
     parser.add_argument(
-        "-T", "--verbose-test", help="Increase test result verbosity level, specify multiple times to increase verbosity", action="count", default=1
+        "-T",
+        "--verbose-test",
+        help="Increase test result verbosity level, specify multiple times to increase verbosity",
+        action="count",
+        default=1,
     )
     parser.add_argument(
         "-r",
@@ -1141,7 +1265,11 @@ def parse_args():
             CONFIG_PATH
         ),
     )
-    parser.add_argument("--query-issue-status-help", action="store_true", help="""Shows help how to setup '--query-issue-status' configuration file.""")
+    parser.add_argument(
+        "--query-issue-status-help",
+        action="store_true",
+        help="""Shows help how to setup '--query-issue-status' configuration file.""",
+    )
     parser.add_argument(
         "--report-links",
         action="store_true",
@@ -1150,8 +1278,18 @@ def parse_args():
     )
     parser.add_argument("-a", "--arch", help="Only single architecture, e.g. 'x86_64', not all")
     parser.add_argument("-f", "--filter", help="Filter for 'closed' or 'unassigned' issues.")
-    parser.add_argument("--running-threshold", default=0, help="Percentage of jobs that may still be running for the build to be considered 'finished' anyway")
-    parser.add_argument("--no-empty-sections", action="store_false", default=True, dest="show_empty", help="Only show sections in report with content")
+    parser.add_argument(
+        "--running-threshold",
+        default=0,
+        help="Percentage of jobs that may still be running for the build to be considered 'finished' anyway",
+    )
+    parser.add_argument(
+        "--no-empty-sections",
+        action="store_false",
+        default=True,
+        dest="show_empty",
+        help="Only show sections in report with content",
+    )
     parser.add_argument(
         "--include-softfails",
         action="store_true",
@@ -1172,7 +1310,9 @@ def parse_args():
                                    current job URL in the ticket if it has not been updated for some time.
                                    Implies '--query-issue-status'.""",
     )
-    reminder_comments.add_argument("--dry-run", action="store_true", default=False, help="""Do not actually change any tickets.""")
+    reminder_comments.add_argument(
+        "--dry-run", action="store_true", default=False, help="""Do not actually change any tickets."""
+    )
     reminder_comments.add_argument(
         "--min-days-unchanged",
         default=MIN_DAYS_UNCHANGED,
@@ -1352,7 +1492,10 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
                                 try:
                                     reminder_comment_on_issue(ie, min_days_unchanged)
                                 except HTTPError as e:  # pragma: no cover
-                                    log.error("Encountered error trying to post a reminder comment on issue '%s': %s. Skipping." % (ie, e))
+                                    log.error(
+                                        "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
+                                        % (ie, e)
+                                    )
                                     continue
                                 processed_issues.add(bugref)
 

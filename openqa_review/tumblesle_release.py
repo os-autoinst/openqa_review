@@ -99,7 +99,11 @@ class TumblesleRelease(object):
         if config_entries:
             self.whitelist += [i.strip() for i in config.get(self.args.product, "whitelist").split(",")]
         else:
-            log.info("No configuration file '{}' for whitelist, only using optionally specified command line whitelist".format(self.args.config_path))
+            log.info(
+                "No configuration file '{}' for whitelist, only using optionally specified command line whitelist".format(
+                    self.args.config_path
+                )
+            )
             log.debug(CONFIG_USAGE)
         # does not look so nice, can be improved. Removing empty string entries.
         self.whitelist = [i for i in self.whitelist if i]
@@ -109,7 +113,8 @@ class TumblesleRelease(object):
         if not config.has_section("notification"):
             return
         self.credentials = pika.PlainCredentials(
-            config.get("notification", "username", fallback="guest"), config.get("notification", "password", fallback="guest")
+            config.get("notification", "username", fallback="guest"),
+            config.get("notification", "password", fallback="guest"),
         )
         self.notify_host = config.get("notification", "host", fallback="kazhua.suse.de")
         self.notify_connect()
@@ -118,7 +123,9 @@ class TumblesleRelease(object):
         """Connect to notification bus."""
         # 'heartbeat_interval' renamed in pika 1.0, see https://pika.readthedocs.io/en/stable/version_history.html#id2
         try:
-            self.notify_connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat=10))
+            self.notify_connection = pika.BlockingConnection(
+                pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat=10)
+            )
         except TypeError:  # pragma: no cover
             self.notify_connection = pika.BlockingConnection(
                 pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat_interval=10)
@@ -146,7 +153,9 @@ class TumblesleRelease(object):
         tries = 7  # arbitrary
         for t in range(tries):
             try:
-                self.notify_channel.basic_publish(exchange="pubsub", routing_key=".".join([self.notify_topic, topic]), body=body)
+                self.notify_channel.basic_publish(
+                    exchange="pubsub", routing_key=".".join([self.notify_topic, topic]), body=body
+                )
                 break
             except pika.exceptions.ConnectionClosed as e:  # pragma: no cover
                 log.warn("sending notification did not work: %s. Retrying try %s out of %s" % (e, t, tries))
@@ -191,7 +200,9 @@ class TumblesleRelease(object):
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
         group_id = int(self.args.group_id)
         log.debug("Getting jobs in build %s ..." % build)
-        jobs_build = self.browser.get_json("/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s" % (build, group_id), cache=self.args.load)["jobs"]
+        jobs_build = self.browser.get_json(
+            "/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s" % (build, group_id), cache=self.args.load
+        )["jobs"]
         jobs_in_build_product = [i for i in jobs_build if i["group_id"] == group_id]
         jobs_by_result = defaultdict(list)
         for job in jobs_in_build_product:
@@ -218,7 +229,11 @@ class TumblesleRelease(object):
         log.debug("Found last ISO %s" % last_iso)
         build = {}
         # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explictly abort faster
-        build["last"] = re.search("(?<=-Build)[0-9@]+", last_iso).group() if self.args.check_build == "last" else self.args.check_build
+        build["last"] = (
+            re.search("(?<=-Build)[0-9@]+", last_iso).group()
+            if self.args.check_build == "last"
+            else self.args.check_build
+        )
         log.debug("Found last build %s" % build["last"])
         jobs_by_result = {}
         jobs_by_result["last"] = self.retrieve_jobs_by_result(build["last"])
@@ -249,19 +264,31 @@ class TumblesleRelease(object):
         jobs_by_result["released"] = self.retrieve_jobs_by_result(build["released"])
         # read whitelist from tumblesle
         # TODO whitelist could contain either bugs or scenarios while I prefer bugrefs :-)
-        hard_failed_jobs = {k: self._filter_whitelisted_fails(jobs_by_result[k]["failed"]) for k in ["released", "last"]}
+        hard_failed_jobs = {
+            k: self._filter_whitelisted_fails(jobs_by_result[k]["failed"]) for k in ["released", "last"]
+        }
         # count passed, failed for both released/new
         passed["released"] = len(jobs_by_result["released"]["passed"]) + len(jobs_by_result["released"]["softfailed"])
         hard_failed = {k: len(v) for k, v in iteritems(hard_failed_jobs)}
         whitelisted = {"last": failed["last"] - hard_failed["last"]}
         passed["last"] += whitelisted["last"]
-        assert (passed["last"] + hard_failed["last"]) > 0, "passed['last'] (%s) + hard_failed['last'] (%s) must be more than zero" % (
+        assert (
+            passed["last"] + hard_failed["last"]
+        ) > 0, "passed['last'] (%s) + hard_failed['last'] (%s) must be more than zero" % (
             passed["last"],
             hard_failed["last"],
         )
         assert (passed["released"] + hard_failed["released"]) > 0
         log.debug(
-            "%s: %s/%s vs. %s: %s/%s" % (build["last"], passed["last"], hard_failed["last"], build["released"], passed["released"], hard_failed["released"])
+            "%s: %s/%s vs. %s: %s/%s"
+            % (
+                build["last"],
+                passed["last"],
+                hard_failed["last"],
+                build["released"],
+                passed["released"],
+                hard_failed["released"],
+            )
         )
         if passed["last"] >= passed["released"] and hard_failed["last"] <= hard_failed["released"]:
             log.info("Found new good build %s" % build["last"])
@@ -313,7 +340,9 @@ class TumblesleRelease(object):
 
     def update_symlinks(self, build_dest):
         """Update symlinks to 'current' and 'release' on destination."""
-        log.debug("Updating symlinks within %s/ for each asset (Build%s->current)" % (self.release_build, self.release_build))
+        log.debug(
+            "Updating symlinks within %s/ for each asset (Build%s->current)" % (self.release_build, self.release_build)
+        )
         for i in glob.glob(build_dest + "*/*"):
             tgt = os.path.join(os.path.dirname(i), os.path.basename(i).replace(self.release_build, "CURRENT"))
             if not os.path.exists(tgt):
@@ -348,15 +377,35 @@ class TumblesleRelease(object):
 
 def parse_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-v", "--verbose", help="Increase verbosity level, specify multiple times to increase verbosity", action="count", default=1)
-    parser.add_argument("-n", "--dry-run", action="store_true", help="Only do read-only or simulate actions, does not release TumbleSLE")
-    parser.add_argument("--dry-run-rsync", action="store_true", help="Execute rsync with dry-run. Should be specified additionally to '--dry-run'")
-    parser.add_argument("--openqa-host", help="openQA host to retrieve results from", default="https://openqa.opensuse.org")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="Increase verbosity level, specify multiple times to increase verbosity",
+        action="count",
+        default=1,
+    )
+    parser.add_argument(
+        "-n", "--dry-run", action="store_true", help="Only do read-only or simulate actions, does not release TumbleSLE"
+    )
+    parser.add_argument(
+        "--dry-run-rsync",
+        action="store_true",
+        help="Execute rsync with dry-run. Should be specified additionally to '--dry-run'",
+    )
+    parser.add_argument(
+        "--openqa-host", help="openQA host to retrieve results from", default="https://openqa.opensuse.org"
+    )
     parser.add_argument("--group-id", help="Group id to search in from openQA host", default=19)
     parser.add_argument(
-        "--product", help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).", default="Leap 42.2"
+        "--product",
+        help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).",
+        default="Leap 42.2",
     )
-    parser.add_argument("--check-build", help="""If specified, checks specified build number (integer) instead of 'last' finished.""", default="last")
+    parser.add_argument(
+        "--check-build",
+        help="""If specified, checks specified build number (integer) instead of 'last' finished.""",
+        default="last",
+    )
     parser.add_argument(
         "--check-against-build",
         help="""If specified, checks against specified build number (integer).
@@ -366,7 +415,11 @@ def parse_args():
     )
     parser.add_argument("--run-once", action="store_true", help="Only run once, not continuously")
     parser.add_argument("--config-path", help="Path to config file with whitelist.", default=CONFIG_PATH)
-    parser.add_argument("--whitelist", help="Whitelist entries as for the config file (comma separated). Additional to config file entries", default="")
+    parser.add_argument(
+        "--whitelist",
+        help="Whitelist entries as for the config file (comma separated). Additional to config file entries",
+        default="",
+    )
     parser.add_argument(
         "--src",
         help="""Source directory for rsync call pointing to factory subdir within openQA.
@@ -385,7 +438,9 @@ def parse_args():
         default="open*-42.2*x86_64*",
     )
     parser.add_argument(
-        "--match-hdds", help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not", default=None
+        "--match-hdds",
+        help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
+        default=None,
     )
     parser.add_argument(
         "--release-file",
@@ -393,9 +448,13 @@ def parse_args():
                         and is written back to it.""",
         default=".release_info",
     )
-    parser.add_argument("--sleeptime", help="Time to sleep between runs in seconds. Has no effect with '--run-once'", default=240)
     parser.add_argument(
-        "--post-release-hook", help="Specify application path for a post-release hook which is called after every successful release", default=None
+        "--sleeptime", help="Time to sleep between runs in seconds. Has no effect with '--run-once'", default=240
+    )
+    parser.add_argument(
+        "--post-release-hook",
+        help="Specify application path for a post-release hook which is called after every successful release",
+        default=None,
     )
     parser.add_argument(
         "--seen-maxlen",

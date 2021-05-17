@@ -263,12 +263,16 @@ def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     assert "=0307" in reviewed
 
     # Also accept still running if threshold is increased
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last", running_threshold=45)
+    current, reviewed = openqa_review.get_build_urls_to_compare(
+        browser, args.job_group_urls, against_reviewed="last", running_threshold=45
+    )
     assert "=0318" in current
     assert "=0307" in reviewed
 
     # Not accepted if slightly below threshold
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last", running_threshold=36)
+    current, reviewed = openqa_review.get_build_urls_to_compare(
+        browser, args.job_group_urls, against_reviewed="last", running_threshold=36
+    )
     assert "=0313" in current
     assert "=0307" in reviewed
 
@@ -294,7 +298,9 @@ def test_non_number_build_nr_also_finds_valid_review_build_urls():
     args.job_group_urls = args.host + "/group_overview/28"
     browser = browser_factory(args)
     with pytest.raises(openqa_review.NotEnoughBuildsError):
-        current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last")
+        current, reviewed = openqa_review.get_build_urls_to_compare(
+            browser, args.job_group_urls, against_reviewed="last"
+        )
 
 
 def test_also_dotted_builds_can_be_specified_and_appear_in_report():
@@ -365,7 +371,13 @@ def test_get_job_groups_yields_job_groups_in_page():
     args.exclude_job_groups = "(Krypton|Leap)"
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
     assert sorted(job_groups.keys()) == sorted(
-        ["Staging Projects", "Test Parent Group / openSUSE Argon", "openSUSE Tumbleweed", "openSUSE Tumbleweed AArch64", "openSUSE Tumbleweed PowerPC"]
+        [
+            "Staging Projects",
+            "Test Parent Group / openSUSE Argon",
+            "openSUSE Tumbleweed",
+            "openSUSE Tumbleweed AArch64",
+            "openSUSE Tumbleweed PowerPC",
+        ]
     )
 
 
@@ -416,10 +428,14 @@ def bugrefs_test_args_factory():
     openqa_review.config.add_section("product_issues:https://openqa.opensuse.org:product_mapping")
     openqa_review.config.set("product_issues:https://openqa.opensuse.org:product_mapping", "25", "openSUSE Tumbleweed")
     openqa_review.config.add_section("product_issues:https://openqa.opensuse.org:component_mapping")
-    openqa_review.config.set("product_issues:https://openqa.opensuse.org:component_mapping", "installation-bootloader", "Bootloader")
+    openqa_review.config.set(
+        "product_issues:https://openqa.opensuse.org:component_mapping", "installation-bootloader", "Bootloader"
+    )
     openqa_review.config.add_section("test_issues")
     openqa_review.config.set("test_issues", "api_key", "0123456789ABCDEF")
-    openqa_review.config.set("test_issues", "report_url", "https://progress.opensuse.org/projects/openqatests/issues/new")
+    openqa_review.config.set(
+        "test_issues", "report_url", "https://progress.opensuse.org/projects/openqatests/issues/new"
+    )
     return args
 
 
