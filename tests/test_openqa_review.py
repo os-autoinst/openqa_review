@@ -8,7 +8,9 @@ isort:skip_file
 
 # see http://python-future.org/compatible_idioms.html
 from __future__ import unicode_literals
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
+from future.standard_library import (
+    install_aliases,
+)  # isort:skip to keep 'install_aliases()'
 from future.utils import iteritems
 
 install_aliases()
@@ -32,19 +34,19 @@ from openqa_review import openqa_review  # SUT
 
 def args_factory():
     args = Namespace()
-    args.host = 'https://openqa.opensuse.org'
+    args.host = "https://openqa.opensuse.org"
     args.job_group_urls = None
     args.job_groups = None
     args.exclude_job_groups = None
     args.no_progress = True
     args.verbose = 1
     args.output_state_results = False
-    args.base_url = '/'
+    args.base_url = "/"
     args.verbose_test = 4
-    args.arch = 'x86_64'
+    args.arch = "x86_64"
     args.save = False
     args.load = False
-    args.load_dir = '.'
+    args.load_dir = "."
     args.builds = None
     args.against_reviewed = None
     args.running_threshold = 0
@@ -68,6 +70,7 @@ def browser_factory(args=None):
 # similar to python3.2 TemporaryDirectory, not available on older versions
 # also see http://stackoverflow.com/a/13379969/5031322
 
+
 @contextlib.contextmanager
 def TemporaryDirectory():  # noqa
     temp_dir = tempfile.mkdtemp()
@@ -76,41 +79,41 @@ def TemporaryDirectory():  # noqa
 
 
 def test_help():
-    sys.argv += '--help'.split()
+    sys.argv += "--help".split()
     with pytest.raises(SystemExit):
         openqa_review.main()
 
 
 def test_missing_config():
-    openqa_review.CONFIG_PATH = '/dev/null/.missing_file'
-    sys.argv[1:] = ['--query-issue-status']
+    openqa_review.CONFIG_PATH = "/dev/null/.missing_file"
+    sys.argv[1:] = ["--query-issue-status"]
     with pytest.raises(SystemExit) as excinfo:
         openqa_review.main()
     assert excinfo.value.code == 1
 
 
 def test_query_issue_status_help_shows_config_help():
-    sys.argv[1:] = ['--query-issue-status-help']
+    sys.argv[1:] = ["--query-issue-status-help"]
     with pytest.raises(SystemExit):
         # we are not actually testing the content of help, just that it does not fail
         openqa_review.main()
 
 
 def test_args_implicit():
-    sys.argv[1:] = ['--reminder-comment-on-issues']
+    sys.argv[1:] = ["--reminder-comment-on-issues"]
     args = openqa_review.parse_args()
     assert args.reminder_comment_on_issues
     assert args.query_issue_status
     assert args.bugrefs
 
-    sys.argv[1:] = ['--report-links']
+    sys.argv[1:] = ["--report-links"]
     args = openqa_review.parse_args()
     assert not args.bugrefs
 
 
 def cache_test_args_factory():
     args = args_factory()
-    args.job_group_urls = args.host + '/group_overview/25'
+    args.job_group_urls = args.host + "/group_overview/25"
     args.load = True
     args.load_dir = os.path.dirname(os.path.realpath(__file__))
     return args
@@ -119,7 +122,7 @@ def cache_test_args_factory():
 def compare_report(report, ref_report_path):
     # If the reference report should be written initially or updated one can just write the report as string to file
     # codecs.open(ref_report_path, 'w', 'utf8').write(report)
-    ref_report = codecs.open(ref_report_path, 'r', 'utf8').read()
+    ref_report = codecs.open(ref_report_path, "r", "utf8").read()
     # for simpler display of the diff in case of differences it helps to have
     # both reports in same encoding, i.e. casting to str
     lines = str(report).splitlines()
@@ -133,75 +136,87 @@ def compare_report(report, ref_report_path):
 def test_previously_loaded_cache_file_is_generated_into_valid_verbose_report_if_configured():
     args = cache_test_args_factory()
     report = str(openqa_review.generate_report(args))
-    assert '**Common issues:**' in report
+    assert "**Common issues:**" in report
     # Missing architecture is reported
-    assert re.search('Missing arch.*i586', report)
-    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TTT.md'))
+    assert re.search("Missing arch.*i586", report)
+    compare_report(
+        report,
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), "report25_TTT.md"),
+    )
 
 
 def test_previously_loaded_cache_file_is_generated_into_valid_terse_report_by_default():
     args = cache_test_args_factory()
     args.verbose_test = 1
     report = str(openqa_review.generate_report(args))
-    assert '**Common issues:**' in report
-    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_terse.md'))
+    assert "**Common issues:**" in report
+    compare_report(
+        report,
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), "report25_terse.md"),
+    )
 
 
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l2():
     args = cache_test_args_factory()
     args.verbose_test = 2
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_T.md'))
+    compare_report(
+        report,
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), "report25_T.md"),
+    )
 
 
 def test_previously_loaded_cache_file_is_generated_into_ref_report_l3():
     args = cache_test_args_factory()
     args.verbose_test = 3
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'report25_TT.md'))
+    compare_report(
+        report,
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), "report25_TT.md"),
+    )
 
 
 def test_builds_can_be_specified_and_appear_in_report():
     args = cache_test_args_factory()
-    args.builds = '0313,0308'
+    args.builds = "0313,0308"
     report = str(openqa_review.generate_report(args))
-    assert '**Build:** {} (reference {})'.format(*args.builds.split(',')) in report
+    assert "**Build:** {} (reference {})".format(*args.builds.split(",")) in report
 
 
 def test_too_high_verbosity_selection_yields_still_valid_selection():
     args = cache_test_args_factory()
     args.verbose_test = 5
     report = str(openqa_review.generate_report(args))
-    assert report != ''
+    assert report != ""
 
 
 def test_ha_tests_yields_valid_report_with_valid_build_nr():
     args = cache_test_args_factory()
     args.arch = None  # let this test check architectures by itself to reach good test coverage
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live')
-    args.job_group_urls = args.host + '/group_overview/27'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "live")
+    args.job_group_urls = args.host + "/group_overview/27"
     report = str(openqa_review.generate_report(args))
-    assert '0104@0351' in report
+    assert "0104@0351" in report
 
 
 def test_specified_job_group_yields_single_product_report():
     args = cache_test_args_factory()
     args.job_group_urls = None
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'single_job_group')
-    args.job_groups = 'openSUSE Argon'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "single_job_group")
+    args.job_groups = "openSUSE Argon"
     report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
-    assert len([line for line in report.splitlines() if line.startswith('#')]) == 1
+    assert len([line for line in report.splitlines() if line.startswith("#")]) == 1
 
     # Invalid name should yield assertion with helpful message
-    args.job_groups = 'openSUSE Tumbleweed FOO'
+    args.job_groups = "openSUSE Tumbleweed FOO"
     with pytest.raises(AssertionError) as e:
         report = openqa_review.generate_report(args)
-    assert 'No job group' in str(e.value)
+    assert "No job group" in str(e.value)
 
     # Multiple job groups can be specified
-    args.job_groups = 'openSUSE Argon,openSUSE Leap 42.2 Updates'
+    args.job_groups = "openSUSE Argon,openSUSE Leap 42.2 Updates"
     # we don't actually need to check the parsing just make sure
     # openqa_review tries to parse all and as there is no cache page
     # for 'openSUSE Tumbleweed  2.KDE' saved, we assume its corresponding
@@ -211,108 +226,114 @@ def test_specified_job_group_yields_single_product_report():
     # but we can check the content anyway.
     with pytest.raises(Exception) as e:
         report = str(openqa_review.generate_report(args))
-    assert 'group_overview:26' in str(e.value)
+    assert "group_overview:26" in str(e.value)
 
     # job groups can also be used as an incomplete search tags or regex
-    args.job_groups = '(42.2 Updates|Argon)'
+    args.job_groups = "(42.2 Updates|Argon)"
     # To increase statement and branch coverage we enable progress report here.
     # It will be invisible but executed.
     args.no_progress = False
     # see above
     with pytest.raises(Exception) as e:
         report = str(openqa_review.generate_report(args))
-    assert 'group_overview:26' in str(e.value)
+    assert "group_overview:26" in str(e.value)
 
     # job group with only a single recent build yields empty report
-    args.job_groups = 'openSUSE Leap 42.2 AArch64'
+    args.job_groups = "openSUSE Leap 42.2 AArch64"
     report = str(openqa_review.generate_report(args))
     assert args.job_groups in report
     # There must be only one job group tag
-    assert 'Not enough finished builds' in report
+    assert "Not enough finished builds" in report
 
 
 def test_new_job_group_json_syntax_after_openqa_9b50b22():
     args = cache_test_args_factory()
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'job_group_after_openqa_9b50b22')
-    args.job_group_urls = 'http://openqa.opensuse.org/group_overview/70'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "job_group_after_openqa_9b50b22")
+    args.job_group_urls = "http://openqa.opensuse.org/group_overview/70"
     report = str(openqa_review.generate_report(args))
-    assert '0211' in report
-    assert 'Green' in report
+    assert "0211" in report
+    assert "Green" in report
 
 
 def test_openqa_45_bootstrap_4_can_parse_failed_modules():
     args = cache_test_args_factory()
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_4.5_dashboard')
-    args.job_group_urls = 'https://openqa.opensuse.org/group_overview/41'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "openqa_4.5_dashboard")
+    args.job_group_urls = "https://openqa.opensuse.org/group_overview/41"
     report = str(openqa_review.generate_report(args))
-    assert '20180424' in report
-    assert 'installation' in report
+    assert "20180424" in report
+    assert "installation" in report
 
 
 def test_get_build_urls_to_compare_finds_last_reviewed_if_selected():
     args = cache_test_args_factory()
     browser = browser_factory(args)
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='0311')
-    assert '=0311' in current
-    assert '=0307' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="0311")
+    assert "=0311" in current
+    assert "=0307" in reviewed
 
     # If '--against-reviewed' is 'last', search for the latest finished
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
-    assert '=0313' in current
-    assert '=0307' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last")
+    assert "=0313" in current
+    assert "=0307" in reviewed
 
     # Also accept still running if threshold is increased
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last', running_threshold=45)
-    assert '=0318' in current
-    assert '=0307' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(
+        browser, args.job_group_urls, against_reviewed="last", running_threshold=45
+    )
+    assert "=0318" in current
+    assert "=0307" in reviewed
 
     # Not accepted if slightly below threshold
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last', running_threshold=36)
-    assert '=0313' in current
-    assert '=0307' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(
+        browser, args.job_group_urls, against_reviewed="last", running_threshold=36
+    )
+    assert "=0313" in current
+    assert "=0307" in reviewed
 
 
 def test_non_number_build_nr_also_finds_valid_review_build_urls():
     args = cache_test_args_factory()
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live')
-    args.job_group_urls = args.host + '/group_overview/27'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "live")
+    args.job_group_urls = args.host + "/group_overview/27"
     browser = browser_factory(args)
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
-    assert '=0104%400351' in current  # i.e. escaped '0104@0351'
-    assert '=0097%400305' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last")
+    assert "=0104%400351" in current  # i.e. escaped '0104@0351'
+    assert "=0097%400305" in reviewed
 
     # if no review comments are found we revert to the last two finished
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'live_no_review')
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "live_no_review")
     browser = browser_factory(args)
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
-    assert '=0104%400351' in current  # i.e. escaped '0104@0351'
-    assert '=0104%400350' in reviewed  # no review comments found, reverting to last two finished
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last")
+    assert "=0104%400351" in current  # i.e. escaped '0104@0351'
+    assert "=0104%400350" in reviewed  # no review comments found, reverting to last two finished
 
     # builds with no finished results are catched
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'only_old_invalid_builds')
-    args.job_group_urls = args.host + '/group_overview/28'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "only_old_invalid_builds")
+    args.job_group_urls = args.host + "/group_overview/28"
     browser = browser_factory(args)
     with pytest.raises(openqa_review.NotEnoughBuildsError):
-        current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
+        current, reviewed = openqa_review.get_build_urls_to_compare(
+            browser, args.job_group_urls, against_reviewed="last"
+        )
 
 
 def test_also_dotted_builds_can_be_specified_and_appear_in_report():
     args = cache_test_args_factory()
-    args.job_group_urls = args.host + '/group_overview/26'
+    args.job_group_urls = args.host + "/group_overview/26"
     browser = browser_factory(args)
-    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed='last')
-    assert '=170.1' in current
-    assert '=162.2' in reviewed
+    current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls, against_reviewed="last")
+    assert "=170.1" in current
+    assert "=162.2" in reviewed
 
 
 def test_builds_with_lower_number_but_more_recent_version_get_compared_correctly():
     args = cache_test_args_factory()
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'multi_version')
-    args.job_group_urls = 'http://openqa.suse.de/group_overview/139'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "multi_version")
+    args.job_group_urls = "http://openqa.suse.de/group_overview/139"
     browser = browser_factory(args)
     current, reviewed = openqa_review.get_build_urls_to_compare(browser, args.job_group_urls)
-    assert '=0109' in current
-    assert '=0456' in reviewed
+    assert "=0109" in current
+    assert "=0456" in reviewed
 
 
 def test_generate_report_with_progress_notification_does_not_fail():
@@ -321,7 +342,7 @@ def test_generate_report_with_progress_notification_does_not_fail():
     args.no_progress = False
     args.job_groups_url = None
     report = str(openqa_review.generate_report(args))
-    assert '**Common issues:**' in report
+    assert "**Common issues:**" in report
 
 
 def test_state_report_does_not_break_generation():
@@ -335,44 +356,50 @@ def test_get_job_groups_yields_job_groups_in_page():
     args = cache_test_args_factory()
     args.job_groups = None
     args.job_group_urls = None
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'single_job_group')
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "single_job_group")
     root_url = urljoin(args.host, args.base_url)
     browser = browser_factory(args)
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
     assert len(job_groups.keys()) == 14
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'openqa_4.4_dashboard')
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "openqa_4.4_dashboard")
     browser = browser_factory(args)
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
-    assert sorted(job_groups.keys()) == sorted([
-        'Staging Projects',
-        'Test Parent Group / openSUSE Argon',
-        'openSUSE Krypton',
-        'openSUSE Leap 42.1 JeOS',
-        'openSUSE Leap 42.1 Maintenance',
-        'openSUSE Leap 42.1 Updates',
-        'openSUSE Leap 42.2',
-        'openSUSE Leap 42.2 AArch64',
-        'openSUSE Leap 42.2 Maintenance',
-        'openSUSE Leap 42.2 Updates',
-        'openSUSE Leap Staging Projects',
-        'openSUSE Tumbleweed',
-        'openSUSE Tumbleweed AArch64',
-        'openSUSE Tumbleweed PowerPC'])
-    args.exclude_job_groups = '(Krypton|Leap)'
+    assert sorted(job_groups.keys()) == sorted(
+        [
+            "Staging Projects",
+            "Test Parent Group / openSUSE Argon",
+            "openSUSE Krypton",
+            "openSUSE Leap 42.1 JeOS",
+            "openSUSE Leap 42.1 Maintenance",
+            "openSUSE Leap 42.1 Updates",
+            "openSUSE Leap 42.2",
+            "openSUSE Leap 42.2 AArch64",
+            "openSUSE Leap 42.2 Maintenance",
+            "openSUSE Leap 42.2 Updates",
+            "openSUSE Leap Staging Projects",
+            "openSUSE Tumbleweed",
+            "openSUSE Tumbleweed AArch64",
+            "openSUSE Tumbleweed PowerPC",
+        ]
+    )
+    args.exclude_job_groups = "(Krypton|Leap)"
     job_groups = openqa_review.get_job_groups(browser, root_url, args)
-    assert sorted(job_groups.keys()) == sorted([
-        'Staging Projects',
-        'Test Parent Group / openSUSE Argon',
-        'openSUSE Tumbleweed',
-        'openSUSE Tumbleweed AArch64',
-        'openSUSE Tumbleweed PowerPC'])
+    assert sorted(job_groups.keys()) == sorted(
+        [
+            "Staging Projects",
+            "Test Parent Group / openSUSE Argon",
+            "openSUSE Tumbleweed",
+            "openSUSE Tumbleweed AArch64",
+            "openSUSE Tumbleweed PowerPC",
+        ]
+    )
 
 
 # TODO should be covered by doctest already but I can not get coverage analysis to work with doctests in py.test
 def test_filename_to_url_encodes_valid_url():
-    url_object = urlparse(filename_to_url('https%3A::openqa.opensuse.org:group_overview:25'))
-    assert url_object.scheme == 'https'
-    assert url_object.netloc == 'openqa.opensuse.org'
+    url_object = urlparse(filename_to_url("https%3A::openqa.opensuse.org:group_overview:25"))
+    assert url_object.scheme == "https"
+    assert url_object.netloc == "openqa.opensuse.org"
 
 
 def test_single_job_group_pages_can_be_cached_from_cache():
@@ -381,16 +408,16 @@ def test_single_job_group_pages_can_be_cached_from_cache():
         args.save_dir = tmp_dir
         args.save = True
         report = str(openqa_review.generate_report(args))
-        assert '**Common issues:**' in report
+        assert "**Common issues:**" in report
 
 
 def test_new_tests_appearing_in_builds_are_supported():
     args = cache_test_args_factory()
     args.job_groups = None
-    args.builds = '0405,0389'
-    args.arch = 'i586'
+    args.builds = "0405,0389"
+    args.arch = "i586"
     args.running_threshold = 10
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'differing_tests')
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "differing_tests")
     report = str(openqa_review.generate_report(args))
     # There should be one new test which is failing and has not been there in before
     assert '* [btrfs@zkvm](https://openqa.opensuse.org/tests/181148 "Failed modules: livecdreboot")' in report
@@ -400,25 +427,37 @@ def bugrefs_test_args_factory():
     args = cache_test_args_factory()
     args.job_groups = None
     args.bugrefs = True
-    args.builds = '1507,1500'
-    args.arch = 'i586'
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
+    args.builds = "1507,1500"
+    args.arch = "i586"
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "tags_labels")
     args.show_empty = False
     args.include_softfails = False
     args.verbose_test = 2
     openqa_review.config = ConfigParser()
-    openqa_review.config.add_section('product_issues')
-    openqa_review.config.set('product_issues', 'base_url', 'https://apibugzilla.suse.com')
-    openqa_review.config.set('product_issues', 'username', 'user')
-    openqa_review.config.set('product_issues', 'password', 'pass')
-    openqa_review.config.set('product_issues', 'report_url', 'https://bugzilla.opensuse.org')
-    openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:product_mapping')
-    openqa_review.config.set('product_issues:https://openqa.opensuse.org:product_mapping', '25', 'openSUSE Tumbleweed')
-    openqa_review.config.add_section('product_issues:https://openqa.opensuse.org:component_mapping')
-    openqa_review.config.set('product_issues:https://openqa.opensuse.org:component_mapping', 'installation-bootloader', 'Bootloader')
-    openqa_review.config.add_section('test_issues')
-    openqa_review.config.set('test_issues', 'api_key', '0123456789ABCDEF')
-    openqa_review.config.set('test_issues', 'report_url', 'https://progress.opensuse.org/projects/openqatests/issues/new')
+    openqa_review.config.add_section("product_issues")
+    openqa_review.config.set("product_issues", "base_url", "https://apibugzilla.suse.com")
+    openqa_review.config.set("product_issues", "username", "user")
+    openqa_review.config.set("product_issues", "password", "pass")
+    openqa_review.config.set("product_issues", "report_url", "https://bugzilla.opensuse.org")
+    openqa_review.config.add_section("product_issues:https://openqa.opensuse.org:product_mapping")
+    openqa_review.config.set(
+        "product_issues:https://openqa.opensuse.org:product_mapping",
+        "25",
+        "openSUSE Tumbleweed",
+    )
+    openqa_review.config.add_section("product_issues:https://openqa.opensuse.org:component_mapping")
+    openqa_review.config.set(
+        "product_issues:https://openqa.opensuse.org:component_mapping",
+        "installation-bootloader",
+        "Bootloader",
+    )
+    openqa_review.config.add_section("test_issues")
+    openqa_review.config.set("test_issues", "api_key", "0123456789ABCDEF")
+    openqa_review.config.set(
+        "test_issues",
+        "report_url",
+        "https://progress.opensuse.org/projects/openqatests/issues/new",
+    )
     return args
 
 
@@ -427,10 +466,10 @@ def test_bugrefs_are_used_for_triaging():
     args.verbose_test = 1
     report = str(openqa_review.generate_report(args))
     # report should feature bug references
-    assert 'bsc#' in report
+    assert "bsc#" in report
     # and references to 'test issues'
-    assert 'poo#' in report
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs.md'))
+    assert "poo#" in report
+    compare_report(report, os.path.join(args.load_dir, "report25_bugrefs.md"))
 
 
 def test_bugrefs_with_abbreviated_format_can_be_used():
@@ -439,31 +478,31 @@ def test_bugrefs_with_abbreviated_format_can_be_used():
     args.short_failure_str = True
     args.abbreviate_test_issues = True
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_abbreviated.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_bugrefs_abbreviated.md"))
 
 
 def test_bugrefs_with_report_links():
     args = bugrefs_test_args_factory()
     args.report_links = True
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_T_bugrefs.md"))
 
 
 def test_bugrefs_including_softfails():
     args = bugrefs_test_args_factory()
     args.include_softfails = True
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_T_bugrefs_softfails.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_T_bugrefs_softfails.md"))
 
 
 def test_bugrefs_with_report_links_new_issue():
     args = bugrefs_test_args_factory()
     args.report_links = True
     args.include_softfails = False
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels/report_link_new_issue')
-    args.arch = 'arm'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "tags_labels/report_link_new_issue")
+    args.arch = "arm"
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_bug_link_new_issue.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_bugrefs_bug_link_new_issue.md"))
 
 
 def test_issue_status_can_be_queried_from_bugrefs():
@@ -471,15 +510,15 @@ def test_issue_status_can_be_queried_from_bugrefs():
     args.verbose_test = 1
     args.query_issue_status = True
     args.include_softfails = True
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tags_labels')
-    args.arch = 'i586'
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "tags_labels")
+    args.arch = "i586"
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_query_issues.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_bugrefs_query_issues.md"))
     # report generated when no todo items are left and some bugref is not accessible
-    args.builds = '1508,1500'
+    args.builds = "1508,1500"
     args.include_softfails = False
     report = str(openqa_review.generate_report(args))
-    compare_report(report, os.path.join(args.load_dir, 'report25_bugrefs_build1508.md'))
+    compare_report(report, os.path.join(args.load_dir, "report25_bugrefs_build1508.md"))
 
 
 def test_reminder_comments_on_referenced_bugs_are_posted():
@@ -505,19 +544,25 @@ def test_custom_reports_based_on_issue_status():
     args.include_softfails = True
     # now, try filtering: unassigned
     report = openqa_review.generate_report(args)
-    openqa_review.filter_report(report, openqa_review.ie_filters['unassigned'])
-    compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_unassigned.md'))
+    openqa_review.filter_report(report, openqa_review.ie_filters["unassigned"])
+    compare_report(
+        str(report),
+        os.path.join(args.load_dir, "report25_bugrefs_query_issues_filter_unassigned.md"),
+    )
 
     # 2nd filter: closed
     report = openqa_review.generate_report(args)
-    openqa_review.filter_report(report, openqa_review.ie_filters['closed'])
-    compare_report(str(report), os.path.join(args.load_dir, 'report25_bugrefs_query_issues_filter_closed.md'))
+    openqa_review.filter_report(report, openqa_review.ie_filters["closed"])
+    compare_report(
+        str(report),
+        os.path.join(args.load_dir, "report25_bugrefs_query_issues_filter_closed.md"),
+    )
 
 
 def test_arch_distinguish():
     args = cache_test_args_factory()
     args.arch = None
-    args.job_group_urls = args.host + '/group_overview/4'
+    args.job_group_urls = args.host + "/group_overview/4"
 
     report = str(openqa_review.generate_report(args))
-    assert 'ppc64le' in report
+    assert "ppc64le" in report
