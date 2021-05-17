@@ -4,8 +4,11 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
-install: pip install tox-travis
-script: tox
+  - "3.9"  
+install:
+  - pip3 install tox-travis
+script: 
+  - tox
 
 # reference:
 # http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html
