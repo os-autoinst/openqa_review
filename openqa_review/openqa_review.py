@@ -541,9 +541,8 @@ def get_failed_module_details_for_report(f):
     return name, url, details
 
 
-def issue_report_link(
-    root_url, f, test_browser=None
-):  # noqa: C901  # too complex, we might want to remove this function anyway as openQA has it already
+# too complex, we might want to remove this function anyway as openQA has it already
+def issue_report_link(root_url, f, test_browser=None):  # noqa: C901
     """Generate a bug reporting link for the current issue."""
     # always select the first failed module.
     # It might not be the fatal one but better be safe and assume the first
