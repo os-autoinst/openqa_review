@@ -403,7 +403,8 @@ def get_results_by_bugref(results, args):
     if args.include_softfails:
         include_tags += soft_fail_states
 
-    # plain for-loop with append is most efficient: https://stackoverflow.com/questions/11276473/append-to-a-dict-of-lists-with-a-dict-comprehension
+    # plain for-loop with append is most efficient:
+    # https://stackoverflow.com/questions/11276473/append-to-a-dict-of-lists-with-a-dict-comprehension
     results_by_bugref = defaultdict(list)
     for k, v in iteritems(results):
         if not re.match("(" + "|".join(include_tags) + ")", v["state"]):
@@ -468,9 +469,10 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
     @param browser: A browser instance
     @param job_group_url: forwarded to browser instance
     @param builds: Builds for which URLs should be retrieved as comma-separated pair, w/o the word 'Build'
-    @param against_reviewed: Alternative to 'builds', which build to retrieve for comparison with last reviewed, can be 'last' to automatically select the last
-           finished
-    @param running_threshold: Threshold of which percentage of jobs may still be running for the build to be considered 'finished' anyway
+    @param against_reviewed: Alternative to 'builds', which build to retrieve for comparison with last reviewed, can be
+      'last' to automatically select the last finished
+    @param running_threshold: Threshold of which percentage of jobs may still be running for the build to be considered
+      'finished' anyway
     """
     job_group = browser.get_json("%s.json" % job_group_url)
 
@@ -612,8 +614,9 @@ Always latest result in this scenario: [latest](%s)
     )
 
     config_section = "product_issues:%s:product_mapping" % root_url.rstrip("/")
-    # the test module name itself is often not specific enough, that is why we step upwards from the current module until we find the module folder and
-    # concatenate the complete module name in format <folder>-<module> and search for that in the config for potential mappings
+    # the test module name itself is often not specific enough, that is why we step upwards from the current module
+    # until we find the module folder and concatenate the complete module name in format <folder>-<module> and search
+    # for that in the config for potential mappings
     first_step_url = urljoin(str(url), "1/src")
     start_of_current_module = test_details_page.find("a", {"href": first_step_url})
     try:
@@ -630,7 +633,7 @@ Always latest result in this scenario: [latest](%s)
         component = [v for k, v in iteritems(components_config_dict) if re.match(k, complete_module)][0]
     except (NoSectionError, IndexError) as e:  # pragma: no cover
         log.info(
-            "No matching component could be found for the module_folder '%s' and module name '%s' in the config section '%s'"
+            "No matching component found for module_folder '%s' and module name '%s' in config section '%s'"
             % (module_folder, module, e)
         )
         component = ""
@@ -896,9 +899,10 @@ class ArchReport(object):
         if self.args.bugrefs and self.args.include_softfails:
             self._search_for_bugrefs_for_softfailures(results)
 
-        # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as STILL_FAILING but just visible in more
-        # scenarios, ...
-        # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle them outside
+        # if a ticket is known and the same refers to a STILL_FAILING scenario and any NEW_ISSUE we regard that as
+        # STILL_FAILING but just visible in more scenarios, ...
+        # ... else (no ticket linked) we don't group them as we don't know if it really is the same issue and handle
+        # them outside
         results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
         for bugref, result_list in iteritems(results_by_bugref):
@@ -1055,8 +1059,8 @@ class ArchReport(object):
             {
                 "arch": self.arch,
                 "status_badge": status_badge_str[self.status_badge],
-                # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then probably openqa issues
-                # For now we can just not easily decide unless we use the 'bugrefs' mode
+                # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then
+                # probably openqa issues For now we can just not easily decide unless we use the 'bugrefs' mode
                 "new_openqa_issues": ""
                 if abbrev
                 else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty),
