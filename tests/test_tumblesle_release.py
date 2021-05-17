@@ -44,8 +44,14 @@ whitelist = arm7l-foo,bar@uefi"""
         os.mkdir(args.src)
         for d in ["iso", "hdd", "dest"]:
             os.mkdir(os.path.join(args.src, d))
-        isos = ["iso/openSUSE-Leap-42.2-DVD-x86_64-Build0056-Media.iso", "iso/openSUSE-Leap-42.2-NET-x86_64-Build0052-Media.iso"]
-        hdds = ["hdd/opensuse-Tumbleweed-aarch64-20160626-gnome@aarch64.qcow2", "hdd/opensuse-42.2-x86_64-0056-gnome@64bit.qcow2"]
+        isos = [
+            "iso/openSUSE-Leap-42.2-DVD-x86_64-Build0056-Media.iso",
+            "iso/openSUSE-Leap-42.2-NET-x86_64-Build0052-Media.iso",
+        ]
+        hdds = [
+            "hdd/opensuse-Tumbleweed-aarch64-20160626-gnome@aarch64.qcow2",
+            "hdd/opensuse-42.2-x86_64-0056-gnome@64bit.qcow2",
+        ]
         for asset in isos + hdds:
             open(os.path.join(args.src, asset), "w").close()
         # The destination folder must exist
@@ -172,7 +178,9 @@ def test_compare_old_released_with_release_info_against_new_good_yields_release(
 
 
 def test_softfailed_state_is_regarded_as_passed_with_newer_openqa(args):
-    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "tumblesle/0213_0215_new_openqa_with_softfailed")
+    args.load_dir = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "tumblesle/0213_0215_new_openqa_with_softfailed"
+    )
     args.check_build = "0215"
     args.check_against_build = "0213"
     tr = tumblesle_release.TumblesleRelease(args)

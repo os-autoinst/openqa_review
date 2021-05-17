@@ -67,7 +67,10 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     entry_points={
-        "console_scripts": ["openqa-review=openqa_review.openqa_review:main", "tumblesle-release=openqa_review.tumblesle_release:main"],
+        "console_scripts": [
+            "openqa-review=openqa_review.openqa_review:main",
+            "tumblesle-release=openqa_review.tumblesle_release:main",
+        ],
     },
     scripts=["bin/openqa-review-sles-ha", "bin/openqa-review-daily-email", "bin/openqa-review-functional_yast_concise"],
 )
