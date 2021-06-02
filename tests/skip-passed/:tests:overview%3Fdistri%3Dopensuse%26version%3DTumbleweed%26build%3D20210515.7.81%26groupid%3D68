@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="cb3c5003c9f3a77d93dd27633312578380871708" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/4c558f1754/bootstrap.css" rel="stylesheet">
+      <script src="/asset/3fcd7ba991/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+            setupForAll();
+            backToTop();
+              setupOverview();
+
+          } );
+
+//]]></script>
+      <link id="favicon-16" rel="icon" href="/asset/711dac3f2e/logo-16.png" sizes="16x16" type="image/png">
+      <link id="favicon-svg" rel="icon" href="/asset/84ee5d8626/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+     <a class="navbar-brand" href="/"><img src="/asset/84ee5d8626/logo.svg" alt="openQA"></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+       <ul class="navbar-nav mr-auto">
+         <li class='nav-item' id="all_tests">
+            <a class="nav-link" href="/tests">All Tests</a>
+         </li>
+
+         <li class="nav-item dropdown" id="job_groups">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-submenu>Job Groups<span class="caret"></span></a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form method="get" action="/search">
+                    <input type="search" name="q" id="global-search" class="form-control navbar-input" value="" placeholder="Type to search" aria-label="Global search input"/>
+                </form>
+            </li>
+            <li class='nav-item' id="user-action">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+     </ul>
+   </div>
+  </div>
+</nav>
+
+      <div class="container-fluid" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-success">
+        <div class="card-header">
+            Overall Summary of
+                <strong><a href="/group_overview/68">openSUSE Tumbleweed WSL</a></strong>
+                build 20210515.7.81
+            <div class="time-params">
+                    showing latest jobs,
+                    <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20210515.7.81&amp;groupid=68&amp;t=2021-06-02+13%3A23%3A39+%2B0000">overview fixed to the current time</a>
+            </div>
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">3</span>
+
+            Failed: <span class="badge badge-danger">0</span>
+
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: WSL</h3>
+                <table id="results_WSL" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_WSL_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>The base test suite is used for job templates defined in YAML documents. It has no settings of its own.</p>"
+                        data-title="wsl-main" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="wsl-main">wsl-main</span></a>
+                </td>
+
+
+                    <td id="res_WSL_x86_64_wsl-main" name="jobid_td_1750898">
+
+             <span id="res-1750898">
+                 <a href="/tests/1750898">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1750898"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>The base test suite is used for job templates defined in YAML documents. It has no settings of its own.</p>"
+                        data-title="wsl-main@uefi_win" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="wsl-main@uefi_win">wsl-main@uefi_win</span></a>
+                </td>
+
+
+                    <td id="res_WSL_x86_64_wsl-main@uefi_win" name="jobid_td_1750867">
+
+             <span id="res-1750867">
+                 <a href="/tests/1750867">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1750867"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>The base test suite is used for job templates defined in YAML documents. It has no settings of its own.</p>"
+                        data-title="wsl2-main" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="wsl2-main">wsl2-main</span></a>
+                </td>
+
+
+                    <td id="res_WSL_x86_64_wsl2-main" name="jobid_td_1751026">
+
+             <span id="res-1751026">
+                 <a href="/tests/1751026">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1751026"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+      </div>
+
+  </body>
+</html>

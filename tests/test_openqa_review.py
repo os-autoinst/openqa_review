@@ -56,6 +56,7 @@ def args_factory():
     args.query_issue_status = False
     args.query_issue_status_help = True
     args.report_links = False
+    args.skip_passed = False
     return args
 
 
@@ -407,6 +408,18 @@ def test_new_tests_appearing_in_builds_are_supported():
     report = str(openqa_review.generate_report(args))
     # There should be one new test which is failing and has not been there in before
     assert '* [btrfs@zkvm](https://openqa.opensuse.org/tests/181148 "Failed modules: livecdreboot")' in report
+
+
+def test_skip_passed():
+    args = cache_test_args_factory()
+    args.skip_passed = True
+    args.show_empty = False
+    args.job_groups = ["openSUSE Tumbleweed WSL", "openSUSE Tumbleweed PowerPC"]
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "skip-passed")
+    args.job_group_urls = "https://openqa.opensuse.org/group_overview/68,https://openqa.opensuse.org/group_overview/4"
+    args.arch = None
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, "report-68-4.md"))
 
 
 def bugrefs_test_args_factory():
