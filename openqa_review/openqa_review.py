@@ -1162,15 +1162,23 @@ class ProductReport(object):
         if self.args.verbose_test and self.args.verbose_test > 3:
             build_str += "\n\n" + self.changes_str
 
+        arch_reports = list(v for v in self.reports.values() if not self.args.skip_passed or v.status_badge != "GREEN")
         openqa_review_report_product = openqa_review_report_product_template.substitute(
             {
                 "now": now_str,
                 "build": build_str,
                 "common_issues": common_issues(missing_archs_str, self.args.show_empty),
-                "arch_report": "\n---\n".join(map(str, self.reports.values())),
+                "arch_report": "\n---\n".join(map(str, arch_reports)),
             }
         )
         return openqa_review_report_product
+
+    def is_passed(self):
+        """Return True if none of the reports contain failures."""
+        for v in self.reports.values():
+            if v.status_badge != "GREEN":
+                return False
+        return True
 
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
@@ -1292,6 +1300,13 @@ def parse_args():
         default=True,
         dest="show_empty",
         help="Only show sections in report with content",
+    )
+    parser.add_argument(
+        "--skip-passed",
+        action="store_true",
+        default=False,
+        dest="skip_passed",
+        help="Skip passed reports",
     )
     parser.add_argument(
         "--include-softfails",
@@ -1418,7 +1433,8 @@ class Report(object):
         """Generate markdown."""
         report_str = ""
         for k, v in iteritems(self.report):
-            report_str += "# %s\n\n%s\n---\n" % (k, v)
+            if not self.args.skip_passed or type(v) is not ProductReport or not v.is_passed():
+                report_str += "# %s\n\n%s\n---\n" % (k, v)
         return report_str
 
 

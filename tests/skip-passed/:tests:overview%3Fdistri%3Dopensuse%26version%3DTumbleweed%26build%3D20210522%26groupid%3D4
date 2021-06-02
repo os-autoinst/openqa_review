@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="8acc3684ec9550257da534b72c3f603a942350f1" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/4c558f1754/bootstrap.css" rel="stylesheet">
+      <script src="/asset/3fcd7ba991/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+            setupForAll();
+            backToTop();
+              setupOverview();
+
+          } );
+
+//]]></script>
+      <link id="favicon-16" rel="icon" href="/asset/711dac3f2e/logo-16.png" sizes="16x16" type="image/png">
+      <link id="favicon-svg" rel="icon" href="/asset/84ee5d8626/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+     <a class="navbar-brand" href="/"><img src="/asset/84ee5d8626/logo.svg" alt="openQA"></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+       <ul class="navbar-nav mr-auto">
+         <li class='nav-item' id="all_tests">
+            <a class="nav-link" href="/tests">All Tests</a>
+         </li>
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form method="get" action="/search">
+                    <input type="search" name="q" id="global-search" class="form-control navbar-input" value="" placeholder="Type to search" aria-label="Global search input"/>
+                </form>
+            </li>
+            <li class='nav-item' id="user-action">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+     </ul>
+   </div>
+  </div>
+</nav>
+
+      <div class="container-fluid" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+            Overall Summary of
+                <strong><a href="/group_overview/4">openSUSE Tumbleweed PowerPC</a></strong>
+                build 20210522
+            <div class="time-params">
+                    showing latest jobs,
+                    <a href="/tests/overview?distri=opensuse&amp;version=Tumbleweed&amp;build=20210522&amp;groupid=4&amp;t=2021-06-02+13%3A23%3A42+%2B0000">overview fixed to the current time</a>
+            </div>
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">37</span>
+
+                Soft-Failed:
+                <span class="badge badge-warning">1</span>
+            Failed: <span class="badge badge-danger">4</span>
+
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: DVD</h3>
+                <table id="results_DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_DVD_arch_ppc64">ppc64</th>
+                <th id="flavor_DVD_arch_ppc64le">ppc64le</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="RAID0">RAID0</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_RAID0" name="jobid_td_1754049">
+
+             <span id="res-1754049">
+                 <a href="/tests/1754049">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754050,1754052,1754053],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754049"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_RAID0" name="jobid_td_1754091">
+
+             <span id="res-1754091">
+                 <a href="/tests/1754091">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754092,1754093,1754152],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754091"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="RAID1">RAID1</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_RAID1" name="jobid_td_1754050">
+
+             <span id="res-1754050">
+                 <a href="/tests/1754050">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754049],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754050"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_RAID1" name="jobid_td_1754092">
+
+             <span id="res-1754092">
+                 <a href="/tests/1754092">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754095],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754091],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754092"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="RAID10">RAID10</span>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_RAID10" name="jobid_td_1754095">
+
+             <span id="res-1754095">
+                 <a href="/tests/1754095">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754092],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754095"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="RAID5">RAID5</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_RAID5" name="jobid_td_1754052">
+
+             <span id="res-1754052">
+                 <a href="/tests/1754052">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754049],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754052"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_RAID5" name="jobid_td_1754093">
+
+             <span id="res-1754093">
+                 <a href="/tests/1754093">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754091],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754093"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="boot_to_snapshot">boot_to_snapshot</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_boot_to_snapshot" name="jobid_td_1754054">
+
+             <span id="res-1754054">
+                 <a href="/tests/1754054">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754051],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754054"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_boot_to_snapshot" name="jobid_td_1754064">
+
+             <span id="res-1754064">
+                 <a href="/tests/1754064">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754064"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>image creation job used as parent for other jobs testing based on existing installation. GUI-Installation and selecting the gnome desktop during installation.
+</p>"
+                        data-title="create_hdd_gnome" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="create_hdd_gnome">create_hdd_gnome</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_create_hdd_gnome" name="jobid_td_1754086">
+
+             <span id="res-1754086">
+                 <a href="/tests/1754086">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754112,1754153],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754086"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="create_hdd_kde">create_hdd_kde</span>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_create_hdd_kde" name="jobid_td_1754055">
+
+             <span id="res-1754055">
+                 <a href="/tests/1754055">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754132],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754055"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>image creation job used as parent for other jobs testing based on existing installation. Installation in textmode and selecting the textmode &amp;quot;desktop&amp;quot; during installation.
+HDDSIZEGB=30 for TW ppc64le kdump_and_crash in extra_tests_in_textmode</p>"
+                        data-title="create_hdd_textmode" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="create_hdd_textmode">create_hdd_textmode</span></a>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_create_hdd_textmode" name="jobid_td_1754051">
+
+             <span id="res-1754051">
+                 <a href="/tests/1754051">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754054],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754051"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_create_hdd_textmode" name="jobid_td_1754062">
+
+             <span id="res-1754062">
+                 <a href="/tests/1754062">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1754063,1754064,1754065,1754104,1754106,1754113,1754131,1754135,1754136,1754137,1754139],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754062"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Mantainer: jeriveramoya  Test selection of file system ext4 for / partition in textmode for openSUSE distributions</p>"
+                        data-title="ext4_textmode" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="ext4_textmode">ext4_textmode</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_ext4_textmode" name="jobid_td_1754119">
+
+             <span id="res-1754119">
+                 <a href="/tests/1754119">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754119"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Dracut regression test</p>"
+                        data-title="extra_tests_dracut" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="extra_tests_dracut">extra_tests_dracut</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_dracut" name="jobid_td_1754104">
+
+             <span id="res-1754104">
+                 <a href="/tests/1754104">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754104"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: QE Core
+
+Filesystem related tests, for example snapper and btrfs features.</p>"
+                        data-title="extra_tests_filesystem" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="extra_tests_filesystem">extra_tests_filesystem</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_filesystem" name="jobid_td_1754139">
+
+             <span id="res-1754139">
+                 <a href="/tests/1754139">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754139"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: QE Core, asmorodskyi. Extra tests which were designed to run on gnome</p>"
+                        data-title="extra_tests_gnome" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="extra_tests_gnome">extra_tests_gnome</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_gnome" name="jobid_td_1754112">
+
+             <span id="res-1754112">
+                 <a href="/tests/1754112">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_ppc64le_extra_tests_gnome"
+        data-async="/tests/1754112/modules/multi_users_dm/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1754112#step/multi_users_dm/1"
+    ><span title="multi_users_dm">multi_users_dm</span></a>
+         <span title="- NM_wpa2_enterprise
+">+1</span>
+
+             <span id="bug-1754112">
+        <a href="https://progress.opensuse.org/issues/92095">
+            <i class="test-label label_bug fa fa-bolt" title="Bug referenced: poo#92095
+[qe-core] test fails in multi_users_dm, string typed in gnome search rather than xterm screen"></i>
+        </a>
+    </span>
+    <span id="bug-1754112">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=1176553">
+            <i class="test-label label_bug fa fa-bug" title="Bug referenced: boo#1176553
+[Build 20200914] NM_wpa2_enterprise: no auth dialog to connect"></i>
+        </a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754086],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754112"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="extra_tests_on_kde">extra_tests_on_kde</span>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_on_kde" name="jobid_td_1754132">
+
+             <span id="res-1754132">
+                 <a href="/tests/1754132">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754055],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754132"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: slindomansilla@suse.de.
+Mainly post-installation console extra tests.</p>"
+                        data-title="extra_tests_textmode" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="extra_tests_textmode">extra_tests_textmode</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_textmode" name="jobid_td_1754113">
+
+             <span id="res-1754113">
+                 <a href="/tests/1754113">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_ppc64le_extra_tests_textmode"
+        data-async="/tests/1754113/modules/openssl_alpn/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1754113#step/openssl_alpn/1"
+    ><span title="openssl_alpn">openssl_alpn</span></a>
+         <span title="- journalctl
+- sssd
+- wpa_supplicant
+- kdump_and_crash
+">+4</span>
+
+             <span id="comment-1754113">
+        <a href="/tests/1754113#comments"><i class="test-label label_comment fa fa-comment" title="1 comment available"></i></a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754113"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: dheidler. Extra tests about CLI software in container module</p>"
+                        data-title="extra_tests_textmode_containers" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="extra_tests_textmode_containers">extra_tests_textmode_containers</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_extra_tests_textmode_containers" name="jobid_td_1754131">
+
+             <span id="res-1754131">
+                 <a href="/tests/1754131">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_ppc64le_extra_tests_textmode_containers"
+        data-async="/tests/1754131/modules/buildah_podman/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1754131#step/buildah_podman/1"
+    ><span title="buildah_podman">buildah_podman</span></a>
+         <span title="- buildah_docker
+">+1</span>
+
+             <span id="bug-1754131">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=1185143">
+            <i class="test-label label_bug fa fa-bug" title="Bug referenced: boo#1185143
+[Build 20210420] openQA test fails in buildah_docker: crun not found"></i>
+        </a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754131"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="gnome">gnome</span>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_gnome" name="jobid_td_1754082">
+
+             <span id="res-1754082">
+                 <a href="/tests/1754082">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754082"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="gpt">gpt</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_gpt" name="jobid_td_1754045">
+
+             <span id="res-1754045">
+                 <a href="/tests/1754045">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754045"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_gpt" name="jobid_td_1754061">
+
+             <span id="res-1754061">
+                 <a href="/tests/1754061">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754061"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="install_minimalx@ppc64-multipath">install_minimalx@ppc64-multipath</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_install_minimalx@ppc64-multipath" name="jobid_td_1754044">
+
+             <span id="res-1754044">
+                 <a href="/tests/1754044">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754044"></span>
+</td>
+
+
+                        <td>-</td>
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="install_minimalx@ppc64le-multipath">install_minimalx@ppc64le-multipath</span>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_install_minimalx@ppc64le-multipath" name="jobid_td_1754060">
+
+             <span id="res-1754060">
+                 <a href="/tests/1754060">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754060"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>set HDDSIZE=40 as required for ppc64le (failed w/o it on &lt;a href=&quot;https://openqa.opensuse.org/tests/390330&quot;&gt;https://openqa.opensuse.org/tests/390330&lt;/a&gt;#step/install_and_reboot/21</p>"
+                        data-title="install_only" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="install_only">install_only</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_install_only" name="jobid_td_1754087">
+
+             <span id="res-1754087">
+                 <a href="/tests/1754087">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754087"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>MAX_JOB_TIME  set as per &lt;a href=&quot;https://progress.opensuse.org/issues/46682&quot;&gt;poo#46682&lt;/a&gt;</p>"
+                        data-title="lvm" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="lvm">lvm</span></a>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_lvm" name="jobid_td_1754053">
+
+             <span id="res-1754053">
+                 <a href="/tests/1754053">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754049],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754053"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_lvm" name="jobid_td_1754152">
+
+             <span id="res-1754152">
+                 <a href="/tests/1754152">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754091],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754152"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="mediacheck">mediacheck</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_mediacheck" name="jobid_td_1754046">
+
+             <span id="res-1754046">
+                 <a href="/tests/1754046">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754046"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_mediacheck" name="jobid_td_1754059">
+
+             <span id="res-1754059">
+                 <a href="/tests/1754059">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754059"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>MAX_JOB_TIME for bypass &lt;a href=&quot;https://progress.opensuse.org/issues/44408&quot;&gt;poo#44408&lt;/a&gt;</p>"
+                        data-title="minimalx" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="minimalx">minimalx</span></a>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_minimalx" name="jobid_td_1754043">
+
+             <span id="res-1754043">
+                 <a href="/tests/1754043">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754043"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_minimalx" name="jobid_td_1754056">
+
+             <span id="res-1754056">
+                 <a href="/tests/1754056">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754056"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="rescue_system">rescue_system</span>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_rescue_system" name="jobid_td_1754048">
+
+             <span id="res-1754048">
+                 <a href="/tests/1754048">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754048"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_rescue_system" name="jobid_td_1754057">
+
+             <span id="res-1754057">
+                 <a href="/tests/1754057">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754057"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Installation in textmode and selecting the textmode &amp;quot;desktop&amp;quot; during installation.</p>"
+                        data-title="textmode" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="textmode">textmode</span></a>
+                </td>
+
+
+                    <td id="res_DVD_ppc64_textmode" name="jobid_td_1754047">
+
+             <span id="res-1754047">
+                 <a href="/tests/1754047">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754047"></span>
+</td>
+
+
+                    <td id="res_DVD_ppc64le_textmode" name="jobid_td_1754058">
+
+             <span id="res-1754058">
+                 <a href="/tests/1754058">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754058"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Install toolchain packages and test the toolchain. Uses a more powerful machine configuration.
+
+--
+
+Maintainer: slindomansilla, jrivera</p>"
+                        data-title="toolchain_zypper" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="toolchain_zypper">toolchain_zypper</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_toolchain_zypper" name="jobid_td_1754063">
+
+             <span id="res-1754063">
+                 <a href="/tests/1754063">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754062],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754063"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: qsf-y Test for yast2 UI, ncurses only. Running on created gnome images which provides both text console for ncurses UI tests as well as the gnome environment for the GUI tests.
+riafarov set TIMEOUT_SCALE to improve stability of the test.</p>"
+                        data-title="yast2_ncurses" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="yast2_ncurses">yast2_ncurses</span></a>
+                </td>
+
+
+                        <td>-</td>
+
+                    <td id="res_DVD_ppc64le_yast2_ncurses" name="jobid_td_1754153">
+
+             <span id="res-1754153">
+                 <a href="/tests/1754153">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_ppc64le_yast2_ncurses"
+        data-async="/tests/1754153/modules/yast2_ftp/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1754153#step/yast2_ftp/1"
+    ><span title="yast2_ftp">yast2_ftp</span></a>
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_DVD_ppc64le_yast2_ncurses"
+        data-async="/tests/1754153/modules/dhcp_no/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1754153#step/dhcp_no/1"
+    ><span title="dhcp_no">dhcp_no</span></a>
+         <span title="- dhcp_yes
+- dhcp_yes_eth
+">+2</span>
+
+             <span id="bug-1754153">
+        <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=1183786">
+            <i class="test-label label_bug fa fa-bug" title="Bug referenced: boo#1183786
+Cannot load RSA certificate while starting vsftpd daemon"></i>
+        </a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1754086],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754153"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+                <h3>Flavor: NET</h3>
+                <table id="results_NET" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_NET_arch_ppc64">ppc64</th>
+                <th id="flavor_NET_arch_ppc64le">ppc64le</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="install_minimalx">install_minimalx</span>
+                </td>
+
+
+                    <td id="res_NET_ppc64_install_minimalx" name="jobid_td_1754040">
+
+             <span id="res-1754040">
+                 <a href="/tests/1754040">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754040"></span>
+</td>
+
+
+                    <td id="res_NET_ppc64le_install_minimalx" name="jobid_td_1754042">
+
+             <span id="res-1754042">
+                 <a href="/tests/1754042">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754042"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>MAX_JOB_TIME for bypass &lt;a href=&quot;https://progress.opensuse.org/issues/44408&quot;&gt;poo#44408&lt;/a&gt;</p>"
+                        data-title="minimalx" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="minimalx">minimalx</span></a>
+                </td>
+
+
+                    <td id="res_NET_ppc64_minimalx" name="jobid_td_1754039">
+
+             <span id="res-1754039">
+                 <a href="/tests/1754039">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754039"></span>
+</td>
+
+
+                    <td id="res_NET_ppc64le_minimalx" name="jobid_td_1754041">
+
+             <span id="res-1754041">
+                 <a href="/tests/1754041">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1754041"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+          <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button">
+            <i class="fas fa-angle-up"></i>
+          </a>
+      </div>
+
+  </body>
+</html>
