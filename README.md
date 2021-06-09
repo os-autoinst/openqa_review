@@ -1,4 +1,4 @@
-# openqa_review_script [![Build Status](https://travis-ci.org/os-autoinst/openqa_review.svg?branch=master)](https://travis-ci.org/os-autoinst/openqa_review) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/699/badge)](https://bestpractices.coreinfrastructure.org/projects/699)
+# openqa_review_script [![Build Status](https://travis-ci.com/os-autoinst/openqa_review.svg?branch=master)](https://travis-ci.com/os-autoinst/openqa_review) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/699/badge)](https://bestpractices.coreinfrastructure.org/projects/699)
 
 A review helper script for openQA.
 
@@ -52,7 +52,7 @@ TODOs and ideas are tracked in the file `TODO` as well as github issues.
 
 ### Rules for commits
 
-* Every commit is checked by [Travis CI](https://travis-ci.org/travis) as soon as
+* Every commit is checked by [Travis CI](https://travis-ci.com) as soon as
   you create a pull request but you *should* run `tox` locally,
 
 * Make sure to keep the 100% test coverage, e.g. by adding test reference data
