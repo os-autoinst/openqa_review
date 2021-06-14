@@ -112,6 +112,7 @@ class Browser(object):
         return content
 
     def _get(self, url, as_json=False):  # pragma: no cover
+        last_error = ""
         for i in range(1, 7):
             try:
                 r = requests.get(url, auth=self.auth)
@@ -138,9 +139,13 @@ class Browser(object):
                 )
                 log.error(msg)
                 raise DownloadError(msg)
-            except requests.exceptions.ConnectionError:
+            except requests.exceptions.ConnectionError as e:
+                # Save the status code for the for/else branch
+                last_error = ": {}".format(str(e))
                 log.info("Connection error encountered accessing %s, retrying try %s" % (url, i))
                 continue
+            # Save the status code for the for/else branch
+            last_error = ": Request failed with status {}".format(r.status_code)
             if r.status_code in {502, 503, 504}:
                 log.info("Request to %s failed with status code %s, retrying try %s" % (url, r.status_code, i))
                 continue
@@ -150,7 +155,7 @@ class Browser(object):
                 raise DownloadError(msg)
             break
         else:
-            msg = "Request to %s was not successful after multiple retries, giving up" % url
+            msg = "Request to {} was not successful after {} retries{}".format(url, i, last_error)
             log.warn(msg)
             raise DownloadError(msg)
         content = r.json() if as_json else r.content.decode("utf8")
