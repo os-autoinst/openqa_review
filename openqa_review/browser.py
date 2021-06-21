@@ -113,7 +113,7 @@ class Browser(object):
 
     def _get(self, url, as_json=False):  # pragma: no cover
         last_error = ""
-        for i in range(1, 7):
+        for i in range(1, 21):
             try:
                 r = requests.get(url, auth=self.auth)
             except requests.exceptions.SSLError as e:
