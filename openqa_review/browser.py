@@ -14,6 +14,8 @@ from urllib.parse import quote, unquote, urljoin, urlparse
 import ssl
 
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 from sortedcontainers import SortedDict
 
@@ -112,52 +114,41 @@ class Browser(object):
         return content
 
     def _get(self, url, as_json=False):  # pragma: no cover
-        last_error = ""
-        for i in range(1, 7):
+        retries = Retry(total=7, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        http = requests.Session()
+        parsed_url = urlparse(url)
+        http.mount("{}://".format(parsed_url.scheme), HTTPAdapter(max_retries=retries))
+
+        try:
+            r = http.get(url, auth=self.auth, timeout=2.5)
+        except requests.exceptions.SSLError as e:
             try:
-                r = requests.get(url, auth=self.auth)
-            except requests.exceptions.SSLError as e:
-                try:
-                    import OpenSSL
-                except ImportError:
-                    raise e
-                # as we go one layer deeper from http now, we're just interested in the hostname
-                server_name = urlparse(url).netloc
-                cert = ssl.get_server_certificate((server_name, 443))
-                x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
-                issuer_components = x509.get_issuer().get_components()
-                # we're only interested in the b'O'rganizational unit
-                issuers = filter(lambda component: component[0] == b"O", issuer_components)
-                issuer = next(issuers)[1].decode("utf-8", "ignore")
-                sha1digest = x509.digest("sha1").decode("utf-8", "ignore")
-                sha256digest = x509.digest("sha256").decode("utf-8", "ignore")
-                msg = 'Certificate for "%s" from "%s" (sha1: %s, sha256 %s) is not trusted by the system' % (
-                    server_name,
-                    issuer,
-                    sha1digest,
-                    sha256digest,
-                )
-                log.error(msg)
-                raise DownloadError(msg)
-            except requests.exceptions.ConnectionError as e:
-                # Save the status code for the for/else branch
-                last_error = ": {}".format(str(e))
-                log.info("Connection error encountered accessing %s, retrying try %s" % (url, i))
-                continue
-            # Save the status code for the for/else branch
-            last_error = ": Request failed with status {}".format(r.status_code)
-            if r.status_code in {502, 503, 504}:
-                log.info("Request to %s failed with status code %s, retrying try %s" % (url, r.status_code, i))
-                continue
-            if r.status_code != 200:
-                msg = "Request to %s was not successful, status code: %s" % (url, r.status_code)
-                log.info(msg)
-                raise DownloadError(msg)
-            break
-        else:
-            msg = "Request to {} was not successful after {} retries{}".format(url, i, last_error)
+                import OpenSSL
+            except ImportError:
+                raise e
+            # as we go one layer deeper from http now, we're just interested in the hostname
+            server_name = parsed_url.netloc
+            cert = ssl.get_server_certificate((server_name, 443))
+            x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
+            issuer_components = x509.get_issuer().get_components()
+            # we're only interested in the b'O'rganizational unit
+            issuers = filter(lambda component: component[0] == b"O", issuer_components)
+            issuer = next(issuers)[1].decode("utf-8", "ignore")
+            sha1digest = x509.digest("sha1").decode("utf-8", "ignore")
+            sha256digest = x509.digest("sha256").decode("utf-8", "ignore")
+            msg = 'Certificate for "%s" from "%s" (sha1: %s, sha256 %s) is not trusted by the system' % (
+                server_name,
+                issuer,
+                sha1digest,
+                sha256digest,
+            )
+            log.error(msg)
+            raise DownloadError(msg)
+        except requests.exceptions.ConnectionError as e:
+            msg = "Request to {} was not successful after {} retries: {}".format(url, retries.total, str(e))
             log.warn(msg)
             raise DownloadError(msg)
+
         content = r.json() if as_json else r.content.decode("utf8")
         return content
 
