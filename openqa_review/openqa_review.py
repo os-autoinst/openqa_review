@@ -694,16 +694,16 @@ class Issue(object):
                     log.debug("#0 ticket id reference found")
                     self.msg = "NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation"
                     return
-                elif bugref.startswith("poo#"):
+                elif self.bugref.startswith("poo#"):
                     log.debug("Test issue discovered, looking on progress")
                     self.issue_type = "redmine"
-                    self.json = progress_browser.get_json(bugref_href + ".json")["issue"]
+                    self.json = progress_browser.get_json(self.bugref_href + ".json")["issue"]
                     self.status = self.json["status"]["name"]
                     self.assignee = self.json["assigned_to"]["name"] if "assigned_to" in self.json else "None"
                     self.subject = self.json["subject"]
                     self.priority = self.json["priority"]["name"]
                     self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
-                elif bugref.startswith(("boo#", "bsc#", "bgo#")):
+                elif self.bugref.startswith(("boo#", "bsc#", "bgo#")):
                     log.debug("Product bug discovered, looking on bugzilla")
                     self.issue_type = "bugzilla"
                     self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})[
@@ -716,14 +716,16 @@ class Issue(object):
                     self.subject = self.json["summary"]
                     self.priority = self.json["priority"].split(" ")[0] + "/" + self.json["severity"]
                 else:
-                    log.debug('No valid bugref found. Bugref found: "%s"' % bugref)
+                    log.debug('No valid bugref found. Bugref found: "%s"' % self.bugref)
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
-                log.info("A download error has been encountered for bugref %s (%s): %s" % (bugref, bugref_href, e))
+                log.info(
+                    "A download error has been encountered for bugref %s (%s): %s" % (self.bugref, self.bugref_href, e)
+                )
                 self.msg = str(e)
                 self.error = True
             except TypeError as e:
-                log.error("Error retrieving details for bugref %s (%s): %s" % (bugref, bugref_href, e))
+                log.error("Error retrieving details for bugref %s (%s): %s" % (self.bugref, self.bugref_href, e))
                 self.msg = "Ticket not found"
                 self.error = True
 
