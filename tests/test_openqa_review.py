@@ -21,12 +21,14 @@ import sys
 import tempfile
 from argparse import Namespace
 from builtins import str
-from openqa_review.browser import filename_to_url
 from urllib.parse import urljoin, urlparse
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from openqa_review.browser import filename_to_url
 from openqa_review import openqa_review  # SUT
 
 
