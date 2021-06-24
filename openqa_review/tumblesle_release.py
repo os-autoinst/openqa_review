@@ -250,7 +250,7 @@ class TumblesleRelease(object):
             raise NotImplementedError("tag check not implemented")
         elif self.args.check_against_build == "release_info":
             with open(self.release_info_path, "r") as release_info_file:
-                release_info = yaml.load(release_info_file)
+                release_info = yaml.load(release_info_file, Loader=yaml.SafeLoader)
                 build["released"] = release_info[self.args.product]["build"]
         else:
             build["released"] = self.args.check_against_build
