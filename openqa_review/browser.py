@@ -1,9 +1,3 @@
-# Python 2 and 3: easiest option
-# see http://python-future.org/compatible_idioms.html
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
-
-install_aliases()
-
 import codecs
 import json
 import logging

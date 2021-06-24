@@ -22,14 +22,6 @@ appropriately in the configuration file (see config file example). The
 notifications are serialized in JSON strings.
 """
 
-# Python 2 and 3: easiest option
-# see http://python-future.org/compatible_idioms.html
-from __future__ import absolute_import
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
-
-install_aliases()
-from future.utils import iteritems
-
 import argparse
 import fnmatch
 import glob
@@ -269,7 +261,7 @@ class TumblesleRelease(object):
         }
         # count passed, failed for both released/new
         passed["released"] = len(jobs_by_result["released"]["passed"]) + len(jobs_by_result["released"]["softfailed"])
-        hard_failed = {k: len(v) for k, v in iteritems(hard_failed_jobs)}
+        hard_failed = {k: len(v) for k, v in hard_failed_jobs.items()}
         whitelisted = {"last": failed["last"] - hard_failed["last"]}
         passed["last"] += whitelisted["last"]
         assert (
@@ -295,8 +287,8 @@ class TumblesleRelease(object):
             self.release_build = build["last"]
             # TODO auto-remove entries from whitelist which are passed now
         else:
-            hard_failed_jobs_by_scenario = {k: {scenario(j): j for j in v} for k, v in iteritems(hard_failed_jobs)}
-            sets = {k: set(v) for k, v in iteritems(hard_failed_jobs_by_scenario)}
+            hard_failed_jobs_by_scenario = {k: {scenario(j): j for j in v} for k, v in hard_failed_jobs.items()}
+            sets = {k: set(v) for k, v in hard_failed_jobs_by_scenario.items()}
             new_failures = sets["last"].difference(sets["released"])
             new_fixed = sets["released"].difference(sets["last"])
             log.info("Regression in new build %s, new failures: %s" % (build["last"], ", ".join(new_failures)))
