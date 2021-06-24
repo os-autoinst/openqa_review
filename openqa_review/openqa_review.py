@@ -961,6 +961,7 @@ class ArchReport(object):
                 if not match:  # pragma: no cover
                     log.info("Could not find bug reference in text '%s', skipping." % v["bugref"])
                     continue
+                v["bugref"] = match.group(0)
                 bugref, bug_id = match.group(1), match.group(2)
                 assert bugref, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
