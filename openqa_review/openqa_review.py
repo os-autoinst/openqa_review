@@ -1521,12 +1521,11 @@ def main():  # pragma: no cover, only interactive
         reminder_comment_on_issues(report)
 
     if args.filter:
-        try:
-            filter_report(report, ie_filters[args.filter])
-        except KeyError:
+        if args.filter not in ie_filters:
             print("No such filter '%s'" % args.filter)
             print("Available filters: %s" % ", ".join(ie_filters.keys()))
             sys.exit(1)
+        filter_report(report, ie_filters[args.filter])
 
     try:
         print(report)
