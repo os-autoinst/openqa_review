@@ -1,5 +1,4 @@
 import os
-import sys
 from subprocess import check_output, CalledProcessError
 
 from setuptools import setup
@@ -9,11 +8,6 @@ from setuptools import setup
 # Also, when git is not available (PyPi package), use stored version.py.
 version_py = os.path.join(os.path.dirname(__file__), "version.py")
 
-# python2 backwards craft
-try:
-    FileNotFoundError
-except NameError:
-    FileNotFoundError = IOError
 
 try:
     # This will not generate PEP440 compliant version strings for any commit
@@ -32,7 +26,6 @@ open(version_py, "w").write(version_msg + os.linesep + "__version__ = '" + str(v
 
 install_requires = [
     "beautifulsoup4",
-    "future",
     "sortedcontainers",
     "humanfriendly",
     "requests",
@@ -40,11 +33,6 @@ install_requires = [
     "pika",
     "certifi",
 ]
-
-# there is also a new version 'configparser2' to resolve the name ambuigity but that package might not be available
-# everywhere
-if sys.version_info < (3, 0):
-    install_requires += ["configparser"]
 
 setup(
     name="openqa_review",
@@ -66,6 +54,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Topic :: Utilities",
         "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
     ],
     entry_points={
         "console_scripts": [

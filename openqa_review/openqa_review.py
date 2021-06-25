@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """
 Review helper script for openQA.
@@ -86,15 +86,6 @@ Alternatives could have been and still are for further extensions or reworks:
 
 
 """
-
-# Python 2 and 3: easiest option
-# see http://python-future.org/compatible_idioms.html
-from __future__ import absolute_import, unicode_literals
-
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
-
-install_aliases()
-from future.utils import iteritems
 
 import argparse
 import codecs
@@ -321,18 +312,16 @@ def get_arch_state_results(arch, current_details, previous_details, output_state
     skipped = get_skipped_dict(arch, current_details)
 
     test_results_previous_dict = {i["id"]: i for i in test_results_previous if i["id"] in test_results_dict.keys()}
-    states = SortedDict(get_state(v, test_results_previous_dict) for k, v in iteritems(test_results_dict))
+    states = SortedDict(get_state(v, test_results_previous_dict) for k, v in test_results_dict.items())
 
     # intermediate step:
     # - print report of differences
-    interesting_states = SortedDict({k.split(arch + "_")[1]: v for k, v in iteritems(states) if v["state"] != "STABLE"})
+    interesting_states = SortedDict({k.split(arch + "_")[1]: v for k, v in states.items() if v["state"] != "STABLE"})
 
     if output_state_results:
         print("arch: %s" % arch)
         for state in interesting_states_names:
-            print(
-                "\n%s:\n\t%s\n" % (state, ", ".join(k for k, v in iteritems(interesting_states) if v["state"] == state))
-            )
+            print("\n%s:\n\t%s\n" % (state, ", ".join(k for k, v in interesting_states.items() if v["state"] == state)))
     interesting_states.update({"skipped": skipped})
     return interesting_states
 
@@ -406,7 +395,7 @@ def get_results_by_bugref(results, args):
     # plain for-loop with append is most efficient:
     # https://stackoverflow.com/questions/11276473/append-to-a-dict-of-lists-with-a-dict-comprehension
     results_by_bugref = defaultdict(list)
-    for k, v in iteritems(results):
+    for k, v in results.items():
         if not re.match("(" + "|".join(include_tags) + ")", v["state"]):
             continue
         key = v["bugref"] if (args.bugrefs and "bugref" in v and v["bugref"]) else "todo"
@@ -433,10 +422,10 @@ def find_builds(builds, running_threshold=0):
     def non_empty(r):
         return r["total"] != 0 and r["total"] > r["skipped"] and not ("build" in r.keys() and r["build"] is None)
 
-    builds = {build: result for build, result in iteritems(builds) if non_empty(result)}
+    builds = {build: result for build, result in builds.items() if non_empty(result)}
     finished = {
         build: result
-        for build, result in iteritems(builds)
+        for build, result in builds.items()
         if not result["unfinished"] or (100 * float(result["unfinished"]) / result["total"]) <= threshold
     }
 
@@ -630,7 +619,7 @@ Always latest result in this scenario: [latest](%s)
     component_config_section = "product_issues:%s:component_mapping" % root_url.rstrip("/")
     try:
         components_config_dict = dict(config.items(component_config_section))
-        component = [v for k, v in iteritems(components_config_dict) if re.match(k, complete_module)][0]
+        component = [v for k, v in components_config_dict.items() if re.match(k, complete_module)][0]
     except (NoSectionError, IndexError) as e:  # pragma: no cover
         log.info(
             "No matching component found for module_folder '%s' and module name '%s' in config section '%s'"
@@ -907,7 +896,7 @@ class ArchReport(object):
         # them outside
         results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
-        for bugref, result_list in iteritems(results_by_bugref):
+        for bugref, result_list in results_by_bugref.items():
             if re.match("todo", bugref):
                 log.info("Skipping \"todo\" bugref '%s' in '%s'" % (bugref, result_list))
                 continue
@@ -940,7 +929,7 @@ class ArchReport(object):
                 self.issues["existing"]["product"].append(IssueEntry(self.args, self.root_url, existing_soft_fails))
 
     def _search_for_bugrefs_for_softfailures(self, results):
-        for k, v in iteritems(results):
+        for k, v in results.items():
             if v["state"] in soft_fail_states:
                 try:
                     module_url = self._get_url_to_softfailed_module(v["href"])
@@ -977,8 +966,8 @@ class ArchReport(object):
     def total_issues(self):
         """Return Number of issue entries for this arch."""
         total = 0
-        for issue_status, issue_types in iteritems(self.issues):
-            for issue_type, ies in iteritems(issue_types):
+        for issue_status, issue_types in self.issues.items():
+            for issue_type, ies in issue_types.items():
                 total += len(ies)
         return total
 
@@ -1112,10 +1101,10 @@ class ProductReport(object):
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 
-        changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in iteritems(current_summary)})
+        changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in current_summary.items()})
         self.changes_str = (
             "***Changes since reference build***\n\n* "
-            + "\n* ".join("%s: %s" % (k, v) for k, v in iteritems(changes))
+            + "\n* ".join("%s: %s" % (k, v) for k, v in changes.items())
             + "\n"
         )
         log.info("%s" % self.changes_str)
@@ -1386,11 +1375,11 @@ def get_job_groups(browser, root_url, args):
             job_groups[_pgroup_prefix(job_group)] = urljoin(root_url, "/group_overview/%i" % job_group["id"])
         if args.job_groups:
             job_pattern = re.compile("(%s)" % "|".join(args.job_groups.split(",")))
-            job_groups = {k: v for k, v in iteritems(job_groups) if job_pattern.search(k)}
+            job_groups = {k: v for k, v in job_groups.items() if job_pattern.search(k)}
             log.info("Job group URL for %s: %s" % (args.job_groups, job_groups))
         if args.exclude_job_groups:
             job_pattern = re.compile("(%s)" % "|".join(args.exclude_job_groups.split(",")))
-            job_groups = {k: v for k, v in iteritems(job_groups) if not job_pattern.search(k)}
+            job_groups = {k: v for k, v in job_groups.items() if not job_pattern.search(k)}
             log.info("Job group URL excluding %s: %s" % (args.exclude_job_groups, job_groups))
     return SortedDict(job_groups)
 
@@ -1410,7 +1399,7 @@ class Report(object):
         self._progress = 0
         self.report = SortedDict()
 
-        for k, v in iteritems(job_groups):
+        for k, v in job_groups.items():
             log.info("Processing '%s'" % v)
             if args.no_progress or not humanfriendly_available:
                 self.report[k] = self._one_report(v)
@@ -1435,7 +1424,7 @@ class Report(object):
     def __str__(self):
         """Generate markdown."""
         report_str = ""
-        for k, v in iteritems(self.report):
+        for k, v in self.report.items():
             if not self.args.skip_passed or type(v) is not ProductReport or not v.is_passed():
                 report_str += "# %s\n\n%s\n---\n" % (k, v)
         return report_str
@@ -1477,14 +1466,14 @@ ie_filters = {
 
 
 def filter_report(report, iefilter):
-    report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if isinstance(pr, ProductReport)})
-    for product, pr in iteritems(report.report):
-        for arch, ar in iteritems(pr.reports):
-            for issue_status, issue_types in iteritems(ar.issues):
-                for issue_type, ies in iteritems(issue_types):
+    report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
+    for product, pr in report.report.items():
+        for arch, ar in pr.reports.items():
+            for issue_status, issue_types in ar.issues.items():
+                for issue_type, ies in issue_types.items():
                     issue_types[issue_type] = [ie for ie in ies if iefilter(ie)]
-        pr.reports = SortedDict({a: ar for a, ar in iteritems(pr.reports) if ar.total_issues > 0})
-    report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if pr.reports})
+        pr.reports = SortedDict({a: ar for a, ar in pr.reports.items() if ar.total_issues > 0})
+    report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
 def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
@@ -1501,11 +1490,11 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
 
 def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
     processed_issues = set()
-    report.report = SortedDict({p: pr for p, pr in iteritems(report.report) if isinstance(pr, ProductReport)})
-    for product, pr in iteritems(report.report):
-        for arch, ar in iteritems(pr.reports):
-            for issue_status, issue_types in iteritems(ar.issues):
-                for issue_type, ies in iteritems(issue_types):
+    report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
+    for product, pr in report.report.items():
+        for arch, ar in pr.reports.items():
+            for issue_status, issue_types in ar.issues.items():
+                for issue_type, ies in issue_types.items():
                     for ie in ies:
                         issue = ie.bug
                         if issue:

@@ -6,12 +6,6 @@ Can't get isort to work on this file
 isort:skip_file
 """
 
-# see http://python-future.org/compatible_idioms.html
-from __future__ import unicode_literals
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
-from future.utils import iteritems
-
-install_aliases()
 import codecs
 import contextlib
 import os.path
@@ -521,7 +515,7 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     report = openqa_review.generate_report(args)
 
     # test double comment prevention code
-    p, pr = list(iteritems(report.report))[0]
+    p, pr = list(report.report.items())[0]
     report.report[p + 237] = pr
 
     openqa_review.reminder_comment_on_issues(report)

@@ -1,7 +1,3 @@
-# see http://python-future.org/compatible_idioms.html
-from future.standard_library import install_aliases  # isort:skip to keep 'install_aliases()'
-
-install_aliases()
 import contextlib
 import os
 import os.path
