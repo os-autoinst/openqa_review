@@ -37,6 +37,11 @@ not verify the TLS certificate. By setting the environment variable
 REQUESTS_CA_BUNDLE="/my/custom/ca-bundle.pem" openqa-review
 ```
 
+If that doesn't work, you can try the following setting:
+```
+CURL_CA_BUNDLE=""
+```
+
 ## Communication
 
 If you have questions, visit me on irc.freenode.net in #opensuse-factory
