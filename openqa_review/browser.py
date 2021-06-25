@@ -110,11 +110,12 @@ class Browser(object):
     def _get(self, url, as_json=False):  # pragma: no cover
         retries = Retry(total=7, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
         http = requests.Session()
+        headers = {"User-Agent": "openqa-review (https://os-autoinst.github.io/openqa_review)"}
         parsed_url = urlparse(url)
         http.mount("{}://".format(parsed_url.scheme), HTTPAdapter(max_retries=retries))
 
         try:
-            r = http.get(url, auth=self.auth, timeout=2.5)
+            r = http.get(url, auth=self.auth, timeout=2.5, headers=headers)
         except requests.exceptions.SSLError as e:
             try:
                 import OpenSSL
