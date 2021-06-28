@@ -1,2 +1,2 @@
 # Soft Failure:
-Some text to make parsing more interesting - bsc#1029660
+Some text to make parsing more interesting - bsc1029660
