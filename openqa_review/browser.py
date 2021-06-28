@@ -144,8 +144,13 @@ class Browser(object):
             log.warn(msg)
             raise DownloadError(msg)
 
-        content = r.json() if as_json else r.content.decode("utf8")
-        return content
+        try:
+            content = r.json() if as_json else r.content.decode("utf8")
+            return content
+        except json.decoder.JSONDecodeError as e:
+            msg = "Failed to decode {}: {}".format(r.content, str(e))
+            log.warn(msg)
+            raise DownloadError(msg)
 
     def json_rpc_get(self, url, method, params, cache=True):
         """Execute JSON RPC GET request."""
