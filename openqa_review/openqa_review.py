@@ -679,11 +679,13 @@ class Issue(object):
         if query_issue_status and progress_browser and bugzilla_browser:
             log.debug("Retrieving bug data for %s" % bugref)
             try:
+                match = re.search(f"^{bugref_regex}", self.bugref)
+                tracker = match.group(1) if match else None
                 if self.bugid == 0:
                     log.debug("#0 ticket id reference found")
                     self.msg = "NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation"
                     return
-                elif self.bugref.startswith("poo#"):
+                elif tracker == "poo":
                     log.debug("Test issue discovered, looking on progress")
                     self.issue_type = "redmine"
                     self.json = progress_browser.get_json(self.bugref_href + ".json")["issue"]
@@ -692,7 +694,7 @@ class Issue(object):
                     self.subject = self.json["subject"]
                     self.priority = self.json["priority"]["name"]
                     self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
-                elif self.bugref.startswith(("boo#", "bsc#", "bgo#")):
+                elif tracker in ("boo", "bsc", "bgo"):
                     log.debug("Product bug discovered, looking on bugzilla")
                     self.issue_type = "bugzilla"
                     self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})[

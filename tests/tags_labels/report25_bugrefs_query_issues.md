@@ -20,8 +20,8 @@
 
 **Existing Product bugs:**
 
-* soft fails: btrfs, zfcp@i586-zfcp -> [bsc#1029660](https://bugzilla.suse.com/show_bug.cgi?id=1029660) (Request to /jsonrpc.cgi?method=Bug.get&params=%5B%7B%22ids%22%3A+%5B1029660%5D%7D%5D was not successful, file :jsonrpc.cgi%3Fmethod%3DBug.get%26params%3D%255B%257B%2522ids%2522%253A%2B%255B1029660%255D%257D%255D not found)
 * allpatterns, ext4@i586--l2, gnome, minimal+base -> [bsc#822770](https://bugzilla.opensuse.org/show_bug.cgi?id=822770 "Install of grub2-efi failed") (Ticket status: RESOLVED (FOOBAR), prio/severity: P5/Normal, assignee: bazifoo@gmail.com)
+* soft fails: btrfs, zfcp@i586-zfcp -> [bsc1029660](https://bugzilla.suse.com/show_bug.cgi?id=1029660) (Request to /jsonrpc.cgi?method=Bug.get&params=%5B%7B%22ids%22%3A+%5B1029660%5D%7D%5D was not successful, file :jsonrpc.cgi%3Fmethod%3DBug.get%26params%3D%255B%257B%2522ids%2522%253A%2B%255B1029660%255D%257D%255D not found)
 
 
 **Existing openQA-issues:**
