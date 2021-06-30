@@ -144,6 +144,7 @@ class Browser(object):
             log.warn(msg)
             raise DownloadError(msg)
 
+        r.raise_for_status()
         content = r.json() if as_json else r.content.decode("utf8")
         return content
 
