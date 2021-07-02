@@ -54,7 +54,7 @@ class Browser(object):
 
     """download relative or absolute url and return soup."""
 
-    def __init__(self, args, root_url, auth=None):
+    def __init__(self, args, root_url, auth=None, headers={}):
         """Construct a browser object with options."""
         self.save = args.save if hasattr(args, "save") else False
         self.load = args.load if hasattr(args, "load") else False
@@ -63,6 +63,8 @@ class Browser(object):
         self.dry_run = args.dry_run if hasattr(args, "dry_run") else False
         self.root_url = root_url
         self.auth = auth
+        headers["User-Agent"] = "openqa-review (https://os-autoinst.github.io/openqa_review)"
+        self.headers = headers
         self.cache = {}
 
     def get_soup(self, url):
@@ -110,12 +112,11 @@ class Browser(object):
     def _get(self, url, as_json=False):  # pragma: no cover
         retries = Retry(total=7, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
         http = requests.Session()
-        headers = {"User-Agent": "openqa-review (https://os-autoinst.github.io/openqa_review)"}
         parsed_url = urlparse(url)
         http.mount("{}://".format(parsed_url.scheme), HTTPAdapter(max_retries=retries))
 
         try:
-            r = http.get(url, auth=self.auth, timeout=2.5, headers=headers)
+            r = http.get(url, auth=self.auth, timeout=2.5, headers=self.headers)
         except requests.exceptions.SSLError as e:
             try:
                 import OpenSSL
@@ -168,9 +169,9 @@ class Browser(object):
             data = json.dumps({"method": method, "params": [params]})
             for i in range(1, 7):
                 try:
-                    r = requests.post(
-                        absolute_url, data=data, auth=self.auth, headers={"content-type": "application/json"}
-                    )
+                    headers = self.headers.copy()
+                    headers["content-type"] = "application/json"
+                    r = requests.post(absolute_url, data=data, auth=self.auth, headers=headers)
                     r.raise_for_status()
                 except requests.exceptions.ConnectionError:
                     log.info("Connection error encountered accessing %s, retrying try %s" % (absolute_url, i))
@@ -193,11 +194,13 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith("/") else urljoin(str(self.root_url), str(url))
             data = json.dumps(data)
+            headers = self.headers.copy()
+            headers["content-type"] = "application/json"
             r = requests.request(
                 method,
                 absolute_url,
                 data=data,
-                headers={"X-Redmine-API-Key": self.auth[0], "content-type": "application/json"},
+                headers=headers,
             )
             r.raise_for_status()
             return r.json() if r.text else None
