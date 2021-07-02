@@ -333,11 +333,8 @@ def absolute_url(root, v):
 def progress_browser_factory(args):
     return Browser(
         args,
-        "",
-        auth=(
-            config.get("test_issues", "api_key"),
-            "foobar",
-        ),
+        root_url="",
+        headers={"X-Redmine-API-Key": config.get("test_issues", "api_key")},
     )
 
 
