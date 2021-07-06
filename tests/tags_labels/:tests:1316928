@@ -1,7 +1,7 @@
 <tr>
     <td class="component">
         <div>
-            <a href="/tests/1316928/modules/shutdown/steps/1/src">shutdown</a>
+            <a href="/tests/1316928/modules/shutdown%231/steps/1/src">shutdown#1</a>
         </div>
         <div class="flags">
         </div>
@@ -12,7 +12,7 @@
     <td class="links">
         <div class="links_a">
             <div class="fa fa-caret-up"></div>
-            <a class="no_hover" data-url="/tests/1316928/modules/shutdown/steps/9" href="#step/shutdown/9"
+            <a class="no_hover" data-url="/tests/1316928/modules/shutdown%231/steps/9" href="#step/shutdown/9"
                title="Soft Failed">
                 <span class="resborder resborder_hash(0x9c726c8)">Soft Failed</span>
             </a></div>

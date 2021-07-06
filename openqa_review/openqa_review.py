@@ -990,7 +990,7 @@ class ArchReport(object):
 
     def _get_bugref_for_softfailed_module(self, result_item, module_name):
         rel_job_url = result_item["href"]
-        details_url = "%s/file/details-%s.json" % (rel_job_url, module_name)
+        details_url = "%s/file/details-%s.json" % (rel_job_url, quote(module_name))
         log.debug("Retrieving '%s'" % details_url)
         details_json = self.test_browser.get_json(details_url)
         details = details_json["details"] if "details" in details_json else details_json
