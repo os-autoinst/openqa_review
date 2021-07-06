@@ -116,7 +116,7 @@ class Browser(object):
         http.mount("{}://".format(parsed_url.scheme), HTTPAdapter(max_retries=retries))
 
         try:
-            r = http.get(url, auth=self.auth, timeout=2.5, headers=self.headers)
+            r = http.get(url, auth=self.auth, timeout=10, headers=self.headers)
         except requests.exceptions.SSLError as e:
             try:
                 import OpenSSL
