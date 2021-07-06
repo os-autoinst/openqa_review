@@ -145,7 +145,13 @@ class Browser(object):
             log.warn(msg)
             raise DownloadError(msg)
 
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            msg = "Request to {} failed: {}".format(url, str(e))
+            log.warn(msg)
+            raise DownloadError(msg)
+
         content = r.json() if as_json else r.content.decode("utf8")
         return content
 
