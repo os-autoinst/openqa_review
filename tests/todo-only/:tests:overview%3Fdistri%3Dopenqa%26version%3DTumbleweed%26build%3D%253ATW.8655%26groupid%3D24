@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>openQA: Test summary</title>
+  </head>
+  <body>
+
+      <div class="container-fluid" id="content">
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: dev</h3>
+                <table id="results_dev" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_dev_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_from_containers" name="jobid_td_1841487">
+
+             <span id="res-1841487">
+                 <a href="/tests/1841487">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_dev_x86_64_openqa_from_containers"
+        data-async="/tests/1841487/modules/search/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1841487#step/search/1"
+    ><span title="search">search</span></a>
+
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_from_git" name="jobid_td_1841489">
+
+             <span id="res-1841489">
+                 <a href="/tests/1841489">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_dev_x86_64_openqa_from_git"
+        data-async="/tests/1841489/modules/search/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1841489#step/search/1"
+    ><span title="search">search</span></a>
+
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_install+publish" name="jobid_td_1841488">
+
+             <span id="res-1841488">
+                 <a href="/tests/1841488">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+      </div>
+
+  </body>
+</html>

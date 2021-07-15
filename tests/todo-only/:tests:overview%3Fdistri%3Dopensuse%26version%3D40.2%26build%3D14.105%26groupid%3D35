@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>openQA: Test summary</title>
+  </head>
+  <body>
+
+      <div class="container-fluid" id="content">
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: Gnome-Live</h3>
+                <table id="results_Gnome-Live" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Gnome-Live_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_Gnome-Live_x86_64_gnome-live" name="jobid_td_1840779">
+
+             <span id="res-1840779">
+                 <a href="/tests/1840779">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Gnome-Live_x86_64_gnome-live@USBboot_64" name="jobid_td_1840782">
+
+             <span id="res-1840782">
+                 <a href="/tests/1840782">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Gnome-Live_x86_64_gnome-live@uefi-2G" name="jobid_td_1840781">
+
+             <span id="res-1840781">
+                 <a href="/tests/1840781">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Gnome-Live_x86_64_gnome-live@uefi-usb" name="jobid_td_1840780">
+
+             <span id="res-1840780">
+                 <a href="/tests/1840780">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+      </div>
+
+  </body>
+</html>

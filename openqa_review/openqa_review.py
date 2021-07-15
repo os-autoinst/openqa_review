@@ -349,7 +349,7 @@ def bugzilla_browser_factory(args):
     )
 
 
-def issue_listing(header, issues, show_empty=True):
+def issue_listing(header, issues, show_empty=True, no_headers=False):
     r"""
     Generate one issue listing section.
 
@@ -366,6 +366,8 @@ def issue_listing(header, issues, show_empty=True):
     """
     if not show_empty and len(issues) == 0:
         return ""
+    if no_headers:
+        return "".join(map(lambda i: "* %s %s\n" % (header, i.stringify()), issues))
     return "\n" + header + "\n\n" + "".join(map(str, issues)) + "\n"
 
 
@@ -836,17 +838,21 @@ class IssueEntry(object):
         else:
             return "%s" % f["name"]
 
-    def __str__(self):
+    def stringify(self):
         """Return as markdown."""
         test_bug_str = "%s%s" % (
             ", ".join(map(self._format_failure, self.failures)),
             " -> %s" % self.bug if self.bug else "",
         )
         short_str = self.bug if self.bug else ", ".join(i["name"] for i in self.failures)
-        return "* %s%s\n" % (
+        return "%s%s" % (
             "soft fails: " if self.soft else "",
             short_str if self.args.short_failure_str else test_bug_str,
         )
+
+    def __str__(self):
+        """Return as markdown list item."""
+        return "* " + self.stringify() + "\n"
 
     @classmethod
     def for_each(cls, args, root_url, failures, test_browser):
@@ -1023,6 +1029,10 @@ class ArchReport(object):
                 % absolute_url(self.root_url, result_item)
             )
 
+    def has_todo_issues(self):
+        """Tell if report has new or existing todo issues."""
+        return self.issues["new"]["todo"] or self.issues["existing"]["todo"]
+
     def _todo_issues_str(self):
         if self.args.abbreviate_test_issues:
             return issue_listing(
@@ -1033,7 +1043,14 @@ class ArchReport(object):
                 + self.issues["existing"]["todo"],
                 self.args.show_empty,
             )
-        todo_issues = todo_review_template.substitute(
+        if not self.has_todo_issues():
+            return ""
+
+        if self.args.todo_only:
+            return issue_listing(
+                "**new**", self.issues["new"]["todo"], self.args.show_empty, no_headers=True
+            ) + issue_listing("**existing**", self.issues["existing"]["todo"], self.args.show_empty, no_headers=True)
+        return todo_review_template.substitute(
             {
                 "new_issues": issue_listing("***new issues***", self.issues["new"]["todo"], self.args.show_empty),
                 "existing_issues": issue_listing(
@@ -1041,11 +1058,13 @@ class ArchReport(object):
                 ),
             }
         )
-        return todo_issues if (self.issues["new"]["todo"] or self.issues["existing"]["todo"]) else ""
 
     def __str__(self):
         """Return as markdown."""
         abbrev = self.args.abbreviate_test_issues
+        if self.args.todo_only:
+            return self._todo_issues_str() if self.has_todo_issues() else ""
+
         return openqa_review_report_arch_template.substitute(
             {
                 "arch": self.arch,
@@ -1154,12 +1173,17 @@ class ProductReport(object):
             build_str += "\n\n" + self.changes_str
 
         arch_reports = list(v for v in self.reports.values() if not self.args.skip_passed or v.status_badge != "GREEN")
+        archreports = list(i for i in map(str, arch_reports) if len(i))
+        if len(archreports) == 0:
+            return ""
+        if self.args.todo_only:
+            return "".join(archreports)
         openqa_review_report_product = openqa_review_report_product_template.substitute(
             {
                 "now": now_str,
                 "build": build_str,
                 "common_issues": common_issues(missing_archs_str, self.args.show_empty),
-                "arch_report": "\n---\n".join(map(str, arch_reports)),
+                "arch_report": "\n---\n".join(archreports),
             }
         )
         return openqa_review_report_product
@@ -1300,6 +1324,13 @@ def parse_args():
         help="Skip passed reports",
     )
     parser.add_argument(
+        "--todo-only",
+        action="store_true",
+        default=False,
+        dest="todo_only",
+        help="List only TODO items as one liners",
+    )
+    parser.add_argument(
         "--include-softfails",
         action="store_true",
         default=False,
@@ -1423,9 +1454,16 @@ class Report(object):
     def __str__(self):
         """Generate markdown."""
         report_str = ""
+        if self.args.todo_only:
+            report_str = "**TODO: review**\n\n"
         for k, v in self.report.items():
             if not self.args.skip_passed or type(v) is not ProductReport or not v.is_passed():
-                report_str += "# %s\n\n%s\n---\n" % (k, v)
+                generated = str(v)
+                if not len(generated):
+                    continue
+                report_str += (
+                    "* %s:\n%s" % (k, generated) if self.args.todo_only else "# %s\n\n%s\n---\n" % (k, generated)
+                )
         return report_str
 
 

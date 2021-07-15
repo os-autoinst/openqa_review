@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <title>openQA: Test summary</title>
+  </head>
+  <body>
+
+      <div class="container-fluid" id="content">
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Distri: microos /  Version: Staging:K / Flavor: Staging-DVD</h3>
+                <table id="results_Staging-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_container-host-microos@64bit-2G-HD40G" name="jobid_td_1839939">
+
+             <span id="res-1839939">
+                 <a href="/tests/1839939">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_microos@uefi-staging" name="jobid_td_1839940">
+
+             <span id="res-1839940">
+                 <a href="/tests/1839940">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+                <h3>Distri: microos /  Version: Staging:K / Flavor: Staging-Kubic-DVD</h3>
+                <table id="results_Staging-Kubic-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-Kubic-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_Staging-Kubic-DVD_x86_64_container-host-kubic@uefi-staging" name="jobid_td_1839941">
+
+             <span id="res-1839941">
+                 <a href="/tests/1839941">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-Kubic-DVD_x86_64_kubeadm@64bit-2G-HD40G" name="jobid_td_1839942">
+
+             <span id="res-1839942">
+                 <a href="/tests/1839942">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+                <h3>Distri: opensuse /  Version: Staging:K / Flavor: Staging-DVD</h3>
+                <table id="results_Staging-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_RAID0_gpt" name="jobid_td_1839934">
+
+             <span id="res-1839934">
+                 <a href="/tests/1839934">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_RAID1_gpt" name="jobid_td_1839938">
+
+             <span id="res-1839938">
+                 <a href="/tests/1839938">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_autoyast_mini" name="jobid_td_1839926">
+
+             <span id="res-1839926">
+                 <a href="/tests/1839926">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_create_hdd_gnome-staging" name="jobid_td_1839925">
+
+             <span id="res-1839925">
+                 <a href="/tests/1839925">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_cryptlvm" name="jobid_td_1839932">
+
+             <span id="res-1839932">
+                 <a href="/tests/1839932">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_gnome" name="jobid_td_1839929">
+
+             <span id="res-1839929">
+                 <a href="/tests/1839929">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_kde" name="jobid_td_1841409">
+
+             <span id="res-1841409">
+                 <a href="/tests/1841409">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_kde_usbboot@USBboot_64" name="jobid_td_1841410">
+
+             <span id="res-1841410">
+                 <a href="/tests/1841410">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_Staging-DVD_x86_64_kde_usbboot@USBboot_64"
+        data-async="/tests/1841410/modules/desktop_mainmenu/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1841410#step/desktop_mainmenu/1"
+    ><span title="desktop_mainmenu">desktop_mainmenu</span></a>
+
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_minimalx" name="jobid_td_1839928">
+
+             <span id="res-1839928">
+                 <a href="/tests/1839928">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_minimalx@uefi-staging" name="jobid_td_1839931">
+
+             <span id="res-1839931">
+                 <a href="/tests/1839931">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_rescue_system" name="jobid_td_1839930">
+
+             <span id="res-1839930">
+                 <a href="/tests/1839930">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_textmode" name="jobid_td_1839935">
+
+             <span id="res-1839935">
+                 <a href="/tests/1839935">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_upgrade_staging" name="jobid_td_1839936">
+
+             <span id="res-1839936">
+                 <a href="/tests/1839936">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_Staging-DVD_x86_64_yast2_users-staging" name="jobid_td_1839937">
+
+             <span id="res-1839937">
+                 <a href="/tests/1839937">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+          <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button">
+            <i class="fas fa-angle-up"></i>
+          </a>
+      </div>
+
+  </body>
+</html>
