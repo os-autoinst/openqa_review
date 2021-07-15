@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="83e483da62f97b399f45b25a31915278db73f52a" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/bee7d6f334/bootstrap.css" rel="stylesheet">
+      <script src="/asset/a465d814c7/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+            setupForAll();
+            backToTop();
+              setupOverview();
+
+          } );
+
+//]]></script>
+      <link id="favicon-16" rel="icon" href="/asset/711dac3f2e/logo-16.png" sizes="16x16" type="image/png">
+      <link id="favicon-svg" rel="icon" href="/asset/84ee5d8626/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+     <a class="navbar-brand" href="/"><img src="/asset/84ee5d8626/logo.svg" alt="openQA"></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+   </div>
+  </div>
+</nav>
+
+      <div class="container-fluid" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+            Overall Summary of
+                <strong><a href="/group_overview/24">openQA</a></strong>
+                build :TW.8655
+            <div class="time-params">
+                    showing latest jobs,
+                    <a href="/tests/overview?distri=openqa&amp;version=Tumbleweed&amp;build=%3ATW.8655&amp;groupid=24&amp;t=2021-07-15+09%3A07%3A03+%2B0000">overview fixed to the current time</a>
+            </div>
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">1</span>
+
+            Failed: <span class="badge badge-danger">2</span>
+
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: dev</h3>
+                <table id="results_dev" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_dev_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: okurz@suse.de Test for running openQA itself from containers. To be used with &amp;quot;openqa&amp;quot; distri.</p>"
+                        data-title="openqa_from_containers" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="openqa_from_containers">openqa_from_containers</span></a>
+                </td>
+
+
+                    <td id="res_dev_x86_64_openqa_from_containers" name="jobid_td_1841487">
+
+             <span id="res-1841487">
+                 <a href="/tests/1841487">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_dev_x86_64_openqa_from_containers"
+        data-async="/tests/1841487/modules/search/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1841487#step/search/1"
+    ><span title="search">search</span></a>
+
+             <span id="comment-1841487">
+        <a href="/tests/1841487#comments"><i class="test-label label_comment fa fa-comment" title="1 comment available"></i></a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841487"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: okurz@suse.de Test for running openQA itself from git. To be used with &amp;quot;openqa&amp;quot; distri.</p>"
+                        data-title="openqa_from_git" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="openqa_from_git">openqa_from_git</span></a>
+                </td>
+
+
+                    <td id="res_dev_x86_64_openqa_from_git" name="jobid_td_1841489">
+
+             <span id="res-1841489">
+                 <a href="/tests/1841489">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+            
+
+    <a
+        data-toggle="tooltip"
+        data-placement="top"
+        data-container="#res_dev_x86_64_openqa_from_git"
+        data-async="/tests/1841489/modules/search/fails"
+        title="<i class='fa fa-sync fa-spin fa-2x fa-fw'></i><span class='sr-only'>Loading...</span>"
+        class="failedmodule"
+        href="/tests/1841489#step/search/1"
+    ><span title="search">search</span></a>
+
+             <span id="comment-1841489">
+        <a href="/tests/1841489#comments"><i class="test-label label_comment fa fa-comment" title="1 comment available"></i></a>
+    </span>
+
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841489"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: okurz@suse.de Test for installation of openQA itself. To be used with &amp;quot;openqa&amp;quot; distri. Publishes an qcow2 image including the openQA installation ready to run as an appliance.</p>"
+                        data-title="openqa_install+publish" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="openqa_install+publish">openqa_install+publish</span></a>
+                </td>
+
+
+                    <td id="res_dev_x86_64_openqa_install+publish" name="jobid_td_1841488">
+
+             <span id="res-1841488">
+                 <a href="/tests/1841488">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841488"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+          <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button">
+            <i class="fas fa-angle-up"></i>
+          </a>
+      </div>
+
+  </body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="b80c2c0c96fa2521d57506155900f7154726c3ca" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/bee7d6f334/bootstrap.css" rel="stylesheet">
+      <script src="/asset/a465d814c7/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+            setupForAll();
+            backToTop();
+              setupOverview();
+
+          } );
+
+//]]></script>
+      <link id="favicon-16" rel="icon" href="/asset/711dac3f2e/logo-16.png" sizes="16x16" type="image/png">
+      <link id="favicon-svg" rel="icon" href="/asset/84ee5d8626/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+     <a class="navbar-brand" href="/"><img src="/asset/84ee5d8626/logo.svg" alt="openQA"></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+   </div>
+  </div>
+</nav>
+
+      <div class="container-fluid" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-success">
+        <div class="card-header">
+            Overall Summary of
+                <strong><a href="/group_overview/2">Staging Projects</a></strong>
+                build E.523.4
+            <div class="time-params">
+                    showing latest jobs,
+                    <a href="/tests/overview?distri=microos&amp;distri=opensuse&amp;version=Staging%3AE&amp;build=E.523.4&amp;groupid=2&amp;t=2021-07-15+09%3A07%3A01+%2B0000">overview fixed to the current time</a>
+            </div>
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">14</span>
+
+                Soft-Failed:
+                <span class="badge badge-warning">4</span>
+            Failed: <span class="badge badge-danger">0</span>
+
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Distri: microos /  Version: Staging:E / Flavor: Staging-DVD</h3>
+                <table id="results_Staging-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="container-host-microos@64bit-2G-HD40G">container-host-microos@64bit-2G-HD40G</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_container-host-microos@64bit-2G-HD40G" name="jobid_td_1841297">
+
+             <span id="res-1841297">
+                 <a href="/tests/1841297">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841297"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="microos@uefi-staging">microos@uefi-staging</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_microos@uefi-staging" name="jobid_td_1841298">
+
+             <span id="res-1841298">
+                 <a href="/tests/1841298">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841298"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+                <h3>Distri: microos /  Version: Staging:E / Flavor: Staging-Kubic-DVD</h3>
+                <table id="results_Staging-Kubic-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-Kubic-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="container-host-kubic@uefi-staging">container-host-kubic@uefi-staging</span>
+                </td>
+
+
+                    <td id="res_Staging-Kubic-DVD_x86_64_container-host-kubic@uefi-staging" name="jobid_td_1841299">
+
+             <span id="res-1841299">
+                 <a href="/tests/1841299">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841299"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="kubeadm@64bit-2G-HD40G">kubeadm@64bit-2G-HD40G</span>
+                </td>
+
+
+                    <td id="res_Staging-Kubic-DVD_x86_64_kubeadm@64bit-2G-HD40G" name="jobid_td_1841300">
+
+             <span id="res-1841300">
+                 <a href="/tests/1841300">
+                     <i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841300"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+                <h3>Distri: opensuse /  Version: Staging:E / Flavor: Staging-DVD</h3>
+                <table id="results_Staging-DVD" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Staging-DVD_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <span title="RAID0_gpt">RAID0_gpt</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_RAID0_gpt" name="jobid_td_1841292">
+
+             <span id="res-1841292">
+                 <a href="/tests/1841292">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1841296],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841292"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="RAID1_gpt">RAID1_gpt</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_RAID1_gpt" name="jobid_td_1841296">
+
+             <span id="res-1841296">
+                 <a href="/tests/1841296">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1841292],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841296"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Autoyast installation test using minimal profile, hence relying on default values. Configured parameters are set not to ignore any messages and create users as per requirements for openQA tests.</p>"
+                        data-title="autoyast_mini" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="autoyast_mini">autoyast_mini</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_autoyast_mini" name="jobid_td_1841284">
+
+             <span id="res-1841284">
+                 <a href="/tests/1841284">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841284"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="create_hdd_gnome-staging">create_hdd_gnome-staging</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_create_hdd_gnome-staging" name="jobid_td_1841283">
+
+             <span id="res-1841283">
+                 <a href="/tests/1841283">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[1841295],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841283"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainers: QE Yast
+
+Conduct installation with encrypted LVM selected during installation.</p>"
+                        data-title="cryptlvm" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="cryptlvm">cryptlvm</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_cryptlvm" name="jobid_td_1841290">
+
+             <span id="res-1841290">
+                 <a href="/tests/1841290">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841290"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="gnome">gnome</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_gnome" name="jobid_td_1841287">
+
+             <span id="res-1841287">
+                 <a href="/tests/1841287">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841287"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>TIMEOUT_SCALE property is added to avoid sporadic shutdown fails in kde@USBboot_64 scenario.
+
+Added by : oorlov; 
+
+Related ticket: &lt;a href=&quot;https://progress.opensuse.org/issues/37000&quot;&gt;poo#37000&lt;/a&gt;</p>"
+                        data-title="kde" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="kde">kde</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_kde" name="jobid_td_1841291">
+
+             <span id="res-1841291">
+                 <a href="/tests/1841291">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841291"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>TIMEOUT_SCALE property is added to avoid sporadic shutdown fails in kde@USBboot_64 scenario.
+
+Added by : oorlov; 
+
+Related ticket: &lt;a href=&quot;https://progress.opensuse.org/issues/37000&quot;&gt;poo#37000&lt;/a&gt;</p>"
+                        data-title="kde_usbboot@USBboot_64" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="kde_usbboot@USBboot_64">kde_usbboot@USBboot_64</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_kde_usbboot@USBboot_64" name="jobid_td_1841285">
+
+             <span id="res-1841285">
+                 <a href="/tests/1841285">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841285"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>MAX_JOB_TIME for bypass &lt;a href=&quot;https://progress.opensuse.org/issues/44408&quot;&gt;poo#44408&lt;/a&gt;</p>"
+                        data-title="minimalx" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="minimalx">minimalx</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_minimalx" name="jobid_td_1841286">
+
+             <span id="res-1841286">
+                 <a href="/tests/1841286">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841286"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>MAX_JOB_TIME for bypass &lt;a href=&quot;https://progress.opensuse.org/issues/44408&quot;&gt;poo#44408&lt;/a&gt;</p>"
+                        data-title="minimalx@uefi-staging" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="minimalx@uefi-staging">minimalx@uefi-staging</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_minimalx@uefi-staging" name="jobid_td_1841289">
+
+             <span id="res-1841289">
+                 <a href="/tests/1841289">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841289"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="rescue_system">rescue_system</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_rescue_system" name="jobid_td_1841288">
+
+             <span id="res-1841288">
+                 <a href="/tests/1841288">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841288"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Installation in textmode and selecting the textmode &amp;quot;desktop&amp;quot; during installation.</p>"
+                        data-title="textmode" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="textmode">textmode</span></a>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_textmode" name="jobid_td_1841293">
+
+             <span id="res-1841293">
+                 <a href="/tests/1841293">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841293"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="upgrade_staging">upgrade_staging</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_upgrade_staging" name="jobid_td_1841294">
+
+             <span id="res-1841294">
+                 <a href="/tests/1841294">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841294"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <span title="yast2_users-staging">yast2_users-staging</span>
+                </td>
+
+
+                    <td id="res_Staging-DVD_x86_64_yast2_users-staging" name="jobid_td_1841295">
+
+             <span id="res-1841295">
+                 <a href="/tests/1841295">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:1,&quot;parents&quot;:{&quot;Chained&quot;:[1841283],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841295"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+          <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button">
+            <i class="fas fa-angle-up"></i>
+          </a>
+      </div>
+
+  </body>
+</html>

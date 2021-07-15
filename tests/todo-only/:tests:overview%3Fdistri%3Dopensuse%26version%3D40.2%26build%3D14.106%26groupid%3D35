@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <!-- Meta, title, CSS, favicons, etc. -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="openQA is a testing framework mainly for distributions">
+      <meta name="keywords" content="Testing, Linux, Qemu">
+      <meta name="author" content="openQA contributors">
+
+      <meta name="csrf-token" content="135bf7aa685d43fad2e209b3d8cffbd58b5170c3" />
+      <meta name="csrf-param" content="csrf_token" />
+
+      <title>openQA: Test summary</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="/asset/bee7d6f334/bootstrap.css" rel="stylesheet">
+      <script src="/asset/a465d814c7/bootstrap.js"></script>
+
+      
+
+      <script>//<![CDATA[
+
+          
+          $(function() {
+            setupForAll();
+            backToTop();
+              setupOverview();
+
+          } );
+
+//]]></script>
+      <link id="favicon-16" rel="icon" href="/asset/711dac3f2e/logo-16.png" sizes="16x16" type="image/png">
+      <link id="favicon-svg" rel="icon" href="/asset/84ee5d8626/logo.svg" sizes="any" type="image/svg+xml">
+
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+     <a class="navbar-brand" href="/"><img src="/asset/84ee5d8626/logo.svg" alt="openQA"></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarNav">
+   </div>
+  </div>
+</nav>
+
+      <div class="container-fluid" id="content">
+          
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-success">
+        <div class="card-header">
+            Overall Summary of
+                <strong><a href="/group_overview/35">openSUSE GNOME Next</a></strong>
+                build 14.106
+            <div class="time-params">
+                    showing latest jobs,
+                    <a href="/tests/overview?distri=opensuse&amp;version=40.2&amp;build=14.106&amp;groupid=35&amp;t=2021-07-15+09%3A07%3A04+%2B0000">overview fixed to the current time</a>
+            </div>
+        </div>
+        <div class="card-body">
+            Passed: <span class="badge badge-success">4</span>
+
+            Failed: <span class="badge badge-danger">0</span>
+
+        </div>
+    </div>
+    <div id="flash-messages"></div>
+                <h3>Flavor: Gnome-Live</h3>
+                <table id="results_Gnome-Live" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_Gnome-Live_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: dimstar@opensuse.org
+
+Test for openSUSE GNOME Next Live-Media
+
+EXCLUDE_MODULES is a workaround for &lt;a href=&quot;https://bugzilla.opensuse.org/show_bug.cgi?id=1138401&quot;&gt;boo#1138401&lt;/a&gt;#c10 (except for opensuse_welcome, which is blacklisted on the GNOME live for space reasons)</p>"
+                        data-title="gnome-live" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="gnome-live">gnome-live</span></a>
+                </td>
+
+
+                    <td id="res_Gnome-Live_x86_64_gnome-live" name="jobid_td_1841009">
+
+             <span id="res-1841009">
+                 <a href="/tests/1841009">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841009"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: dimstar@opensuse.org
+
+Test for openSUSE GNOME Next Live-Media
+
+EXCLUDE_MODULES is a workaround for &lt;a href=&quot;https://bugzilla.opensuse.org/show_bug.cgi?id=1138401&quot;&gt;boo#1138401&lt;/a&gt;#c10 (except for opensuse_welcome, which is blacklisted on the GNOME live for space reasons)</p>"
+                        data-title="gnome-live@USBboot_64" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="gnome-live@USBboot_64">gnome-live@USBboot_64</span></a>
+                </td>
+
+
+                    <td id="res_Gnome-Live_x86_64_gnome-live@USBboot_64" name="jobid_td_1841012">
+
+             <span id="res-1841012">
+                 <a href="/tests/1841012">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841012"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: dimstar@opensuse.org
+
+Test for openSUSE GNOME Next Live-Media
+
+EXCLUDE_MODULES is a workaround for &lt;a href=&quot;https://bugzilla.opensuse.org/show_bug.cgi?id=1138401&quot;&gt;boo#1138401&lt;/a&gt;#c10 (except for opensuse_welcome, which is blacklisted on the GNOME live for space reasons)</p>"
+                        data-title="gnome-live@uefi-2G" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="gnome-live@uefi-2G">gnome-live@uefi-2G</span></a>
+                </td>
+
+
+                    <td id="res_Gnome-Live_x86_64_gnome-live@uefi-2G" name="jobid_td_1841011">
+
+             <span id="res-1841011">
+                 <a href="/tests/1841011">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841011"></span>
+</td>
+
+            </tr>
+            <tr>
+                <td class="name">
+                        <a data-content="<p>Maintainer: dimstar@opensuse.org
+
+Test for openSUSE GNOME Next Live-Media
+
+EXCLUDE_MODULES is a workaround for &lt;a href=&quot;https://bugzilla.opensuse.org/show_bug.cgi?id=1138401&quot;&gt;boo#1138401&lt;/a&gt;#c10 (except for opensuse_welcome, which is blacklisted on the GNOME live for space reasons)</p>"
+                        data-title="gnome-live@uefi-usb" data-toggle="popover" data-placement="left" data-trigger="focus" role="button" tabindex="0"><span title="gnome-live@uefi-usb">gnome-live@uefi-usb</span></a>
+                </td>
+
+
+                    <td id="res_Gnome-Live_x86_64_gnome-live@uefi-usb" name="jobid_td_1841010">
+
+             <span id="res-1841010">
+                 <a href="/tests/1841010">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+            
+
+         
+         <span class="dependency" data-deps="{&quot;children&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;has_parents&quot;:0,&quot;parents&quot;:{&quot;Chained&quot;:[],&quot;Directly chained&quot;:[],&quot;Parallel&quot;:[]},&quot;parents_ok&quot;:1}" data-jobid="1841010"></span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+          <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button">
+            <i class="fas fa-angle-up"></i>
+          </a>
+      </div>
+
+  </body>
+</html>

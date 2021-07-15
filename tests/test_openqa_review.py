@@ -53,6 +53,7 @@ def args_factory():
     args.query_issue_status_help = True
     args.report_links = False
     args.skip_passed = False
+    args.todo_only = False
     return args
 
 
@@ -416,6 +417,18 @@ def test_skip_passed():
     args.arch = None
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, "report-68-4.md"))
+
+
+def test_todo_only():
+    args = cache_test_args_factory()
+    args.todo_only = True
+    args.show_empty = False
+    args.job_groups = ["openSUSE Tumbleweed WSL", "openSUSE Tumbleweed PowerPC"]
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "todo-only")
+    args.job_group_urls = "https://openqa.opensuse.org/group_overview/2,https://openqa.opensuse.org/group_overview/24,https://openqa.opensuse.org/group_overview/35"
+    args.arch = None
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, "report-2-24-35.md"))
 
 
 def bugrefs_test_args_factory():
