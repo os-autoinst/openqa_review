@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>openQA: Test summary</title>
+  </head>
+  <body>
+
+      <div class="container-fluid" id="content">
+
+<div>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger">
+        <div class="card-header">
+        </div>
+    </div>
+                <h3>Flavor: dev</h3>
+                <table id="results_dev" class="overview fixedheader table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Test</th>
+                <th id="flavor_dev_arch_x86_64">x86_64</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_from_containers" name="jobid_td_1840980">
+
+             <span id="res-1840980">
+                 <a href="/tests/1840980">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_from_git" name="jobid_td_1840982">
+
+             <span id="res-1840982">
+                 <a href="/tests/1840982">
+                     <i class="status fa fa-circle result_failed" title="Done: failed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+            <tr>
+                    <td id="res_dev_x86_64_openqa_install+publish" name="jobid_td_1840981">
+
+             <span id="res-1840981">
+                 <a href="/tests/1840981">
+                     <i class="status fa fa-circle result_passed" title="Done: passed"></i>
+                 </a>
+             </span>
+</td>
+
+            </tr>
+    </tbody>
+</table>
+
+</div>
+
+      </div>
+
+  </body>
+</html>
