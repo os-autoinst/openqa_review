@@ -1446,7 +1446,7 @@ class Report(object):
             return ProductReport(self.browser, job_group_url, self.root_url, self.args)
         except NotEnoughBuildsError as e:
             log.debug("Catched 'not enough builds': %s" % e)
-            return "Not enough finished builds found"
+            return "" if self.args.todo_only else "Not enough finished builds found"
 
     def _next_label(self):
         return "%s %i%%" % (self._label, self._progress * 100 / len(self.job_groups.keys()))
