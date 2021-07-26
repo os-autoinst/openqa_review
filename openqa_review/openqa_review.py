@@ -282,8 +282,10 @@ def get_test_bugref(entry):
     bugref = entry.find(id=re.compile("^bug-"))
     if not bugref:
         return {}
+    reference = re.search(r"\S+#([0-9]+)", bugref.i["title"])
+    reference = reference.group() if reference else "(unknown bugref in %s)" % bugref.i["title"]
     # work around openQA providing incorrect URLs (e.g. following whitespace)
-    return {"bugref": re.search(r"\S+#([0-9]+)", bugref.i["title"]).group(), "bugref_href": bugref.a["href"].strip()}
+    return {"bugref": reference, "bugref_href": bugref.a["href"].strip()}
 
 
 def get_state(cur, prev_dict):
