@@ -144,6 +144,10 @@ class Browser(object):
             msg = "Request to {} was not successful after {} retries: {}".format(url, retries.total, str(e))
             log.warn(msg)
             raise DownloadError(msg)
+        except requests.exceptions.ChunkedEncodingError as e:
+            msg = "Request to {} was not successful: {}".format(url, str(e))
+            log.warn(msg)
+            raise DownloadError(msg)
 
         try:
             r.raise_for_status()
