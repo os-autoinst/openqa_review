@@ -1464,7 +1464,7 @@ class Report(object):
                 if not len(generated):
                     continue
                 report_str += (
-                    "### %s:\n%s" % (k, generated) if self.args.todo_only else "# %s\n\n%s\n---\n" % (k, generated)
+                    "### %s\n%s\n" % (k, generated) if self.args.todo_only else "# %s\n\n%s\n---\n" % (k, generated)
                 )
         return report_str
 
