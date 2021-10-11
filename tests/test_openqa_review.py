@@ -22,7 +22,7 @@ import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from openqa_review.browser import filename_to_url
+from openqa_review.browser import filename_to_url, DownloadError
 from openqa_review import openqa_review  # SUT
 
 
@@ -573,3 +573,13 @@ def test_arch_distinguish():
 
     report = str(openqa_review.generate_report(args))
     assert "ppc64le" in report
+
+
+def test_browser_get_invalid_json():
+    args = cache_test_args_factory()
+    args.include_softfails = True
+    browser = browser_factory(args)
+
+    with pytest.raises(DownloadError) as e:
+        browser._decode_content("http://example.com", "", as_json=True)
+        assert "Unable to decode JSON" in str(e)
