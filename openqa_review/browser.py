@@ -148,15 +148,21 @@ class Browser(object):
             msg = "Request to {} was not successful: {}".format(url, str(e))
             log.warn(msg)
             raise DownloadError(msg)
-
         try:
             r.raise_for_status()
         except requests.exceptions.HTTPError as e:
             msg = "Request to {} failed: {}".format(url, str(e))
             log.warn(msg)
             raise DownloadError(msg)
+        return self._decode_content(r.content.decode("utf-8"), url, as_json)
 
-        content = r.json() if as_json else r.content.decode("utf8")
+    def _decode_content(self, url, raw, as_json=False):
+        try:
+            content = json.loads(raw) if as_json else raw
+        except json.decoder.JSONDecodeError as e:
+            msg = 'Unable to decode JSON for {}: {} (Content was: "{}")'.format(url, str(e), raw)
+            log.warning(msg)
+            raise DownloadError(msg)
         return content
 
     def json_rpc_get(self, url, method, params, cache=True):
