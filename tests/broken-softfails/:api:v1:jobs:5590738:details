@@ -1,0 +1,8 @@
+{
+   "job" : {
+      "name" : "sle-11-SP3-Server-DVD-Incidents-Kernel-x86_64-Build:18520:kernel-ec2-ltp_containers@64bit",
+      "result" : "softfailed",
+      "test" : "ltp_containers",
+      "testresults" : [{ "details" : [], "name" : "netns_sysfs", "result" : "softfailed" }]
+   }
+}

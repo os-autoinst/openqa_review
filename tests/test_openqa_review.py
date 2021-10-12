@@ -552,6 +552,20 @@ def test_custom_reports_based_on_issue_status():
     compare_report(str(report), os.path.join(args.load_dir, "report25_bugrefs_query_issues_filter_closed.md"))
 
 
+def test_get_bugref_for_softfailed_module():
+    args = cache_test_args_factory()
+    args.verbose_test = 1
+    args.show_empty = False
+    args.bugrefs = True
+    args.include_softfails = True
+    args.builds = ":18520:kernel-ec2,:18179:kernel-ec2"
+    args.job_group_urls = "https://openqa.suse.de/group_overview/161"
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "broken-softfails")
+
+    report = str(openqa_review.generate_report(args))
+    compare_report(report, os.path.join(args.load_dir, "report-broken-softfails.md"))
+
+
 def test_arch_distinguish():
     args = cache_test_args_factory()
     args.arch = None
