@@ -99,7 +99,7 @@ from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
 from requests.exceptions import HTTPError
 from string import Template
-from urllib.parse import quote, unquote, urljoin, urlencode, splitquery, parse_qs
+from urllib.parse import quote, unquote, urljoin, urlencode, urlparse, parse_qs
 
 from bs4 import BeautifulSoup
 from pkg_resources import parse_version
@@ -541,8 +541,8 @@ def issue_report_link(root_url, f, test_browser=None):  # noqa: C901
     # failed module introduces a problem in the whole job
 
     test_details_page = test_browser.get_soup(f["href"])
-    current_build_overview = splitquery(test_details_page.find(id="current-build-overview").a["href"])
-    overview_params = parse_qs(current_build_overview[-1])
+    current_build_overview = urlparse(test_details_page.find(id="current-build-overview").a["href"]).query
+    overview_params = parse_qs(current_build_overview)
     group = overview_params["groupid"][0]
     build = overview_params["build"][0]
     try:
