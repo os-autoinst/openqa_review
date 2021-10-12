@@ -113,7 +113,7 @@ from openqa_review.browser import Browser, DownloadError, add_load_save_args  # 
 # treat humanfriendly as optional dependency
 humanfriendly_available = False
 try:
-    from humanfriendly import AutomaticSpinner
+    from humanfriendly.terminal.spinners import AutomaticSpinner
     from humanfriendly.text import pluralize
 
     humanfriendly_available = True
