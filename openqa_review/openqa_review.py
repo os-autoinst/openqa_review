@@ -1026,10 +1026,7 @@ class ArchReport(object):
                     continue
                 return match.group(1) + "#" + match.group(2)
         else:  # pragma: no cover
-            log.error(
-                "Could not find any soft failure reference within details of soft-failed job '%s'. Could be deleted workaround needle?."
-                % absolute_url(self.root_url, result_item)
-            )
+            return "missing bug reference"
 
     def has_todo_issues(self):
         """Tell if report has new or existing todo issues."""
