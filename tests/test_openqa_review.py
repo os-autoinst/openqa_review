@@ -532,6 +532,12 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     p, pr = list(report.report.items())[0]
     report.report[p + 237] = pr
 
+    # test invalid JSON
+    with pytest.raises(DownloadError) as e:
+        report = str(openqa_review.generate_report(args))
+        assert "Unable to decode JSON" in str(e)
+        assert "Unable to decode JSON" in report
+
     openqa_review.reminder_comment_on_issues(report)
     args.dry_run = False
 
