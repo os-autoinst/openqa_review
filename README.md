@@ -55,6 +55,22 @@ Feel free to add issues in github or send pull requests.
 
 TODOs and ideas are tracked in the file `TODO` as well as github issues.
 
+## How to run tests
+
+Tests are implemented on top of [pytest](https://docs.pytest.org/en/6.2.x/) and
+[tox](https://tox.wiki/en/latest/). Tox can be invoked with no arguments to test
+all environments:
+
+```
+tox
+```
+
+Or you can run the tests via pytest:
+
+```
+pytest
+```
+
 ### Rules for commits
 
 * Every commit is checked by [Travis CI](https://travis-ci.com) as soon as
