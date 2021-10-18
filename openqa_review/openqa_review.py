@@ -942,9 +942,7 @@ class ArchReport(object):
                     module_url = self._get_url_to_softfailed_module(v["href"])
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
                     assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
-                    v["bugref"] = self._get_bugref_for_softfailed_module(v, module_name)
-                    if not v["bugref"]:  # pragma: no cover
-                        continue
+                    match, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
                 except AttributeError:  # pragma: no cover
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
@@ -953,21 +951,14 @@ class ArchReport(object):
                 except DownloadError as e:  # pragma: no cover
                     log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
                     continue
-                match = re.search(bugref_regex, v["bugref"])
-                if not match:  # pragma: no cover
-                    log.info("Could not find bug reference in text '%s', skipping." % v["bugref"])
+                if not found_actual_ref:
+                    v["bugref"] = match
                     continue
-                v["bugref"] = match.group(0)
-                bugref, bug_id = match.group(1), match.group(2)
-                assert bugref, "No bugref found for %s" % v
+                bug_tracker, bug_id = match.group(1), match.group(2)
+                assert bug_tracker, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
-                try:
-                    v["bugref_href"] = issue_tracker[bugref](bug_id)
-                except KeyError as e:  # pragma: no cover
-                    log.error(
-                        "Failed to find valid bug tracker URL for %s with error %s. Skipping current result" % (v, e)
-                    )
-                    continue
+                v["bugref"] = "%s#%s" % (bug_tracker, bug_id)
+                v["bugref_href"] = issue_tracker[bug_tracker](bug_id)
 
     @property
     def total_issues(self):
@@ -1002,6 +993,7 @@ class ArchReport(object):
         log.debug("Retrieving '%s'" % details_url)
         details_json = self.test_browser.get_json(details_url)
         details = details_json["details"] if "details" in details_json else details_json
+        match = None
         for field in details:
             if "title" in field and "Soft Fail" in field["title"]:
                 if "text_data" in field:
@@ -1010,11 +1002,14 @@ class ArchReport(object):
                     unformated_str = self.test_browser.get_soup(
                         "%s/file/%s" % (rel_job_url, quote(field["text"]))
                     ).getText()
-                return re.search("Soft Failure:\n(.*)", unformated_str.strip()).group(1)
+                match = re.search(bugref_regex, unformated_str)
+                if not match:  # use the "Soft Failure: …" text as bugref instead
+                    match = re.search("Soft Failure:\n(.*)", unformated_str.strip())
+                    if match:
+                        return (match.group(1), False)
             # custom results can have soft-fail as well
             if "result" in field and "softfail" in field["result"]:
                 match = re.search(bugref_regex, field["title"])
-                return match.group(1) + "#" + match.group(2)
             elif "properties" in field and len(field["properties"]) > 0 and field["properties"][0] == "workaround":
                 log.debug("Evaluating potential workaround needle '%s'" % field["needle"])
                 match = re.search(bugref_regex, field["needle"])
@@ -1024,9 +1019,9 @@ class ArchReport(object):
                         % rel_job_url
                     )
                     continue
-                return match.group(1) + "#" + match.group(2)
-        else:  # pragma: no cover
-            return "missing bug reference"
+            if match:
+                return (match, True)
+        return ("missing/unsupported bug reference", False)
 
     def has_todo_issues(self):
         """Tell if report has new or existing todo issues."""
