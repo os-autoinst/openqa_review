@@ -9,10 +9,18 @@
     <thead><tr><th>Test</th><th id="flavor_Server-DVD-Incidents-Kernel_arch_x86_64">x86_64</th></tr></thead>
     <tbody>
         <tr>
-            <td class="name"><a data-title="ltp_containers"><span title="ltp_containers">ltp_containers</span></a></td>
-            <td id="res_Server-DVD-Incidents-Kernel_x86_64_ltp_containers" name="jobid_td_5590738">
+            <td class="name"><a data-title="ltp_containers_1"><span title="ltp_containers_1">ltp_containers</span></a></td>
+            <td id="res_Server-DVD-Incidents-Kernel_x86_64_ltp_containers_1" name="jobid_td_5590738">
                 <span id="res-5590738">
                     <a href="/tests/5590738"><i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i></a>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name"><a data-title="ltp_containers_2"><span title="ltp_containers_2">ltp_containers</span></a></td>
+            <td id="res_Server-DVD-Incidents-Kernel_x86_64_ltp_containers_2" name="jobid_td_5590738">
+                <span id="res-5590739">
+                    <a href="/tests/5590739"><i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i></a>
                 </span>
             </td>
         </tr>

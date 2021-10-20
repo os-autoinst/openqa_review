@@ -11,7 +11,7 @@
 
 **Existing Product bugs:**
 
-* soft fails: ltp_containers -> missing bug reference
+* soft fails: ltp_containers_1, ltp_containers_2 -> missing/unsupported bug reference
 
 
 

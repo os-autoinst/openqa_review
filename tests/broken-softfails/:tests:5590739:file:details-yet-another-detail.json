@@ -1,0 +1,1 @@
+{ "details" : [{ "result": "softfail", "title": "Soft Fail", "text_data": "foo#bar" }], "result" : "softfail" }
