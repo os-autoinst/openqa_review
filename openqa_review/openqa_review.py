@@ -1008,7 +1008,7 @@ class ArchReport(object):
                     if match:
                         return (match.group(1), False)
             # custom results can have soft-fail as well
-            elif "result" in field and "softfail" in field["result"]:
+            elif "result" in field and "title" in field and "softfail" in field["result"]:
                 match = re.search(bugref_regex, field["title"])
             elif "properties" in field and len(field["properties"]) > 0 and field["properties"][0] == "workaround":
                 log.debug("Evaluating potential workaround needle '%s'" % field["needle"])
