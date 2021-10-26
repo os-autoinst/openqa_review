@@ -154,7 +154,7 @@ class Browser(object):
             msg = "Request to {} failed: {}".format(url, str(e))
             log.warn(msg)
             raise DownloadError(msg)
-        return self._decode_content(r.content.decode("utf-8"), url, as_json)
+        return self._decode_content(url, r.content.decode("utf-8"), as_json)
 
     def _decode_content(self, url, raw, as_json=False):
         try:
