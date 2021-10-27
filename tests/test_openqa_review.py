@@ -19,10 +19,11 @@ from urllib.parse import urljoin, urlparse
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
+from unittest.mock import patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from openqa_review.browser import filename_to_url, DownloadError
+from openqa_review.browser import Browser, filename_to_url, DownloadError
 from openqa_review import openqa_review  # SUT
 
 
@@ -534,6 +535,20 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
 
     openqa_review.reminder_comment_on_issues(report)
     args.dry_run = False
+
+
+@patch.object(Browser, "json_rpc_post")
+def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
+    args.query_issue_status = True
+    args.dry_run = True
+    args.include_softfails = True
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "without_duplicates")
+    report = openqa_review.generate_report(args)
+    openqa_review.reminder_comment_on_issues(report)
+    args.dry_run = False
+    browser_mock.assert_not_called()
 
 
 def test_custom_reports_based_on_issue_status():

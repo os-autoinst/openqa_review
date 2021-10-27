@@ -673,6 +673,7 @@ class Issue(object):
         self.priority = None
         self.queried = False
         self.last_comment_date = None
+        self.last_comment_text = None
         self.issue_type = None
         self.error = False
         self.progress_browser = progress_browser
@@ -695,6 +696,7 @@ class Issue(object):
                     self.subject = self.json["subject"]
                     self.priority = self.json["priority"]["name"]
                     self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
+                    self.last_comment_text = self.json["notes"][-1] if "notes" in self.json else "None"
                 elif tracker in ("boo", "bsc", "bgo"):
                     log.debug("Product bug discovered, looking on bugzilla")
                     self.issue_type = "bugzilla"
@@ -761,13 +763,14 @@ class Issue(object):
 
     @property
     def last_comment(self):
-        """Return datetime object of last comment retrieved from an issue."""
-        if not self.last_comment_date:
+        """Return datetime object and text of last comment retrieved from an issue."""
+        if not self.last_comment_date or not self.last_comment_text:
             assert self.issue_type == "bugzilla"
             res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
             comments = res["result"]["bugs"][str(self.bugid)]["comments"]
             self.last_comment_date = datetime.datetime.strptime(comments[-1]["creation_time"], "%Y-%m-%dT%H:%M:%SZ")
-        return self.last_comment_date
+            self.last_comment_text = comments[-1]["text"]
+        return (self.last_comment_date, self.last_comment_text)
 
     def __str__(self):
         """Format issue using markdown."""
@@ -1518,8 +1521,11 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
         return
     if not issue.issue_type:
         return
-    if (datetime.datetime.utcnow() - issue.last_comment).days >= min_days_unchanged:
+    (last_comment_date, last_comment_text) = issue.last_comment
+    if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
         f = ie.failures[0]
+        if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
+            return
         comment = openqa_issue_comment.substitute({"name": f["name"], "url": ie._url(f)}).strip()
         issue.add_comment(comment)
 
