@@ -946,7 +946,7 @@ class ArchReport(object):
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
                     assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
                     match, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
-                except AttributeError:  # pragma: no cover
+                except (AttributeError, KeyError, IndexError):  # pragma: no cover
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
                     )
