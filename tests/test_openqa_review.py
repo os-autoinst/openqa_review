@@ -19,7 +19,7 @@ from urllib.parse import urljoin, urlparse
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
-from unittest.mock import patch
+from unittest.mock import call, patch, Mock, MagicMock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -579,6 +579,29 @@ def test_get_bugref_for_softfailed_module():
 
     report = str(openqa_review.generate_report(args))
     compare_report(report, os.path.join(args.load_dir, "report-broken-softfails.md"))
+
+
+def test_finding_bugrefs_in_softfailures():
+    args = cache_test_args_factory()
+    test_browser = Mock()
+    result_data = {"job": {"testresults": [{"result": "softfailed", "name": "module-name"}]}}
+    test_browser.get_json = MagicMock(return_value=result_data)
+    report = openqa_review.ArchReport("x86_64", dict({"skipped": {}}), args, "root/url", None, None, test_browser)
+
+    # searching bugrefs in softfails: no bugref in details
+    result = {"href": "job/42", "state": "IMPROVED", "bugref": "not assigned"}
+    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    assert result["bugref"] == "missing/unsupported bug reference", ""
+    test_browser.get_json.assert_has_calls(
+        [call("/api/v1/jobs/42/details"), call("job/42/file/details-module-name.json")]
+    )
+
+    # searching bugrefs in softfails: result structure incomplete
+    test_browser.get_json = MagicMock(return_value={})
+    result["bugref"] = "not assigned"
+    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    assert result["bugref"] == "not assigned", "incomplete test result skipped, no bugref assigned"
+    test_browser.get_json.assert_has_calls([call("/api/v1/jobs/42/details")])
 
 
 def test_arch_distinguish():
