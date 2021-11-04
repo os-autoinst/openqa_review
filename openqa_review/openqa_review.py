@@ -946,7 +946,7 @@ class ArchReport(object):
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
                     assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
                     match, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
-                except AttributeError:  # pragma: no cover
+                except (AttributeError, KeyError, IndexError):
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
                     )
@@ -979,7 +979,7 @@ class ArchReport(object):
             # fake an older module URL including the name, see https://progress.opensuse.org/issues/72292
             return format(
                 "///%s//" % [i for i in details["job"]["testresults"] if i["result"] == "softfailed"][0]["name"]
-            )  # pragma: no cover
+            )
         except DownloadError:
             log.debug("Found older openQA, before https://github.com/os-autoinst/openQA/pull/2932")
             url = job_url
