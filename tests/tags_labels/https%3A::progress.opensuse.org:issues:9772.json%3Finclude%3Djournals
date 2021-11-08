@@ -1,0 +1,86 @@
+{
+  "issue": {
+    "author": {
+      "id": 3,
+      "name": "okurz"
+    },
+    "category": {
+      "id": 164,
+      "name": "New test"
+    },
+    "created_on": "2015-12-02T15:24:27Z",
+    "description": "Nothing works",
+    "done_ratio": 0,
+    "id": 9772,
+    "is_private": false,
+    "journals": [
+      {
+        "created_on": "2016-01-15T16:05:18Z",
+        "details": [
+          {
+            "name": "checklist",
+            "new_value": "[ ] SLE",
+            "old_value": "",
+            "property": "attr"
+          },
+          {
+            "name": "fixed_version_id",
+            "new_value": null,
+            "old_value": "156",
+            "property": "attr"
+          }
+        ],
+        "id": 20292,
+        "notes": "This is a dummy note",
+        "private_notes": false,
+        "user": {
+          "id": 96,
+          "name": "RBrownSUSE"
+        }
+      },
+      {
+        "created_on": "2016-11-10T08:25:53Z",
+        "details": [
+          {
+            "name": "status_id",
+            "new_value": "3",
+            "old_value": "1",
+            "property": "attr"
+          },
+          {
+            "name": "assigned_to_id",
+            "new_value": "6976",
+            "old_value": null,
+            "property": "attr"
+          }
+        ],
+        "id": 31356,
+        "notes": "This is a dummy note",
+        "private_notes": false,
+        "user": {
+          "id": 6976,
+          "name": "maritawerner"
+        }
+      }
+    ],
+    "priority": {
+      "id": 5,
+      "name": "High"
+    },
+    "project": {
+      "id": 36,
+      "name": "openQA Tests"
+    },
+    "start_date": "2015-12-02",
+    "status": {
+      "id": 1,
+      "name": "New"
+    },
+    "subject": "Nothing works",
+    "tracker": {
+      "id": 4,
+      "name": "action"
+    },
+    "updated_on": "2016-01-15T16:05:18Z"
+  }
+}

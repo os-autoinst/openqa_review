@@ -688,27 +688,9 @@ class Issue(object):
                     self.msg = "NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation"
                     return
                 elif tracker == "poo":
-                    log.debug("Test issue discovered, looking on progress")
-                    self.issue_type = "redmine"
-                    self.json = progress_browser.get_json(self.bugref_href + ".json")["issue"]
-                    self.status = self.json["status"]["name"]
-                    self.assignee = self.json["assigned_to"]["name"] if "assigned_to" in self.json else "None"
-                    self.subject = self.json["subject"]
-                    self.priority = self.json["priority"]["name"]
-                    self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
-                    self.last_comment_text = self.json["notes"][-1] if "notes" in self.json else "None"
+                    self._init_redmine(progress_browser)
                 elif tracker in ("boo", "bsc", "bgo"):
-                    log.debug("Product bug discovered, looking on bugzilla")
-                    self.issue_type = "bugzilla"
-                    self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})[
-                        "result"
-                    ]["bugs"][0]
-                    self.status = self.json["status"]
-                    if self.json.get("resolution"):
-                        self.resolution = self.json["resolution"]
-                    self.assignee = self.json["assigned_to"] if "assigned_to" in self.json else "None"
-                    self.subject = self.json["summary"]
-                    self.priority = self.json["priority"].split(" ")[0] + "/" + self.json["severity"]
+                    self._init_bugzilla(bugzilla_browser)
                 else:
                     log.debug('No valid bugref found. Bugref found: "%s"' % self.bugref)
                 self.queried = True
@@ -722,6 +704,36 @@ class Issue(object):
                 log.error("Error retrieving details for bugref %s (%s): %s" % (self.bugref, self.bugref_href, e))
                 self.msg = "Ticket not found"
                 self.error = True
+
+    def _init_redmine(self, progress_browser):
+        """Initialize data for redmine issues."""
+        log.debug("Test issue discovered, looking on progress")
+        self.issue_type = "redmine"
+        self.json = progress_browser.get_json(self.bugref_href + ".json?include=journals")["issue"]
+        self.status = self.json["status"]["name"]
+        self.assignee = self.json["assigned_to"]["name"] if "assigned_to" in self.json else "None"
+        self.subject = self.json["subject"]
+        self.priority = self.json["priority"]["name"]
+        self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
+        self.last_comment_text = "None"
+        if "journals" in self.json:
+            for j in reversed(self.json["journals"]):
+                if "notes" not in j:  # pragma: no cover
+                    continue
+                self.last_comment_text = j["notes"]
+                break
+
+    def _init_bugzilla(self, bugzilla_browser):
+        """Initialize data for bugzilla issues."""
+        log.debug("Product bug discovered, looking on bugzilla")
+        self.issue_type = "bugzilla"
+        self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})["result"]["bugs"][0]
+        self.status = self.json["status"]
+        if self.json.get("resolution"):
+            self.resolution = self.json["resolution"]
+        self.assignee = self.json["assigned_to"] if "assigned_to" in self.json else "None"
+        self.subject = self.json["summary"]
+        self.priority = self.json["priority"].split(" ")[0] + "/" + self.json["severity"]
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""

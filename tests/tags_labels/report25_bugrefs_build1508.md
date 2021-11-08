@@ -17,7 +17,7 @@
 
 **New openQA-issues:**
 
-* toolchain_zypper -> [poo#13694](https://progress.opensuse.org/issues/13694) (Request to https://progress.opensuse.org/issues/13694.json was not successful, file https%3A::progress.opensuse.org:issues:13694.json not found)
+* toolchain_zypper -> [poo#13694](https://progress.opensuse.org/issues/13694) (Request to https://progress.opensuse.org/issues/13694.json?include=journals was not successful, file https%3A::progress.opensuse.org:issues:13694.json%3Finclude%3Djournals not found)
 * allpatterns2@i586--l2 -> [poo#9773](https://progress.opensuse.org/issues/9773 "Nothing works ✓") (Ticket status: <span style="color: red;">Resolved</span>, prio/severity: High, assignee: None)
 
 
