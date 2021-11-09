@@ -65,10 +65,29 @@ all environments:
 tox
 ```
 
-Or you can run the tests via pytest:
+Or you can run the tests via pytest with one of the following commands:
 
 ```
 pytest
+# or
+python3 -m pytest
+# or, after running tox at least once:
+./.tox/cov/bin/py.test
+```
+
+To get a coverage report, do:
+
+```
+tox -e cov
+./.tox/cov/bin/coverage html
+```
+
+Then you will find a coverage report under `coverage_html/`.
+
+To test only certain functions, there are several possibilities:
+```
+pytest tests/test_openqa_review.py::test_reminder_comments_on_referenced_bugs_are_posted
+pytest -k test_reminder_comments_on_referenced_bugs_are_posted
 ```
 
 ### Rules for commits
