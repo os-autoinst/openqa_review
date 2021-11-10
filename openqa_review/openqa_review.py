@@ -715,7 +715,7 @@ class Issue(object):
         self.subject = self.json["subject"]
         self.priority = self.json["priority"]["name"]
         self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
-        self.last_comment_text = "None"
+        self.last_comment_text = ""
         if "journals" in self.json:
             for j in reversed(self.json["journals"]):
                 if "notes" not in j:  # pragma: no cover
@@ -776,7 +776,7 @@ class Issue(object):
     @property
     def last_comment(self):
         """Return datetime object and text of last comment retrieved from an issue."""
-        if not self.last_comment_date or not self.last_comment_text:
+        if not self.last_comment_date or self.last_comment_text is None:
             assert self.issue_type == "bugzilla"
             res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
             comments = res["result"]["bugs"][str(self.bugid)]["comments"]
