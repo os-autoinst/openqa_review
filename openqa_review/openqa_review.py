@@ -94,6 +94,7 @@ import logging
 import os.path
 import re
 import sys
+import traceback
 from builtins import str
 from collections import defaultdict, OrderedDict
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
@@ -701,7 +702,10 @@ class Issue(object):
                 self.msg = str(e)
                 self.error = True
             except TypeError as e:
-                log.error("Error retrieving details for bugref %s (%s): %s" % (self.bugref, self.bugref_href, e))
+                log.error(
+                    "Error retrieving details for bugref %s (%s): %s\n%s"
+                    % (self.bugref, self.bugref_href, e, traceback.format_exc())
+                )
                 self.msg = "Ticket not found"
                 self.error = True
 
