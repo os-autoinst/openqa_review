@@ -23,7 +23,7 @@ from unittest.mock import call, patch, Mock, MagicMock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from openqa_review.browser import Browser, filename_to_url, DownloadError
+from openqa_review.browser import Browser, filename_to_url, DownloadError, BugzillaError
 from openqa_review import openqa_review  # SUT
 
 
@@ -628,3 +628,29 @@ def test_browser_decode_content():
     with pytest.raises(DownloadError) as e:
         browser._decode_content("http://example.com", "", as_json=True)
         assert "Unable to decode JSON" in str(e)
+
+
+def test_get_bugzilla_issue():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
+    browser = browser_factory(args)
+    issue = openqa_review.Issue(
+        "boo#9315715",
+        "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715",
+        True,
+        browser,
+        browser,
+    )
+    assert str(issue) == "[boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)"
+
+    try:
+        issue = openqa_review.Issue(
+            "boo#9315716",
+            "https://bugzilla.opensuse.org/show_bug.cgi?id=9315716",
+            True,
+            browser,
+            browser,
+        )
+    except BugzillaError as e:
+        assert e.message == "The username or password you entered is not valid."
+        assert e.code == 300
