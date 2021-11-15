@@ -663,5 +663,19 @@ def test_querying_last_progress_comment():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "progress")
     issue = issue_factory("poo#102440", "https://progress.opensuse.org/issues/102440", args)
     (comment_date, comment_text) = issue.last_comment
-    assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
-    assert comment_text == "latest progress note", "most recent comment returned"
+    assert str(comment_date) == "2021-11-15 00:00:00", "last update time read"
+    assert comment_text == "latest progress note", "most recent note returned"
+    issue = issue_factory("poo#102441", "https://progress.opensuse.org/issues/102441", args)
+    assert issue.error, "error flag set for non-existing issue"
+    (comment_date, comment_text) = issue.last_comment
+    assert comment_date == None, "no comment date returned for non-existing progress issue"
+    assert comment_text == None, "no comment text returned for non-existing progress issue"
+
+
+def test_querying_last_comment_of_unknown_bugrefs():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
+    issue = issue_factory("b0o#9315715", "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715", args)
+    (comment_date, comment_text) = issue.last_comment
+    assert comment_date == None, "no comment date returned for unsupported issue"
+    assert comment_text == None, "no comment text returned for unsupported issue"
