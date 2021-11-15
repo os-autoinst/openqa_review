@@ -108,7 +108,7 @@ from sortedcontainers import SortedDict
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from openqa_review.browser import Browser, DownloadError, add_load_save_args  # isort:skip
+from openqa_review.browser import Browser, DownloadError, BugNotFoundError, add_load_save_args  # isort:skip
 
 
 # treat humanfriendly as optional dependency
@@ -701,7 +701,7 @@ class Issue(object):
                 )
                 self.msg = str(e)
                 self.error = True
-            except TypeError as e:
+            except BugNotFoundError as e:
                 log.error(
                     "Error retrieving details for bugref %s (%s): %s\n%s"
                     % (self.bugref, self.bugref_href, e, traceback.format_exc())
