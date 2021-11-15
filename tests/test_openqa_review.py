@@ -655,6 +655,7 @@ def test_get_bugzilla_issue():
         assert e.message == "The username or password you entered is not valid."
         assert e.code == 300
 
+
 def test_querying_last_bugzilla_comment():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
@@ -669,3 +670,20 @@ def test_querying_last_bugzilla_comment():
     )
     (comment_date, comment_text) = issue.last_comment
     assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
+    assert comment_text == "most recent bugzilla comment", "most recent comment returned"
+
+
+def test_querying_last_progress_comment():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "progress")
+    browser = browser_factory(args)
+    issue = openqa_review.Issue(
+        "poo#102440",
+        "https://progress.opensuse.org/issues/102440",
+        True,
+        browser,
+        browser,
+    )
+    (comment_date, comment_text) = issue.last_comment
+    assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
+    assert comment_text == "latest progress note", "most recent comment returned"
