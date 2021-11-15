@@ -630,27 +630,20 @@ def test_browser_decode_content():
         assert "Unable to decode JSON" in str(e)
 
 
+def issue_factory(bugref, bugref_href, args):
+    browser = browser_factory(args)
+    return openqa_review.Issue(bugref, bugref_href, True, browser, browser)
+
+
 def test_get_bugzilla_issue():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
     browser = browser_factory(args)
-    issue = openqa_review.Issue(
-        "boo#9315715",
-        "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715",
-        True,
-        browser,
-        browser,
-    )
+    issue = issue_factory("boo#9315715", "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715", args)
     assert str(issue) == "[boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)"
 
     try:
-        issue = openqa_review.Issue(
-            "boo#9315716",
-            "https://bugzilla.opensuse.org/show_bug.cgi?id=9315716",
-            True,
-            browser,
-            browser,
-        )
+        issue_factory("boo#9315716", "https://bugzilla.opensuse.org/show_bug.cgi?id=9315716", args)
     except BugzillaError as e:
         assert e.message == "The username or password you entered is not valid."
         assert e.code == 300
@@ -659,15 +652,7 @@ def test_get_bugzilla_issue():
 def test_querying_last_bugzilla_comment():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
-    browser = browser_factory(args)
-
-    issue = openqa_review.Issue(
-        "boo#0815",
-        "https://bugzilla.opensuse.org/show_bug.cgi?id=0815",
-        True,
-        browser,
-        browser,
-    )
+    issue = issue_factory("boo#0815", "https://bugzilla.opensuse.org/show_bug.cgi?id=0815", args)
     (comment_date, comment_text) = issue.last_comment
     assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
     assert comment_text == "most recent bugzilla comment", "most recent comment returned"
@@ -676,14 +661,7 @@ def test_querying_last_bugzilla_comment():
 def test_querying_last_progress_comment():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "progress")
-    browser = browser_factory(args)
-    issue = openqa_review.Issue(
-        "poo#102440",
-        "https://progress.opensuse.org/issues/102440",
-        True,
-        browser,
-        browser,
-    )
+    issue = issue_factory("poo#102440", "https://progress.opensuse.org/issues/102440", args)
     (comment_date, comment_text) = issue.last_comment
     assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
     assert comment_text == "latest progress note", "most recent comment returned"
