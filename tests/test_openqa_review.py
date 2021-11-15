@@ -654,3 +654,18 @@ def test_get_bugzilla_issue():
     except BugzillaError as e:
         assert e.message == "The username or password you entered is not valid."
         assert e.code == 300
+
+def test_querying_last_bugzilla_comment():
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
+    browser = browser_factory(args)
+
+    issue = openqa_review.Issue(
+        "boo#0815",
+        "https://bugzilla.opensuse.org/show_bug.cgi?id=0815",
+        True,
+        browser,
+        browser,
+    )
+    (comment_date, comment_text) = issue.last_comment
+    assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
