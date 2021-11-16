@@ -752,9 +752,10 @@ class Issue(object):
                     "is_private": False,
                 },
             )
-        # self.issue_type == 'redmine':
-        else:
+        elif self.issue_type == "redmine":
             self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": {"notes": comment}})
+        else:
+            assert False, "Only bugzilla or redmine supported as issue type"
 
     @property
     def is_assigned(self):
@@ -780,8 +781,7 @@ class Issue(object):
     @property
     def last_comment(self):
         """Return datetime object and text of last comment retrieved from an issue."""
-        if not self.last_comment_date or self.last_comment_text is None:
-            assert self.issue_type == "bugzilla"
+        if self.issue_type == "bugzilla" and (self.last_comment_date is None or self.last_comment_text is None):
             res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
             comments = res["result"]["bugs"][str(self.bugid)]["comments"]
             self.last_comment_date = datetime.datetime.strptime(comments[-1]["creation_time"], "%Y-%m-%dT%H:%M:%SZ")
@@ -1535,7 +1535,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
     issue = ie.bug
     if issue.error:
         return
-    if not issue.issue_type:
+    if not issue.issue_type or issue.error:
         return
     (last_comment_date, last_comment_text) = issue.last_comment
     if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
