@@ -1,5 +1,5 @@
 import os
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output, run, CalledProcessError, DEVNULL
 
 from setuptools import setup
 
@@ -10,11 +10,11 @@ version_py = os.path.join(os.path.dirname(__file__), "version.py")
 
 
 try:
-    # This will not generate PEP440 compliant version strings for any commit
-    # that is not on the tag itself. setuptools/dist will give a warning.
-    # Still, this is good enough for now. A (big) alternative would be
-    # gh:warner/python-versioneer
-    version_git = check_output(["git", "describe", "--tags"]).rstrip().decode("ascii")
+    is_on_tag = run(["git", "describe"], stdout=DEVNULL, stderr=DEVNULL).returncode == 0
+    version_git = check_output(["git", "describe", "--abbrev=0", "--tags"]).rstrip().decode("ascii")
+    if not is_on_tag:
+        dev_revision = check_output(["git", "rev-list", "--count", version_git + "..HEAD"]).rstrip().decode("ascii")
+        version_git += ".dev" + dev_revision
 except (CalledProcessError, OSError):
     try:
         version_git = open(version_py).read().strip().split("=")[-1].replace("'", "").strip()
