@@ -638,7 +638,6 @@ def issue_factory(bugref, bugref_href, args):
 def test_get_bugzilla_issue():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
-    browser = browser_factory(args)
     issue = issue_factory("boo#9315715", "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715", args)
     assert str(issue) == "[boo#9315715](https://bugzilla.opensuse.org/show_bug.cgi?id=9315715) (Ticket not found)"
 
@@ -668,8 +667,8 @@ def test_querying_last_progress_comment():
     issue = issue_factory("poo#102441", "https://progress.opensuse.org/issues/102441", args)
     assert issue.error, "error flag set for non-existing issue"
     (comment_date, comment_text) = issue.last_comment
-    assert comment_date == None, "no comment date returned for non-existing progress issue"
-    assert comment_text == None, "no comment text returned for non-existing progress issue"
+    assert comment_date is None, "no comment date returned for non-existing progress issue"
+    assert comment_text is None, "no comment text returned for non-existing progress issue"
 
 
 def test_querying_last_comment_of_unknown_bugrefs():
@@ -677,5 +676,5 @@ def test_querying_last_comment_of_unknown_bugrefs():
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
     issue = issue_factory("b0o#9315715", "https://bugzilla.opensuse.org/show_bug.cgi?id=9315715", args)
     (comment_date, comment_text) = issue.last_comment
-    assert comment_date == None, "no comment date returned for unsupported issue"
-    assert comment_text == None, "no comment text returned for unsupported issue"
+    assert comment_date is None, "no comment date returned for unsupported issue"
+    assert comment_text is None, "no comment text returned for unsupported issue"
