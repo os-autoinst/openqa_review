@@ -755,7 +755,7 @@ class Issue(object):
         elif self.issue_type == "redmine":
             self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": {"notes": comment}})
         else:
-            assert False, "Only bugzilla or redmine supported as issue type"
+            assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover
 
     @property
     def is_assigned(self):
