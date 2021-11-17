@@ -1,0 +1,79 @@
+name: Test
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+        - '3.6'
+        - '3.7'
+        - '3.8'
+        - '3.9'
+        - '3.10'
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest tox pytest-mock
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - run: env | sort
+
+    - name: test
+      run: |
+        PYTHONVERSION=${{ matrix.python-version }}
+        tox -e py"${PYTHONVERSION/./}"
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8 pytest tox pytest-mock
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - run: |
+        tox -e cov
+        ./.tox/cov/bin/coverage html
+    - uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage_html/
+
+  style:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8 pytest tox pytest-mock
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - run: tox -e doctests || true   # not yet working
+    - run: tox -e flake8
+    - run: tox -e black
