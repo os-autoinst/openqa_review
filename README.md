@@ -65,7 +65,21 @@ all environments:
 tox
 ```
 
-Or you can run the tests via pytest with one of the following commands:
+It is also possible to run only a special environment, e.g. `tox -e flake8` for
+the linter, `tox -e py38` for running tests at the specified Python version (the
+interpreter needs to be installed for this version) or `tox -e cov` for the
+coverage report (see details below). These environments are configured in
+`tox.ini`.
+
+To ensure files are passing the style check, invoke `black .` to apply
+correct formatting.
+
+If you are running into issues installing dependencies (resulting in an error
+like "Could not build wheels…"), try to remove the temporary `.tox` directory
+(or the subfolder for the problematic environment within).
+
+### Run tests via `pytest`
+You can also run the tests via `pytest` with one of the following commands:
 
 ```
 pytest
@@ -75,19 +89,18 @@ python3 -m pytest
 ./.tox/cov/bin/py.test
 ```
 
-To get a coverage report, do:
-
-```
-tox -e cov
-./.tox/cov/bin/coverage html
-```
-
-Then you will find a coverage report under `coverage_html/`.
-
 To test only certain functions, there are several possibilities:
 ```
 pytest tests/test_openqa_review.py::test_reminder_comments_on_referenced_bugs_are_posted
 pytest -k test_reminder_comments_on_referenced_bugs_are_posted
+```
+
+### Generate coverage report
+Run the following commands to generate a coverage report under `coverage_html/`:
+
+```
+tox -e cov
+./.tox/cov/bin/coverage html
 ```
 
 ### Rules for commits
