@@ -74,6 +74,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest tox pytest-mock
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - run: tox -e doctests || true   # not yet working
+    - run: tox -e doctests
     - run: tox -e flake8
     - run: tox -e black
