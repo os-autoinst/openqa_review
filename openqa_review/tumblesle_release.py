@@ -39,7 +39,7 @@ from subprocess import check_call
 import yaml
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from openqa_review.browser import Browser, add_load_save_args
+from .browser import Browser, add_load_save_args
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
