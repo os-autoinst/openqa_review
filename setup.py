@@ -49,7 +49,7 @@ setup(
     url="https://github.com/os-autoinst/openqa_review",
     packages=["openqa_review"],
     py_modules=["version"],
-    long_description=open(os.path.join(os.path.dirname(__file__), "README.md")).read(),
+    long_description=open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8").read(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Topic :: Utilities",
