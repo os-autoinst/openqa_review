@@ -15,7 +15,7 @@ import sys
 import tempfile
 from argparse import Namespace
 from builtins import str
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
@@ -23,7 +23,7 @@ from unittest.mock import call, patch, Mock, MagicMock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from openqa_review.browser import Browser, filename_to_url, DownloadError, BugzillaError
+from openqa_review.browser import Browser, DownloadError, BugzillaError
 from openqa_review import openqa_review  # SUT
 
 
@@ -378,13 +378,6 @@ def test_get_job_groups_yields_job_groups_in_page():
             "openSUSE Tumbleweed PowerPC",
         ]
     )
-
-
-# TODO should be covered by doctest already but I can not get coverage analysis to work with doctests in py.test
-def test_filename_to_url_encodes_valid_url():
-    url_object = urlparse(filename_to_url("https%3A::openqa.opensuse.org:group_overview:25"))
-    assert url_object.scheme == "https"
-    assert url_object.netloc == "openqa.opensuse.org"
 
 
 def test_single_job_group_pages_can_be_cached_from_cache():
