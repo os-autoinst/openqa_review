@@ -544,6 +544,24 @@ def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
     browser_mock.assert_not_called()
 
 
+@patch.object(Browser, "json_rpc_post")
+def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
+    args = bugrefs_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "softfails")
+    args.verbose_test = 1
+    args.dry_run = True
+    args.include_softfails = True
+    args.query_issue_status = True
+    report = openqa_review.generate_report(args)
+    # there should be no comment with default WONTFIX|NO_REMINDER softfail pattern
+    openqa_review.reminder_comment_on_issues(report)
+    browser_mock.assert_not_called()
+    # without the pattern, there shall be one reminder
+    openqa_review.reminder_comment_on_issues(report, openqa_review.MIN_DAYS_UNCHANGED, None)
+    browser_mock.assert_called_once()
+    args.dry_run = False
+
+
 def test_custom_reports_based_on_issue_status():
     args = bugrefs_test_args_factory()
     args.verbose_test = 1

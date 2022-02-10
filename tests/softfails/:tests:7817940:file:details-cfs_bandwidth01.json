@@ -1,0 +1,25 @@
+{
+   "dents" : 1,
+   "execution_time" : 0,
+   "details" : [
+      {
+         "title" : "wait_serial",
+         "result" : "ok",
+         "text" : "cfs_bandwidth01-1.txt",
+         "text_data" : "# wait_serial expected: \"# \"\n# Result:\n\n# \n"
+      },
+      {
+         "text_data" : "Kernel Ooops found - Serial error: [   95.247847] ------------[ cut here ]------------\r",
+         "text" : "cfs_bandwidth01-11.txt",
+         "title" : "Kernel Ooops found",
+         "result" : "fail"
+      },
+      {
+         "title" : "Soft Failed",
+         "result" : "softfail",
+         "text_data" : "# Soft Failure:\nFailure is known, overriding to softfail\nWONTFIX for pytest! bsc#123456\n",
+         "text" : "cfs_bandwidth01-15.txt"
+      }
+   ],
+   "result" : "softfail"
+}

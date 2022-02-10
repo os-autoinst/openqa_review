@@ -1,0 +1,38 @@
+{
+   "build_results" : [
+      {
+         "build" : ":18520:kernel-ec2",
+         "distris" : { "sle" : 1 },
+         "failed" : 9,
+         "key" : "11-SP3-:18520:kernel-ec2",
+         "labeled" : 0,
+         "passed" : 34,
+         "reviewed" : "",
+         "skipped" : 0,
+         "softfailed" : 2,
+         "total" : 45,
+         "unfinished" : 0,
+         "version" : "11-SP3"
+      },
+      {
+         "build" : ":18179:kernel-ec2",
+         "distris" : { "sle" : 1 },
+         "failed" : 1,
+         "key" : "11-SP3-:18179:kernel-ec2",
+         "labeled" : 0,
+         "passed" : 0,
+         "reviewed" : "",
+         "skipped" : 44,
+         "softfailed" : 0,
+         "total" : 45,
+         "unfinished" : 0,
+         "version" : "11-SP3"
+      }
+   ],
+   "group" : {
+      "id" : 161,
+      "name" : "Maintenance: SLE 11 SP3 Kernel Incidents",
+      "parent_id" : 8,
+      "parent_name" : "Maintenance: Single Incidents"
+   }
+}
