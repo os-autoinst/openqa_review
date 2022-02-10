@@ -655,6 +655,11 @@ Always latest result in this scenario: [latest](%s)
     return ": report [product bug](%s) / [openQA issue](%s)" % (product_bug, test_issue)
 
 
+def _parse_issue_timestamp(timestamp):
+    """Parse the timestamp of a specified redmine issue timestamp field."""
+    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+
+
 class Issue(object):
 
     """Issue with extra status info from issue tracker."""
@@ -718,7 +723,7 @@ class Issue(object):
         self.assignee = self.json["assigned_to"]["name"] if "assigned_to" in self.json else "None"
         self.subject = self.json["subject"]
         self.priority = self.json["priority"]["name"]
-        self.last_comment_date = datetime.datetime.strptime(self.json["updated_on"], "%Y-%m-%dT%H:%M:%SZ")
+        self.last_comment_date = _parse_issue_timestamp(self.json["updated_on"])
         self.last_comment_text = ""
         if "journals" in self.json:
             for j in reversed(self.json["journals"]):
@@ -784,7 +789,7 @@ class Issue(object):
         if self.issue_type == "bugzilla" and (self.last_comment_date is None or self.last_comment_text is None):
             res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
             comments = res["result"]["bugs"][str(self.bugid)]["comments"]
-            self.last_comment_date = datetime.datetime.strptime(comments[-1]["creation_time"], "%Y-%m-%dT%H:%M:%SZ")
+            self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
             self.last_comment_text = comments[-1]["text"]
         return (self.last_comment_date, self.last_comment_text)
 
