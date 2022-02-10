@@ -1550,6 +1550,11 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
         return
     if not issue.issue_type or issue.error:
         return
+    if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
+        reason = ie.failures[0]["softfail_reason"]
+        pattern = re.compile("WONTFIX|NO_REMINDER")
+        if re.search(pattern, reason):
+            return
     (last_comment_date, last_comment_text) = issue.last_comment
     if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
         f = ie.failures[0]
