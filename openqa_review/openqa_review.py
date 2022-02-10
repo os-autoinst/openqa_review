@@ -230,7 +230,7 @@ change_state = {
     ("result_failed", "result_failed"): "STILL_FAILING",  # still failing or partial improve, partial degrade
     ("result_softfailed", "result_softfailed"): "STILL_SOFT_FAILING",
     ("result_failed", "result_softfailed"): "IMPROVED",
-    ("result_passed", "result_passed"): "STABLE",  # ignore or crosscheck if not fals positive
+    ("result_passed", "result_passed"): "STABLE",  # ignore or crosscheck if not false positive
 }
 
 soft_fail_states = ["STILL_SOFT_FAILING", "NEW_SOFT_ISSUE", "IMPROVED"]
