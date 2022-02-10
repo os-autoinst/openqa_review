@@ -785,7 +785,12 @@ class Issue(object):
 
     @property
     def last_comment(self):
-        """Return datetime object and text of last comment retrieved from an issue."""
+        """Return datetime object and text of all comments retrieved from an issue.
+
+        In case of redmine retrieving comments had been done already as part of
+        the init_redmine call as comments are part of the initial request. For
+        bugzilla we need a separate request.
+        """
         if self.issue_type == "bugzilla" and (self.last_comment_date is None or self.last_comment_text is None):
             res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
             comments = res["result"]["bugs"][str(self.bugid)]["comments"]
