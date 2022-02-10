@@ -2,25 +2,30 @@
 pull_request_rules:
   - name: automatic merge
     conditions:
-      - "#approved-reviews-by>=2"
-      - "#changes-requested-reviews-by=0"
-      # https://doc.mergify.io/examples.html#require-all-requested-reviews-to-be-approved
-      - "#review-requested=0"
-      - -label~=^acceptance-tests-needed|not-ready
-      - base=master
-      - "status-success~=test"
-    actions:
+      - and: &base_checks
+        - -label~=^acceptance-tests-needed|not-ready
+        - base=master
+        - "status-success~=test"
+        - "#check-failure=0"
+        - "#check-pending=0"
+        - linear-history
+      - and:
+        - "#approved-reviews-by>=2"
+        - "#changes-requested-reviews-by=0"
+        # https://doc.mergify.io/examples.html#require-all-requested-reviews-to-be-approved
+        - "#review-requested=0"
+    actions: &merge
       merge:
         method: merge
   - name: automatic merge on special label
     conditions:
-      - -label~=^acceptance-tests-needed|not-ready
-      - "label=merge-fast"
-      - base=master
-      - "status-success~=test"
-    actions:
-      merge:
-        method: merge
+      - and: *base_checks
+      - and:
+        # mergify config checks needs at least two rules in "and" so we repeat
+        # one from the base checks
+        - base=master
+        - "label=merge-fast"
+    actions: *merge
   - name: ask to resolve conflict
     conditions:
       - conflict
