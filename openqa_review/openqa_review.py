@@ -966,7 +966,7 @@ class ArchReport(object):
                     module_url = self._get_url_to_softfailed_module(v["href"])
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
                     assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
-                    match, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
+                    match, softfail_reason, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
                 except (AttributeError, KeyError, IndexError):
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
@@ -977,12 +977,14 @@ class ArchReport(object):
                     continue
                 if not found_actual_ref:
                     v["bugref"] = match
+                    v["softfail_reason"] = softfail_reason
                     continue
                 bug_tracker, bug_id = match.group(1), match.group(2)
                 assert bug_tracker, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
                 v["bugref"] = "%s#%s" % (bug_tracker, bug_id)
                 v["bugref_href"] = issue_tracker[bug_tracker](bug_id)
+                v["softfail_reason"] = softfail_reason
 
     @property
     def total_issues(self):
@@ -1019,6 +1021,7 @@ class ArchReport(object):
         details = details_json["details"] if "details" in details_json else details_json
         match = None
         for field in details:
+            softfail_reason = None
             if "title" in field and "Soft Fail" in field["title"]:
                 if "text_data" in field:
                     unformated_str = field["text_data"]
@@ -1027,13 +1030,15 @@ class ArchReport(object):
                         "%s/file/%s" % (rel_job_url, quote(field["text"]))
                     ).getText()
                 match = re.search(bugref_regex, unformated_str)
+                softfail_reason = unformated_str
                 if not match:  # use the "Soft Failure: …" text as bugref instead
                     match = re.search("Soft Failure:\n(.*)", unformated_str.strip())
                     if match:
-                        return (match.group(1), False)
+                        return (match.group(1), softfail_reason, False)
             # custom results can have soft-fail as well
             elif "result" in field and "title" in field and "softfail" in field["result"]:
                 match = re.search(bugref_regex, field["title"])
+                softfail_reason = field["text_data"] if "text_data" in field else field["title"]
             elif (
                 "properties" in field
                 and "needle" in field
@@ -1049,8 +1054,8 @@ class ArchReport(object):
                     )
                     continue
             if match:
-                return (match, True)
-        return ("missing/unsupported bug reference", False)
+                return (match, softfail_reason, True)
+        return ("missing/unsupported bug reference", None, False)
 
     def has_todo_issues(self):
         """Tell if report has new or existing todo issues."""
