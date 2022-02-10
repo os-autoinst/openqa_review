@@ -736,13 +736,18 @@ class Issue(object):
         """Initialize data for bugzilla issues."""
         log.debug("Product bug discovered, looking on bugzilla")
         self.issue_type = "bugzilla"
-        self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", {"ids": [self.bugid]})["result"]["bugs"][0]
+        ids = {"ids": [self.bugid]}
+        self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", ids)["result"]["bugs"][0]
         self.status = self.json["status"]
         if self.json.get("resolution"):
             self.resolution = self.json["resolution"]
         self.assignee = self.json["assigned_to"] if "assigned_to" in self.json else "None"
         self.subject = self.json["summary"]
         self.priority = self.json["priority"].split(" ")[0] + "/" + self.json["severity"]
+        res = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", ids)
+        comments = res["result"]["bugs"][str(self.bugid)]["comments"]
+        self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
+        self.last_comment_text = comments[-1]["text"]
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""
@@ -785,17 +790,7 @@ class Issue(object):
 
     @property
     def last_comment(self):
-        """Return datetime object and text of all comments retrieved from an issue.
-
-        In case of redmine retrieving comments had been done already as part of
-        the init_redmine call as comments are part of the initial request. For
-        bugzilla we need a separate request.
-        """
-        if self.issue_type == "bugzilla" and (self.last_comment_date is None or self.last_comment_text is None):
-            res = self.bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", {"ids": [self.bugid]})
-            comments = res["result"]["bugs"][str(self.bugid)]["comments"]
-            self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
-            self.last_comment_text = comments[-1]["text"]
+        """Return datetime object and text of all comments retrieved from an issue."""
         return (self.last_comment_date, self.last_comment_text)
 
     def __str__(self):
