@@ -214,10 +214,22 @@ class NotEnoughBuildsError(Exception):
     pass
 
 
-def parse_summary(details):
+def parse_summary(details, url):
     """Parse and return build summary as dict."""
+    passed = details.get("passed", 0)
+    softfailed = details.get("softfailed", 0)
+    failed = details.get("failed", 0)
+    # build pages matching no tests show no job as well as builds only consisting of incomplete jobs
+    # see https://progress.opensuse.org/issues/60458
+    assert (
+        passed + softfailed + failed > 0 or details["running"] == 0
+    ), "invalid test results found reading %s, make sure you specified valid builds (leading zero missing?)" % (
+        url,
+    )
     return {
-        i.previous.strip().rstrip(":").lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")
+        "passed": passed,
+        "softfailed": softfailed,
+        "failed": failed,
     }
 
 
@@ -485,7 +497,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
             if "distri" in b.keys()
             else "distri=" + "&distri=".join(sorted(b["distris"].keys()))
         )
-        return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (
+        return "/tests/overview.json?%s&version=%s&build=%s&groupid=%i" % (
             distri_str,
             b["version"],
             quote(build),
@@ -1127,20 +1139,10 @@ class ProductReport(object):
             browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold
         )
         # read last finished
-        current_details = browser.get_soup(current_url)
-        previous_details = browser.get_soup(previous_url)
-        for details in current_details, previous_details:
-            # build pages matching no tests show no job as well as builds only consisting of incomplete jobs
-            # see https://progress.opensuse.org/issues/60458
-            assert (
-                sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0
-                or len(details.find_all(class_="status")) > 0
-            ), "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)" % (
-                current_url,
-                previous_url,
-            )
-        current_summary = parse_summary(current_details)
-        previous_summary = parse_summary(previous_details)
+        current_details = browser.get_json(current_url)
+        previous_details = browser.get_json(previous_url)
+        current_summary = parse_summary(current_details["aggregated"], current_url)
+        previous_summary = parse_summary(previous_details["aggregated"], previous_url)
 
         changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in current_summary.items()})
         self.changes_str = (
@@ -1154,9 +1156,10 @@ class ProductReport(object):
         self.ref_build = get_build_nr(previous_url)
 
         # for each architecture iterate over all
+        # XXX: should 'archs' be mandatory? tests won't pass unless it's optional
         cur_archs, prev_archs = (
-            set(arch.text for arch in details.find_all("th", id=re.compile("flavor_")))
-            for details in [current_details, previous_details]
+            set(arch for arch in details.get("archs", {}))
+            for details in [current_details["aggregated"], previous_details["aggregated"]]
         )
         archs = cur_archs
         if args.arch:
