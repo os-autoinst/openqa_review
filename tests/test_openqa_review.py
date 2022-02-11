@@ -108,6 +108,13 @@ def test_args_implicit():
     assert not args.bugrefs
 
 
+def test_args_reminder():
+    sys.argv[1:] = ["--reminder-comment-on-issues", "--no-reminder-on", "pattern"]
+    args = openqa_review.parse_args()
+    assert args.reminder_comment_on_issues
+    assert args.ignore_pattern == re.compile("pattern")
+
+
 def cache_test_args_factory():
     args = args_factory()
     args.job_group_urls = args.host + "/group_overview/25"

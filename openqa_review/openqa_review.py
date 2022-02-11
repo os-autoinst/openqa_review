@@ -127,6 +127,9 @@ except ImportError:  # pragma: no cover
 # minimum number of days an issue is unchanged before putting a reminder comment
 MIN_DAYS_UNCHANGED = 14
 
+# default regex to skip soft-failed reminders
+NO_REMINDER_REGEX = re.compile("WONTFIX|NO_REMINDER")
+
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
@@ -1389,6 +1392,13 @@ def parse_args():
         default=MIN_DAYS_UNCHANGED,
         help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""",
     )
+    reminder_comments.add_argument(
+        "--no-reminder-on",
+        dest="ignore_pattern",
+        type=re.compile,
+        default=NO_REMINDER_REGEX,
+        help="""A regular expression which will suppress sending the reminder on match.""",
+    )
     add_load_save_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
@@ -1544,7 +1554,7 @@ def filter_report(report, iefilter):
     report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
-def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
+def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
     issue = ie.bug
     if issue.error:
         return
@@ -1552,8 +1562,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
         return
     if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
         reason = ie.failures[0]["softfail_reason"]
-        pattern = re.compile("WONTFIX|NO_REMINDER")
-        if re.search(pattern, reason):
+        if reason and ignore_pattern and re.search(ignore_pattern, reason):
             return
     (last_comment_date, last_comment_text) = issue.last_comment
     if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
@@ -1564,7 +1573,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
         issue.add_comment(comment)
 
 
-def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
+def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ignore_pattern=NO_REMINDER_REGEX):
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
     for product, pr in report.report.items():
@@ -1577,7 +1586,7 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
                             bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
                             if bugref not in processed_issues:
                                 try:
-                                    reminder_comment_on_issue(ie, min_days_unchanged)
+                                    reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern)
                                 except HTTPError as e:  # pragma: no cover
                                     log.error(
                                         "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
@@ -1594,7 +1603,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report, args.min_days_unchanged)
+        reminder_comment_on_issues(report, args.min_days_unchanged, args.ignore_pattern)
 
     if args.filter:
         if args.filter not in ie_filters:
