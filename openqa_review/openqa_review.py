@@ -1594,7 +1594,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report)
+        reminder_comment_on_issues(report, args.min_days_unchanged)
 
     if args.filter:
         if args.filter not in ie_filters:
