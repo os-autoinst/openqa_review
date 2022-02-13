@@ -1135,9 +1135,12 @@ class ProductReport(object):
             assert (
                 sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0
                 or len(details.find_all(class_="status")) > 0
-            ), "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)" % (
-                current_url,
-                previous_url,
+            ), (
+                "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)"
+                % (
+                    current_url,
+                    previous_url,
+                )
             )
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
