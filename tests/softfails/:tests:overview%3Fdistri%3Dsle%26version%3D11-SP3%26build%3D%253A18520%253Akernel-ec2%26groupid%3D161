@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>openQA: Test summary</title></head>
+<body>
+    <h2>Test result overview</h2>
+    <div id="summary" class="card border-danger"></div>
+    <h3>Flavor: Server-DVD-Incidents-Kernel</h3>
+    <table id="results_Server-DVD-Incidents-Kernel" class="overview fixedheader table table-striped table-hover">
+    <thead><tr><th>Test</th><th id="flavor_Server-DVD-Incidents-Kernel_arch_i586">i586</th></tr></thead>
+    <tbody>
+        <tr>
+            <td class="name"><a data-title="ltp_sched"><span title="ltp_sched">ltp_sched</span></a></td>
+            <td id="res_Server-DVD-Incidents-Kernel_i586_ltp_sched" name="jobid_td_7817940">
+                <span id="res-7817940">
+                    <a href="/tests/7817940"><i class="status fa fa-circle result_softfailed" title="Done: softfailed"></i></a>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

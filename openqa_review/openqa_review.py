@@ -127,6 +127,9 @@ except ImportError:  # pragma: no cover
 # minimum number of days an issue is unchanged before putting a reminder comment
 MIN_DAYS_UNCHANGED = 14
 
+# default regex to skip soft-failed reminders
+NO_REMINDER_REGEX = re.compile("WONTFIX|NO_REMINDER")
+
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
@@ -230,7 +233,7 @@ change_state = {
     ("result_failed", "result_failed"): "STILL_FAILING",  # still failing or partial improve, partial degrade
     ("result_softfailed", "result_softfailed"): "STILL_SOFT_FAILING",
     ("result_failed", "result_softfailed"): "IMPROVED",
-    ("result_passed", "result_passed"): "STABLE",  # ignore or crosscheck if not fals positive
+    ("result_passed", "result_passed"): "STABLE",  # ignore or crosscheck if not false positive
 }
 
 soft_fail_states = ["STILL_SOFT_FAILING", "NEW_SOFT_ISSUE", "IMPROVED"]
@@ -966,7 +969,7 @@ class ArchReport(object):
                     module_url = self._get_url_to_softfailed_module(v["href"])
                     module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
                     assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
-                    match, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
+                    match, softfail_reason, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
                 except (AttributeError, KeyError, IndexError):
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
@@ -977,12 +980,14 @@ class ArchReport(object):
                     continue
                 if not found_actual_ref:
                     v["bugref"] = match
+                    v["softfail_reason"] = softfail_reason
                     continue
                 bug_tracker, bug_id = match.group(1), match.group(2)
                 assert bug_tracker, "No bugref found for %s" % v
                 assert bug_id, "No bug_id found for %s" % v
                 v["bugref"] = "%s#%s" % (bug_tracker, bug_id)
                 v["bugref_href"] = issue_tracker[bug_tracker](bug_id)
+                v["softfail_reason"] = softfail_reason
 
     @property
     def total_issues(self):
@@ -1019,6 +1024,7 @@ class ArchReport(object):
         details = details_json["details"] if "details" in details_json else details_json
         match = None
         for field in details:
+            softfail_reason = None
             if "title" in field and "Soft Fail" in field["title"]:
                 if "text_data" in field:
                     unformated_str = field["text_data"]
@@ -1027,13 +1033,15 @@ class ArchReport(object):
                         "%s/file/%s" % (rel_job_url, quote(field["text"]))
                     ).getText()
                 match = re.search(bugref_regex, unformated_str)
+                softfail_reason = unformated_str
                 if not match:  # use the "Soft Failure: …" text as bugref instead
                     match = re.search("Soft Failure:\n(.*)", unformated_str.strip())
                     if match:
-                        return (match.group(1), False)
+                        return (match.group(1), softfail_reason, False)
             # custom results can have soft-fail as well
             elif "result" in field and "title" in field and "softfail" in field["result"]:
                 match = re.search(bugref_regex, field["title"])
+                softfail_reason = field["text_data"] if "text_data" in field else field["title"]
             elif (
                 "properties" in field
                 and "needle" in field
@@ -1049,8 +1057,8 @@ class ArchReport(object):
                     )
                     continue
             if match:
-                return (match, True)
-        return ("missing/unsupported bug reference", False)
+                return (match, softfail_reason, True)
+        return ("missing/unsupported bug reference", None, False)
 
     def has_todo_issues(self):
         """Tell if report has new or existing todo issues."""
@@ -1384,6 +1392,13 @@ def parse_args():
         default=MIN_DAYS_UNCHANGED,
         help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""",
     )
+    reminder_comments.add_argument(
+        "--no-reminder-on",
+        dest="ignore_pattern",
+        type=re.compile,
+        default=NO_REMINDER_REGEX,
+        help="""A regular expression which will suppress sending the reminder on match.""",
+    )
     add_load_save_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
@@ -1539,12 +1554,16 @@ def filter_report(report, iefilter):
     report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
-def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
+def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
     issue = ie.bug
     if issue.error:
         return
     if not issue.issue_type or issue.error:
         return
+    if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
+        reason = ie.failures[0]["softfail_reason"]
+        if reason and ignore_pattern and re.search(ignore_pattern, reason):
+            return
     (last_comment_date, last_comment_text) = issue.last_comment
     if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
         f = ie.failures[0]
@@ -1554,7 +1573,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged=MIN_DAYS_UNCHANGED):
         issue.add_comment(comment)
 
 
-def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
+def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ignore_pattern=NO_REMINDER_REGEX):
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
     for product, pr in report.report.items():
@@ -1567,7 +1586,7 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED):
                             bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
                             if bugref not in processed_issues:
                                 try:
-                                    reminder_comment_on_issue(ie, min_days_unchanged)
+                                    reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern)
                                 except HTTPError as e:  # pragma: no cover
                                     log.error(
                                         "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
@@ -1584,7 +1603,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report)
+        reminder_comment_on_issues(report, args.min_days_unchanged, args.ignore_pattern)
 
     if args.filter:
         if args.filter not in ie_filters:

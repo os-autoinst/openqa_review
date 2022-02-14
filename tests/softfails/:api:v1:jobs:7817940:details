@@ -1,0 +1,53 @@
+{
+   "job" : {
+      "result" : "softfailed",
+      "id" : 7817940,
+      "testresults" : [
+         {
+            "milestone" : 0,
+            "execution_time" : null,
+            "has_parser_text_result" : 1,
+            "important" : 1,
+            "result" : "softfailed",
+            "details" : [
+               {
+                  "title" : "wait_serial",
+                  "resborder" : "resborder_ok",
+                  "text" : "cfs_bandwidth01-1.txt",
+                  "display_title" : "wait_serial",
+                  "is_parser_text_result" : 0,
+                  "num" : 1,
+                  "text_data" : "# wait_serial expected: \"# \"\n# Result:\n\n# \n",
+                  "result" : "ok"
+               },
+               {
+                  "is_parser_text_result" : 0,
+                  "resborder" : "resborder_fail",
+                  "text" : "cfs_bandwidth01-11.txt",
+                  "title" : "Kernel Ooops found",
+                  "display_title" : "Kernel Ooops found",
+                  "result" : "fail",
+                  "text_data" : "Kernel Ooops found - Serial error: [   95.247847] ------------[ cut here ]------------\r",
+                  "num" : 12
+               },
+               {
+                  "resborder" : "resborder_softfail",
+                  "title" : "Soft Failed",
+                  "text" : "cfs_bandwidth01-15.txt",
+                  "display_title" : "Soft Failed",
+                  "is_parser_text_result" : 0,
+                  "num" : 15,
+                  "text_data" : "# Soft Failure:\nFailure is known, overriding to softfail\nWONTFIX for pytest! bsc#123456\n",
+                  "result" : "softfail"
+               }
+            ],
+            "fatal" : 0,
+            "always_rollback" : 0,
+            "name" : "cfs_bandwidth01"
+         }
+      ],
+      "name" : "sle-15-Server-DVD-Incidents-Kernel-KOTD-aarch64-Build4.12.14-183.1.ge5aeb12-ltp_sched@aarch64-virtio",
+      "state" : "done",
+      "test" : "ltp_sched"
+   }
+}
