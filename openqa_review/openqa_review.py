@@ -1026,12 +1026,11 @@ class ArchReport(object):
         for field in details:
             softfail_reason = None
             if "title" in field and "Soft Fail" in field["title"]:
-                if "text_data" in field:
-                    unformatted_str = field["text_data"]
-                else:
-                    unformatted_str = self.test_browser.get_soup(
-                        "%s/file/%s" % (rel_job_url, quote(field["text"]))
-                    ).getText()
+                unformatted_str = (
+                    field["text_data"]
+                    if "text_data" in field
+                    else self.test_browser.get_soup("%s/file/%s" % (rel_job_url, quote(field["text"]))).getText()
+                )
                 match = re.search(bugref_regex, unformatted_str)
                 softfail_reason = unformatted_str
                 if not match:  # use the "Soft Failure: …" text as bugref instead
