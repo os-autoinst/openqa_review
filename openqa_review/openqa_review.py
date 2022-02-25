@@ -1562,7 +1562,7 @@ def filter_report(report, iefilter):
     report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
-def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
+def reminder_comment_on_issue(ie, args):
     issue = ie.bug
     if issue.error:
         return
@@ -1570,10 +1570,10 @@ def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
         return
     if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
         reason = ie.failures[0]["softfail_reason"]
-        if reason and ignore_pattern and re.search(ignore_pattern, reason):
+        if reason and args.ignore_pattern and re.search(args.ignore_pattern, reason):
             return
     (last_comment_date, last_comment_text) = issue.last_comment
-    if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
+    if (datetime.datetime.utcnow() - last_comment_date).days >= args.min_days_unchanged:
         f = ie.failures[0]
         if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
             return
@@ -1581,7 +1581,7 @@ def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
         issue.add_comment(comment)
 
 
-def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ignore_pattern=NO_REMINDER_REGEX):
+def reminder_comment_on_issues(report, args):
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
     for product, pr in report.report.items():
@@ -1594,7 +1594,7 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ig
                             bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
                             if bugref not in processed_issues:
                                 try:
-                                    reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern)
+                                    reminder_comment_on_issue(ie, args)
                                 except HTTPError as e:  # pragma: no cover
                                     log.error(
                                         "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
@@ -1611,7 +1611,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report, args.min_days_unchanged, args.ignore_pattern)
+        reminder_comment_on_issues(report, args)
 
     if args.filter:
         if args.filter not in ie_filters:

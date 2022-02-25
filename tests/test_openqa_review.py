@@ -55,6 +55,8 @@ def args_factory():
     args.report_links = False
     args.skip_passed = False
     args.todo_only = False
+    args.min_days_unchanged = openqa_review.MIN_DAYS_UNCHANGED
+    args.ignore_pattern = openqa_review.NO_REMINDER_REGEX
     return args
 
 
@@ -533,7 +535,7 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     p, pr = list(report.report.items())[0]
     report.report[p + 237] = pr
 
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     args.dry_run = False
 
 
@@ -546,7 +548,7 @@ def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
     args.include_softfails = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "without_duplicates")
     report = openqa_review.generate_report(args)
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     args.dry_run = False
     browser_mock.assert_not_called()
 
@@ -561,10 +563,11 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
     # there should be no comment with default WONTFIX|NO_REMINDER softfail pattern
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_not_called()
     # without the pattern, there shall be one reminder
-    openqa_review.reminder_comment_on_issues(report, openqa_review.MIN_DAYS_UNCHANGED, None)
+    args.ignore_pattern = None
+    openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_called_once()
     args.dry_run = False
 
