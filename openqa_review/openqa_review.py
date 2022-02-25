@@ -1401,6 +1401,12 @@ def parse_args():
         help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""",
     )
     reminder_comments.add_argument(
+        "--no-exponential-backoff",
+        action="store_true",
+        default=False,
+        help="""Disable exponential backoff algorithm for reminders.""",
+    )
+    reminder_comments.add_argument(
         "--no-reminder-on",
         dest="ignore_pattern",
         type=re.compile,

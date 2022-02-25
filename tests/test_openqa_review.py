@@ -57,6 +57,7 @@ def args_factory():
     args.todo_only = False
     args.min_days_unchanged = openqa_review.MIN_DAYS_UNCHANGED
     args.ignore_pattern = openqa_review.NO_REMINDER_REGEX
+    args.no_exponential_backoff = False
     return args
 
 
