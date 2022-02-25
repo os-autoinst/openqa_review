@@ -683,6 +683,7 @@ class Issue(object):
         self.queried = False
         self.last_comment_date = None
         self.last_comment_text = None
+        self.last_comment_delay = 0
         self.issue_type = None
         self.error = False
         self.progress_browser = progress_browser
@@ -734,6 +735,10 @@ class Issue(object):
                     continue
                 self.last_comment_text = j["notes"]
                 break
+            if len(self.json["journals"]) > 1:
+                self.last_comment_delay = (
+                    self.last_comment_date - _parse_issue_timestamp(self.json["journals"][-2]["created_on"])
+                ).days
 
     def _init_bugzilla(self, bugzilla_browser):
         """Initialize data for bugzilla issues."""
@@ -751,6 +756,10 @@ class Issue(object):
         comments = res["result"]["bugs"][str(self.bugid)]["comments"]
         self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
         self.last_comment_text = comments[-1]["text"]
+        if len(comments) > 1:
+            self.last_comment_delay = (
+                self.last_comment_date - _parse_issue_timestamp(comments[-2]["creation_time"])
+            ).days
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""
