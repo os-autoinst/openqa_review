@@ -1579,7 +1579,12 @@ def reminder_comment_on_issue(ie, args):
         if reason and args.ignore_pattern and re.search(args.ignore_pattern, reason):
             return
     (last_comment_date, last_comment_text) = issue.last_comment
-    if (datetime.datetime.utcnow() - last_comment_date).days >= args.min_days_unchanged:
+    threshold = (
+        args.min_days_unchanged
+        if args.no_exponential_backoff
+        else max(2 * issue.last_comment_delay, args.min_days_unchanged)
+    )
+    if (datetime.datetime.utcnow() - last_comment_date).days >= threshold:
         f = ie.failures[0]
         if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
             return
