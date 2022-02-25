@@ -55,6 +55,9 @@ def args_factory():
     args.report_links = False
     args.skip_passed = False
     args.todo_only = False
+    args.min_days_unchanged = openqa_review.MIN_DAYS_UNCHANGED
+    args.ignore_pattern = openqa_review.NO_REMINDER_REGEX
+    args.no_exponential_backoff = False
     return args
 
 
@@ -533,7 +536,7 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     p, pr = list(report.report.items())[0]
     report.report[p + 237] = pr
 
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     args.dry_run = False
 
 
@@ -546,7 +549,7 @@ def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
     args.include_softfails = True
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "without_duplicates")
     report = openqa_review.generate_report(args)
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     args.dry_run = False
     browser_mock.assert_not_called()
 
@@ -561,10 +564,11 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     args.query_issue_status = True
     report = openqa_review.generate_report(args)
     # there should be no comment with default WONTFIX|NO_REMINDER softfail pattern
-    openqa_review.reminder_comment_on_issues(report)
+    openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_not_called()
     # without the pattern, there shall be one reminder
-    openqa_review.reminder_comment_on_issues(report, openqa_review.MIN_DAYS_UNCHANGED, None)
+    args.ignore_pattern = None
+    openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_called_once()
     args.dry_run = False
 
@@ -673,6 +677,7 @@ def test_querying_last_bugzilla_comment():
     (comment_date, comment_text) = issue.last_comment
     assert str(comment_date) == "2021-11-15 00:00:00", "creation time read"
     assert comment_text == "most recent bugzilla comment", "most recent comment returned"
+    assert issue.last_comment_delay == 14, "last comment was added after 14 days"
 
 
 def test_querying_last_progress_comment():
@@ -682,6 +687,9 @@ def test_querying_last_progress_comment():
     (comment_date, comment_text) = issue.last_comment
     assert str(comment_date) == "2021-11-15 00:00:00", "last update time read"
     assert comment_text == "latest progress note", "most recent note returned"
+    assert issue.last_comment_delay == 7, "last comment was added after 7 days"
+    issue = issue_factory("poo#102442", "https://progress.opensuse.org/issues/102442", args)
+    assert issue.last_comment_delay == 0, "no delay for only one comment"
     issue = issue_factory("poo#102441", "https://progress.opensuse.org/issues/102441", args)
     assert issue.error, "error flag set for non-existing issue"
     (comment_date, comment_text) = issue.last_comment

@@ -201,6 +201,8 @@ To prevent further reminder comments one of the following options should be foll
 1. The test scenario is fixed by applying the bug fix to the tested product or the test is adjusted
 2. The openQA job group is moved to "Released" or "EOL" (End-of-Life)
 3. The bugref in the openQA scenario is removed or replaced, e.g. `label:wontfix:boo1234`
+
+Expect the next reminder at the earliest in $time_next days if nothing changes in this ticket.
 """
 )
 
@@ -683,6 +685,7 @@ class Issue(object):
         self.queried = False
         self.last_comment_date = None
         self.last_comment_text = None
+        self.last_comment_delay = 0
         self.issue_type = None
         self.error = False
         self.progress_browser = progress_browser
@@ -734,6 +737,10 @@ class Issue(object):
                     continue
                 self.last_comment_text = j["notes"]
                 break
+            if len(self.json["journals"]) > 1:
+                self.last_comment_delay = (
+                    self.last_comment_date - _parse_issue_timestamp(self.json["journals"][-2]["created_on"])
+                ).days
 
     def _init_bugzilla(self, bugzilla_browser):
         """Initialize data for bugzilla issues."""
@@ -751,6 +758,10 @@ class Issue(object):
         comments = res["result"]["bugs"][str(self.bugid)]["comments"]
         self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
         self.last_comment_text = comments[-1]["text"]
+        if len(comments) > 1:
+            self.last_comment_delay = (
+                self.last_comment_date - _parse_issue_timestamp(comments[-2]["creation_time"])
+            ).days
 
     def add_comment(self, comment):
         """Add a comment to an issue with RPC/REST operations."""
@@ -1392,6 +1403,12 @@ def parse_args():
         help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""",
     )
     reminder_comments.add_argument(
+        "--no-exponential-backoff",
+        action="store_true",
+        default=False,
+        help="""Disable exponential backoff algorithm for reminders.""",
+    )
+    reminder_comments.add_argument(
         "--no-reminder-on",
         dest="ignore_pattern",
         type=re.compile,
@@ -1553,7 +1570,7 @@ def filter_report(report, iefilter):
     report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
-def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
+def reminder_comment_on_issue(ie, args):
     issue = ie.bug
     if issue.error:
         return
@@ -1561,18 +1578,26 @@ def reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern):
         return
     if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
         reason = ie.failures[0]["softfail_reason"]
-        if reason and ignore_pattern and re.search(ignore_pattern, reason):
+        if reason and args.ignore_pattern and re.search(args.ignore_pattern, reason):
             return
     (last_comment_date, last_comment_text) = issue.last_comment
-    if (datetime.datetime.utcnow() - last_comment_date).days >= min_days_unchanged:
+    threshold = (
+        args.min_days_unchanged
+        if args.no_exponential_backoff
+        else max(2 * issue.last_comment_delay, args.min_days_unchanged)
+    )
+    if (datetime.datetime.utcnow() - last_comment_date).days >= threshold:
         f = ie.failures[0]
         if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
             return
-        comment = openqa_issue_comment.substitute({"name": f["name"], "url": ie._url(f)}).strip()
+        next_threshold = args.min_days_unchanged if args.no_exponential_backoff else 2 * threshold
+        comment = openqa_issue_comment.substitute(
+            {"name": f["name"], "url": ie._url(f), "time_next": next_threshold}
+        ).strip()
         issue.add_comment(comment)
 
 
-def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ignore_pattern=NO_REMINDER_REGEX):
+def reminder_comment_on_issues(report, args):
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
     for product, pr in report.report.items():
@@ -1585,7 +1610,7 @@ def reminder_comment_on_issues(report, min_days_unchanged=MIN_DAYS_UNCHANGED, ig
                             bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
                             if bugref not in processed_issues:
                                 try:
-                                    reminder_comment_on_issue(ie, min_days_unchanged, ignore_pattern)
+                                    reminder_comment_on_issue(ie, args)
                                 except HTTPError as e:  # pragma: no cover
                                     log.error(
                                         "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
@@ -1602,7 +1627,7 @@ def main():  # pragma: no cover, only interactive
     report = generate_report(args)
 
     if args.reminder_comment_on_issues:
-        reminder_comment_on_issues(report, args.min_days_unchanged, args.ignore_pattern)
+        reminder_comment_on_issues(report, args)
 
     if args.filter:
         if args.filter not in ie_filters:
