@@ -688,6 +688,8 @@ def test_querying_last_progress_comment():
     assert str(comment_date) == "2021-11-15 00:00:00", "last update time read"
     assert comment_text == "latest progress note", "most recent note returned"
     assert issue.last_comment_delay == 7, "last comment was added after 7 days"
+    issue = issue_factory("poo#102442", "https://progress.opensuse.org/issues/102442", args)
+    assert issue.last_comment_delay == 0, "no delay for only one comment"
     issue = issue_factory("poo#102441", "https://progress.opensuse.org/issues/102441", args)
     assert issue.error, "error flag set for non-existing issue"
     (comment_date, comment_text) = issue.last_comment
