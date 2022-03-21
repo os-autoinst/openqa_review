@@ -1588,11 +1588,16 @@ def reminder_comment_on_issue(ie, args):
     )
     if (datetime.datetime.utcnow() - last_comment_date).days >= threshold:
         f = ie.failures[0]
+        link_to_module = (
+            f["failedmodules"][0]["href"]
+            if "failedmodules" in f and f["failedmodules"] and "href" in f["failedmodules"][0]
+            else None
+        )
         if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
             return
         next_threshold = args.min_days_unchanged if args.no_exponential_backoff else 2 * threshold
         comment = openqa_issue_comment.substitute(
-            {"name": f["name"], "url": ie._url(f), "time_next": next_threshold}
+            {"name": f["name"], "url": urljoin(ie._url(f), link_to_module), "time_next": next_threshold}
         ).strip()
         issue.add_comment(comment)
 
