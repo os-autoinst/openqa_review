@@ -573,6 +573,27 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     args.dry_run = False
 
 
+@patch.object(Browser, "json_rpc_post")
+def test_reminder_comments_includes_link_to_failed_step(browser_mock):
+    args = bugrefs_test_args_factory()
+    args.verbose_test = 1
+    args.dry_run = True
+    args.include_softfails = True
+    args.query_issue_status = True
+    report = openqa_review.generate_report(args)
+    openqa_review.reminder_comment_on_issues(report, args)
+    # there should be comments, the second one is interesting
+    browser_mock.assert_called()
+    call_name, call_args, call_kwargs = browser_mock.mock_calls[1]
+    assert call_args[1] == "Bug.add_comment"
+    # comment should include link to a test
+    comment = call_args[2]["comment"]
+    assert re.search("https://openqa.opensuse.org/tests/\\d+", comment)
+    # the link should also include the failed step
+    assert re.search("https://openqa.opensuse.org/tests/384333/modules/xterm/steps/7", comment)
+    args.dry_run = False
+
+
 def test_custom_reports_based_on_issue_status():
     args = bugrefs_test_args_factory()
     args.verbose_test = 1
