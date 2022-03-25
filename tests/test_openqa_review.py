@@ -590,7 +590,7 @@ def test_reminder_comments_includes_link_to_failed_step(browser_mock):
     comment = call_args[2]["comment"]
     assert re.search("https://openqa.opensuse.org/tests/\\d+", comment)
     # the link should also include the failed step
-    assert re.search("https://openqa.opensuse.org/tests/\\d+/modules/\\w+/steps/\\d+", comment)
+    assert re.search("https://openqa.opensuse.org/tests/384333/modules/xterm/steps/7", comment)
     args.dry_run = False
 
 
