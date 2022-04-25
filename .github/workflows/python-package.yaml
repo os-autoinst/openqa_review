@@ -17,19 +17,25 @@ jobs:
         - '3.10'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
-      run: python -m pip install tox tox-gh
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox-gh-actions
+
     - run: env | sort
 
     - name: Setup test suite
-      run: tox4 r -vv --notest
+      run: python -m tox r -vv --notest
+
     - name: Run test suite
-      run: tox4 r --skip-pkg-install
+      run: python -m tox r --skip-pkg-install
       env:
         PYTEST_ADDOPTS: "-vv --durations=10"
 
@@ -45,14 +51,14 @@ jobs:
         - cov
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.10'
     - name: Install dependencies
       run: python -m pip install tox
-    - run: tox -e ${{ matrix.test-type }}
+    - run: python -m tox -e ${{ matrix.test-type }}
     - run: ./.tox/cov/bin/coverage html
       # Run even if previous step failed but only if we are testing coverage
       if: ${{ always() && matrix.test-type == 'cov' }}
