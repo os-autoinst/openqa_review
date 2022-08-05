@@ -585,9 +585,9 @@ def test_reminder_comments_includes_link_to_failed_step(browser_mock):
     # there should be comments, the second one is interesting
     browser_mock.assert_called()
     call_name, call_args, call_kwargs = browser_mock.mock_calls[1]
-    assert call_args[1] == "Bug.add_comment"
+    assert call_args[1] == "Bug.update"
     # comment should include link to a test
-    comment = call_args[2]["comment"]
+    comment = call_args[2]["comment"]["body"]
     assert re.search("https://openqa.opensuse.org/tests/\\d+", comment)
     # the link should also include the failed step
     assert re.search("https://openqa.opensuse.org/tests/384333/modules/xterm/steps/7", comment)
@@ -725,3 +725,49 @@ def test_querying_last_comment_of_unknown_bugrefs():
     (comment_date, comment_text) = issue.last_comment
     assert comment_date is None, "no comment date returned for unsupported issue"
     assert comment_text is None, "no comment text returned for unsupported issue"
+
+
+@patch.object(Browser, "json_rest")
+def test_reopening_progress_issue(browser_mock):
+    args = cache_test_args_factory()
+    issue = issue_factory("poo#102440", "https://progress.opensuse.org/issues/102440", args)
+    issue.status = "resolved"
+    issue.reopen("Test note")
+    issue.reopen()  # with default note
+    issue.status = "workable"
+    issue.reopen("Test note 2")
+    browser_mock.assert_called()
+    call_name, call_args, call_kwargs = browser_mock.mock_calls[0]
+    assert call_args[0] == "https://progress.opensuse.org/issues/102440.json", "URL"
+    assert call_args[1] == "PUT", "method"
+    assert call_args[2] == {"issue": {"status_id": 4, "notes": "Test note"}}, "data"
+    call_name, call_args, call_kwargs = browser_mock.mock_calls[1]
+    assert call_args[0] == "https://progress.opensuse.org/issues/102440.json", "URL (call with default note)"
+    assert call_args[1] == "PUT", "method (call with default note)"
+    assert call_args[2] is not None, "data present (call with default note)"
+    call_name, call_args, call_kwargs = browser_mock.mock_calls[2]
+    assert call_args[0] == "https://progress.opensuse.org/issues/102440.json", "URL (call for workable ticket)"
+    assert call_args[1] == "PUT", "method (call for workable ticket)"
+    assert call_args[2] == {"issue": {"notes": "Test note 2"}}, "data (no status for workable ticket)"
+
+
+@patch.object(Browser, "json_rpc_post")
+def test_reopening_bugzilla_ticket(browser_mock_rpc):
+    args = cache_test_args_factory()
+    issue = issue_factory("boo#0815", "https://bugzilla.opensuse.org/show_bug.cgi?id=0815", args)
+    issue.status = "RESOLVED"
+    issue.reopen("Test note")
+    issue.status = "CONFIRMED"
+    issue.reopen("Test note 2")
+    browser_mock_rpc.assert_called()
+    call_name, call_args, call_kwargs = browser_mock_rpc.mock_calls[0]
+    expected_data = {"ids": [815], "status": "REOPENED", "comment": {"body": "Test note", "is_private": False}}
+    assert call_args[0] == "/jsonrpc.cgi", "URL"
+    assert call_args[1] == "Bug.update", "method"
+    assert call_args[2] == expected_data, "data"
+    call_name, call_args, call_kwargs = browser_mock_rpc.mock_calls[1]
+    del expected_data["status"]
+    expected_data = {"id": 815, "comment": "Test note 2", "is_private": False}
+    assert call_args[0] == "/jsonrpc.cgi", "URL for just leaving note on unresolved ticket"
+    assert call_args[1] == "Bug.add_comment", "method for just leaving note on unresolved ticket"
+    assert call_args[2] == expected_data, "data for just leaving note on unresolved ticket"

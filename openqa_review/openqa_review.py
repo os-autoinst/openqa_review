@@ -127,6 +127,9 @@ except ImportError:  # pragma: no cover
 # minimum number of days an issue is unchanged before putting a reminder comment
 MIN_DAYS_UNCHANGED = 14
 
+# ID of feedback status in Redmine
+REDMINE_STATUS_ID_FEEDBACK = 4
+
 # default regex to skip soft-failed reminders
 NO_REMINDER_REGEX = re.compile("WONTFIX|NO_REMINDER")
 
@@ -763,7 +766,7 @@ class Issue(object):
                 self.last_comment_date - _parse_issue_timestamp(comments[-2]["creation_time"])
             ).days
 
-    def add_comment(self, comment):
+    def add_comment(self, comment, status_id=None):
         """Add a comment to an issue with RPC/REST operations."""
         log.info("Posting a comment on %s ticket [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
         if self.issue_type == "bugzilla":
@@ -777,7 +780,33 @@ class Issue(object):
                 },
             )
         elif self.issue_type == "redmine":
-            self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": {"notes": comment}})
+            issue_data = {"notes": comment}
+            if status_id is not None:
+                issue_data["status_id"] = status_id
+            self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": issue_data})
+        else:
+            assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover
+
+    def reopen(self, note=None):
+        """Re-open issue with RPC/REST operations leaving a note. Only leaves the note if the issue is still open."""
+        log.info("Re-opening %s ticket with comment [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
+        if note is None:
+            note = (
+                "Re-opening tickets with unhandled openqa-review reminder comment, see "
+                "https://progress.opensuse.org/projects/openqatests/wiki/Wiki#openqa-review-reminder-handling"
+            )
+        if self.issue_type == "bugzilla":
+            if self.status in ["RESOLVED"]:
+                self.bugzilla_browser.json_rpc_post(
+                    "/jsonrpc.cgi",
+                    "Bug.update",
+                    {"ids": [self.bugid], "comment": {"body": note, "is_private": False}, "status": "REOPENED"},
+                )
+            else:
+                self.add_comment(note)
+        elif self.issue_type == "redmine":
+            status_id = REDMINE_STATUS_ID_FEEDBACK if self.status in ["closed", "rejected", "resolved"] else None
+            self.add_comment(note, status_id=status_id)
         else:
             assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover
 
@@ -1599,7 +1628,7 @@ def reminder_comment_on_issue(ie, args):
         comment = openqa_issue_comment.substitute(
             {"name": f["name"], "url": urljoin(ie._url(f), link_to_module), "time_next": next_threshold}
         ).strip()
-        issue.add_comment(comment)
+        issue.reopen(comment)
 
 
 def reminder_comment_on_issues(report, args):
