@@ -58,6 +58,7 @@ def args_factory():
     args.min_days_unchanged = openqa_review.MIN_DAYS_UNCHANGED
     args.ignore_pattern = openqa_review.NO_REMINDER_REGEX
     args.no_exponential_backoff = False
+    args.reopen = "none"
     return args
 
 
@@ -530,6 +531,7 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     args.query_issue_status = True
     args.dry_run = True
     args.include_softfails = True
+    args.reopen = "all"
     report = openqa_review.generate_report(args)
 
     # test double comment prevention code
@@ -547,6 +549,7 @@ def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
     args.query_issue_status = True
     args.dry_run = True
     args.include_softfails = True
+    args.reopen = "none"
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "without_duplicates")
     report = openqa_review.generate_report(args)
     openqa_review.reminder_comment_on_issues(report, args)
@@ -568,6 +571,10 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     browser_mock.assert_not_called()
     # without the pattern, there shall be one reminder
     args.ignore_pattern = None
+    args.reopen = "none"
+    openqa_review.reminder_comment_on_issues(report, args)
+    browser_mock.assert_not_called()
+    args.reopen = "all"
     openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_called_once()
     args.dry_run = False
@@ -580,6 +587,7 @@ def test_reminder_comments_includes_link_to_failed_step(browser_mock):
     args.dry_run = True
     args.include_softfails = True
     args.query_issue_status = True
+    args.reopen = "all"
     report = openqa_review.generate_report(args)
     openqa_review.reminder_comment_on_issues(report, args)
     # there should be comments, the second one is interesting
