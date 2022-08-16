@@ -1444,6 +1444,11 @@ def parse_args():
         default=NO_REMINDER_REGEX,
         help="""A regular expression which will suppress sending the reminder on match.""",
     )
+    reminder_comments.add_argument(
+        "--reopen",
+        default="redmine",
+        help="""Select which closed issues to reopen with 'all', 'none' or specific issue types, e.g 'redmine' or 'bugzilla'.""",
+    )
     add_load_save_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
@@ -1628,7 +1633,8 @@ def reminder_comment_on_issue(ie, args):
         comment = openqa_issue_comment.substitute(
             {"name": f["name"], "url": urljoin(ie._url(f), link_to_module), "time_next": next_threshold}
         ).strip()
-        issue.reopen(comment)
+        if args.reopen == "all" or args.reopen == issue.issue_type:
+            issue.reopen(comment)
 
 
 def reminder_comment_on_issues(report, args):
