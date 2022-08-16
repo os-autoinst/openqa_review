@@ -796,7 +796,7 @@ class Issue(object):
                 "https://progress.opensuse.org/projects/openqatests/wiki/Wiki#openqa-review-reminder-handling"
             )
         if self.issue_type == "bugzilla":
-            if self.status in ["RESOLVED"]:
+            if self.status.upper() in ["RESOLVED"]:
                 self.bugzilla_browser.json_rpc_post(
                     "/jsonrpc.cgi",
                     "Bug.update",
@@ -805,7 +805,9 @@ class Issue(object):
             else:
                 self.add_comment(note)
         elif self.issue_type == "redmine":
-            status_id = REDMINE_STATUS_ID_FEEDBACK if self.status in ["closed", "rejected", "resolved"] else None
+            status_id = (
+                REDMINE_STATUS_ID_FEEDBACK if self.status.lower() in ["closed", "rejected", "resolved"] else None
+            )
             self.add_comment(note, status_id=status_id)
         else:
             assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover

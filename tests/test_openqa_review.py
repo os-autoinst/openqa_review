@@ -739,7 +739,7 @@ def test_querying_last_comment_of_unknown_bugrefs():
 def test_reopening_progress_issue(browser_mock):
     args = cache_test_args_factory()
     issue = issue_factory("poo#102440", "https://progress.opensuse.org/issues/102440", args)
-    issue.status = "resolved"
+    issue.status = "Resolved"
     issue.reopen("Test note")
     issue.reopen()  # with default note
     issue.status = "workable"
@@ -763,7 +763,7 @@ def test_reopening_progress_issue(browser_mock):
 def test_reopening_bugzilla_ticket(browser_mock_rpc):
     args = cache_test_args_factory()
     issue = issue_factory("boo#0815", "https://bugzilla.opensuse.org/show_bug.cgi?id=0815", args)
-    issue.status = "RESOLVED"
+    issue.status = "RESOLVEd"
     issue.reopen("Test note")
     issue.status = "CONFIRMED"
     issue.reopen("Test note 2")
