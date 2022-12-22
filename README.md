@@ -47,7 +47,7 @@ CURL_CA_BUNDLE=""
 
 ## Communication
 
-If you have questions, visit me on irc.freenode.net in #opensuse-factory
+If you have questions, visit #opensuse-factory on [libera.chat](https://web.libera.chat/).
 
 
 ## Contribute
