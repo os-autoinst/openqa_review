@@ -699,6 +699,24 @@ def test_get_bugzilla_issue():
         assert e.code == 300
 
 
+def test_bugzilla_with_api_key():
+    openqa_review.config.remove_option("product_issues", "username")
+    openqa_review.config.remove_option("product_issues", "password")
+    openqa_review.config.set("product_issues", "api_key", "token")
+    args = cache_test_args_factory()
+    args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
+    browser = openqa_review.bugzilla_browser_factory(args)
+    assert browser.api_key, "API key used"
+    issue = openqa_review.Issue(
+        "boo#0815",
+        "https://bugzilla.opensuse.org/show_bug.cgi?id=0815",
+        query_issue_status=True,
+        bugzilla_browser=browser,
+        progress_browser=browser,
+    )
+    assert issue.bugid == 815, "Bugzilla issue parsed"
+
+
 def test_querying_last_bugzilla_comment():
     args = cache_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bugzilla")
