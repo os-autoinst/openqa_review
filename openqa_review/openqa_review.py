@@ -103,7 +103,6 @@ from string import Template
 from urllib.parse import quote, unquote, urljoin, urlencode, urlparse, parse_qs
 
 from bs4 import BeautifulSoup
-from pkg_resources import parse_version
 from sortedcontainers import SortedDict
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -461,6 +460,18 @@ def find_last_reviewed_build(comments):
     return last_reviewed
 
 
+def mysort(x):
+    """Sort strings like build numbers with dashes and/or dots, e.g. 12-SP5-0456."""
+    s = []
+    for i in re.split("[-.]", x):
+        try:
+            i = "%020d" % int(i)
+        except ValueError:
+            pass
+        s.append(i)
+    return s
+
+
 def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewed=None, running_threshold=0):
     """
     From the job group page get URLs for the builds to compare.
@@ -502,7 +513,8 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
 
     finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
-    builds_to_compare = sorted(finished_builds, key=parse_version, reverse=True)[0:2]
+
+    builds_to_compare = sorted(finished_builds, key=mysort, reverse=True)[0:2]
 
     if builds:
         # User has to be careful here. A page for non-existant builds is always
