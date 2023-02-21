@@ -149,6 +149,8 @@ system = bugzilla
 # local keyring if found
 #username = user
 #password = secret
+# newer Bugzilla versions use an API key instead of username and password
+#api_key = token
 base_url = https://apibugzilla.suse.com
 report_url = https://bugzilla.suse.com
 
@@ -349,13 +351,18 @@ def progress_browser_factory(args):
 
 
 def bugzilla_browser_factory(args):
+    auth = ()
+    # We need either an API key or login & password
+    if not config.has_option("product_issues", "api_key"):
+        auth = (
+            config.get("product_issues", "username", fallback=None),
+            config.get("product_issues", "password", fallback=None),
+        )
     return Browser(
         args,
         config.get("product_issues", "base_url"),
-        auth=(
-            config.get("product_issues", "username"),
-            config.get("product_issues", "password"),
-        ),
+        auth,
+        api_key=config.get("product_issues", "api_key", fallback=None),
     )
 
 

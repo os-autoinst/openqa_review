@@ -74,7 +74,7 @@ class Browser(object):
 
     """download relative or absolute url and return soup."""
 
-    def __init__(self, args, root_url, auth=None, headers={}):
+    def __init__(self, args, root_url, auth=None, headers={}, api_key=None):
         """Construct a browser object with options."""
         self.save = args.save if hasattr(args, "save") else False
         self.load = args.load if hasattr(args, "load") else False
@@ -83,6 +83,7 @@ class Browser(object):
         self.dry_run = args.dry_run if hasattr(args, "dry_run") else False
         self.root_url = root_url
         self.auth = auth
+        self.api_key = api_key
         headers["User-Agent"] = "openqa-review (https://os-autoinst.github.io/openqa_review)"
         self.headers = headers
         self.cache = {}
@@ -185,9 +186,15 @@ class Browser(object):
             raise DownloadError(msg)
         return content
 
+    def _params_with_login(self, params):
+        if self.api_key:
+            params["Bugzilla_api_key"] = self.api_key
+        return params
+
     def json_rpc_get(self, url, method, params, cache=True):
         """Execute JSON RPC GET request."""
         absolute_url = url if not url.startswith("/") else urljoin("http://dummy/", str(url))
+        params = self._params_with_login(params)
         get_params = SortedDict({"method": method, "params": json.dumps([params])})
         get_url = requests.Request("GET", absolute_url, params=get_params).prepare().url
         response = self.get_json(get_url.replace("http://dummy", ""), cache)
@@ -204,6 +211,7 @@ class Browser(object):
 
         Supports a 'dry-run' which is only simulating the request with a log message.
         """
+        params = self._params_with_login(params)
         if self.dry_run:
             log.warning("NOT sending '%s' request to '%s' with params %r" % (method, url, params))
             return {}
