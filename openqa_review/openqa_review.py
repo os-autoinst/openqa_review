@@ -513,7 +513,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
         )
         return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (
             distri_str,
-            b["version"],
+            quote(b["version"]),
             quote(build),
             job_group["group"]["id"],
         )
