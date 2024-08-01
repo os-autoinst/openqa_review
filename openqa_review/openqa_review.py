@@ -688,7 +688,6 @@ def _parse_issue_timestamp(timestamp):
 
 
 class Issue(object):
-
     """Issue with extra status info from issue tracker."""
 
     def __init__(self, bugref, bugref_href, query_issue_status=False, progress_browser=None, bugzilla_browser=None):
@@ -886,7 +885,6 @@ class Issue(object):
 
 
 class IssueEntry(object):
-
     """List of failed test scenarios with corresponding bug."""
 
     def __init__(self, args, root_url, failures, test_browser=None, bug=None):
@@ -1162,13 +1160,17 @@ class ArchReport(object):
                 "status_badge": status_badge_str[self.status_badge],
                 # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then
                 # probably openqa issues For now we can just not easily decide unless we use the 'bugrefs' mode
-                "new_openqa_issues": ""
-                if abbrev
-                else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty),
-                "existing_openqa_issues": ""
-                if abbrev
-                else issue_listing(
-                    "**Existing openQA-issues:**", self.issues["existing"]["openqa"], self.args.show_empty
+                "new_openqa_issues": (
+                    ""
+                    if abbrev
+                    else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty)
+                ),
+                "existing_openqa_issues": (
+                    ""
+                    if abbrev
+                    else issue_listing(
+                        "**Existing openQA-issues:**", self.issues["existing"]["openqa"], self.args.show_empty
+                    )
                 ),
                 "new_product_issues": issue_listing(
                     "**New Product bugs:**", self.issues["new"]["product"], self.args.show_empty
@@ -1183,7 +1185,6 @@ class ArchReport(object):
 
 
 class ProductReport(object):
-
     """Read overview page of one job group and generate a report for the product."""
 
     def __init__(self, browser, job_group_url, root_url, args):
@@ -1527,7 +1528,6 @@ def get_job_groups(browser, root_url, args):
 
 
 class Report(object):
-
     """openQA review report."""
 
     def __init__(self, browser, args, root_url, job_groups):
