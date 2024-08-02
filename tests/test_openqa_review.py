@@ -569,8 +569,8 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     # there should be no comment with default WONTFIX|NO_REMINDER softfail pattern
     openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_not_called()
-    # without the pattern, there shall be one reminder
-    args.ignore_pattern = None
+    # without a match on the pattern, there shall be one reminder
+    args.ignore_pattern = re.compile("THIS_WILL_NOT_MATCH")
     args.reopen = "none"
     openqa_review.reminder_comment_on_issues(report, args)
     browser_mock.assert_not_called()

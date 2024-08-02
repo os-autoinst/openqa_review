@@ -205,6 +205,7 @@ To prevent further reminder comments one of the following options should be foll
 1. The test scenario is fixed by applying the bug fix to the tested product or the test is adjusted
 2. The openQA job group is moved to "Released" or "EOL" (End-of-Life)
 3. The bugref in the openQA scenario is removed or replaced, e.g. `label:wontfix:boo1234`
+4. For "record_soft_failure" references the reference is removed or matches the pattern '$no_reminder_pattern'
 
 Expect the next reminder at the earliest in $time_next days if nothing changes in this ticket.
 """
@@ -1651,9 +1652,13 @@ def reminder_comment_on_issue(ie, args):
         if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
             return
         next_threshold = args.min_days_unchanged if args.no_exponential_backoff else 2 * threshold
-        comment = openqa_issue_comment.substitute(
-            {"name": f["name"], "url": urljoin(ie._url(f), link_to_module), "time_next": next_threshold}
-        ).strip()
+        pattern = {
+            "name": f["name"],
+            "url": urljoin(ie._url(f), link_to_module),
+            "time_next": next_threshold,
+            "no_reminder_pattern": args.ignore_pattern.pattern,
+        }
+        comment = openqa_issue_comment.substitute(pattern).strip()
         if args.reopen == "all" or args.reopen == issue.issue_type:
             issue.reopen(comment)
 
