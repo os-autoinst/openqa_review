@@ -71,7 +71,6 @@ def filename_to_url(name):
 
 
 class Browser(object):
-
     """download relative or absolute url and return soup."""
 
     def __init__(self, args, root_url, auth=None, headers={}, api_key=None):

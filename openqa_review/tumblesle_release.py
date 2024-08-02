@@ -68,14 +68,12 @@ def scenario(job):
 
 
 class UnsupportedRsyncArgsError(Exception):
-
     """Unsupported rsync arguments where used."""
 
     pass
 
 
 class TumblesleRelease(object):
-
     """Check for releasable builds and release them as TumbleSLE if they are at least as good as the current one."""
 
     def __init__(self, args):
