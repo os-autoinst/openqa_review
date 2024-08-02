@@ -17,6 +17,12 @@ pip3 install -r requirements.txt
 pip3 install .
 ```
 
+To call the script from the git clone, you have to use this form:
+
+```
+python3 -m openqa_review.openqa_review
+```
+
 or if you are using openSUSE distribution, it is recommended to use `zypper`,
 e.g.:
 
