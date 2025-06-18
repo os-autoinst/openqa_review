@@ -63,7 +63,7 @@ jobs:
     - run: ./.tox/cov/bin/coverage html
       # Run even if previous step failed but only if we are testing coverage
       if: ${{ always() && matrix.test-type == 'cov' }}
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: coverage
         path: coverage_html/
