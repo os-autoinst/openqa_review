@@ -4,8 +4,8 @@
 	"description": "",
 	"max_jobs": 91,
 	"group": {"id": 27, "name": "openSUSE Tumbleweed 3. Live"},
-	"result": {
-		"0103@0337": {
+	"build_results": [
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -18,9 +18,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "0103@0337"
 		},
-		"0103@0339": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -33,9 +34,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "0103@0339"
 		},
-		"0103@0340": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -48,9 +50,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 91
+			"total": 91,
+			"key": "0103@0340"
 		},
-		"0103@0343": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -63,9 +66,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 46
+			"total": 46,
+			"key": "0103@0343"
 		},
-		"0103@0344": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -78,9 +82,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "0103@0344"
 		},
-		"0104@0347": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -93,9 +98,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 77
+			"total": 77,
+			"key": "0104@0347"
 		},
-		"0104@0349": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -108,9 +114,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 47
+			"total": 47,
+			"key": "0104@0349"
 		},
-		"0104@0350": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -123,9 +130,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 59
+			"total": 59,
+			"key": "0104@0350"
 		},
-		"0104@0351": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -138,9 +146,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 14
+			"total": 14,
+			"key": "0104@0351"
 		},
-		"0104@0352": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -153,9 +162,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 0
+			"total": 0,
+			"key": "0104@0352"
 		},
-		"0104@0353": {
+		{
 			"distri": "opensuse",
 			"version": "42.1-Live",
 			"reviewed": "",
@@ -168,7 +178,8 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 1,
-			"total": 14
+			"total": 14,
+			"key": "0104@0353"
 		}
-	}
+	]
 }
