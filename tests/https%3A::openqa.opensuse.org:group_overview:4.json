@@ -8,8 +8,8 @@
 	"description": "",
 	"max_jobs": 91,
 	"group": {"id": 4, "name": "openSUSE Tumbleweed PowerPC"},
-	"result": {
-		"20160905": {
+	"build_results": [
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -22,9 +22,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "20160905"
 		},
-		"20160907": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -37,9 +38,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "20160907"
 		},
-		"20160908": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -52,9 +54,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 91
+			"total": 91,
+			"key": "20160908"
 		},
-		"20160909": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -67,9 +70,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 46
+			"total": 46,
+			"key": "20160909"
 		},
-		"20160911": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -82,9 +86,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 90
+			"total": 90,
+			"key": "20160911"
 		},
-		"20160912": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -97,9 +102,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 77
+			"total": 77,
+			"key": "20160912"
 		},
-		"20160913": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -112,9 +118,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 47
+			"total": 47,
+			"key": "20160913"
 		},
-		"20160914": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -127,9 +134,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 59
+			"total": 59,
+			"key": "20160914"
 		},
-		"20160916": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -142,9 +150,10 @@
 			"skipped": 0,
 			"softfailed": 7,
 			"unfinished": 0,
-			"total": 18
+			"total": 18,
+			"key": "20160916"
 		},
-		"20160917": {
+		{
 			"distri": "opensuse",
 			"version": "Tumbleweed",
 			"reviewed": "",
@@ -157,7 +166,8 @@
 			"skipped": 0,
 			"softfailed": 7,
 			"unfinished": 0,
-			"total": 18
+			"total": 18,
+			"key": "20160917"
 		}
-	}
+	]
 }

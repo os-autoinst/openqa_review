@@ -1,1 +1,66 @@
-{"comments": [], "description": "", "max_jobs": 8, "result": {"76.1": {"reviewed": "", "distri": "opensuse", "failed": 0, "passed": 0, "softfailed": 0, "reviewed_all_passed": "", "escaped_id": "76_1", "oldest": "2016-11-04T13:31:12", "version": "42.1", "skipped": 8, "total": 8, "unfinished": 0, "labeled": 0}, "5.176": {"reviewed": "", "distri": "opensuse", "failed": 0, "passed": 0, "softfailed": 0, "reviewed_all_passed": "", "escaped_id": "5_176", "oldest": "2016-11-04T13:31:57", "version": "42.1", "skipped": 2, "total": 2, "unfinished": 0, "labeled": 0}, "76.2": {"reviewed": "", "distri": "opensuse", "failed": 0, "passed": 0, "softfailed": 0, "reviewed_all_passed": "", "escaped_id": "76_2", "oldest": "2016-11-04T13:31:10", "version": "42.1", "skipped": 8, "total": 8, "unfinished": 0, "labeled": 0}, "78.1": {"reviewed": "", "distri": "opensuse", "failed": 0, "passed": 0, "softfailed": 0, "reviewed_all_passed": "", "escaped_id": "78_1", "oldest": "2016-11-04T13:31:13", "version": "42.1", "skipped": 8, "total": 8, "unfinished": 0, "labeled": 0}}, "group": {"name": "Staging: openSUSE Tumbleweed ", "id": 28}, "pinned_comments": []}
+{"comments": [], "description": "", "max_jobs": 8, "build_results": [
+  {
+    "reviewed": "",
+    "distri": "opensuse",
+    "failed": 0,
+    "passed": 0,
+    "softfailed": 0,
+    "reviewed_all_passed": "",
+    "escaped_id": "76_1",
+    "oldest": "2016-11-04T13:31:12",
+    "version": "42.1",
+    "skipped": 8,
+    "total": 8,
+    "unfinished": 0,
+    "labeled": 0,
+    "key": "76.1"
+  },
+  {
+    "reviewed": "",
+    "distri": "opensuse",
+    "failed": 0,
+    "passed": 0,
+    "softfailed": 0,
+    "reviewed_all_passed": "",
+    "escaped_id": "5_176",
+    "oldest": "2016-11-04T13:31:57",
+    "version": "42.1",
+    "skipped": 2,
+    "total": 2,
+    "unfinished": 0,
+    "labeled": 0,
+    "key": "5.176"
+  },
+  {
+    "reviewed": "",
+    "distri": "opensuse",
+    "failed": 0,
+    "passed": 0,
+    "softfailed": 0,
+    "reviewed_all_passed": "",
+    "escaped_id": "76_2",
+    "oldest": "2016-11-04T13:31:10",
+    "version": "42.1",
+    "skipped": 8,
+    "total": 8,
+    "unfinished": 0,
+    "labeled": 0,
+    "key": "76.2"
+  },
+  {
+    "reviewed": "",
+    "distri": "opensuse",
+    "failed": 0,
+    "passed": 0,
+    "softfailed": 0,
+    "reviewed_all_passed": "",
+    "escaped_id": "78_1",
+    "oldest": "2016-11-04T13:31:13",
+    "version": "42.1",
+    "skipped": 8,
+    "total": 8,
+    "unfinished": 0,
+    "labeled": 0,
+    "key": "78.1"
+  }
+], "group": {"name": "Staging: openSUSE Tumbleweed ", "id": 28}, "pinned_comments": []}

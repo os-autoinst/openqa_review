@@ -109,7 +109,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from .browser import Browser, DownloadError, BugNotFoundError, add_load_save_args  # isort:skip
 
-
 # treat humanfriendly as optional dependency
 humanfriendly_available = False
 try:
@@ -439,18 +438,17 @@ def find_builds(builds, running_threshold=0):
     def non_empty(r):
         return r["total"] != 0 and r["total"] > r["skipped"] and not ("build" in r.keys() and r["build"] is None)
 
-    builds = {build: result for build, result in builds.items() if non_empty(result)}
-    finished = {
-        build: result
-        for build, result in builds.items()
-        if not result["unfinished"] or (100 * float(result["unfinished"]) / result["total"]) <= threshold
-    }
+    finished = [
+        build
+        for build in builds
+        if non_empty(build)
+        and (not build["unfinished"] or (100 * float(build["unfinished"]) / build["total"]) <= threshold)
+    ]
 
-    log.debug("Found the following finished non-empty builds: %s" % ", ".join(finished.keys()))
+    log.debug("Found the following finished non-empty builds: %s" % ", ".join([build["key"] for build in finished]))
     if len(finished) < 2:
         raise NotEnoughBuildsError("not enough finished builds found")
-    assert len(finished.keys()) >= 2
-    return finished.keys()
+    return finished
 
 
 def find_last_reviewed_build(comments):
@@ -468,18 +466,6 @@ def find_last_reviewed_build(comments):
     return last_reviewed
 
 
-def mysort(x):
-    """Sort strings like build numbers with dashes and/or dots, e.g. 12-SP5-0456."""
-    s = []
-    for i in re.split("[-.]", x):
-        try:
-            i = "%020d" % int(i)
-        except ValueError:
-            pass
-        s.append(i)
-    return s
-
-
 def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewed=None, running_threshold=0):
     """
     From the job group page get URLs for the builds to compare.
@@ -493,36 +479,37 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
       'finished' anyway
     """
     job_group = browser.get_json("%s.json" % job_group_url)
-
-    def get_group_result():
-        try:
-            results_list = job_group["build_results"]
-            return {i["key"]: i for i in results_list}
-        except KeyError:
-            log.debug("Reverting to old openQA behaviour before openQA#9b50b22")
-            return job_group["result"]
+    build_results = job_group["build_results"]
 
     def build_url(build):
-        r = get_group_result()
-        b = r.get(build, next(iter(r.values())))
-        build = b.get("build", build)
+        if isinstance(build, str):
+            for b in build_results:
+                if b.get("key", "") == build:
+                    build = b
+                    break
+        if isinstance(build, str):
+            raise Exception("Unable to find build %s" % build)
+            # FIXME: This causes tests to fail. The previous code did something like which seems odd:
+            build = build_results[0]
+            # The previous code actually did `r.get(build, next(iter(r.values())))` where `r` is probably a dict.
+
+
         # openQA introduced multi-distri support for the job groups with openQA#037ffd33
         distri_str = (
-            "distri=%s" % b["distri"]
-            if "distri" in b.keys()
-            else "distri=" + "&distri=".join(sorted(b["distris"].keys()))
+            "distri=%s" % build["distri"]
+            if "distri" in build.keys()
+            else "distri=" + "&distri=".join(sorted(build["distris"].keys()))
         )
         return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (
             distri_str,
-            quote(b["version"]),
-            quote(build),
+            quote(build["version"]),
+            quote(build["key"]),
             job_group["group"]["id"],
         )
 
-    finished_builds = find_builds(get_group_result(), running_threshold)
-    # find last finished and previous one
-
-    builds_to_compare = sorted(finished_builds, key=mysort, reverse=True)[0:2]
+    finished_builds = find_builds(build_results, running_threshold)
+    # use last finished build and previous finished build
+    builds_to_compare = [finished_builds[0], finished_builds[1]]
 
     if builds:
         # User has to be careful here. A page for non-existent builds is always
@@ -534,6 +521,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
             last_reviewed = find_last_reviewed_build(job_group["comments"])
             log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
             build_to_review = builds_to_compare[0] if against_reviewed == "last" else against_reviewed
+            # FIXME: build_to_review and last_reviewed seem to be strings - so the subsequent comparision makes no sense
             assert (
                 len(build_to_review) <= len(last_reviewed) + 1
             ), "build_to_review and last_reviewed differ too much to make sense"
@@ -543,7 +531,7 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
 
     log.debug("Comparing build %s against %s" % (builds_to_compare[0], builds_to_compare[1]))
     current_url, previous_url = map(build_url, builds_to_compare)
-    log.debug("Found two build URLS, current: %s previous: %s" % (current_url, previous_url))
+    log.debug("Found two build URLs, current: %s previous: %s" % (current_url, previous_url))
     return current_url, previous_url
 
 

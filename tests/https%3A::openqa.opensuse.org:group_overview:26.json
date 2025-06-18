@@ -8,8 +8,8 @@
 	"description": "",
 	"max_jobs": 91,
 	"group": {"id": 26, "name": "openSUSE Leap"},
-	"result": {
-		"62.1": {
+	"build_results": [
+		{
 			"distri": "opensuse",
 			"version": "15",
 			"reviewed": "",
@@ -23,9 +23,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 59
+			"total": 59,
+			"key": "62.1"
 		},
-		"162.2": {
+		{
 			"distri": "opensuse",
 			"version": "15",
 			"reviewed": "",
@@ -39,9 +40,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 47
+			"total": 47,
+			"key": "162.2"
 		},
-		"170.1": {
+		{
 			"distri": "opensuse",
 			"version": "15",
 			"reviewed": "",
@@ -55,9 +57,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 47
+			"total": 47,
+			"key": "170.1"
 		},
-		"170.4": {
+		{
 			"distri": "opensuse",
 			"version": "15",
 			"reviewed": "",
@@ -71,7 +74,8 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 33,
-			"total": 91
+			"total": 91,
+			"key": "170.4"
 		}
-	}
+	]
 }
