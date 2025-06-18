@@ -52,7 +52,7 @@ class BugNotFoundError(BugzillaError):
 
 def url_to_filename(url):
     """
-    Convert URL to a valid, unambigous filename.
+    Convert URL to a valid, unambiguous filename.
 
     >>> url_to_filename('http://openqa.opensuse.org/tests/foo/3')
     'http%3A::openqa.opensuse.org:tests:foo:3'
