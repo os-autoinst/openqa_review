@@ -525,8 +525,8 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
     builds_to_compare = sorted(finished_builds, key=mysort, reverse=True)[0:2]
 
     if builds:
-        # User has to be careful here. A page for non-existant builds is always
-        # existant.
+        # User has to be careful here. A page for non-existent builds is always
+        # existent.
         builds_to_compare = builds.split(",")
         log.debug("Specified builds %s, parsed to %s" % (builds, ", ".join(builds_to_compare)))
     elif against_reviewed:
@@ -1337,7 +1337,7 @@ def parse_args():
         "-b",
         "--builds",
         help="""Select explicit builds, comma separated.
-                        Specify as unambigous search terms, e.g. build number,
+                        Specify as unambiguous search terms, e.g. build number,
                         the full string, etc. Only works with single job-group/job-group-urls.
                         Default 'last' and 'previous'.""",
     )
@@ -1558,7 +1558,7 @@ class Report(object):
         try:
             return ProductReport(self.browser, job_group_url, self.root_url, self.args)
         except NotEnoughBuildsError as e:
-            log.debug("Catched 'not enough builds': %s" % e)
+            log.debug("Caught 'not enough builds': %s" % e)
             return "" if self.args.todo_only else "Not enough finished builds found"
 
     def _next_label(self):

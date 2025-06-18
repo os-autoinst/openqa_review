@@ -156,7 +156,7 @@ class TumblesleRelease(object):
         self.notify_seen.append(body)
 
     def run(self, do_run=True):
-        """Continously run while 'do_run' is True, check for last build and release if satisfying."""
+        """Continuously run while 'do_run' is True, check for last build and release if satisfying."""
         while do_run:
             if self.args.run_once:
                 log.debug("Requested to run only once")
@@ -218,7 +218,7 @@ class TumblesleRelease(object):
         last_iso = sorted(isos)[-1]
         log.debug("Found last ISO %s" % last_iso)
         build = {}
-        # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explictly abort faster
+        # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explicitly abort faster
         build["last"] = (
             re.search("(?<=-Build)[0-9@]+", last_iso).group()
             if self.args.check_build == "last"
