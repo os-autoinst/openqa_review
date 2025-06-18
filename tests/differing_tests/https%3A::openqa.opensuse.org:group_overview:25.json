@@ -4,8 +4,8 @@
 	"description": "",
 	"max_jobs": 91,
 	"group": {"id": 25, "name": "openSUSE Tumbleweed 1.Gnome"},
-	"result": {
-		"0389": {
+	"build_results": [
+		{
 			"distri": "opensuse",
 			"version": "42.1",
 			"reviewed": "",
@@ -18,9 +18,10 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 0,
-			"total": 91
+			"total": 91,
+			"key": "0389"
 		},
-		"0405": {
+		{
 			"distri": "opensuse",
 			"version": "42.1",
 			"reviewed": "",
@@ -33,7 +34,8 @@
 			"skipped": 0,
 			"softfailed": 0,
 			"unfinished": 4,
-			"total": 92
+			"total": 92,
+			"key": "0405"
 		}
-	}
+	]
 }
