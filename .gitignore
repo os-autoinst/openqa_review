@@ -1,5 +1,5 @@
 .tox/
-dist/
+dist/*.tar.*
 .cache/
 .idea/
 *__pycache__/
