@@ -6,6 +6,7 @@ import sys
 import errno
 from urllib.parse import quote, unquote, urljoin, urlparse
 import ssl
+import time
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -195,15 +196,20 @@ class Browser(object):
         absolute_url = url if not url.startswith("/") else urljoin("http://dummy/", str(url))
         params = self._params_with_login(params)
         get_params = SortedDict({"method": method, "params": json.dumps([params])})
-        get_url = requests.Request("GET", absolute_url, params=get_params).prepare().url
-        response = self.get_json(get_url.replace("http://dummy", ""), cache)
-        if "error" in response and response["error"] is not None:
-            error = response["error"]
-            if error["code"] == 101:
-                raise BugNotFoundError(get_url, error["code"], error["message"])
-            else:
-                raise BugzillaError(get_url, error["code"], error["message"])
-        return response
+        get_url = requests.Request("GET", absolute_url, params=get_params).prepare().url.replace("http://dummy", "")
+        error = None
+        for i in range(1, 7):
+            response = self.get_json(get_url, cache)
+            if error := response.get("error"):
+                if error["code"] == 101:
+                    raise BugNotFoundError(get_url, error["code"], error["message"])
+                else:
+                    log.warning(f"Bugzilla returned error {error['code']} accessing {get_url}, retrying in 1s try {i}")
+                    time.sleep(2**i)
+                    continue
+            return response
+        if error:  # pragma: no cover
+            raise BugzillaError(get_url, error["code"], error["message"])
 
     def json_rpc_post(self, url, method, params):
         """Execute JSON RPC POST request.
@@ -229,7 +235,7 @@ class Browser(object):
                 break
             else:
                 msg = "Request to %s was not successful after multiple retries, giving up" % absolute_url
-                log.warn(msg)
+                log.warning(msg)
                 return None
             return r.json() if r.text else None
 
