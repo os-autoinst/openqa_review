@@ -204,8 +204,9 @@ class Browser(object):
                 if error["code"] == 101:
                     raise BugNotFoundError(get_url, error["code"], error["message"])
                 else:
-                    log.warning(f"Bugzilla returned error {error['code']} accessing {get_url}, retrying in 1s try {i}")
-                    time.sleep(2**i)
+                    sleep_time = 2**i
+                    log.warning(f"Bugzilla returned error {error['code']} accessing {get_url}, retrying in {sleep_time}s try {i}")
+                    time.sleep(sleep_time)
                     continue
             return response
         if error:  # pragma: no cover
