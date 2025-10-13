@@ -266,7 +266,7 @@ class Browser(object):
             return r.json() if r.text else None
 
 
-def add_load_save_args(parser):
+def add_browser_args(parser):
     load_save = parser.add_mutually_exclusive_group()
     load_save.add_argument(
         "--save",

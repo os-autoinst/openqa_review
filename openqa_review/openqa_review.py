@@ -107,7 +107,7 @@ from sortedcontainers import SortedDict
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from .browser import Browser, DownloadError, BugNotFoundError, add_load_save_args  # isort:skip
+from .browser import Browser, DownloadError, BugNotFoundError, add_browser_args  # isort:skip
 
 
 # treat humanfriendly as optional dependency
@@ -1472,7 +1472,7 @@ def parse_args():
         default="redmine",
         help="""Select which closed issues to reopen with 'all', 'none' or specific issue types, e.g 'redmine' or 'bugzilla'.""",
     )
-    add_load_save_args(parser)
+    add_browser_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
         print(CONFIG_USAGE)
