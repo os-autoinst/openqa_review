@@ -81,6 +81,7 @@ class Browser(object):
         self.load_dir = args.load_dir if hasattr(args, "load_dir") else "."
         self.save_dir = args.save_dir if hasattr(args, "save_dir") else "."
         self.dry_run = args.dry_run if hasattr(args, "dry_run") else False
+        self.retries = args.retries if hasattr(args, "retries") else 7
         self.root_url = root_url
         self.auth = auth
         self.api_key = api_key
@@ -131,7 +132,7 @@ class Browser(object):
         return content
 
     def _get(self, url, as_json=False):  # pragma: no cover
-        retries = Retry(total=7, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        retries = Retry(total=self.retries, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
         http = requests.Session()
         parsed_url = urlparse(url)
         http.mount("{}://".format(parsed_url.scheme), HTTPAdapter(max_retries=retries))
@@ -198,14 +199,16 @@ class Browser(object):
         get_params = SortedDict({"method": method, "params": json.dumps([params])})
         get_url = requests.Request("GET", absolute_url, params=get_params).prepare().url.replace("http://dummy", "")
         error = None
-        for i in range(1, 7):
+        for i in range(1, self.retries):
             response = self.get_json(get_url, cache)
             if error := response.get("error"):
                 if error["code"] == 101:
                     raise BugNotFoundError(get_url, error["code"], error["message"])
                 else:
                     sleep_time = 2**i
-                    log.warning(f"Bugzilla returned error {error['code']} accessing {get_url}, retrying in {sleep_time}s try {i}")
+                    log.warning(
+                        f"Bugzilla returned error {error['code']} accessing {get_url}, retrying in {sleep_time}s try {i}"
+                    )
                     time.sleep(sleep_time)
                     continue
             return response
@@ -224,7 +227,7 @@ class Browser(object):
         else:  # pragma: no cover
             absolute_url = url if not url.startswith("/") else urljoin(str(self.root_url), str(url))
             data = json.dumps({"method": method, "params": [params]})
-            for i in range(1, 7):
+            for i in range(1, self.retries):
                 try:
                     headers = self.headers.copy()
                     headers["content-type"] = "application/json"
