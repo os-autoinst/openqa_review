@@ -295,4 +295,4 @@ def add_browser_args(parser):
         help="""The directory to write cache files to when
                         using '--save'.""",
     )
-    parser.add_argument("--retries", default=7, help="""Number of retries on failed remote requests.""")
+    parser.add_argument("--retries", default=7, type=int, help="""Number of retries on failed remote requests.""")
