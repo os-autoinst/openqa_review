@@ -19,7 +19,7 @@ from urllib.parse import urljoin
 from configparser import ConfigParser  # isort:skip can not make isort happy here
 
 import pytest
-from unittest.mock import call, patch, Mock, MagicMock
+from unittest.mock import call, Mock, MagicMock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -542,8 +542,8 @@ def test_reminder_comments_on_referenced_bugs_are_posted():
     args.dry_run = False
 
 
-@patch.object(Browser, "json_rpc_post")
-def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
+def test_reminder_comments_on_referenced_bugs_are_not_duplicated(mocker):
+    browser_mock = mocker.patch.object(Browser, "json_rpc_post")
     args = bugrefs_test_args_factory()
     args.verbose_test = 1
     args.query_issue_status = True
@@ -557,8 +557,8 @@ def test_reminder_comments_on_referenced_bugs_are_not_duplicated(browser_mock):
     browser_mock.assert_not_called()
 
 
-@patch.object(Browser, "json_rpc_post")
-def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
+def test_reminder_comments_are_ignored_on_no_reminder(mocker):
+    browser_mock = mocker.patch.object(Browser, "json_rpc_post")
     args = bugrefs_test_args_factory()
     args.load_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "softfails")
     args.verbose_test = 1
@@ -580,8 +580,8 @@ def test_reminder_comments_are_ignored_on_no_reminder(browser_mock):
     args.dry_run = False
 
 
-@patch.object(Browser, "json_rpc_post")
-def test_reminder_comments_includes_link_to_failed_step(browser_mock):
+def test_reminder_comments_includes_link_to_failed_step(mocker):
+    browser_mock = mocker.patch.object(Browser, "json_rpc_post")
     args = bugrefs_test_args_factory()
     args.verbose_test = 1
     args.dry_run = True
@@ -753,8 +753,8 @@ def test_querying_last_comment_of_unknown_bugrefs():
     assert comment_text is None, "no comment text returned for unsupported issue"
 
 
-@patch.object(Browser, "json_rest")
-def test_reopening_progress_issue(browser_mock):
+def test_reopening_progress_issue(mocker):
+    browser_mock = mocker.patch.object(Browser, "json_rest")
     args = cache_test_args_factory()
     issue = issue_factory("poo#102440", "https://progress.opensuse.org/issues/102440", args)
     issue.status = "Resolved"
@@ -777,8 +777,8 @@ def test_reopening_progress_issue(browser_mock):
     assert call_args[2] == {"issue": {"notes": "Test note 2"}}, "data (no status for workable ticket)"
 
 
-@patch.object(Browser, "json_rpc_post")
-def test_reopening_bugzilla_ticket(browser_mock_rpc):
+def test_reopening_bugzilla_ticket(mocker):
+    browser_mock_rpc = mocker.patch.object(Browser, "json_rpc_post")
     args = cache_test_args_factory()
     issue = issue_factory("boo#0815", "https://bugzilla.opensuse.org/show_bug.cgi?id=0815", args)
     issue.status = "RESOLVEd"
