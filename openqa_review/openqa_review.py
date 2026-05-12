@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+# Copyright SUSE LLC
+# SPDX-License-Identifier: MIT
 
-"""
-Review helper script for openQA.
+"""Review helper script for openQA.
 
 # Inspiration
 
@@ -87,27 +88,37 @@ Alternatives could have been and still are for further extensions or reworks:
 
 """
 
+from __future__ import annotations
+
 import argparse
 import codecs
 import datetime
 import logging
-import os.path
 import re
 import sys
-import traceback
-from builtins import str
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict, defaultdict
+from datetime import timezone
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, NamedTuple, cast
+
 from configparser import ConfigParser, NoSectionError, NoOptionError  # isort:skip can not make isort happy here
-from requests.exceptions import HTTPError
 from string import Template
-from urllib.parse import quote, unquote, urljoin, urlencode, urlparse, parse_qs
+from urllib.parse import parse_qs, quote, unquote, urlencode, urljoin, urlparse
 
 from bs4 import BeautifulSoup
+from requests.exceptions import HTTPError
 from sortedcontainers import SortedDict
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
-from .browser import Browser, DownloadError, BugNotFoundError, add_browser_args  # isort:skip
+from .browser import Browser, DownloadError, BugNotFoundError, JsonType, add_browser_args  # isort:skip
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator, Iterable, KeysView, Sequence
+
+    from bs4 import BeautifulSoup as BeautifulSoupType
+    from bs4 import Tag as TagType
+    from sortedcontainers import SortedDict as SortedDictType
 
 
 # treat humanfriendly as optional dependency
@@ -119,7 +130,8 @@ try:
     humanfriendly_available = True
 except ImportError:  # pragma: no cover
 
-    def pluralize(_1, _2, plural):
+    def pluralize(_1: int, _2: str, plural: str) -> str:  # pragma: no cover
+        """Return plural form as fallback when humanfriendly is unavailable."""
         return plural
 
 
@@ -129,17 +141,42 @@ MIN_DAYS_UNCHANGED = 14
 # ID of feedback status in Redmine
 REDMINE_STATUS_ID_FEEDBACK = 4
 
+# threshold constants for status badge determination
+STATUS_AMBER_MAX_STILL_FAILING = 5
+VERBOSE_TEST_REF_BUILD = 2
+VERBOSE_TEST_CHANGES = 3
+VERBOSE_LEVEL_DEBUG = 4
+MIN_BUILDS_REQUIRED = 2
+
 # default regex to skip soft-failed reminders
-NO_REMINDER_REGEX = re.compile("WONTFIX|NO_REMINDER")
+NO_REMINDER_REGEX = re.compile(r"WONTFIX|NO_REMINDER")
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
-logging.captureWarnings(True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
+logging.captureWarnings(capture=True)  # see https://urllib3.readthedocs.org/en/latest/security.html#disabling-warnings
 
-config = None
+config = ConfigParser()
 
 
-CONFIG_PATH = os.path.expanduser("~") + "/.openqa_reviewrc"
+class BrowserSet(NamedTuple):
+    """Holds the three browser instances used in architecture report generation."""
+
+    progress_browser: Browser | None
+    bugzilla_browser: Browser | None
+    test_browser: Browser | None
+
+
+class TestContext(NamedTuple):
+    """Holds the extracted context from a test details page."""
+
+    group: str
+    build: str
+    scenario: str
+    latest_link: str
+    previous_results_list: list
+
+
+CONFIG_PATH = str(Path("~/.openqa_reviewrc").expanduser())
 CONFIG_USAGE = """
 You are missing the mandatory configuration file with the proper format.
 Example:
@@ -178,7 +215,7 @@ $common_issues
 ---
 $arch_report
 """
-)  # noqa: W291  # ignore trailing whitespace for forced line breaks
+)  # ignore trailing whitespace for forced line breaks
 
 todo_review_template = Template(
     """
@@ -186,7 +223,7 @@ todo_review_template = Template(
 $new_issues$existing_issues"""
 )
 
-# TODO don't display sections if empty
+# TODO(okurz): don't display sections if empty
 openqa_review_report_arch_template = Template(
     """
 **Arch:** $arch
@@ -221,14 +258,14 @@ status_badge_str = {
 class NotEnoughBuildsError(Exception):
     """Not enough finished builds found."""
 
-    pass
 
-
-def parse_summary(details):
+def parse_summary(details: BeautifulSoupType) -> dict[str, int]:
     """Parse and return build summary as dict."""
-    return {
-        i.previous.strip().rstrip(":").lower(): int(i.text) for i in details.find(id="summary").find_all(class_="badge")
-    }
+    summary_tag = details.find(id="summary")
+    if summary_tag is None:
+        msg = "Could not find summary tag with id='summary'"
+        raise ValueError(msg)
+    return {str(i.previous).strip().rstrip(":").lower(): int(i.text) for i in summary_tag.find_all(class_="badge")}
 
 
 change_state = {
@@ -248,40 +285,62 @@ soft_fail_states = ["STILL_SOFT_FAILING", "NEW_SOFT_ISSUE", "IMPROVED"]
 interesting_states_names = [i for i in set(change_state.values()) if i != "STABLE"] + ["INCOMPLETE"]
 
 issue_tracker = {  # pragma: no branch
-    "bsc": lambda i: "https://bugzilla.suse.com/show_bug.cgi?id=%s" % i,
-    "boo": lambda i: "https://bugzilla.opensuse.org/show_bug.cgi?id=%s" % i,
-    "poo": lambda i: "https://progress.opensuse.org/issues/%s" % i,
-    "bgo": lambda i: "https://bugzilla.gnome.org/show_bug.cgi?id=%s" % i,
+    "bsc": lambda i: f"https://bugzilla.suse.com/show_bug.cgi?id={i}",
+    "boo": lambda i: f"https://bugzilla.opensuse.org/show_bug.cgi?id={i}",
+    "poo": lambda i: f"https://progress.opensuse.org/issues/{i}",
+    "bgo": lambda i: f"https://bugzilla.gnome.org/show_bug.cgi?id={i}",
 }
 
 bugref_regex = "(poo|boo|bsc|bgo)#?([0-9]+)"
 
 
-def status(entry):
+def status(entry: TagType) -> str:
     """Return test status from entry, e.g. 'result_passed'."""
-    return [s for s in entry.i["class"] if re.search("(state|result)_", s)][0]
+    i_tag = entry.i
+    if i_tag is None:
+        msg = "Could not find <i> tag in entry for status"
+        raise ValueError(msg)
+    return next(s for s in cast("list", i_tag["class"]) if re.search(r"(state|result)_", s))
 
 
-def get_build_nr(url):
-    return unquote(re.search("build=([^&]*)", url).groups()[0])
+def get_build_nr(url: str) -> str:
+    """Extract and return the build number from a URL."""
+    m = re.search(r"build=([^&]*)", url)
+    if m is None:
+        msg = f"Could not find build number in URL: {url}"
+        raise ValueError(msg)
+    return unquote(m.groups()[0])
 
 
-def get_failed_needles(m):
-    return [str(i.text) for i in BeautifulSoup(m["title"], "html.parser").find_all("li")] if m.get("title") else []
+def get_failed_needles(m: TagType) -> list[str]:
+    """Return list of failed needle names from a test result entry."""
+    title = m.get("title") if hasattr(m, "get") else None
+    if not title:
+        return []
+    return [str(i.text) for i in BeautifulSoup(str(title), "html.parser").find_all("li")]
 
 
-def get_test_details(entry):
+def get_test_details(entry: TagType) -> dict[str, Any]:
+    """Return href and failed module details for a test entry."""
     failedmodules = entry.find_all(class_="failedmodule")
 
-    def find_module_href(m):
+    def find_module_href(m: TagType) -> str:
         # optional fallback to old openQA code, 4.5, pre bootstrap4
         try:
-            return m["href"]
-        except KeyError:
-            return m.a["href"]
+            return str(m["href"])
+        except KeyError as e:
+            a_tag = m.a
+            if a_tag is None:
+                msg = "Could not find <a> tag in failedmodule entry"
+                raise ValueError(msg) from e
+            return str(a_tag["href"])
 
+    entry_a = entry.a
+    if entry_a is None:
+        msg = "Could not find <a> tag in test entry"
+        raise ValueError(msg)
     return {
-        "href": entry.a["href"],
+        "href": str(entry_a["href"]),
         "failedmodules": [
             {"href": find_module_href(m), "name": m.text.strip(), "needles": get_failed_needles(m)}
             for m in failedmodules
@@ -289,61 +348,87 @@ def get_test_details(entry):
     }
 
 
-def get_test_bugref(entry):
-    bugref = entry.find(id=re.compile("^bug-"))
+def get_test_bugref(entry: TagType) -> dict[str, str]:
+    """Return bugref info dict from a test result entry, or empty dict if absent."""
+    bugref = entry.find(id=re.compile(r"^bug-"))
     if not bugref:
         return {}
-    reference = re.search(r"\S+#([0-9]+)", bugref.i["title"])
-    reference = reference.group() if reference else "(unknown bugref in %s)" % bugref.i["title"]
+    bugref_i = bugref.i
+    if bugref_i is None:
+        msg = "Could not find <i> tag in bugref element"
+        raise ValueError(msg)
+    i_title = str(bugref_i["title"])
+    reference = re.search(r"\S+#([0-9]+)", i_title)
+    ref_str = reference.group() if reference else f"(unknown bugref in {i_title})"
     # work around openQA providing incorrect URLs (e.g. following whitespace)
-    return {"bugref": reference, "bugref_href": bugref.a["href"].strip()}
+    bugref_a = bugref.a
+    if bugref_a is None:
+        msg = "Could not find <a> tag in bugref element"
+        raise ValueError(msg)
+    return {"bugref": ref_str, "bugref_href": str(bugref_a["href"]).strip()}
 
 
-def get_state(cur, prev_dict):
+def get_state(cur: TagType, prev_dict: dict[str, TagType]) -> tuple[str, dict[str, Any]]:
     """Return change_state for 'previous' and 'current' test status html-td entries."""
-    # TODO instead of just comparing the overall state we could check if
+    # TODO(okurz): instead of just comparing the overall state we could check if
     # failing needles differ
+    cur_id = str(cur["id"])
+    state_dict: dict[str, Any] = {}
     try:
-        prev = prev_dict[cur["id"]]
-        state_dict = {"state": change_state[(status(prev), status(cur))]}
+        prev = prev_dict[cur_id]
+        state_dict["state"] = change_state[status(prev), status(cur)]
         # add more details, could be skipped if we don't have details
-        state_dict.update({"prev": {"href": prev.find("a")["href"]}})
+        prev_a = prev.find("a")
+        if prev_a is None:
+            msg = "Could not find <a> tag in previous test entry"
+            raise ValueError(msg)
+        state_dict["prev"] = {"href": str(prev_a["href"])}
     except KeyError:
         # if there is no previous or it was never completed we assume passed to mark new failing test as 'NEW_ISSUE'
-        state_dict = {"state": change_state.get(("result_passed", status(cur)), "INCOMPLETE")}
+        state_dict["state"] = change_state.get(("result_passed", status(cur)), "INCOMPLETE")
     state_dict.update(get_test_details(cur))
     state_dict.update(get_test_bugref(cur))
-    return cur["id"], state_dict
+    return cur_id, state_dict
 
 
-def get_arch_state_results(arch, current_details, previous_details, output_state_results=False):
+def get_arch_state_results(
+    arch: str,
+    current_details: BeautifulSoupType,
+    previous_details: BeautifulSoupType,
+    *,
+    output_state_results: bool = False,
+) -> SortedDictType:
+    """Return SortedDict of interesting test state changes for the given arch."""
     result_re = re.compile(arch + "_")
     test_results = current_details.find_all("td", id=result_re)
     test_results_previous = previous_details.find_all("td", id=result_re)
     # find differences from previous to current (result_X)
-    test_results_dict = {i["id"]: i for i in test_results}
+    test_results_dict = {str(i["id"]): i for i in test_results}
     skipped = get_skipped_dict(arch, current_details)
 
-    test_results_previous_dict = {i["id"]: i for i in test_results_previous if i["id"] in test_results_dict.keys()}
-    states = SortedDict(get_state(v, test_results_previous_dict) for k, v in test_results_dict.items())
+    test_results_previous_dict = {str(i["id"]): i for i in test_results_previous if str(i["id"]) in test_results_dict}
+    states = SortedDict(get_state(v, test_results_previous_dict) for v in test_results_dict.values())
 
     # intermediate step:
     # - print report of differences
     interesting_states = SortedDict({k.split(arch + "_")[1]: v for k, v in states.items() if v["state"] != "STABLE"})
 
     if output_state_results:
-        print("arch: %s" % arch)
+        log.debug("arch: %s", arch)
         for state in interesting_states_names:
-            print("\n%s:\n\t%s\n" % (state, ", ".join(k for k, v in interesting_states.items() if v["state"] == state)))
+            names = ", ".join(k for k, v in interesting_states.items() if v["state"] == state)
+            log.debug("\n%s:\n\t%s\n", state, names)
     interesting_states.update({"skipped": skipped})
     return interesting_states
 
 
-def absolute_url(root, v):
+def absolute_url(root: str, v: BeautifulSoupType | dict[str, Any]) -> str:
+    """Return absolute URL by joining root with href from v."""
     return urljoin(root, str(v["href"]))
 
 
-def progress_browser_factory(args):
+def progress_browser_factory(args: argparse.Namespace) -> Browser:
+    """Create and return a Browser configured for Redmine/progress access."""
     return Browser(
         args,
         root_url="",
@@ -351,13 +436,14 @@ def progress_browser_factory(args):
     )
 
 
-def bugzilla_browser_factory(args):
-    auth = ()
+def bugzilla_browser_factory(args: argparse.Namespace) -> Browser:
+    """Create and return a Browser configured for Bugzilla access."""
+    auth: tuple[str, str] | None = None
     # We need either an API key or login & password
     if not config.has_option("product_issues", "api_key"):
         auth = (
-            config.get("product_issues", "username", fallback=None),
-            config.get("product_issues", "password", fallback=None),
+            config.get("product_issues", "username", fallback=""),
+            config.get("product_issues", "password", fallback=""),
         )
     return Browser(
         args,
@@ -367,44 +453,49 @@ def bugzilla_browser_factory(args):
     )
 
 
-def issue_listing(header, issues, show_empty=True, no_headers=False):
-    r"""
-    Generate one issue listing section.
+def issue_listing(
+    header: str, issues: Sequence[IssueEntry | str], *, show_empty: bool = True, no_headers: bool = False
+) -> str:
+    r"""Generate one issue listing section.
 
     @param header: Header string for section
     @param issues: List of IssueEntry objects
     @param show_empty: show empty sections if True and issues are an empty string
 
-    >>> issue_listing('***new issues:***', 'None')
+    >>> issue_listing("***new issues:***", "None")
     '\n***new issues:***\n\nNone\n'
-    >>> issue_listing('***Common issues:***', '')
+    >>> issue_listing("***Common issues:***", "")
     '\n***Common issues:***\n\n\n'
-    >>> issue_listing('***no issues***', '', show_empty=False)
+    >>> issue_listing("***no issues***", "", show_empty=False)
     ''
     """
     if not show_empty and len(issues) == 0:
         return ""
     if no_headers:
-        return "".join(map(lambda i: "* %s %s\n" % (header, i.stringify()), issues))
+        return "".join(f"* {header} {i.stringify()}\n" for i in cast("list[IssueEntry]", issues))
     return "\n" + header + "\n\n" + "".join(map(str, issues)) + "\n"
 
 
-def common_issues(issues, show_empty=True):
-    if not show_empty and issues == "":
+def common_issues(issues: str, *, show_empty: bool = True) -> str:
+    """Return markdown-formatted common issues section."""
+    if not show_empty and not issues:
         return ""
     return "\n" + "**Common issues:**" + "\n" + issues + "\n"
 
 
-def issue_type(bugref):
-    return "openqa" if re.match("poo#", bugref) else "product"
+def issue_type(bugref: str) -> str:
+    """Return 'openqa' for poo bugs, 'product' otherwise."""
+    return "openqa" if bugref.startswith("poo#") else "product"
 
 
-def issue_state(result_list):
+def issue_state(result_list: list[dict[str, Any]]) -> str:
+    """Return 'existing' if any result was still failing, 'new' otherwise."""
     # if any result was still failing the issue is regarded as existing
-    return "existing" if [i for i in result_list if re.match("(STILL|IMPROVED)", i["state"])] else "new"
+    return "existing" if [i for i in result_list if re.match(r"(STILL|IMPROVED)", i["state"])] else "new"
 
 
-def get_results_by_bugref(results, args):
+def get_results_by_bugref(results: SortedDictType, args: argparse.Namespace) -> defaultdict[str, list[dict[str, Any]]]:
+    """Group test results by bugref, returning a defaultdict of lists."""
     include_tags = ["STILL_FAILING", "NEW_ISSUE"]
     if args.include_softfails:
         include_tags += soft_fail_states
@@ -416,28 +507,28 @@ def get_results_by_bugref(results, args):
         if not re.match("(" + "|".join(include_tags) + ")", v["state"]):
             continue
         key = v["bugref"] if (args.bugrefs and "bugref" in v and v["bugref"]) else "todo"
-        results_by_bugref[key].append(dict(v, **{"name": k}))
+        results_by_bugref[key].append(dict(v, name=k))
     return results_by_bugref
 
 
-def set_status_badge(states):
-    # TODO pretty arbitrary
+def set_status_badge(states: list[str]) -> str:
+    """Determine status badge color based on issue counts."""
+    # TODO(okurz): pretty arbitrary
     if states.count("NEW_ISSUE") == 0 and states.count("STILL_FAILING") <= 1:
         return "GREEN"
-    # still failing and soft issues allowed; TODO also arbitrary, just adjusted to test set
-    elif states.count("NEW_ISSUE") == 0 and states.count("STILL_FAILING") <= 5:
+    # still failing and soft issues allowed; TODO(okurz): also arbitrary, just adjusted to test set
+    if states.count("NEW_ISSUE") == 0 and states.count("STILL_FAILING") <= STATUS_AMBER_MAX_STILL_FAILING:
         return "AMBER"
-    else:
-        return "RED"
+    return "RED"
 
 
-def find_builds(builds, running_threshold=0):
+def find_builds(builds: dict[str, dict[str, Any]], running_threshold: float | str | None = 0) -> KeysView[str]:
     """Find finished builds, ignore still running or empty."""
     threshold = float(running_threshold) if running_threshold is not None else 0
 
     # filter out empty builds
-    def non_empty(r):
-        return r["total"] != 0 and r["total"] > r["skipped"] and not ("build" in r.keys() and r["build"] is None)
+    def non_empty(r: dict[str, Any]) -> bool:
+        return r["total"] != 0 and r["total"] > r["skipped"] and not ("build" in r and r["build"] is None)
 
     builds = {build: result for build, result in builds.items() if non_empty(result)}
     finished = {
@@ -446,14 +537,14 @@ def find_builds(builds, running_threshold=0):
         if not result["unfinished"] or (100 * float(result["unfinished"]) / result["total"]) <= threshold
     }
 
-    log.debug("Found the following finished non-empty builds: %s" % ", ".join(finished.keys()))
-    if len(finished) < 2:
-        raise NotEnoughBuildsError("not enough finished builds found")
-    assert len(finished.keys()) >= 2
+    log.debug("Found the following finished non-empty builds: %s", ", ".join(finished.keys()))
+    if len(finished) < MIN_BUILDS_REQUIRED:
+        msg = "not enough finished builds found"
+        raise NotEnoughBuildsError(msg)
     return finished.keys()
 
 
-def find_last_reviewed_build(comments):
+def find_last_reviewed_build(comments: list[dict[str, Any]]) -> str:
     """Find last reviewed build within job group comments."""
     # Could also find previous one with a comment on the build status,
     # i.e. a reviewed finished build
@@ -468,21 +559,27 @@ def find_last_reviewed_build(comments):
     return last_reviewed
 
 
-def mysort(x):
+def _try_zero_pad(part: str) -> str:
+    """Return zero-padded numeric string or the original if not numeric."""
+    try:
+        return f"{int(part):020d}"
+    except ValueError:
+        return part
+
+
+def mysort(x: str) -> list[str]:
     """Sort strings like build numbers with dashes and/or dots, e.g. 12-SP5-0456."""
-    s = []
-    for i in re.split("[-.]", x):
-        try:
-            i = "%020d" % int(i)
-        except ValueError:
-            pass
-        s.append(i)
-    return s
+    return [_try_zero_pad(part) for part in re.split(r"[-.]", x)]
 
 
-def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewed=None, running_threshold=0):
-    """
-    From the job group page get URLs for the builds to compare.
+def get_build_urls_to_compare(
+    browser: Browser,
+    job_group_url: str,
+    builds: str = "",
+    against_reviewed: str | None = None,
+    running_threshold: float | str = 0,
+) -> tuple[str, str]:
+    """From the job group page get URLs for the builds to compare.
 
     @param browser: A browser instance
     @param job_group_url: forwarded to browser instance
@@ -492,32 +589,28 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
     @param running_threshold: Threshold of which percentage of jobs may still be running for the build to be considered
       'finished' anyway
     """
-    job_group = browser.get_json("%s.json" % job_group_url)
+    job_group = cast("dict[str, Any]", browser.get_json(f"{job_group_url}.json"))
 
-    def get_group_result():
+    def get_group_result() -> dict[str, Any]:
         try:
-            results_list = job_group["build_results"]
+            results_list = cast("list", job_group["build_results"])
             return {i["key"]: i for i in results_list}
         except KeyError:
             log.debug("Reverting to old openQA behaviour before openQA#9b50b22")
-            return job_group["result"]
+            return cast("dict[str, Any]", job_group["result"])
 
-    def build_url(build):
+    def build_url(build: str) -> str:
         r = get_group_result()
         b = r.get(build, next(iter(r.values())))
         build = b.get("build", build)
         # openQA introduced multi-distri support for the job groups with openQA#037ffd33
         distri_str = (
-            "distri=%s" % b["distri"]
-            if "distri" in b.keys()
-            else "distri=" + "&distri=".join(sorted(b["distris"].keys()))
+            f"distri={b['distri']}"
+            if "distri" in b
+            else "distri=" + "&distri=".join(sorted(cast("dict", b["distris"]).keys()))
         )
-        return "/tests/overview?%s&version=%s&build=%s&groupid=%i" % (
-            distri_str,
-            quote(b["version"]),
-            quote(build),
-            job_group["group"]["id"],
-        )
+        gid = cast("dict[str, Any]", job_group["group"])["id"]
+        return f"/tests/overview?{distri_str}&version={quote(b['version'])}&build={quote(build)}&groupid={gid}"
 
     finished_builds = find_builds(get_group_result(), running_threshold)
     # find last finished and previous one
@@ -528,267 +621,340 @@ def get_build_urls_to_compare(browser, job_group_url, builds="", against_reviewe
         # User has to be careful here. A page for non-existent builds is always
         # existent.
         builds_to_compare = builds.split(",")
-        log.debug("Specified builds %s, parsed to %s" % (builds, ", ".join(builds_to_compare)))
+        log.debug("Specified builds %s, parsed to %s", builds, ", ".join(builds_to_compare))
     elif against_reviewed:
         try:
-            last_reviewed = find_last_reviewed_build(job_group["comments"])
-            log.debug("Comparing specified build %s against last reviewed %s" % (against_reviewed, last_reviewed))
+            last_reviewed = find_last_reviewed_build(cast("list", job_group["comments"]))
+            log.debug("Comparing specified build %s against last reviewed %s", against_reviewed, last_reviewed)
             build_to_review = builds_to_compare[0] if against_reviewed == "last" else against_reviewed
-            assert (
-                len(build_to_review) <= len(last_reviewed) + 1
-            ), "build_to_review and last_reviewed differ too much to make sense"
-            builds_to_compare = build_to_review, last_reviewed
+            builds_differ_too_much = len(build_to_review) > len(last_reviewed) + 1
         except (NameError, AttributeError, IndexError):
-            log.info("No last reviewed build found for URL %s, reverting to two last finished" % job_group_url)
+            log.info("No last reviewed build found for URL %s, reverting to two last finished", job_group_url)
+        else:
+            if not builds_differ_too_much:
+                builds_to_compare = build_to_review, last_reviewed
+            else:
+                log.info("No last reviewed build found for URL %s, reverting to two last finished", job_group_url)
 
-    log.debug("Comparing build %s against %s" % (builds_to_compare[0], builds_to_compare[1]))
+    log.debug("Comparing build %s against %s", builds_to_compare[0], builds_to_compare[1])
     current_url, previous_url = map(build_url, builds_to_compare)
-    log.debug("Found two build URLS, current: %s previous: %s" % (current_url, previous_url))
+    log.debug("Found two build URLS, current: %s previous: %s", current_url, previous_url)
     return current_url, previous_url
 
 
-def get_failed_module_details_for_report(f):
+def get_failed_module_details_for_report(f: dict[str, Any]) -> tuple[str, str, str]:
+    """Return (name, url, details) tuple for the first failed module of a test result."""
     try:
         failed_module = f["failedmodules"][0]
     except IndexError:
-        log.debug("%s does not have failed module, taking complete job." % f["href"])
+        log.debug("%s does not have failed module, taking complete job.", f["href"])
         name = ""
         url = f["href"]
         details = ""
     else:
         name = failed_module["name"]
         url = failed_module["href"]
-        details = "\nwith failed needles: %s" % failed_module["needles"]
+        details = f"\nwith failed needles: {failed_module['needles']}"
     return name, url, details
 
 
-# too complex, we might want to remove this function anyway as openQA has it already
-def issue_report_link(root_url, f, test_browser=None):  # noqa: C901
-    """Generate a bug reporting link for the current issue."""
-    # always select the first failed module.
-    # It might not be the fatal one but better be safe and assume the first
-    # failed module introduces a problem in the whole job
+def _find_first_last(
+    root_url: str, build: str, previous_results_list: list[tuple[str, dict[str, Any]]]
+) -> tuple[str, str]:
+    """Return (first_known_bad, last_good) strings from previous results."""
+    good = re.compile(r"(?<=_)(passed|softfailed)")
 
-    test_details_page = test_browser.get_soup(f["href"])
-    current_build_overview = urlparse(test_details_page.find(id="current-build-overview").a["href"]).query
-    overview_params = parse_qs(current_build_overview)
-    group = overview_params["groupid"][0]
-    build = overview_params["build"][0]
-    try:
-        scenario_div = test_details_page.find(class_="next_previous").div.div
-        scenario = re.findall(r"Next & previous results for (.*) \(", scenario_div.text)[0]
-    except AttributeError:  # pragma: no cover
-        # pre-4.6
-        scenario_div = test_details_page.find(class_="previous").div.div
-        scenario = re.findall(r"[Rr]esults for (.*) \(", scenario_div.text)[0]
-    latest_link = absolute_url(root_url, scenario_div.a)
-    module, url, details = get_failed_module_details_for_report(f)
-    try:
-        previous_results = test_details_page.find(id="job_next_previous_table", class_="overview").find_all("tr")[1:]
-    except AttributeError:  # pragma: no cover
-        # pre-4.6
-        previous_results = test_details_page.find(id="previous_results", class_="overview").find_all("tr")[1:]
-    previous_results_list = [
-        (i.td["id"], {"status": status(i), "details": get_test_details(i), "build": i.find(class_="build").text})
-        for i in previous_results
-    ]
-    good = re.compile("(?<=_)(passed|softfailed)")
-
-    def build_link(v):
-        return "[%s](%s)" % (v["build"], absolute_url(root_url, v["details"]))
+    def build_link(v: dict[str, Any]) -> str:
+        return f"[{v['build']}]({absolute_url(root_url, v['details'])})"
 
     first_known_bad = build + " (current job)"
     last_good = "(unknown)"
-    for k, v in previous_results_list:
+    for _k, v in previous_results_list:
         if good.search(v["status"]):
             last_good = build_link(v)
             break
         first_known_bad = build_link(v)
-    description = """### Observation
+    return first_known_bad, last_good
 
-openQA test in scenario %s fails in
-%s%s
+
+def _build_issue_description(
+    scenario: str, full_url_with_details: str, first_known_bad: str, last_good: str, latest_link: str
+) -> str:
+    """Build the markdown description for a new issue report."""
+    return f"""### Observation
+
+openQA test in scenario {scenario} fails in
+{full_url_with_details}
 
 
 ## Reproducible
 
-Fails since (at least) Build %s
+Fails since (at least) Build {first_known_bad}
 
 
 ## Expected result
 
-Last good: %s (or more recent)
+Last good: {last_good} (or more recent)
 
 
 ## Further details
 
-Always latest result in this scenario: [latest](%s)
-""" % (
-        scenario,
-        urljoin(root_url, str(url)),
-        details,
-        first_known_bad,
-        last_good,
-        latest_link,
-    )
+Always latest result in this scenario: [latest]({latest_link})
+"""
 
-    config_section = "product_issues:%s:product_mapping" % root_url.rstrip("/")
-    # the test module name itself is often not specific enough, that is why we step upwards from the current module
-    # until we find the module folder and concatenate the complete module name in format <folder>-<module> and search
-    # for that in the config for potential mappings
+
+def _lookup_component_and_product(
+    root_url: str, test_details_page: BeautifulSoupType, url: str, module: str, group: str
+) -> tuple[str, str]:
+    """Look up the component and product from config for a given module."""
+    config_section = f"product_issues:{root_url.rstrip('/')}:product_mapping"
     first_step_url = urljoin(str(url), "1/src")
     start_of_current_module = test_details_page.find("a", {"href": first_step_url})
     try:
-        module_folder = start_of_current_module.parent.parent.parent.parent.find(
-            class_="glyphicon-folder-open"
-        ).parent.text.strip()
+        ancestor = cast("Any", start_of_current_module).parent.parent.parent.parent
+        folder_icon = ancestor.find(class_="glyphicon-folder-open")
+        module_folder = folder_icon.parent.text.strip()
     except AttributeError:  # pragma: no cover
         module_folder = ""
-        log.warning("Could not find module folder on test details page searching for parents of %s" % first_step_url)
+        log.warning("Could not find module folder on test details page searching for parents of %s", first_step_url)
     complete_module = module_folder + "-" + module
-    component_config_section = "product_issues:%s:component_mapping" % root_url.rstrip("/")
+    component_config_section = f"product_issues:{root_url.rstrip('/')}:component_mapping"
     try:
         components_config_dict = dict(config.items(component_config_section))
-        component = [v for k, v in components_config_dict.items() if re.match(k, complete_module)][0]
-    except (NoSectionError, IndexError) as e:  # pragma: no cover
+        component = next(v for k, v in components_config_dict.items() if re.match(k, complete_module))
+    except (NoSectionError, StopIteration) as e:  # pragma: no cover
         log.info(
-            "No matching component found for module_folder '%s' and module name '%s' in config section '%s'"
-            % (module_folder, module, e)
+            "No matching component found for module_folder '%s' and module name '%s' in config section '%s'",
+            module_folder,
+            module,
+            e,
         )
         component = ""
     try:
         product = config.get(config_section, group)
     except NoOptionError as e:  # pragma: no cover
-        log.info("%s. Reporting link for product will not work." % e)
+        log.info("%s. Reporting link for product will not work.", e)
         product = ""
-    product_entries = OrderedDict(
-        [
-            ("product", product),
-            ("component", component),
-            ("short_desc", "[Build %s] openQA test fails%s" % (build, " in %s" % module if module else "")),
-            ("bug_file_loc", urljoin(root_url, str(url))),
-            ("comment", description),
-        ]
-    )
+    return component, product
+
+
+def _get_test_context(root_url: str, test_details_page: BeautifulSoupType) -> TestContext:
+    """Extract group, build, scenario, latest_link, previous_results_list from the test details page."""
+    current_build_overview = urlparse(
+        str(cast("Any", test_details_page.find(id="current-build-overview")).a["href"])
+    ).query
+    overview_params = parse_qs(current_build_overview)
+    group = overview_params["groupid"][0]
+    build = overview_params["build"][0]
+    try:
+        scenario_div: Any = cast("Any", test_details_page.find(class_="next_previous")).div.div
+        scenario = re.findall(r"Next & previous results for (.*) \(", scenario_div.text)[0]
+    except AttributeError:  # pragma: no cover
+        # pre-4.6
+        scenario_div = cast("Any", test_details_page.find(class_="previous")).div.div
+        scenario = re.findall(r"[Rr]esults for (.*) \(", scenario_div.text)[0]
+    latest_link = absolute_url(root_url, scenario_div.a)
+    try:
+        overview = cast("Any", test_details_page.find(id="job_next_previous_table", class_="overview"))
+        previous_results = overview.find_all("tr")[1:]
+    except AttributeError:  # pragma: no cover
+        # pre-4.6
+        overview = cast("Any", test_details_page.find(id="previous_results", class_="overview"))
+        previous_results = overview.find_all("tr")[1:]
+    previous_results_list = [
+        (
+            str(i.td["id"]),
+            {
+                "status": status(i),
+                "details": get_test_details(i),
+                "build": cast("str", i.find(class_="build").text),
+            },
+        )
+        for i in previous_results
+    ]
+    return TestContext(group, build, scenario, latest_link, previous_results_list)
+
+
+def _build_report_urls(
+    bug_file_loc: str, build: str, module: str, description: str, product_info: tuple[str, str]
+) -> tuple[str, str]:
+    """Build and return (product_bug_url, test_issue_url) for issue reporting."""
+    component, product = product_info
+    module_in_desc = f" in {module}" if module else ""
+    module_with_space = f"{module} " if module else ""
+    product_entries = OrderedDict([
+        ("product", product),
+        ("component", component),
+        ("short_desc", f"[Build {build}] openQA test fails{module_in_desc}"),
+        ("bug_file_loc", bug_file_loc),
+        ("comment", description),
+    ])
     product_bug = (
         urljoin(str(config.get("product_issues", "report_url")), "enter_bug.cgi") + "?" + urlencode(product_entries)
     )
-    test_entries = OrderedDict(
-        [
-            ("issue[subject]", "[Build %s] test %sfails" % (build, module + " " if module else "")),
-            ("issue[description]", description),
-        ]
-    )
+    test_entries = OrderedDict([
+        ("issue[subject]", f"[Build {build}] test {module_with_space}fails"),
+        ("issue[description]", description),
+    ])
     test_issue = config.get("test_issues", "report_url") + "?" + urlencode(test_entries)
-    return ": report [product bug](%s) / [openQA issue](%s)" % (product_bug, test_issue)
+    return product_bug, test_issue
 
 
-def _parse_issue_timestamp(timestamp):
+# too complex, we might want to remove this function anyway as openQA has it already
+def issue_report_link(root_url: str, f: dict[str, Any], test_browser: Browser | None = None) -> str:
+    """Generate a bug reporting link for the current issue."""
+    # always select the first failed module.
+    # It might not be the fatal one but better be safe and assume the first
+    # failed module introduces a problem in the whole job
+
+    if test_browser is None:
+        msg = "test_browser is required to generate a bug report link"
+        raise ValueError(msg)
+    test_details_page = test_browser.get_soup(f["href"])
+    ctx = _get_test_context(root_url, test_details_page)
+    module, url, details = get_failed_module_details_for_report(f)
+    abs_url = urljoin(root_url, str(url))
+    first_known_bad, last_good = _find_first_last(root_url, ctx.build, ctx.previous_results_list)
+    description = _build_issue_description(ctx.scenario, abs_url + details, first_known_bad, last_good, ctx.latest_link)
+    product_info = _lookup_component_and_product(root_url, test_details_page, url, module, ctx.group)
+    product_bug, test_issue = _build_report_urls(abs_url, ctx.build, module, description, product_info)
+    return f": report [product bug]({product_bug}) / [openQA issue]({test_issue})"
+
+
+def _parse_issue_timestamp(timestamp: str) -> datetime.datetime:
     """Parse the timestamp of a specified redmine issue timestamp field."""
-    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
 
 
-class Issue(object):
+class Issue:
     """Issue with extra status info from issue tracker."""
 
-    def __init__(self, bugref, bugref_href, query_issue_status=False, progress_browser=None, bugzilla_browser=None):
+    def __init__(
+        self,
+        bugref: str,
+        bugref_href: str | None,
+        *,
+        query_issue_status: bool = False,
+        progress_browser: Browser | None = None,
+        bugzilla_browser: Browser | None = None,
+    ) -> None:
         """Construct an issue object with options."""
         self.bugref = bugref
         self.bugref_href = bugref_href
         bugid_match = re.search(bugref_regex, bugref)
-        self.bugid = int(bugid_match.group(2)) if bugid_match else None
-        self.msg = None
-        self.json = None
-        self.subject = None
-        self.status = None
-        self.assignee = None
-        self.resolution = None
-        self.priority = None
-        self.queried = False
-        self.last_comment_date = None
-        self.last_comment_text = None
-        self.last_comment_delay = 0
-        self.issue_type = None
-        self.error = False
-        self.progress_browser = progress_browser
-        self.bugzilla_browser = bugzilla_browser
+        self.bugid: int | None = int(bugid_match.group(2)) if bugid_match else None
+        self.msg: str | None = None
+        self.json: dict[str, Any] | None = None
+        self.subject: str | None = None
+        self.status: str | None = None
+        self.assignee: str | None = None
+        self.resolution: str | None = None
+        self.priority: str | None = None
+        self.queried: bool = False
+        self.last_comment_date: datetime.datetime | None = None
+        self.last_comment_text: str | None = None
+        self.last_comment_delay: int = 0
+        self.issue_type: str | None = None
+        self.error: bool = False
+        self.progress_browser: Browser | None = progress_browser
+        self.bugzilla_browser: Browser | None = bugzilla_browser
         if query_issue_status and progress_browser and bugzilla_browser:
-            log.debug("Retrieving bug data for %s" % bugref)
+            log.debug("Retrieving bug data for %s", bugref)
             try:
                 match = re.search(f"^{bugref_regex}", self.bugref)
                 tracker = match.group(1) if match else None
                 if self.bugid == 0:
                     log.debug("#0 ticket id reference found")
-                    self.msg = "NOTE: boo#0/bsc#0/poo#0 label used, please review. Consider creating progress ticket for the investigation"
+                    self.msg = (
+                        "NOTE: boo#0/bsc#0/poo#0 label used, please review."
+                        " Consider creating progress ticket for the investigation"
+                    )
                     return
-                elif tracker == "poo":
+                if tracker == "poo":
                     self._init_redmine(progress_browser)
-                elif tracker in ("boo", "bsc", "bgo"):
+                elif tracker in {"boo", "bsc", "bgo"}:
                     self._init_bugzilla(bugzilla_browser)
                 else:
-                    log.debug('No valid bugref found. Bugref found: "%s"' % self.bugref)
+                    log.debug('No valid bugref found. Bugref found: "%s"', self.bugref)
                 self.queried = True
             except DownloadError as e:  # pragma: no cover
                 log.info(
-                    "A download error has been encountered for bugref %s (%s): %s" % (self.bugref, self.bugref_href, e)
+                    "A download error has been encountered for bugref %s (%s): %s",
+                    self.bugref,
+                    self.bugref_href,
+                    e,
                 )
                 self.msg = str(e)
                 self.error = True
-            except BugNotFoundError as e:
-                log.error(
-                    "Error retrieving details for bugref %s (%s): %s\n%s"
-                    % (self.bugref, self.bugref_href, e, traceback.format_exc())
+            except BugNotFoundError:
+                log.exception(
+                    "Error retrieving details for bugref %s (%s)",
+                    self.bugref,
+                    self.bugref_href,
                 )
                 self.msg = "Ticket not found"
                 self.error = True
 
-    def _init_redmine(self, progress_browser):
+    def _init_redmine(self, progress_browser: Browser) -> None:
         """Initialize data for redmine issues."""
         log.debug("Test issue discovered, looking on progress")
         self.issue_type = "redmine"
-        self.json = progress_browser.get_json(self.bugref_href + ".json?include=journals")["issue"]
-        self.status = self.json["status"]["name"]
-        self.assignee = self.json["assigned_to"]["name"] if "assigned_to" in self.json else "None"
+        if self.bugref_href is None:
+            msg = "bugref_href is required for redmine issue initialization"
+            raise ValueError(msg)
+        raw = cast("dict[str, Any]", progress_browser.get_json(self.bugref_href + ".json?include=journals"))
+        self.json = cast("dict[str, Any]", raw["issue"])
+        self.status = cast("dict[str, Any]", self.json["status"])["name"]
+        self.assignee = cast("dict[str, Any]", self.json.get("assigned_to", {"name": "None"}))["name"]
         self.subject = self.json["subject"]
-        self.priority = self.json["priority"]["name"]
-        self.last_comment_date = _parse_issue_timestamp(self.json["updated_on"])
+        self.priority = cast("dict[str, Any]", self.json["priority"])["name"]
+        self.last_comment_date = _parse_issue_timestamp(cast("str", self.json["updated_on"]))
         self.last_comment_text = ""
         if "journals" in self.json:
-            for j in reversed(self.json["journals"]):
+            journals = cast("list", self.json["journals"])
+            for j in reversed(journals):
                 if "notes" not in j:  # pragma: no cover
                     continue
                 self.last_comment_text = j["notes"]
                 break
-            if len(self.json["journals"]) > 1:
+            if len(journals) > 1:
                 self.last_comment_delay = (
-                    self.last_comment_date - _parse_issue_timestamp(self.json["journals"][-2]["created_on"])
+                    self.last_comment_date - _parse_issue_timestamp(cast("dict[str, Any]", journals[-2])["created_on"])
                 ).days
 
-    def _init_bugzilla(self, bugzilla_browser):
+    def _init_bugzilla(self, bugzilla_browser: Browser) -> None:
         """Initialize data for bugzilla issues."""
         log.debug("Product bug discovered, looking on bugzilla")
         self.issue_type = "bugzilla"
-        ids = {"ids": [self.bugid]}
-        self.json = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", ids)["result"]["bugs"][0]
-        self.status = self.json["status"]
-        if self.json.get("resolution"):
-            self.resolution = self.json["resolution"]
-        self.assignee = self.json["assigned_to"] if "assigned_to" in self.json else "None"
-        self.subject = self.json["summary"]
-        self.priority = self.json["priority"].split(" ")[0] + "/" + self.json["severity"]
-        res = bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", ids)
-        comments = res["result"]["bugs"][str(self.bugid)]["comments"]
-        self.last_comment_date = _parse_issue_timestamp(comments[-1]["creation_time"])
-        self.last_comment_text = comments[-1]["text"]
+        ids: dict[str, JsonType] = {"ids": [self.bugid]}
+        bug_get_result = cast("dict[str, Any]", bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.get", ids))
+        self.json = cast("list", cast("dict[str, Any]", bug_get_result["result"])["bugs"])[0]
+        self.status = cast("dict[str, Any]", self.json)["status"]
+        json_dict = cast("dict[str, Any]", self.json)
+        if json_dict.get("resolution"):
+            self.resolution = json_dict["resolution"]
+        self.assignee = json_dict.get("assigned_to", "None")
+        self.subject = json_dict["summary"]
+        priority_str = cast("str", json_dict["priority"])
+        self.priority = priority_str.split(" ")[0] + "/" + cast("str", json_dict["severity"])
+        res = cast("dict[str, Any]", bugzilla_browser.json_rpc_get("/jsonrpc.cgi", "Bug.comments", ids))
+        result_dict = cast("dict[str, Any]", res["result"])
+        bugs_dict = cast("dict[str, Any]", result_dict["bugs"])
+        comments = cast("list", bugs_dict[str(self.bugid)]["comments"])
+        self.last_comment_date = _parse_issue_timestamp(cast("dict[str, Any]", comments[-1])["creation_time"])
+        self.last_comment_text = cast("dict[str, Any]", comments[-1])["text"]
         if len(comments) > 1:
             self.last_comment_delay = (
-                self.last_comment_date - _parse_issue_timestamp(comments[-2]["creation_time"])
+                self.last_comment_date - _parse_issue_timestamp(cast("dict[str, Any]", comments[-2])["creation_time"])
             ).days
 
-    def add_comment(self, comment, status_id=None):
+    def add_comment(self, comment: str, status_id: int | None = None) -> None:
         """Add a comment to an issue with RPC/REST operations."""
-        log.info("Posting a comment on %s ticket [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
+        log.info("Posting a comment on %s ticket [%s](%s)", self.issue_type, self.bugref, self.bugref_href)
         if self.issue_type == "bugzilla":
+            if self.bugzilla_browser is None:
+                msg = "bugzilla_browser is required to add a comment to a bugzilla issue"
+                raise ValueError(msg)
             self.bugzilla_browser.json_rpc_post(
                 "/jsonrpc.cgi",
                 "Bug.add_comment",
@@ -799,23 +965,33 @@ class Issue(object):
                 },
             )
         elif self.issue_type == "redmine":
-            issue_data = {"notes": comment}
+            if self.progress_browser is None:
+                msg = "progress_browser is required to add a comment to a redmine issue"
+                raise ValueError(msg)
+            if self.bugref_href is None:
+                msg = "bugref_href is required to add a comment to a redmine issue"
+                raise ValueError(msg)
+            issue_data: dict[str, Any] = {"notes": comment}
             if status_id is not None:
                 issue_data["status_id"] = status_id
             self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": issue_data})
         else:
-            assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover
+            msg = "Only bugzilla or redmine supported as issue type"  # pragma: no cover
+            raise AssertionError(msg)  # pragma: no cover
 
-    def reopen(self, note=None):
+    def reopen(self, note: str | None = None) -> None:
         """Re-open issue with RPC/REST operations leaving a note. Only leaves the note if the issue is still open."""
-        log.info("Re-opening %s ticket with comment [%s](%s)" % (self.issue_type, self.bugref, self.bugref_href))
+        log.info("Re-opening %s ticket with comment [%s](%s)", self.issue_type, self.bugref, self.bugref_href)
         if note is None:
             note = (
                 "Re-opening tickets with unhandled openqa-review reminder comment, see "
                 "https://progress.opensuse.org/projects/openqatests/wiki/Wiki#openqa-review-reminder-handling"
             )
         if self.issue_type == "bugzilla":
-            if self.status.upper() in ["RESOLVED"]:
+            if self.bugzilla_browser is None:
+                msg = "bugzilla_browser is required to reopen a bugzilla issue"
+                raise ValueError(msg)
+            if (self.status or "").upper() == "RESOLVED":
                 self.bugzilla_browser.json_rpc_post(
                     "/jsonrpc.cgi",
                     "Bug.update",
@@ -825,131 +1001,132 @@ class Issue(object):
                 self.add_comment(note)
         elif self.issue_type == "redmine":
             status_id = (
-                REDMINE_STATUS_ID_FEEDBACK if self.status.lower() in ["closed", "rejected", "resolved"] else None
+                REDMINE_STATUS_ID_FEEDBACK
+                if (self.status or "").lower() in {"closed", "rejected", "resolved"}
+                else None
             )
             self.add_comment(note, status_id=status_id)
         else:
-            assert False, "Only bugzilla or redmine supported as issue type"  # pragma: no cover
+            msg = "Only bugzilla or redmine supported as issue type"  # pragma: no cover
+            raise AssertionError(msg)  # pragma: no cover
 
     @property
-    def is_assigned(self):
+    def is_assigned(self) -> bool:
         """Issue has been assigned."""
-        assert self.queried
-        if self.assignee in ("None", None):
-            return False
-        elif "@forge.provo.novell.com" in self.assignee:
-            return False
-        else:
-            return True
+        if not self.queried:
+            msg = "Issue must be queried before checking assignment"
+            raise RuntimeError(msg)
+        return not (self.assignee in {"None", None} or "@forge.provo.novell.com" in self.assignee)
 
     @property
-    def is_open(self):
+    def is_open(self) -> bool:
         """Issue is still open."""
-        assert self.queried
+        if not self.queried:
+            msg = "Issue must be queried before checking open state"
+            raise RuntimeError(msg)
         s = (self.status or "").upper()
-        if s in ["RESOLVED", "REJECTED", "VERIFIED", "CLOSED"]:
-            return False
-        else:
-            return True
+        return s not in {"RESOLVED", "REJECTED", "VERIFIED", "CLOSED"}
 
     @property
-    def last_comment(self):
+    def last_comment(self) -> tuple[datetime.datetime | None, str | None]:
         """Return datetime object and text of all comments retrieved from an issue."""
         return (self.last_comment_date, self.last_comment_text)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Format issue using markdown."""
         if self.msg:
             msg = self.msg
         elif self.status:
             status = self.status
             if self.resolution:
-                status += " (%s)" % self.resolution
-            if status.startswith("VERIFIED") or status.startswith("Resolved"):
-                status = '<span style="color: red;">%s</span>' % status
-            msg = "Ticket status: %s, prio/severity: %s, assignee: %s" % (status, self.priority, self.assignee)
+                status += f" ({self.resolution})"
+            if status.startswith(("VERIFIED", "Resolved")):
+                status = f'<span style="color: red;">{status}</span>'
+            msg = f"Ticket status: {status}, prio/severity: {self.priority}, assignee: {self.assignee}"
         else:
             msg = None
 
-        def _format_all_urls_using_markdown(string):
+        def _format_all_urls_using_markdown(string: str) -> str:
             url_pattern = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
             return re.sub(url_pattern, r"[\g<0>](\g<0>)", string)
 
-        title_str = ' "%s"' % self.subject.replace(")", "&#41;") if self.subject else ""
+        title_str = f' "{self.subject.replace(")", "&#41;")}"' if self.subject else ""
         bugref_str = (
-            "[%s](%s%s)" % (self.bugref, self.bugref_href, title_str)
+            f"[{self.bugref}]({self.bugref_href}{title_str})"
             if self.bugref_href
             else _format_all_urls_using_markdown(self.bugref)
         )
-        msg_str = " (%s)" % msg if msg else ""
-        return "%s%s" % (bugref_str, msg_str)
+        msg_str = f" ({msg})" if msg else ""
+        return f"{bugref_str}{msg_str}"
 
 
-class IssueEntry(object):
+class IssueEntry:
     """List of failed test scenarios with corresponding bug."""
 
-    def __init__(self, args, root_url, failures, test_browser=None, bug=None):
+    def __init__(
+        self,
+        args: argparse.Namespace,
+        root_url: str,
+        failures: list[dict[str, Any]],
+        test_browser: Browser | None = None,
+        bug: Issue | None = None,
+    ) -> None:
         """Construct an issueentry object with options."""
         self.args = args
-        self.failures = [f for f in failures]
+        self.failures = list(failures)
         self.bug = bug
         self.soft = self.failures[0]["state"] in soft_fail_states
         self.root_url = root_url
         self.test_browser = test_browser
 
-    def _url(self, v):
+    def url(self, v: dict[str, Any]) -> str:
         """Absolute url e.g. for test references."""
         return absolute_url(self.root_url, v)
 
-    def _format_failure_modules(self, failedmodules):
+    @staticmethod
+    def _format_failure_modules(failedmodules: list[dict[str, Any]]) -> str:
         return ", ".join(m["name"] for m in failedmodules)
 
-    def _format_failure(self, f):
+    def _format_failure(self, f: dict[str, Any]) -> str:
         """Yield a report entry for one new issue based on verbosity."""
         failure_modules_str = (
-            ' "Failed modules: %s"' % self._format_failure_modules(f["failedmodules"]) if f["failedmodules"] else ""
+            f' "Failed modules: {self._format_failure_modules(f["failedmodules"])}"' if f["failedmodules"] else ""
         )
         report_str = (
             issue_report_link(self.root_url, f, self.test_browser)
             if (self.args.report_links and self.test_browser)
             else ""
         )
-        if self.args.verbose_test >= 3 and "prev" in f:
-            return '[%s](%s%s) [(ref)](%s "Previous test")%s' % (
-                f["name"],
-                self._url(f),
-                failure_modules_str,
-                self._url(f["prev"]),
-                report_str,
+        if self.args.verbose_test >= VERBOSE_TEST_CHANGES and "prev" in f:
+            return (
+                f"[{f['name']}]({self.url(f)}{failure_modules_str})"
+                f' [(ref)]({self.url(f["prev"])} "Previous test"){report_str}'
             )
-        elif self.args.verbose_test >= 2:
-            return "[%s](%s%s)%s" % (f["name"], self._url(f), failure_modules_str, report_str)
-        else:
-            return "%s" % f["name"]
+        if self.args.verbose_test >= VERBOSE_TEST_REF_BUILD:
+            return f"[{f['name']}]({self.url(f)}{failure_modules_str}){report_str}"
+        return f["name"]
 
-    def stringify(self):
+    def stringify(self) -> str:
         """Return as markdown."""
-        test_bug_str = "%s%s" % (
-            ", ".join(map(self._format_failure, self.failures)),
-            " -> %s" % self.bug if self.bug else "",
-        )
-        short_str = self.bug if self.bug else ", ".join(i["name"] for i in self.failures)
-        return "%s%s" % (
-            "soft fails: " if self.soft else "",
-            short_str if self.args.short_failure_str else test_bug_str,
-        )
+        bug_suffix = f" -> {self.bug}" if self.bug else ""
+        test_bug_str = f"{', '.join(map(self._format_failure, self.failures))}{bug_suffix}"
+        short_str = self.bug or ", ".join(i["name"] for i in self.failures)
+        prefix = "soft fails: " if self.soft else ""
+        return f"{prefix}{short_str if self.args.short_failure_str else test_bug_str}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return as markdown list item."""
         return "* " + self.stringify() + "\n"
 
     @classmethod
-    def for_each(cls, args, root_url, failures, test_browser):
+    def for_each(
+        cls, args: argparse.Namespace, root_url: str, failures: Iterable[dict[str, Any]], test_browser: Browser | None
+    ) -> Generator[IssueEntry, None, None]:
         """Create one object for each failure (for todo entries)."""
-        return map(lambda f: cls(args, root_url, [f], test_browser), failures)
+        return (cls(args, root_url, [f], test_browser) for f in failures)
 
 
-def get_skipped_dict(arch, soup):
+def get_skipped_dict(arch: str, soup: BeautifulSoupType) -> SortedDictType:
     """Get a dict of the skipped tests per arch parsing the bs4 instance."""
     re_arch = re.compile(arch + "_")
     arch_findings = soup.find_all("td", id=re_arch)
@@ -957,28 +1134,38 @@ def get_skipped_dict(arch, soup):
     for arch_item in arch_findings:
         match = arch_item.find(title="cancelled")
         if match:
-            module_name = arch_item.find_previous(class_="name").get_text().strip("\n")
-            test_link = arch_item.a["href"]
+            name_tag = arch_item.find_previous(class_="name")
+            if name_tag is None:
+                msg = "Could not find name tag for skipped test entry"
+                raise ValueError(msg)
+            module_name = name_tag.get_text().strip("\n")
+            a_tag = arch_item.a
+            if a_tag is None:
+                msg = "Could not find <a> tag in skipped test arch item"
+                raise ValueError(msg)
+            test_link = str(a_tag["href"])
             results.update({module_name: test_link})
     return results
 
 
-def format_skipped_output(findings, root_url):
+def format_skipped_output(findings: SortedDictType, root_url: str) -> list[str]:
     """Format the output as a markdown page for each skipped test."""
-    return ["* [%s](%s)\n" % (k, "".join([root_url[:-1], v])) for k, v in findings.items()]
+    return [f"* [{k}]({''.join([root_url[:-1], v])})\n" for k, v in findings.items()]
 
 
-class ArchReport(object):
+class ArchReport:
     """Report for a single architecture."""
 
-    def __init__(self, arch, results, args, root_url, progress_browser, bugzilla_browser, test_browser):
+    def __init__(
+        self, arch: str, results: SortedDictType, args: argparse.Namespace, root_url: str, browsers: BrowserSet
+    ) -> None:
         """Construct an archreport object with options."""
         self.arch = arch
         self.args = args
         self.root_url = root_url
-        self.progress_browser = progress_browser
-        self.bugzilla_browser = bugzilla_browser
-        self.test_browser = test_browser
+        self.progress_browser = browsers.progress_browser
+        self.bugzilla_browser = browsers.bugzilla_browser
+        self.test_browser = browsers.test_browser
         self.skipped_tests = format_skipped_output(results.pop("skipped"), self.root_url)
         self.status_badge = set_status_badge([i["state"] for i in results.values()])
         if self.args.bugrefs and self.args.include_softfails:
@@ -991,16 +1178,16 @@ class ArchReport(object):
         results_by_bugref = SortedDict(get_results_by_bugref(results, self.args))
         self.issues = defaultdict(lambda: defaultdict(list))
         for bugref, result_list in results_by_bugref.items():
-            if re.match("todo", bugref):
-                log.info("Skipping \"todo\" bugref '%s' in '%s'" % (bugref, result_list))
+            if bugref.startswith("todo"):
+                log.info("Skipping \"todo\" bugref '%s' in '%s'", bugref, result_list)
                 continue
             bug = result_list[0]
             issue = Issue(
                 bug["bugref"],
                 bug.get("bugref_href", None),
-                self.args.query_issue_status,
-                self.progress_browser,
-                self.bugzilla_browser,
+                query_issue_status=self.args.query_issue_status,
+                progress_browser=self.progress_browser,
+                bugzilla_browser=self.bugzilla_browser,
             )
             self.issues[issue_state(result_list)][issue_type(bugref)].append(
                 IssueEntry(self.args, self.root_url, result_list, bug=issue)
@@ -1009,10 +1196,10 @@ class ArchReport(object):
         # left to handle are the issues marked with 'todo'
         todo_results = results_by_bugref.get("todo", [])
         new_issues = (r for r in todo_results if r["state"] == "NEW_ISSUE")
-        self.issues["new"]["todo"].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, test_browser))
+        self.issues["new"]["todo"].extend(IssueEntry.for_each(self.args, self.root_url, new_issues, self.test_browser))
         existing_issues = (r for r in todo_results if r["state"] == "STILL_FAILING")
         self.issues["existing"]["todo"].extend(
-            IssueEntry.for_each(self.args, self.root_url, existing_issues, test_browser)
+            IssueEntry.for_each(self.args, self.root_url, existing_issues, self.test_browser)
         )
         if self.args.include_softfails:
             new_soft_fails = [r for r in todo_results if r["state"] == "NEW_SOFT_ISSUE"]
@@ -1022,108 +1209,172 @@ class ArchReport(object):
             if existing_soft_fails:
                 self.issues["existing"]["product"].append(IssueEntry(self.args, self.root_url, existing_soft_fails))
 
-    def _search_for_bugrefs_for_softfailures(self, results):
-        for k, v in results.items():
+    @staticmethod
+    def _apply_softfailure_bugref(
+        v: dict[str, Any],
+        match: re.Match[str] | str,
+        softfail_reason: str | None,
+        *,
+        found_actual_ref: bool,
+    ) -> None:
+        if not found_actual_ref:
+            v["bugref"] = match
+            v["softfail_reason"] = softfail_reason
+            return
+        actual_match = cast("re.Match[str]", match)
+        bug_tracker, bug_id = actual_match.group(1), actual_match.group(2)
+        if not bug_tracker:
+            msg = f"No bugref found for {v}"
+            raise ValueError(msg)
+        if not bug_id:
+            msg = f"No bug_id found for {v}"
+            raise ValueError(msg)
+        v["bugref"] = f"{bug_tracker}#{bug_id}"
+        v["bugref_href"] = issue_tracker[bug_tracker](bug_id)
+        v["softfail_reason"] = softfail_reason
+
+    def _search_for_bugrefs_for_softfailures(self, results: SortedDictType) -> None:
+        for v in results.values():
             if v["state"] in soft_fail_states:
                 try:
                     module_url = self._get_url_to_softfailed_module(v["href"])
-                    module_name = re.search("[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url).group(1)
-                    assert module_name, "could not find a module name within %s in job %s" % (module_url, v["href"])
+                    if module_url is None:
+                        msg = f"Could not determine softfailed module URL for job {v['href']}"
+                        raise ValueError(msg)
+                    url_match = re.search(r"[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url)
+                    if url_match is None:
+                        msg = f"Could not parse module URL: {module_url}"
+                        raise ValueError(msg)
+                    module_name = url_match.group(1)
+                    if not module_name:
+                        msg = f"could not find a module name within {module_url} in job {v['href']}"
+                        raise ValueError(msg)
                     match, softfail_reason, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
-                except (AttributeError, KeyError, IndexError):
+                except (AttributeError, KeyError, IndexError, StopIteration):
                     log.info(
                         "Could find neither soft failed info box nor needle, assuming an old openQA job, skipping."
                     )
                     continue
-                except DownloadError as e:  # pragma: no cover
-                    log.error("Failed to process %s with error %s. Skipping current result" % (v, e))
+                except DownloadError:  # pragma: no cover
+                    log.exception("Failed to process %s. Skipping current result", v)
                     continue
-                if not found_actual_ref:
-                    v["bugref"] = match
-                    v["softfail_reason"] = softfail_reason
-                    continue
-                bug_tracker, bug_id = match.group(1), match.group(2)
-                assert bug_tracker, "No bugref found for %s" % v
-                assert bug_id, "No bug_id found for %s" % v
-                v["bugref"] = "%s#%s" % (bug_tracker, bug_id)
-                v["bugref_href"] = issue_tracker[bug_tracker](bug_id)
-                v["softfail_reason"] = softfail_reason
+                self._apply_softfailure_bugref(v, match, softfail_reason, found_actual_ref=found_actual_ref)
 
     @property
-    def total_issues(self):
+    def total_issues(self) -> int:
         """Return Number of issue entries for this arch."""
         total = 0
-        for issue_status, issue_types in self.issues.items():
-            for issue_type, ies in issue_types.items():
+        for issue_types in self.issues.values():
+            for ies in issue_types.values():
                 total += len(ies)
         return total
 
-    def _get_url_to_softfailed_module(self, job_url):
-        log.debug("job_url %s" % job_url)
+    def _get_url_to_softfailed_module(self, job_url: str) -> str | None:
+        log.debug("job_url %s", job_url)
+        if self.test_browser is None:
+            msg = "test_browser is required to get softfailed module URL"
+            raise ValueError(msg)
         try:
-            details = self.test_browser.get_json("/api/v1/jobs/" + job_url.split("/")[-1] + "/details")
-            # fake an older module URL including the name, see https://progress.opensuse.org/issues/72292
-            return format(
-                "///%s//" % [i for i in details["job"]["testresults"] if i["result"] == "softfailed"][0]["name"]
+            raw_details = cast(
+                "dict[str, Any]",
+                self.test_browser.get_json("/api/v1/jobs/" + job_url.rsplit("/", maxsplit=1)[-1] + "/details"),
             )
+            # fake an older module URL including the name, see https://progress.opensuse.org/issues/72292
+            testresults = cast("list", cast("dict[str, Any]", raw_details["job"])["testresults"])
+            name = next(i for i in testresults if cast("dict[str, Any]", i)["result"] == "softfailed")
+            name = cast("dict[str, Any]", name)["name"]
         except DownloadError:
             log.debug("Found older openQA, before https://github.com/os-autoinst/openQA/pull/2932")
-            url = job_url
-            test_details_html = self.test_browser.get_soup(url).find(title="Soft Failed")
+        else:
+            return f"///{name}//"
+        url = job_url
+        test_details_html = self.test_browser.get_soup(url).find(title="Soft Failed")
         if test_details_html is None:
-            log.debug("Could not find soft failed info box, looking for workaround needle in job %s" % url)
-            test_details_html = self.test_browser.get_soup(url).find(class_="resborder_softfailed").parent
-        assert test_details_html, "Found neither soft failed info box nor workaround needle"
-        return test_details_html.get("data-url")
+            log.debug("Could not find soft failed info box, looking for workaround needle in job %s", url)
+            resborder_tag = self.test_browser.get_soup(url).find(class_="resborder_softfailed")
+            if resborder_tag is None:
+                msg = f"Could not find resborder_softfailed element in job {url}"
+                raise ValueError(msg)
+            test_details_html = resborder_tag.parent
+        if not test_details_html:
+            msg = "Found neither soft failed info box nor workaround needle"
+            raise RuntimeError(msg)
+        return cast("str | None", test_details_html.get("data-url"))
 
-    def _get_bugref_for_softfailed_module(self, result_item, module_name):
+    @staticmethod
+    def _is_workaround_needle(field: dict[str, Any]) -> bool:
+        return (
+            "properties" in field
+            and "needle" in field
+            and len(cast("list", field["properties"])) > 0
+            and cast("list", field["properties"])[0] == "workaround"
+        )
+
+    def _get_bugref_for_softfailed_module(
+        self, result_item: dict[str, Any], module_name: str
+    ) -> tuple[re.Match[str] | str, str | None, bool]:
         rel_job_url = result_item["href"]
-        details_url = "%s/file/details-%s.json" % (rel_job_url, quote(module_name))
-        log.debug("Retrieving '%s'" % details_url)
+        details_url = f"{rel_job_url}/file/details-{quote(module_name)}.json"
+        log.debug("Retrieving '%s'", details_url)
+        if self.test_browser is None:
+            msg = "test_browser is required to get bugref for softfailed module"
+            raise ValueError(msg)
         details_json = self.test_browser.get_json(details_url)
-        details = details_json["details"] if "details" in details_json else details_json
-        match = None
-        for field in details:
-            softfail_reason = None
-            if "title" in field and "Soft Fail" in field["title"]:
-                unformatted_str = (
-                    field["text_data"]
-                    if "text_data" in field
-                    else self.test_browser.get_soup("%s/file/%s" % (rel_job_url, quote(field["text"]))).getText()
-                )
-                match = re.search(bugref_regex, unformatted_str)
-                softfail_reason = unformatted_str
-                if not match:  # use the "Soft Failure: …" text as bugref instead
-                    match = re.search("Soft Failure:\n(.*)", unformatted_str.strip())
-                    if match:
-                        return (match.group(1), softfail_reason, False)
-            # custom results can have soft-fail as well
-            elif "result" in field and "title" in field and "softfail" in field["result"]:
-                match = re.search(bugref_regex, field["title"])
-                softfail_reason = field["text_data"] if "text_data" in field else field["title"]
-            elif (
-                "properties" in field
-                and "needle" in field
-                and len(field["properties"]) > 0
-                and field["properties"][0] == "workaround"
-            ):
-                log.debug("Evaluating potential workaround needle '%s'" % field["needle"])
-                match = re.search(bugref_regex, field["needle"])
-                if not match:  # pragma: no cover
-                    log.warn(
-                        "Found workaround key without bugref that could be understood, looking for a better bugref (if any) for '%s'"
-                        % rel_job_url
-                    )
-                    continue
-            if match:
-                return (match, softfail_reason, True)
+        raw_list: list = (
+            cast("dict[str, Any]", details_json)["details"]
+            if isinstance(details_json, dict) and "details" in details_json
+            else cast("list", details_json)
+        )
+        for raw_field in raw_list:
+            field = cast("dict[str, Any]", raw_field)
+            result = self._match_bugref_in_field(field, rel_job_url)
+            if result is not None:
+                return result
         return ("missing/unsupported bug reference", None, False)
 
-    def has_todo_issues(self):
+    def _match_bugref_in_field(
+        self, field: dict[str, Any], rel_job_url: str
+    ) -> tuple[re.Match[str] | str, str | None, bool] | None:
+        if self.test_browser is None:
+            msg = "test_browser is required"
+            raise ValueError(msg)
+        match = None
+        softfail_reason = None
+        if "title" in field and "Soft Fail" in field["title"]:
+            unformatted_str = (
+                field["text_data"]
+                if "text_data" in field
+                else self.test_browser.get_soup(f"{rel_job_url}/file/{quote(field['text'])}").getText()
+            )
+            match = re.search(bugref_regex, unformatted_str)
+            softfail_reason = unformatted_str
+            if not match:  # use the "Soft Failure: …" text as bugref instead
+                match = re.search(r"Soft Failure:\n(.*)", unformatted_str.strip())
+                if match:
+                    return (match.group(1), softfail_reason, False)
+        # custom results can have soft-fail as well
+        elif "result" in field and "title" in field and "softfail" in field["result"]:
+            match = re.search(bugref_regex, field["title"])
+            softfail_reason = field.get("text_data", field["title"])
+        elif self._is_workaround_needle(field):
+            log.debug("Evaluating potential workaround needle '%s'", field["needle"])
+            match = re.search(bugref_regex, field["needle"])
+            if not match:  # pragma: no cover
+                log.warning(
+                    "Found workaround key without bugref that could be understood,"
+                    " looking for a better bugref (if any) for '%s'",
+                    rel_job_url,
+                )
+                return None
+        if match:
+            return (match, softfail_reason, True)
+        return None
+
+    def has_todo_issues(self) -> bool:
         """Tell if report has new or existing todo issues."""
         return self.issues["new"]["todo"] or self.issues["existing"]["todo"]
 
-    def _todo_issues_str(self):
+    def _todo_issues_str(self) -> str:
         if self.args.abbreviate_test_issues:
             return issue_listing(
                 "### Test issues",
@@ -1131,68 +1382,70 @@ class ArchReport(object):
                 + self.issues["existing"]["openqa"]
                 + self.issues["new"]["todo"]
                 + self.issues["existing"]["todo"],
-                self.args.show_empty,
+                show_empty=self.args.show_empty,
             )
         if not self.has_todo_issues():
             return ""
 
         if self.args.todo_only:
             return issue_listing(
-                "**new**", self.issues["new"]["todo"], self.args.show_empty, no_headers=True
-            ) + issue_listing("**existing**", self.issues["existing"]["todo"], self.args.show_empty, no_headers=True)
-        return todo_review_template.substitute(
-            {
-                "new_issues": issue_listing("***new issues***", self.issues["new"]["todo"], self.args.show_empty),
-                "existing_issues": issue_listing(
-                    "***existing issues***", self.issues["existing"]["todo"], self.args.show_empty
-                ),
-            }
-        )
+                "**new**", self.issues["new"]["todo"], show_empty=self.args.show_empty, no_headers=True
+            ) + issue_listing(
+                "**existing**", self.issues["existing"]["todo"], show_empty=self.args.show_empty, no_headers=True
+            )
+        return todo_review_template.substitute({
+            "new_issues": issue_listing(
+                "***new issues***", self.issues["new"]["todo"], show_empty=self.args.show_empty
+            ),
+            "existing_issues": issue_listing(
+                "***existing issues***", self.issues["existing"]["todo"], show_empty=self.args.show_empty
+            ),
+        })
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return as markdown."""
         abbrev = self.args.abbreviate_test_issues
         if self.args.todo_only:
             return self._todo_issues_str() if self.has_todo_issues() else ""
 
-        return openqa_review_report_arch_template.substitute(
-            {
-                "arch": self.arch,
-                "status_badge": status_badge_str[self.status_badge],
-                # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then
-                # probably openqa issues For now we can just not easily decide unless we use the 'bugrefs' mode
-                "new_openqa_issues": (
-                    ""
-                    if abbrev
-                    else issue_listing("**New openQA-issues:**", self.issues["new"]["openqa"], self.args.show_empty)
-                ),
-                "existing_openqa_issues": (
-                    ""
-                    if abbrev
-                    else issue_listing(
-                        "**Existing openQA-issues:**", self.issues["existing"]["openqa"], self.args.show_empty
-                    )
-                ),
-                "new_product_issues": issue_listing(
-                    "**New Product bugs:**", self.issues["new"]["product"], self.args.show_empty
-                ),
-                "existing_product_issues": issue_listing(
-                    "**Existing Product bugs:**", self.issues["existing"]["product"], self.args.show_empty
-                ),
-                "todo_issues": self._todo_issues_str(),
-                "skipped_tests": issue_listing("**Skipped tests:**", self.skipped_tests, self.args.show_empty),
-            }
-        )
+        return openqa_review_report_arch_template.substitute({
+            "arch": self.arch,
+            "status_badge": status_badge_str[self.status_badge],
+            # everything that is 'NEW_ISSUE' should be product issue but if tests have changed content, then
+            # probably openqa issues For now we can just not easily decide unless we use the 'bugrefs' mode
+            "new_openqa_issues": (
+                ""
+                if abbrev
+                else issue_listing(
+                    "**New openQA-issues:**", self.issues["new"]["openqa"], show_empty=self.args.show_empty
+                )
+            ),
+            "existing_openqa_issues": (
+                ""
+                if abbrev
+                else issue_listing(
+                    "**Existing openQA-issues:**", self.issues["existing"]["openqa"], show_empty=self.args.show_empty
+                )
+            ),
+            "new_product_issues": issue_listing(
+                "**New Product bugs:**", self.issues["new"]["product"], show_empty=self.args.show_empty
+            ),
+            "existing_product_issues": issue_listing(
+                "**Existing Product bugs:**", self.issues["existing"]["product"], show_empty=self.args.show_empty
+            ),
+            "todo_issues": self._todo_issues_str(),
+            "skipped_tests": issue_listing("**Skipped tests:**", self.skipped_tests, show_empty=self.args.show_empty),
+        })
 
 
-class ProductReport(object):
+class ProductReport:
     """Read overview page of one job group and generate a report for the product."""
 
-    def __init__(self, browser, job_group_url, root_url, args):
+    def __init__(self, browser: Browser, job_group_url: str, root_url: str, args: argparse.Namespace) -> None:
         """Construct a product report object with options."""
         self.args = args
         self.job_group_url = job_group_url
-        self.group = job_group_url.split("/")[-1]
+        self.group = job_group_url.rsplit("/", maxsplit=1)[-1]
         current_url, previous_url = get_build_urls_to_compare(
             browser, job_group_url, args.builds, args.against_reviewed, args.running_threshold
         )
@@ -1202,49 +1455,44 @@ class ProductReport(object):
         for details in current_details, previous_details:
             # build pages matching no tests show no job as well as builds only consisting of incomplete jobs
             # see https://progress.opensuse.org/issues/60458
-            assert (
+            if not (
                 sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0
                 or len(details.find_all(class_="status")) > 0
-            ), (
-                "invalid page with no test results found reading %s and %s, make sure you specified valid builds (leading zero missing?)"
-                % (
-                    current_url,
-                    previous_url,
+            ):
+                msg = (
+                    f"invalid page with no test results found reading {current_url} and {previous_url},"
+                    " make sure you specified valid builds (leading zero missing?)"
                 )
-            )
+                raise ValueError(msg)
         current_summary = parse_summary(current_details)
         previous_summary = parse_summary(previous_details)
 
         changes = SortedDict({k: v - previous_summary.get(k, 0) for k, v in current_summary.items()})
         self.changes_str = (
-            "***Changes since reference build***\n\n* "
-            + "\n* ".join("%s: %s" % (k, v) for k, v in changes.items())
-            + "\n"
+            "***Changes since reference build***\n\n* " + "\n* ".join(f"{k}: {v}" for k, v in changes.items()) + "\n"
         )
-        log.info("%s" % self.changes_str)
+        log.info("%s", self.changes_str)
 
         self.build = get_build_nr(current_url)
         self.ref_build = get_build_nr(previous_url)
 
         # for each architecture iterate over all
         cur_archs, prev_archs = (
-            set(arch.text for arch in details.find_all("th", id=re.compile("flavor_")))
+            {arch.text for arch in details.find_all("th", id=re.compile(r"flavor_"))}
             for details in [current_details, previous_details]
         )
         archs = cur_archs
         if args.arch:
-            assert args.arch in cur_archs, "Selected arch {} was not found in test results {}".format(
-                args.arch, cur_archs
-            )
+            if args.arch not in cur_archs:
+                msg = f"Selected arch {args.arch} was not found in test results {cur_archs}"
+                raise ValueError(msg)
             archs = [args.arch]
         self.missing_archs = sorted(prev_archs - cur_archs)
         if self.missing_archs:
             log.info(
-                "%s missing completely from current run: %s"
-                % (
-                    pluralize(len(self.missing_archs), "architecture is", "architectures are"),
-                    ", ".join(self.missing_archs),
-                )
+                "%s missing completely from current run: %s",
+                pluralize(len(self.missing_archs), "architecture is", "architectures are"),
+                ", ".join(self.missing_archs),
             )
 
         # create arch reports
@@ -1252,53 +1500,49 @@ class ProductReport(object):
         progress_browser = progress_browser_factory(args) if args.query_issue_status else None
         bugzilla_browser = bugzilla_browser_factory(args) if args.query_issue_status else None
         for arch in sorted(archs):
-            results = get_arch_state_results(arch, current_details, previous_details, args.output_state_results)
-            self.reports[arch] = ArchReport(arch, results, args, root_url, progress_browser, bugzilla_browser, browser)
+            results = get_arch_state_results(
+                arch, current_details, previous_details, output_state_results=args.output_state_results
+            )
+            browsers = BrowserSet(progress_browser, bugzilla_browser, browser)
+            self.reports[arch] = ArchReport(arch, results, args, root_url, browsers)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return report for product."""
-        now_str = datetime.datetime.now().strftime("%Y-%m-%d - %H:%M")
+        now_str = datetime.datetime.now(tz=timezone.utc).strftime("%Y-%m-%d - %H:%M")
         missing_archs_str = (
-            "\n * **Missing architectures**: %s" % ", ".join(self.missing_archs) if self.missing_archs else ""
+            f"\n * **Missing architectures**: {', '.join(self.missing_archs)}" if self.missing_archs else ""
         )
 
         build_str = self.build
-        if self.args.verbose_test and self.args.verbose_test > 1:
-            build_str += " (reference %s)" % self.ref_build
-        if self.args.verbose_test and self.args.verbose_test > 3:
+        if self.args.verbose_test and self.args.verbose_test > VERBOSE_TEST_REF_BUILD - 1:
+            build_str += f" (reference {self.ref_build})"
+        if self.args.verbose_test and self.args.verbose_test > VERBOSE_TEST_CHANGES:
             build_str += "\n\n" + self.changes_str
 
-        arch_reports = list(v for v in self.reports.values() if not self.args.skip_passed or v.status_badge != "GREEN")
-        archreports = list(i for i in map(str, arch_reports) if len(i))
+        arch_reports = [v for v in self.reports.values() if not self.args.skip_passed or v.status_badge != "GREEN"]
+        archreports = [i for i in map(str, arch_reports) if len(i)]
         if len(archreports) == 0:
             return ""
         if self.args.todo_only:
             return "".join(archreports)
-        openqa_review_report_product = openqa_review_report_product_template.substitute(
-            {
-                "now": now_str,
-                "build": build_str,
-                "common_issues": common_issues(missing_archs_str, self.args.show_empty),
-                "arch_report": "\n---\n".join(archreports),
-            }
-        )
-        return openqa_review_report_product
+        return openqa_review_report_product_template.substitute({
+            "now": now_str,
+            "build": build_str,
+            "common_issues": common_issues(missing_archs_str, show_empty=self.args.show_empty),
+            "arch_report": "\n---\n".join(archreports),
+        })
 
-    def is_passed(self):
+    def is_passed(self) -> bool:
         """Return True if none of the reports contain failures."""
-        for v in self.reports.values():
-            if v.status_badge != "GREEN":
-                return False
-        return True
+        return all(v.status_badge == "GREEN" for v in self.reports.values())
 
 
 class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
     """Preserve multi-line __doc__ and provide default arguments in help strings."""
 
-    pass
 
-
-def parse_args():
+def parse_args() -> argparse.Namespace:
+    """Parse and return command line arguments."""
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=CustomFormatter)
     parser.add_argument(
         "-v",
@@ -1369,22 +1613,27 @@ def parse_args():
     parser.add_argument(
         "--short-failure-str",
         action="store_true",
-        help="""Instead of the default long failure description use a short version only outputting the referenced bug or the failing test in
-                        case of failure without bugref.""",
+        help=(
+            "Instead of the default long failure description use a short version only outputting"
+            " the referenced bug or the failing test in case of failure without bugref."
+        ),
     )
     parser.add_argument(
         "--abbreviate-test-issues",
         action="store_true",
-        help="""If requested abbreviate all 'test issue' related reporting sections and instead only show a short list of these next to the
-                        full-detail product issues. Useful to focus on product-related reports.""",
+        help=(
+            "If requested abbreviate all 'test issue' related reporting sections and instead only show"
+            " a short list of these next to the full-detail product issues."
+            " Useful to focus on product-related reports."
+        ),
     )
     parser.add_argument(
         "-R",
         "--query-issue-status",
         action="store_true",
-        help="""Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs" and
-                        needs configuration file {} with credentials, see '--query-issue-status-help'.""".format(
-            CONFIG_PATH
+        help=(
+            f'Query issue trackers for the issues found and report on their status and assignee. Implies "-r/--bugrefs"'
+            f" and needs configuration file {CONFIG_PATH} with credentials, see '--query-issue-status-help'."
         ),
     )
     parser.add_argument(
@@ -1442,9 +1691,11 @@ def parse_args():
         "--reminder-comment-on-issues",
         action="store_true",
         default=False,
-        help="""Go through bugrefs and write an actual comment on the ticket with a corresponding
-                                   current job URL in the ticket if it has not been updated for some time.
-                                   Implies '--query-issue-status'.""",
+        help=(
+            "Go through bugrefs and write an actual comment on the ticket with a corresponding"
+            " current job URL in the ticket if it has not been updated for some time."
+            " Implies '--query-issue-status'."
+        ),
     )
     reminder_comments.add_argument(
         "--dry-run", action="store_true", default=False, help="""Do not actually change any tickets."""
@@ -1452,7 +1703,9 @@ def parse_args():
     reminder_comments.add_argument(
         "--min-days-unchanged",
         default=MIN_DAYS_UNCHANGED,
-        help="""The minimum period of days that need to be passed since the last comment for the bug to be reminded upon.""",
+        help=(
+            "The minimum period of days that need to be passed since the last comment for the bug to be reminded upon."
+        ),
     )
     reminder_comments.add_argument(
         "--no-exponential-backoff",
@@ -1470,13 +1723,16 @@ def parse_args():
     reminder_comments.add_argument(
         "--reopen",
         default="redmine",
-        help="""Select which closed issues to reopen with 'all', 'none' or specific issue types, e.g 'redmine' or 'bugzilla'.""",
+        help=(
+            "Select which closed issues to reopen with 'all', 'none' or specific issue types,"
+            " e.g 'redmine' or 'bugzilla'."
+        ),
     )
     add_browser_args(parser)
     args = parser.parse_args()
     if args.query_issue_status_help:
-        print(CONFIG_USAGE)
-        print("Expected file path: {}".format(CONFIG_PATH))
+        log.info(CONFIG_USAGE)
+        log.info("Expected file path: %s", CONFIG_PATH)
         sys.exit(0)
     if args.reminder_comment_on_issues:
         args.query_issue_status = True
@@ -1485,21 +1741,23 @@ def parse_args():
     return args
 
 
-def get_parent_job_groups(browser, root_url, args):
+def get_parent_job_groups(browser: Browser, root_url: str, args: argparse.Namespace) -> dict[int, str]:
+    """Retrieve and return a dict of parent job group IDs to names."""
     pgroup_api_url = urljoin(root_url, "api/v1/parent_groups")
     if args.no_progress or not humanfriendly_available:
         response = browser.get_json(pgroup_api_url)
     else:
         with AutomaticSpinner(label="Retrieving parent job groups"):
             response = browser.get_json(pgroup_api_url)
-    return {p["id"]: p["name"] for p in response}
+    return {cast("dict[str, Any]", p)["id"]: cast("dict[str, Any]", p)["name"] for p in cast("list", response)}
 
 
-def get_job_groups(browser, root_url, args):
+def get_job_groups(browser: Browser, root_url: str, args: argparse.Namespace) -> SortedDictType:
+    """Retrieve and return a SortedDict of job group names to URLs."""
     if args.job_group_urls:
         job_group_urls = args.job_group_urls.split(",")
-        log.info("Acting on specified job group URL(s): %s" % ", ".join(job_group_urls))
-        job_groups = {i: url for i, url in enumerate(job_group_urls)}
+        log.info("Acting on specified job group URL(s): %s", ", ".join(job_group_urls))
+        job_groups = dict(enumerate(job_group_urls))
     else:
         parent_groups = get_parent_job_groups(browser, root_url, args)
         if args.no_progress or not humanfriendly_available:
@@ -1508,30 +1766,31 @@ def get_job_groups(browser, root_url, args):
             with AutomaticSpinner(label="Retrieving job groups"):
                 results = browser.get_json(urljoin(root_url, "api/v1/job_groups"))
 
-        def _pgroup_prefix(group):
+        def _pgroup_prefix(group: dict[str, Any]) -> str:
             try:
-                return "%s / %s" % (parent_groups[group["parent_id"]], group["name"])
+                return f"{parent_groups[group['parent_id']]} / {group['name']}"
             except KeyError:
                 return group["name"]
 
         job_groups = {}
-        for job_group in results:
-            job_groups[_pgroup_prefix(job_group)] = urljoin(root_url, "/group_overview/%i" % job_group["id"])
+        for raw_job_group in cast("list", results):
+            job_group = cast("dict[str, Any]", raw_job_group)
+            job_groups[_pgroup_prefix(job_group)] = urljoin(root_url, f"/group_overview/{job_group['id']:d}")
         if args.job_groups:
-            job_pattern = re.compile("(%s)" % "|".join(args.job_groups.split(",")))
+            job_pattern = re.compile("({})".format("|".join(args.job_groups.split(","))))
             job_groups = {k: v for k, v in job_groups.items() if job_pattern.search(k)}
-            log.info("Job group URL for %s: %s" % (args.job_groups, job_groups))
+            log.info("Job group URL for %s: %s", args.job_groups, job_groups)
         if args.exclude_job_groups:
-            job_pattern = re.compile("(%s)" % "|".join(args.exclude_job_groups.split(",")))
+            job_pattern = re.compile("({})".format("|".join(args.exclude_job_groups.split(","))))
             job_groups = {k: v for k, v in job_groups.items() if not job_pattern.search(k)}
-            log.info("Job group URL excluding %s: %s" % (args.exclude_job_groups, job_groups))
+            log.info("Job group URL excluding %s: %s", args.exclude_job_groups, job_groups)
     return SortedDict(job_groups)
 
 
-class Report(object):
+class Report:
     """openQA review report."""
 
-    def __init__(self, browser, args, root_url, job_groups):
+    def __init__(self, browser: Browser, args: argparse.Namespace, root_url: str, job_groups: SortedDictType) -> None:
         """Create openQA review report."""
         self.browser = browser
         self.args = args
@@ -1543,7 +1802,7 @@ class Report(object):
         self.report = SortedDict()
 
         for k, v in job_groups.items():
-            log.info("Processing '%s'" % v)
+            log.info("Processing '%s'", v)
             if args.no_progress or not humanfriendly_available:
                 self.report[k] = self._one_report(v)
             else:
@@ -1551,20 +1810,20 @@ class Report(object):
                     self.report[k] = self._one_report(v)
             self._progress += 1
         if not args.no_progress:
-            sys.stderr.write("\r%s\n" % self._next_label())  # It's nice to see 100%, too :-)
+            sys.stderr.write(f"\r{self._next_label()}\n")  # It's nice to see 100%, too :-)
 
-    def _one_report(self, job_group_url):
+    def _one_report(self, job_group_url: str) -> ProductReport | str:
         # for each job group on openqa.opensuse.org
         try:
             return ProductReport(self.browser, job_group_url, self.root_url, self.args)
         except NotEnoughBuildsError as e:
-            log.debug("Caught 'not enough builds': %s" % e)
+            log.debug("Caught 'not enough builds': %s", e)
             return "" if self.args.todo_only else "Not enough finished builds found"
 
-    def _next_label(self):
-        return "%s %i%%" % (self._label, self._progress * 100 / len(self.job_groups.keys()))
+    def _next_label(self) -> str:
+        return f"{self._label} {int(self._progress * 100 / len(self.job_groups))}%"
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Generate markdown."""
         report_str = ""
         if self.args.todo_only:
@@ -1574,18 +1833,17 @@ class Report(object):
                 generated = str(v)
                 if not len(generated):
                     continue
-                report_str += (
-                    "### %s\n%s\n" % (k, generated) if self.args.todo_only else "# %s\n\n%s\n---\n" % (k, generated)
-                )
+                report_str += f"### {k}\n{generated}\n" if self.args.todo_only else f"# {k}\n\n{generated}\n---\n"
         return report_str
 
 
-def generate_report(args):
-    verbose_to_log = {0: logging.CRITICAL, 1: logging.ERROR, 2: logging.WARN, 3: logging.INFO, 4: logging.DEBUG}
-    logging_level = logging.DEBUG if args.verbose > 4 else verbose_to_log[args.verbose]
+def generate_report(args: argparse.Namespace) -> Report:
+    """Generate and return the full review report."""
+    verbose_to_log = {0: logging.CRITICAL, 1: logging.ERROR, 2: logging.WARNING, 3: logging.INFO, 4: logging.DEBUG}
+    logging_level = logging.DEBUG if args.verbose > VERBOSE_LEVEL_DEBUG else verbose_to_log[args.verbose]
     log.setLevel(logging_level)
-    log.debug("args: %s" % args)
-    args.output_state_results = True if args.verbose > 1 else args.output_state_results
+    log.debug("args: %s", args)
+    args.output_state_results = args.verbose > 1 or args.output_state_results
 
     if args.job_group_urls:
         root_url = urljoin("/".join(args.job_group_urls.split("/")[0:3]), "/")
@@ -1594,18 +1852,21 @@ def generate_report(args):
 
     browser = Browser(args, root_url)
     job_groups = get_job_groups(browser, root_url, args)
-    assert not (args.builds and len(job_groups) > 1), "builds option and multiple job groups not supported"
-    assert len(job_groups) > 0, "No job groups were found, maybe misspecified '--job-groups'?"
+    if args.builds and len(job_groups) > 1:
+        msg = "builds option and multiple job groups not supported"
+        raise AssertionError(msg)
+    if len(job_groups) == 0:
+        msg = "No job groups were found, maybe misspecified '--job-groups'?"
+        raise AssertionError(msg)
     return Report(browser, args, root_url, job_groups)
 
 
-def load_config():
-    global config
-    config = ConfigParser()
+def load_config() -> None:
+    """Load configuration from the config file into the module-level config object."""
     config_entries = config.read(CONFIG_PATH)
     if not config_entries:  # pragma: no cover
-        print("Need configuration file '{}' for issue retrieval credentials".format(CONFIG_PATH))
-        print(CONFIG_USAGE)
+        log.error("Need configuration file '%s' for issue retrieval credentials", CONFIG_PATH)
+        log.error(CONFIG_USAGE)
         sys.exit(1)
 
 
@@ -1615,78 +1876,99 @@ ie_filters = {
 }
 
 
-def filter_report(report, iefilter):
+def filter_report(report: Report, iefilter: Callable[..., bool]) -> None:
+    """Filter the report in-place to only include issue entries matching iefilter."""
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
-    for product, pr in report.report.items():
-        for arch, ar in pr.reports.items():
-            for issue_status, issue_types in ar.issues.items():
-                for issue_type, ies in issue_types.items():
-                    issue_types[issue_type] = [ie for ie in ies if iefilter(ie)]
+    for pr in report.report.values():
+        for ar in pr.reports.values():
+            for issue_types in ar.issues.values():
+                for itype, ies in issue_types.items():
+                    issue_types[itype] = [ie for ie in ies if iefilter(ie)]
         pr.reports = SortedDict({a: ar for a, ar in pr.reports.items() if ar.total_issues > 0})
     report.report = SortedDict({p: pr for p, pr in report.report.items() if pr.reports})
 
 
-def reminder_comment_on_issue(ie, args):
+def reminder_comment_on_issue(ie: IssueEntry, args: argparse.Namespace) -> None:
+    """Post a reminder comment on a single issue if it has been unchanged long enough."""
     issue = ie.bug
-    if issue.error:
-        return
-    if not issue.issue_type or issue.error:
+    if issue is None or issue.error or not issue.issue_type:
         return
     if ie.soft and len(ie.failures) > 0 and "softfail_reason" in ie.failures[0]:
         reason = ie.failures[0]["softfail_reason"]
         if reason and args.ignore_pattern and re.search(args.ignore_pattern, reason):
             return
     (last_comment_date, last_comment_text) = issue.last_comment
+    if last_comment_date is None:  # pragma: no cover
+        return
     threshold = (
         args.min_days_unchanged
         if args.no_exponential_backoff
         else max(2 * issue.last_comment_delay, args.min_days_unchanged)
     )
-    if (datetime.datetime.utcnow() - last_comment_date).days >= threshold:
+    if (datetime.datetime.now(tz=timezone.utc) - last_comment_date).days >= threshold:
         f = ie.failures[0]
         link_to_module = (
             f["failedmodules"][0]["href"]
             if "failedmodules" in f and f["failedmodules"] and "href" in f["failedmodules"][0]
             else None
         )
-        if last_comment_text and re.search(re.escape(ie._url(f)), last_comment_text):
+        if last_comment_text and re.search(re.escape(ie.url(f)), last_comment_text):
             return
         next_threshold = args.min_days_unchanged if args.no_exponential_backoff else 2 * threshold
         pattern = {
             "name": f["name"],
-            "url": urljoin(ie._url(f), link_to_module),
+            "url": urljoin(ie.url(f), link_to_module),
             "time_next": next_threshold,
             "no_reminder_pattern": args.ignore_pattern.pattern,
         }
         comment = openqa_issue_comment.substitute(pattern).strip()
-        if args.reopen == "all" or args.reopen == issue.issue_type:
+        if args.reopen in {"all", issue.issue_type}:
             issue.reopen(comment)
 
 
-def reminder_comment_on_issues(report, args):
+def _iter_issue_entries(report: Report) -> Generator[IssueEntry, None, None]:
+    """Yield all IssueEntry objects from a report.
+
+    Yields:
+        IssueEntry: each issue entry found across all product and arch reports.
+
+    """
+    for pr in report.report.values():
+        for ar in pr.reports.values():
+            for issue_types in ar.issues.values():
+                for ies in issue_types.values():
+                    yield from ies
+
+
+def _process_reminder_for_entry(ie: IssueEntry, args: argparse.Namespace, processed_issues: set[str]) -> None:
+    """Post a reminder comment for ie if its bug is new and not yet processed."""
+    issue = ie.bug
+    if not issue:
+        return
+    bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
+    if bugref in processed_issues:
+        return
+    try:
+        reminder_comment_on_issue(ie, args)
+    except HTTPError:  # pragma: no cover
+        log.exception(
+            "Encountered error trying to post a reminder comment on issue '%s'. Skipping.",
+            ie,
+        )
+        return
+    processed_issues.add(bugref)
+
+
+def reminder_comment_on_issues(report: Report, args: argparse.Namespace) -> None:
+    """Post reminder comments on all qualifying issues found in the report."""
     processed_issues = set()
     report.report = SortedDict({p: pr for p, pr in report.report.items() if isinstance(pr, ProductReport)})
-    for product, pr in report.report.items():
-        for arch, ar in pr.reports.items():
-            for issue_status, issue_types in ar.issues.items():
-                for issue_type, ies in issue_types.items():
-                    for ie in ies:
-                        issue = ie.bug
-                        if issue:
-                            bugref = issue.bugref.replace("bnc", "bsc").replace("boo", "bsc")
-                            if bugref not in processed_issues:
-                                try:
-                                    reminder_comment_on_issue(ie, args)
-                                except HTTPError as e:  # pragma: no cover
-                                    log.error(
-                                        "Encountered error trying to post a reminder comment on issue '%s': %s. Skipping."
-                                        % (ie, e)
-                                    )
-                                    continue
-                                processed_issues.add(bugref)
+    for ie in _iter_issue_entries(report):
+        _process_reminder_for_entry(ie, args, processed_issues)
 
 
-def main():  # pragma: no cover, only interactive
+def main() -> None:  # pragma: no cover, only interactive
+    """Entry point: parse args, generate and print the review report."""
     args = parse_args()
     if args.query_issue_status or args.report_links:
         load_config()
@@ -1697,26 +1979,20 @@ def main():  # pragma: no cover, only interactive
 
     if args.filter:
         if args.filter not in ie_filters:
-            print("No such filter '%s'" % args.filter)
-            print("Available filters: %s" % ", ".join(ie_filters.keys()))
+            log.error("No such filter '%s'", args.filter)
+            log.error("Available filters: %s", ", ".join(ie_filters.keys()))
             sys.exit(1)
         filter_report(report, ie_filters[args.filter])
 
     try:
-        print(report)
-    except UnicodeEncodeError as e:
-        log.error("Encountered UnicodeEncodeError: %s" % e)
-        log.error("type of 'report': %s" % type(report))
-        log.error("Trying workaround, explicit utf8 writer to stdout")
-        try:
-            utf8writer = codecs.getwriter("utf8")
-            sys.stdout = utf8writer(sys.stdout)
-            print(report)
-        except UnicodeEncodeError as e:
-            log.error("Encountered UnicodeEncodeError: %s" % e)
-            log.error("type of 'report': %s" % type(report))
-            log.error("Trying workaround, conversion to unicode object")
-            print(unicode(report))  # noqa: F821
+        sys.stdout.write(str(report) + "\n")
+    except UnicodeEncodeError:
+        log.exception("Encountered UnicodeEncodeError")
+        log.exception("type of 'report': %s", type(report))
+        log.exception("Trying workaround, explicit utf8 writer to stdout")
+        utf8writer = codecs.getwriter("utf8")
+        sys.stdout = utf8writer(sys.stdout)
+        sys.stdout.write(str(report) + "\n")
 
 
 if __name__ == "__main__":
