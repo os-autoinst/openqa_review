@@ -132,6 +132,7 @@ max-complexity = 9
     "PLR2004", "ANN401", "PLR0913", "S101", "S105", "S106", "PLR0917", "D103",
     "INP001",  # tests intentionally has no __init__.py; using pytest importlib mode
     "PT011", "PT012", "PT017",  # pre-existing pytest style
+    "SLF001", "RUF059", "ERA001",  # pre-existing issues for future work
 ]
 "openqa_review/tumblesle_release.py" = ["S404", "S603",]
 
