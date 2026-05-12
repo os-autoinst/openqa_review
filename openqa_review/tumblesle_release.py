@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-
-"""
-TumbleSLE release script.
+# Copyright SUSE LLC
+# SPDX-License-Identifier: MIT
+"""TumbleSLE release script.
 
 Based on test results as available on an openQA instance this script can check
 and compare builds. The basic idea is to release a new version of a product,
@@ -24,28 +24,29 @@ notifications are serialized in JSON strings.
 
 import argparse
 import fnmatch
-import glob
-import logging
 import json
-import os.path
-import pika
+import logging
 import re
 import sys
 import time
 from collections import defaultdict, deque
 from configparser import ConfigParser
+from pathlib import Path
 from subprocess import check_call
+from typing import cast
 
+import pika
 import yaml
+from pika.exceptions import ConnectionClosed
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, str((Path(__file__).parent / "..").resolve()))
 from .browser import Browser, add_browser_args
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
 
 
-CONFIG_PATH = os.path.expanduser("~") + "/.tumblesle_releaserc"
+CONFIG_PATH = Path.home() / ".tumblesle_releaserc"
 CONFIG_USAGE = """
 You are missing configuration file with the proper format.
 Example:
@@ -62,7 +63,8 @@ whitelist = arm7l-foo,bar@uefi
 """
 
 
-def scenario(job):
+def scenario(job: dict) -> str:
+    """Return the scenario string for a job as 'DISTRI-VERSION-FLAVOR-ARCH-TEST@MACHINE'."""
     s = job["settings"]
     return "-".join([s["DISTRI"], s["VERSION"], s["FLAVOR"], s["ARCH"], s["TEST"]]) + "@" + s["MACHINE"]
 
@@ -70,18 +72,17 @@ def scenario(job):
 class UnsupportedRsyncArgsError(Exception):
     """Unsupported rsync arguments where used."""
 
-    pass
 
-
-class TumblesleRelease(object):
+class TumblesleRelease:
     """Check for releasable builds and release them as TumbleSLE if they are at least as good as the current one."""
 
-    def __init__(self, args):
+    def __init__(self, args: argparse.Namespace) -> None:
         """Construct object and save forwarded arguments."""
-        verbose_to_log = {0: logging.CRITICAL, 1: logging.ERROR, 2: logging.WARN, 3: logging.INFO, 4: logging.DEBUG}
-        logging_level = logging.DEBUG if args.verbose > 4 else verbose_to_log[args.verbose]
+        max_verbosity_level = 4
+        verbose_to_log = {0: logging.CRITICAL, 1: logging.ERROR, 2: logging.WARNING, 3: logging.INFO, 4: logging.DEBUG}
+        logging_level = logging.DEBUG if args.verbose > max_verbosity_level else verbose_to_log[args.verbose]
         log.setLevel(logging_level)
-        log.debug("args: %s" % args)
+        log.debug("args: %s", args)
         self.args = args
         config = ConfigParser()
         config_entries = config.read(self.args.config_path)
@@ -90,15 +91,14 @@ class TumblesleRelease(object):
             self.whitelist += [i.strip() for i in config.get(self.args.product, "whitelist").split(",")]
         else:
             log.info(
-                "No configuration file '{}' for whitelist, only using optionally specified command line whitelist".format(
-                    self.args.config_path
-                )
+                "No configuration file '%s' for whitelist, only using optionally specified command line whitelist",
+                self.args.config_path,
             )
             log.debug(CONFIG_USAGE)
         # does not look so nice, can be improved. Removing empty string entries.
         self.whitelist = [i for i in self.whitelist if i]
-        log.info("Whitelist content for %s: %s" % (self.args.product, self.whitelist))
-        self.release_info_path = os.path.join(self.args.dest, self.args.release_file)
+        log.info("Whitelist content for %s: %s", self.args.product, self.whitelist)
+        self.release_info_path = Path(self.args.dest) / self.args.release_file
         self.browser = Browser(args, args.openqa_host)
         if not config.has_section("notification"):
             return
@@ -109,7 +109,7 @@ class TumblesleRelease(object):
         self.notify_host = config.get("notification", "host", fallback="kazhua.suse.de")
         self.notify_connect()
 
-    def notify_connect(self):
+    def notify_connect(self) -> None:
         """Connect to notification bus."""
         # 'heartbeat_interval' renamed in pika 1.0, see https://pika.readthedocs.io/en/stable/version_history.html#id2
         try:
@@ -121,41 +121,41 @@ class TumblesleRelease(object):
                 pika.ConnectionParameters(host=self.notify_host, credentials=self.credentials, heartbeat_interval=10)
             )
         self.notify_channel = self.notify_connection.channel()
-        self.notify_channel.exchange_declare(exchange="pubsub", type="topic", passive=True, durable=True)
+        self.notify_channel.exchange_declare(exchange="pubsub", exchange_type="topic", passive=True, durable=True)
         self.notify_topic = "suse.tumblesle"
         self.notify_seen = deque(maxlen=self.args.seen_maxlen)
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Cleanup notification objects."""
         if not hasattr(self, "notify_connection"):
             return
         self.notify_connection.close()
 
-    def notify(self, message, topic="info"):
+    def notify(self, message: dict, topic: str = "info") -> None:
         """Send notification over messaging bus."""
         if not hasattr(self, "notify_channel"):
             log.debug("No notification channel enabled, discarding notify.")
             return
         body = json.dumps(message)
         if body in self.notify_seen:
-            log.debug("notification message already sent out recently, not resending: %s" % body)
+            log.debug("notification message already sent out recently, not resending: %s", body)
             return
         tries = 7  # arbitrary
         for t in range(tries):
             try:
                 self.notify_channel.basic_publish(
-                    exchange="pubsub", routing_key=".".join([self.notify_topic, topic]), body=body
+                    exchange="pubsub", routing_key=f"{self.notify_topic}.{topic}", body=body.encode()
                 )
                 break
-            except pika.exceptions.ConnectionClosed as e:  # pragma: no cover
-                log.warn("sending notification did not work: %s. Retrying try %s out of %s" % (e, t, tries))
+            except ConnectionClosed as e:  # pragma: no cover
+                log.warning("sending notification did not work: %s. Retrying try %s out of %s", e, t, tries)
                 self.notify_connect()
         else:  # pragma: no cover
-            log.error("could not send out notification for %s tries, aborting." % tries)
-            raise pika.exceptions.ConnectionClosed()
+            log.error("could not send out notification for %s tries, aborting.", tries)
+            raise ConnectionClosed
         self.notify_seen.append(body)
 
-    def run(self, do_run=True):
+    def run(self, *, do_run: bool = True) -> None:
         """Continuously run while 'do_run' is True, check for last build and release if satisfying."""
         while do_run:
             if self.args.run_once:
@@ -163,35 +163,38 @@ class TumblesleRelease(object):
                 do_run = False
             self.one_run()
             if not self.args.run_once:  # pragma: no cover
-                log.debug("Waiting for new check %s seconds" % self.args.sleeptime)
+                log.debug("Waiting for new check %s seconds", self.args.sleeptime)
                 time.sleep(self.args.sleeptime)
         log.debug("Stopping")
 
-    def one_run(self):
+    def one_run(self) -> None:
         """Like run but only one run, not continuous execution."""
         self.check_last_builds()
         if self.release_build is None:
             return
         self.release()
 
-    def retrieve_server_isos(self):
+    def retrieve_server_isos(self) -> list[str]:
         """Retrieve name of ISOS for matching pattern from openQA host."""
         match_re = fnmatch.translate(self.args.match)
 
-        def is_matching_iso(i):
-            return "iso" in i["type"] and "Staging" not in i["name"] and re.match(match_re, i["name"])
+        def is_matching_iso(i: dict) -> bool:
+            """Return True if the asset is an ISO matching the configured pattern and not a Staging build."""
+            return "iso" in i["type"] and "Staging" not in i["name"] and bool(re.match(match_re, i["name"]))
 
-        log.debug("Finding most recent ISO matching regex '%s'" % match_re)
-        assets = self.browser.get_json("/api/v1/assets", cache=self.args.load)["assets"]
-        isos = [i["name"] for i in assets if is_matching_iso(i)]
-        return isos
+        log.debug("Finding most recent ISO matching regex '%s'", match_re)
+        assets = cast("dict", self.browser.get_json("/api/v1/assets", cache=self.args.load))["assets"]
+        return [i["name"] for i in assets if is_matching_iso(i)]
 
-    def retrieve_jobs_by_result(self, build):
+    def retrieve_jobs_by_result(self, build: str) -> defaultdict:
         """Retrieve jobs for current group by build id, returns dict with result as keys."""
         group_id = int(self.args.group_id)
-        log.debug("Getting jobs in build %s ..." % build)
-        jobs_build = self.browser.get_json(
-            "/api/v1/jobs?state=done&latest=1&build=%s&group_id=%s" % (build, group_id), cache=self.args.load
+        log.debug("Getting jobs in build %s ...", build)
+        jobs_build = cast(
+            "dict",
+            self.browser.get_json(
+                f"/api/v1/jobs?state=done&latest=1&build={build}&group_id={group_id}", cache=self.args.load
+            ),
         )["jobs"]
         jobs_in_build_product = [i for i in jobs_build if i["group_id"] == group_id]
         jobs_by_result = defaultdict(list)
@@ -199,47 +202,60 @@ class TumblesleRelease(object):
             jobs_by_result[job["result"]].append(job)
         return jobs_by_result
 
-    def _filter_whitelisted_fails(self, failed_jobs):
-        def whitelisted(job):
+    def _filter_whitelisted_fails(self, failed_jobs: list) -> list:
+        """Return failed jobs excluding those matching the whitelist of known acceptable failures."""
+
+        def whitelisted(job: dict) -> bool:
+            """Return True if the job scenario matches any whitelist entry."""
             for entry in self.whitelist:
                 if entry in scenario(job):
-                    log.debug("Found whitelist failed job %s because it matches %s" % (job["name"], entry))
+                    log.debug("Found whitelist failed job %s because it matches %s", job["name"], entry)
                     return True
             return False
 
-        failed_jobs_without_whitelisted = [job for job in failed_jobs if not whitelisted(job)]
-        return failed_jobs_without_whitelisted
+        return [job for job in failed_jobs if not whitelisted(job)]
 
-    def check_last_builds(self):
+    def _report_regression(self, build_last: str, hard_failed_jobs: dict) -> None:
+        """Log and notify about a regression in the new build compared to the released build."""
+        hard_failed_jobs_by_scenario = {k: {scenario(j): j for j in v} for k, v in hard_failed_jobs.items()}
+        sets = {k: set(v) for k, v in hard_failed_jobs_by_scenario.items()}
+        new_failures = sets["last"].difference(sets["released"])
+        new_fixed = sets["released"].difference(sets["last"])
+        log.info("Regression in new build %s, new failures: %s", build_last, ", ".join(new_failures))
+        log.debug("new fixed: %s", ", ".join(new_fixed))
+        self.notify({"build": build_last, "new_failures": list(new_failures)}, topic="regression")
+
+    def check_last_builds(self) -> None:
         """Check last builds and return releasable build(s)."""
         self.release_build = None
-        log.debug("Checking last builds on %s ..." % self.args.openqa_host)
+        log.debug("Checking last builds on %s ...", self.args.openqa_host)
         isos = self.retrieve_server_isos()
-        last_iso = sorted(isos)[-1]
-        log.debug("Found last ISO %s" % last_iso)
+        last_iso = max(isos)
+        log.debug("Found last ISO %s", last_iso)
         build = {}
-        # TODO check for running build. It should have the same effect as we compare nr of passed anyway later but it's better to explicitly abort faster
-        build["last"] = (
-            re.search("(?<=-Build)[0-9@]+", last_iso).group()
-            if self.args.check_build == "last"
-            else self.args.check_build
-        )
-        log.debug("Found last build %s" % build["last"])
+        # TODO(okurz): check for running build. Same effect as comparing nr of passed later but better to abort faster
+        if self.args.check_build == "last":
+            match = re.search(r"(?<=-Build)[0-9@]+", last_iso)
+            build["last"] = match.group() if match else last_iso
+        else:
+            build["last"] = self.args.check_build
+        log.debug("Found last build %s", build["last"])
         jobs_by_result = {}
         jobs_by_result["last"] = self.retrieve_jobs_by_result(build["last"])
         passed, failed = {}, {}
         passed["last"] = len(jobs_by_result["last"]["passed"])
         failed["last"] = len(jobs_by_result["last"]["failed"]) + len(jobs_by_result["last"]["softfailed"])
-        log.info("Most recent build %s: passed: %s, failed: %s" % (build["last"], passed["last"], failed["last"]))
+        log.info("Most recent build %s: passed: %s, failed: %s", build["last"], passed["last"], failed["last"])
 
         # IF NOT last_stored_finish_build
         #    read tumblesle repo, find last tumblesle build
         #    last_stored_finish_build = last tumblesle build aka. "released"
         #
         if self.args.check_against_build == "tagged":
-            raise NotImplementedError("tag check not implemented")
-        elif self.args.check_against_build == "release_info":
-            with open(self.release_info_path, "r") as release_info_file:
+            err = "tag check not implemented"
+            raise NotImplementedError(err)
+        if self.args.check_against_build == "release_info":
+            with self.release_info_path.open(encoding="utf-8") as release_info_file:
                 release_info = yaml.load(release_info_file, Loader=yaml.SafeLoader)
                 build["released"] = release_info[self.args.product]["build"]
         else:
@@ -248,50 +264,45 @@ class TumblesleRelease(object):
         #    continue wait
         #
         if build["last"] <= build["released"]:
-            log.info("Specified last build {last} is not newer than released {released}, skipping".format(**build))
+            log.info(
+                "Specified last build %s is not newer than released %s, skipping", build["last"], build["released"]
+            )
             return
-        log.debug("Retrieving results for released build %s" % build["released"])
+        log.debug("Retrieving results for released build %s", build["released"])
         jobs_by_result["released"] = self.retrieve_jobs_by_result(build["released"])
         # read whitelist from tumblesle
-        # TODO whitelist could contain either bugs or scenarios while I prefer bugrefs :-)
+        # TODO(okurz): whitelist could contain either bugs or scenarios while I prefer bugrefs :-)
         hard_failed_jobs = {
             k: self._filter_whitelisted_fails(jobs_by_result[k]["failed"]) for k in ["released", "last"]
         }
         # count passed, failed for both released/new
         passed["released"] = len(jobs_by_result["released"]["passed"]) + len(jobs_by_result["released"]["softfailed"])
         hard_failed = {k: len(v) for k, v in hard_failed_jobs.items()}
-        whitelisted = {"last": failed["last"] - hard_failed["last"]}
-        passed["last"] += whitelisted["last"]
-        assert (
-            passed["last"] + hard_failed["last"]
-        ) > 0, "passed['last'] (%s) + hard_failed['last'] (%s) must be more than zero" % (
+        passed["last"] += failed["last"] - hard_failed["last"]
+        if (passed["last"] + hard_failed["last"]) <= 0:
+            err = (
+                f"passed['last'] ({passed['last']}) + hard_failed['last'] ({hard_failed['last']})"
+                " must be more than zero"
+            )
+            raise ValueError(err)
+        if (passed["released"] + hard_failed["released"]) <= 0:
+            err = "passed['released'] + hard_failed['released'] must be more than zero"
+            raise ValueError(err)
+        log.debug(
+            "%s: %s/%s vs. %s: %s/%s",
+            build["last"],
             passed["last"],
             hard_failed["last"],
-        )
-        assert (passed["released"] + hard_failed["released"]) > 0
-        log.debug(
-            "%s: %s/%s vs. %s: %s/%s"
-            % (
-                build["last"],
-                passed["last"],
-                hard_failed["last"],
-                build["released"],
-                passed["released"],
-                hard_failed["released"],
-            )
+            build["released"],
+            passed["released"],
+            hard_failed["released"],
         )
         if passed["last"] >= passed["released"] and hard_failed["last"] <= hard_failed["released"]:
-            log.info("Found new good build %s" % build["last"])
+            log.info("Found new good build %s", build["last"])
             self.release_build = build["last"]
-            # TODO auto-remove entries from whitelist which are passed now
+            # TODO(okurz): auto-remove entries from whitelist which are passed now
         else:
-            hard_failed_jobs_by_scenario = {k: {scenario(j): j for j in v} for k, v in hard_failed_jobs.items()}
-            sets = {k: set(v) for k, v in hard_failed_jobs_by_scenario.items()}
-            new_failures = sets["last"].difference(sets["released"])
-            new_fixed = sets["released"].difference(sets["last"])
-            log.info("Regression in new build %s, new failures: %s" % (build["last"], ", ".join(new_failures)))
-            log.debug("new fixed: %s" % ", ".join(new_fixed))
-            self.notify({"build": build["last"], "new_failures": list(new_failures)}, topic="regression")
+            self._report_regression(build["last"], hard_failed_jobs)
 
         # # assuming every job in released_failed is in whitelist
         # if len(hard_failed) > previous_hard_failed:
@@ -299,73 +310,80 @@ class TumblesleRelease(object):
         # if len(new_passed < released_passed):
         #     return skip_release (cause: test coverage regression) -> notify stats, e.g. which scenario missing
 
-    def sync(self, build_dest):
+    def sync(self, build_dest: Path) -> None:
         """Sync repo/iso/hdd to pre_release on tumblesle archive."""
         rsync_opts = ["-aHP"]
-        # rsync supports a dry-run option so we can also select a dry-run there. This only works if the directory structure exists
+        # rsync supports a dry-run option so we can also select a dry-run there.
+        # This only works if the directory structure exists
         if self.args.dry_run_rsync:
             rsync_opts += ["--dry-run"]
 
         if not self.args.src.endswith("/") or not self.args.dest.endswith("/"):
-            raise UnsupportedRsyncArgsError()
-        rsync_opts += ["--include=**/%s%s*" % (self.args.match, self.release_build)]
+            raise UnsupportedRsyncArgsError
+        rsync_opts += [f"--include=**/{self.args.match}{self.release_build}*"]
         if self.args.match_hdds:
-            rsync_opts += ["--include=**/%s%s*" % (self.args.match_hdds, self.release_build)]
+            rsync_opts += [f"--include=**/{self.args.match_hdds}{self.release_build}*"]
         rsync_opts += ["--include=iso/", "--include=hdd/", "--include=repo/"]
-        rsync_opts += ["--filter=+ repo/%s%s*/**" % (self.args.match, self.release_build)]
+        rsync_opts += [f"--filter=+ repo/{self.args.match}{self.release_build}*/**"]
         rsync_opts += ["--exclude=*"]
-        cmd = ["rsync"] + rsync_opts + [self.args.src, build_dest]
-        log.debug("Calling '%s'" % " ".join(cmd))
+        cmd = ["rsync", *rsync_opts, self.args.src, str(build_dest)]
+        log.debug("Calling '%s'", " ".join(cmd))
         if not self.args.dry_run or self.args.dry_run_rsync:
             check_call(cmd)
 
-    def update_release_info(self):
+    def update_release_info(self) -> None:
         """Update release info file on destination."""
         log.debug("Updating release_info file")
         release_info = {self.args.product: {"build": self.release_build}}
         release_info_dump = yaml.safe_dump(release_info)
-        log.debug("New release info as yaml: %s" % release_info_dump)
+        log.debug("New release info as yaml: %s", release_info_dump)
         if not self.args.dry_run:
-            open(self.release_info_path, "w").write(release_info_dump)
+            with self.release_info_path.open("w", encoding="utf-8") as f:
+                f.write(release_info_dump)
 
-    def update_symlinks(self, build_dest):
+    def update_symlinks(self, build_dest: Path) -> None:
         """Update symlinks to 'current' and 'release' on destination."""
         log.debug(
-            "Updating symlinks within %s/ for each asset (Build%s->current)" % (self.release_build, self.release_build)
+            "Updating symlinks within %s/ for each asset (Build%s->current)",
+            self.release_build,
+            self.release_build,
         )
-        for i in glob.glob(build_dest + "*/*"):
-            tgt = os.path.join(os.path.dirname(i), os.path.basename(i).replace(self.release_build, "CURRENT"))
-            if not os.path.exists(tgt):
-                os.symlink(i, tgt)
-        log.debug("Updating folder symlinks %s/ -> release/" % self.release_build)
-        release_tgt = os.path.join(self.args.dest, "release")
+        release_build = cast("str", self.release_build)
+        for i in Path(build_dest).glob("*/*"):
+            tgt = i.parent / i.name.replace(release_build, "CURRENT")
+            if not tgt.exists():
+                tgt.symlink_to(i)
+        log.debug("Updating folder symlinks %s/ -> release/", release_build)
+        release_tgt = Path(self.args.dest) / "release"
         if self.args.dry_run:
-            log.info("Would symlink %s -> %s" % (build_dest, release_tgt))
+            log.info("Would symlink %s -> %s", build_dest, release_tgt)
         else:
-            if os.path.exists(release_tgt):
-                os.remove(release_tgt)
-            os.symlink(self.release_build, release_tgt)
+            if release_tgt.exists():
+                release_tgt.unlink()
+            release_tgt.symlink_to(release_build)
 
-    def release(self):
+    def release(self) -> None:
         """Release new version of TumbleSLE by syncing from openQA instance to TumbleSLE server."""
-        log.debug("Releasing new TumbleSLE: Build %s" % self.release_build)
+        log.debug("Releasing new TumbleSLE: Build %s", self.release_build)
         # # do release
-        # TODO in openQA as soon as there is comment access over API:
+        # TODO(okurz): in openQA as soon as there is comment access over API:
         #   - tag new build
         #   - remove last tag (or update)
         #
-        build_dest = os.path.join(self.args.dest, self.release_build) + "/"
+        release_build = cast("str", self.release_build)
+        build_dest = Path(self.args.dest) / release_build
         self.sync(build_dest)
         self.update_symlinks(build_dest)
         self.update_release_info()
         log.debug("Release DONE")
-        self.notify({"build": self.release_build}, topic="release")
+        self.notify({"build": release_build}, topic="release")
         if self.args.post_release_hook:
-            log.debug("Calling post_release_hook '%s'" % self.args.post_release_hook)
+            log.debug("Calling post_release_hook '%s'", self.args.post_release_hook)
             check_call(self.args.post_release_hook)
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments and return the resulting namespace."""
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "-v",
@@ -388,7 +406,7 @@ def parse_args():
     parser.add_argument("--group-id", help="Group id to search in from openQA host", default=19)
     parser.add_argument(
         "--product",
-        help="The product name to act upon, must be equivalent to --group-id and must match entry in config file (if any).",
+        help="The product name to act upon, must be equivalent to --group-id and match entry in config file (if any).",
         default="Leap 42.2",
     )
     parser.add_argument(
@@ -398,9 +416,12 @@ def parse_args():
     )
     parser.add_argument(
         "--check-against-build",
-        help="""If specified, checks against specified build number (integer).
-                        Specify 'release_info' for reading release info file from destination folder, see '--release-file' and '--dest'.
-                        Specify 'tagged' for last tagged on group overview page within openQA""",
+        help=(
+            "If specified, checks against specified build number (integer). "
+            "Specify 'release_info' for reading release info file from destination folder, "
+            "see '--release-file' and '--dest'. "
+            "Specify 'tagged' for last tagged on group overview page within openQA"
+        ),
         default="release_info",
     )
     parser.add_argument("--run-once", action="store_true", help="Only run once, not continuously")
@@ -424,12 +445,12 @@ def parse_args():
     )
     parser.add_argument(
         "--match",
-        help="Globbing pattern that has to be matched when searching for builds as well as when syncing assets on release",
+        help="Globbing pattern matched when searching for builds and when syncing assets on release",
         default="open*-42.2*x86_64*",
     )
     parser.add_argument(
         "--match-hdds",
-        help="Additional globbing pattern to '--match' for hdd images as they are named differently more often than not",
+        help="Additional globbing pattern to '--match' for hdd images, which are often named differently",
         default=None,
     )
     parser.add_argument(
@@ -449,17 +470,20 @@ def parse_args():
     parser.add_argument(
         "--seen-maxlen",
         type=int,
-        help="""The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and
-                        before sending it is checked if the notification was already sent out recently with same content.
-                        Together with '--sleeptime' the interval under which the same message would be resent can be configured,
-                        e.g. maxlen*sleeptime = minimum time of reappearence (s)""",
+        help=(
+            "The length of the 'seen' buffer for notifications. Any AMQP notification is stored in a FIFO and "
+            "before sending it is checked if the notification was already sent out recently with same content. "
+            "Together with '--sleeptime' the interval under which the same message would be resent can be configured, "
+            "e.g. maxlen*sleeptime = minimum time of reappearence (s)"
+        ),
         default=500,
     )
     add_browser_args(parser)
     return parser.parse_args()
 
 
-def main():  # pragma: no cover, only interactive
+def main() -> None:  # pragma: no cover, only interactive
+    """Entry point: parse arguments and run TumblesleRelease."""
     args = parse_args()
     tr = TumblesleRelease(args)
     tr.run()
