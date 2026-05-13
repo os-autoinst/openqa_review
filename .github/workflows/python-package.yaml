@@ -44,8 +44,7 @@ jobs:
       fail-fast: false
       matrix:
         test-type:
-        - flake8
-        - black
+        - ruff
         - doctests
         - cov
 
