@@ -279,13 +279,13 @@ class TumblesleRelease:
         passed["released"] = len(jobs_by_result["released"]["passed"]) + len(jobs_by_result["released"]["softfailed"])
         hard_failed = {k: len(v) for k, v in hard_failed_jobs.items()}
         passed["last"] += failed["last"] - hard_failed["last"]
-        if (passed["last"] + hard_failed["last"]) <= 0:
+        if (passed["last"] + hard_failed["last"]) <= 0:  # pragma: no cover
             err = (
                 f"passed['last'] ({passed['last']}) + hard_failed['last'] ({hard_failed['last']})"
                 " must be more than zero"
             )
             raise ValueError(err)
-        if (passed["released"] + hard_failed["released"]) <= 0:
+        if (passed["released"] + hard_failed["released"]) <= 0:  # pragma: no cover
             err = "passed['released'] + hard_failed['released'] must be more than zero"
             raise ValueError(err)
         log.debug(

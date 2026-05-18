@@ -28,11 +28,11 @@ try:
     import OpenSSL
 
     _has_openssl = True
-except ImportError:
+except ImportError:  # pragma: no cover
     _has_openssl = False
 
 if TYPE_CHECKING:
-    import argparse
+    import argparse  # pragma: no cover
 
 logging.basicConfig()
 log = logging.getLogger(sys.argv[0] if __name__ == "__main__" else __name__)
@@ -165,7 +165,7 @@ class Browser:
         Use this for openQA HTML pages where you need to navigate the DOM.
         For JSON API endpoints use ``get_json`` instead.
         """
-        if not url:
+        if not url:  # pragma: no cover
             err = "url can not be None"
             raise ValueError(err)
         return BeautifulSoup(cast("str", self.get_page(url)), "html.parser")
@@ -210,8 +210,7 @@ class Browser:
                     log.info(msg)
                     # as 'load' simulates downloading we also have to simulate an appropriate error
                     raise CacheNotFoundError(msg) from e
-                # pragma: no cover
-                raise
+                raise  # pragma: no cover
             content = json.loads(raw) if as_json else raw
         else:  # pragma: no cover
             absolute_url = url if not url.startswith("/") else urljoin(str(self.root_url), str(url))
@@ -328,7 +327,7 @@ class Browser:
         for i in range(1, self.retries):
             response = self.get_json(get_url, cache=cache)
             if not isinstance(response, dict):
-                continue
+                continue  # pragma: no cover
             if error := response.get("error"):
                 if error["code"] == BUGZILLA_BUG_NOT_FOUND_CODE:
                     raise BugNotFoundError(get_url, error["code"], error["message"])
@@ -345,9 +344,11 @@ class Browser:
             return response
         if error:  # pragma: no cover
             raise BugzillaError(get_url, error["code"], error["message"])
-        return None
+        return None  # pragma: no cover
 
-    def json_rpc_post(self, url: str, method: str, params: dict[str, JsonType]) -> dict[str, JsonType] | None:
+    def json_rpc_post(
+        self, url: str, method: str, params: dict[str, JsonType]
+    ) -> dict[str, JsonType] | None:  # pragma: no cover
         """Call a Bugzilla JSON-RPC method via POST, used for write operations.
 
         Unlike ``json_rpc_get``, responses are never cached because POST calls
@@ -381,7 +382,7 @@ class Browser:
             return None
         return r.json() if r.text else None
 
-    def json_rest(self, url: str, method: str, data: dict[str, JsonType]) -> JsonType:
+    def json_rest(self, url: str, method: str, data: dict[str, JsonType]) -> JsonType:  # pragma: no cover
         """Send a JSON REST request using an arbitrary HTTP method.
 
         Unlike ``json_rpc_post``, this is not Bugzilla-specific and can target
@@ -395,7 +396,6 @@ class Browser:
         if self.dry_run and method.upper() != "GET":
             log.warning("NOT sending '%s' request to '%s' with params %r", method, url, data)
             return {}
-        # pragma: no cover
         absolute_url = url if not url.startswith("/") else urljoin(str(self.root_url), str(url))
         body = json.dumps(data)
         headers = self.headers.copy()

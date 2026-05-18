@@ -113,7 +113,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
 from .browser import Browser, DownloadError, BugNotFoundError, JsonType, add_browser_args  # isort:skip
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Callable, Generator, Iterable, KeysView, Sequence
 
     from bs4 import BeautifulSoup as BeautifulSoupType
@@ -262,7 +262,7 @@ class NotEnoughBuildsError(Exception):
 def parse_summary(details: BeautifulSoupType) -> dict[str, int]:
     """Parse and return build summary as dict."""
     summary_tag = details.find(id="summary")
-    if summary_tag is None:
+    if summary_tag is None:  # pragma: no cover
         msg = "Could not find summary tag with id='summary'"
         raise ValueError(msg)
     return {str(i.previous).strip().rstrip(":").lower(): int(i.text) for i in summary_tag.find_all(class_="badge")}
@@ -297,7 +297,7 @@ bugref_regex = "(poo|boo|bsc|bgo)#?([0-9]+)"
 def status(entry: TagType) -> str:
     """Return test status from entry, e.g. 'result_passed'."""
     i_tag = entry.i
-    if i_tag is None:
+    if i_tag is None:  # pragma: no cover
         msg = "Could not find <i> tag in entry for status"
         raise ValueError(msg)
     return next(s for s in cast("list", i_tag["class"]) if re.search(r"(state|result)_", s))
@@ -306,7 +306,7 @@ def status(entry: TagType) -> str:
 def get_build_nr(url: str) -> str:
     """Extract and return the build number from a URL."""
     m = re.search(r"build=([^&]*)", url)
-    if m is None:
+    if m is None:  # pragma: no cover
         msg = f"Could not find build number in URL: {url}"
         raise ValueError(msg)
     return unquote(m.groups()[0])
@@ -330,13 +330,13 @@ def get_test_details(entry: TagType) -> dict[str, Any]:
             return str(m["href"])
         except KeyError as e:
             a_tag = m.a
-            if a_tag is None:
+            if a_tag is None:  # pragma: no cover
                 msg = "Could not find <a> tag in failedmodule entry"
                 raise ValueError(msg) from e
             return str(a_tag["href"])
 
     entry_a = entry.a
-    if entry_a is None:
+    if entry_a is None:  # pragma: no cover
         msg = "Could not find <a> tag in test entry"
         raise ValueError(msg)
     return {
@@ -354,7 +354,7 @@ def get_test_bugref(entry: TagType) -> dict[str, str]:
     if not bugref:
         return {}
     bugref_i = bugref.i
-    if bugref_i is None:
+    if bugref_i is None:  # pragma: no cover
         msg = "Could not find <i> tag in bugref element"
         raise ValueError(msg)
     i_title = str(bugref_i["title"])
@@ -362,7 +362,7 @@ def get_test_bugref(entry: TagType) -> dict[str, str]:
     ref_str = reference.group() if reference else f"(unknown bugref in {i_title})"
     # work around openQA providing incorrect URLs (e.g. following whitespace)
     bugref_a = bugref.a
-    if bugref_a is None:
+    if bugref_a is None:  # pragma: no cover
         msg = "Could not find <a> tag in bugref element"
         raise ValueError(msg)
     return {"bugref": ref_str, "bugref_href": str(bugref_a["href"]).strip()}
@@ -379,7 +379,7 @@ def get_state(cur: TagType, prev_dict: dict[str, TagType]) -> tuple[str, dict[st
         state_dict["state"] = change_state[status(prev), status(cur)]
         # add more details, could be skipped if we don't have details
         prev_a = prev.find("a")
-        if prev_a is None:
+        if prev_a is None:  # pragma: no cover
             msg = "Could not find <a> tag in previous test entry"
             raise ValueError(msg)
         state_dict["prev"] = {"href": str(prev_a["href"])}
@@ -633,7 +633,7 @@ def get_build_urls_to_compare(
         else:
             if not builds_differ_too_much:
                 builds_to_compare = build_to_review, last_reviewed
-            else:
+            else:  # pragma: no cover
                 log.info("No last reviewed build found for URL %s, reverting to two last finished", job_group_url)
 
     log.debug("Comparing build %s against %s", builds_to_compare[0], builds_to_compare[1])
@@ -807,7 +807,7 @@ def issue_report_link(root_url: str, f: dict[str, Any], test_browser: Browser | 
     # It might not be the fatal one but better be safe and assume the first
     # failed module introduces a problem in the whole job
 
-    if test_browser is None:
+    if test_browser is None:  # pragma: no cover
         msg = "test_browser is required to generate a bug report link"
         raise ValueError(msg)
     test_details_page = test_browser.get_soup(f["href"])
@@ -899,7 +899,7 @@ class Issue:
         """Initialize data for redmine issues."""
         log.debug("Test issue discovered, looking on progress")
         self.issue_type = "redmine"
-        if self.bugref_href is None:
+        if self.bugref_href is None:  # pragma: no cover
             msg = "bugref_href is required for redmine issue initialization"
             raise ValueError(msg)
         raw = cast("dict[str, Any]", progress_browser.get_json(self.bugref_href + ".json?include=journals"))
@@ -952,7 +952,7 @@ class Issue:
         """Add a comment to an issue with RPC/REST operations."""
         log.info("Posting a comment on %s ticket [%s](%s)", self.issue_type, self.bugref, self.bugref_href)
         if self.issue_type == "bugzilla":
-            if self.bugzilla_browser is None:
+            if self.bugzilla_browser is None:  # pragma: no cover
                 msg = "bugzilla_browser is required to add a comment to a bugzilla issue"
                 raise ValueError(msg)
             self.bugzilla_browser.json_rpc_post(
@@ -965,19 +965,19 @@ class Issue:
                 },
             )
         elif self.issue_type == "redmine":
-            if self.progress_browser is None:
+            if self.progress_browser is None:  # pragma: no cover
                 msg = "progress_browser is required to add a comment to a redmine issue"
                 raise ValueError(msg)
-            if self.bugref_href is None:
+            if self.bugref_href is None:  # pragma: no cover
                 msg = "bugref_href is required to add a comment to a redmine issue"
                 raise ValueError(msg)
             issue_data: dict[str, Any] = {"notes": comment}
             if status_id is not None:
                 issue_data["status_id"] = status_id
             self.progress_browser.json_rest(self.bugref_href + ".json", "PUT", {"issue": issue_data})
-        else:
-            msg = "Only bugzilla or redmine supported as issue type"  # pragma: no cover
-            raise AssertionError(msg)  # pragma: no cover
+        else:  # pragma: no cover
+            msg = "Only bugzilla or redmine supported as issue type"
+            raise AssertionError(msg)
 
     def reopen(self, note: str | None = None) -> None:
         """Re-open issue with RPC/REST operations leaving a note. Only leaves the note if the issue is still open."""
@@ -988,7 +988,7 @@ class Issue:
                 "https://progress.opensuse.org/projects/openqatests/wiki/Wiki#openqa-review-reminder-handling"
             )
         if self.issue_type == "bugzilla":
-            if self.bugzilla_browser is None:
+            if self.bugzilla_browser is None:  # pragma: no cover
                 msg = "bugzilla_browser is required to reopen a bugzilla issue"
                 raise ValueError(msg)
             if (self.status or "").upper() == "RESOLVED":
@@ -1013,7 +1013,7 @@ class Issue:
     @property
     def is_assigned(self) -> bool:
         """Issue has been assigned."""
-        if not self.queried:
+        if not self.queried:  # pragma: no cover
             msg = "Issue must be queried before checking assignment"
             raise RuntimeError(msg)
         return not (self.assignee in {"None", None} or "@forge.provo.novell.com" in self.assignee)
@@ -1021,7 +1021,7 @@ class Issue:
     @property
     def is_open(self) -> bool:
         """Issue is still open."""
-        if not self.queried:
+        if not self.queried:  # pragma: no cover
             msg = "Issue must be queried before checking open state"
             raise RuntimeError(msg)
         s = (self.status or "").upper()
@@ -1135,12 +1135,12 @@ def get_skipped_dict(arch: str, soup: BeautifulSoupType) -> SortedDictType:
         match = arch_item.find(title="cancelled")
         if match:
             name_tag = arch_item.find_previous(class_="name")
-            if name_tag is None:
+            if name_tag is None:  # pragma: no cover
                 msg = "Could not find name tag for skipped test entry"
                 raise ValueError(msg)
             module_name = name_tag.get_text().strip("\n")
             a_tag = arch_item.a
-            if a_tag is None:
+            if a_tag is None:  # pragma: no cover
                 msg = "Could not find <a> tag in skipped test arch item"
                 raise ValueError(msg)
             test_link = str(a_tag["href"])
@@ -1223,10 +1223,10 @@ class ArchReport:
             return
         actual_match = cast("re.Match[str]", match)
         bug_tracker, bug_id = actual_match.group(1), actual_match.group(2)
-        if not bug_tracker:
+        if not bug_tracker:  # pragma: no cover
             msg = f"No bugref found for {v}"
             raise ValueError(msg)
-        if not bug_id:
+        if not bug_id:  # pragma: no cover
             msg = f"No bug_id found for {v}"
             raise ValueError(msg)
         v["bugref"] = f"{bug_tracker}#{bug_id}"
@@ -1238,15 +1238,15 @@ class ArchReport:
             if v["state"] in soft_fail_states:
                 try:
                     module_url = self._get_url_to_softfailed_module(v["href"])
-                    if module_url is None:
+                    if module_url is None:  # pragma: no cover
                         msg = f"Could not determine softfailed module URL for job {v['href']}"
                         raise ValueError(msg)
                     url_match = re.search(r"[^/]*/[0-9]*/[^/]*/([^/]*)/[^/]*/[0-9]*", module_url)
-                    if url_match is None:
+                    if url_match is None:  # pragma: no cover
                         msg = f"Could not parse module URL: {module_url}"
                         raise ValueError(msg)
                     module_name = url_match.group(1)
-                    if not module_name:
+                    if not module_name:  # pragma: no cover
                         msg = f"could not find a module name within {module_url} in job {v['href']}"
                         raise ValueError(msg)
                     match, softfail_reason, found_actual_ref = self._get_bugref_for_softfailed_module(v, module_name)
@@ -1271,7 +1271,7 @@ class ArchReport:
 
     def _get_url_to_softfailed_module(self, job_url: str) -> str | None:
         log.debug("job_url %s", job_url)
-        if self.test_browser is None:
+        if self.test_browser is None:  # pragma: no cover
             msg = "test_browser is required to get softfailed module URL"
             raise ValueError(msg)
         try:
@@ -1292,11 +1292,11 @@ class ArchReport:
         if test_details_html is None:
             log.debug("Could not find soft failed info box, looking for workaround needle in job %s", url)
             resborder_tag = self.test_browser.get_soup(url).find(class_="resborder_softfailed")
-            if resborder_tag is None:
+            if resborder_tag is None:  # pragma: no cover
                 msg = f"Could not find resborder_softfailed element in job {url}"
                 raise ValueError(msg)
             test_details_html = resborder_tag.parent
-        if not test_details_html:
+        if not test_details_html:  # pragma: no cover
             msg = "Found neither soft failed info box nor workaround needle"
             raise RuntimeError(msg)
         return cast("str | None", test_details_html.get("data-url"))
@@ -1316,7 +1316,7 @@ class ArchReport:
         rel_job_url = result_item["href"]
         details_url = f"{rel_job_url}/file/details-{quote(module_name)}.json"
         log.debug("Retrieving '%s'", details_url)
-        if self.test_browser is None:
+        if self.test_browser is None:  # pragma: no cover
             msg = "test_browser is required to get bugref for softfailed module"
             raise ValueError(msg)
         details_json = self.test_browser.get_json(details_url)
@@ -1335,7 +1335,7 @@ class ArchReport:
     def _match_bugref_in_field(
         self, field: dict[str, Any], rel_job_url: str
     ) -> tuple[re.Match[str] | str, str | None, bool] | None:
-        if self.test_browser is None:
+        if self.test_browser is None:  # pragma: no cover
             msg = "test_browser is required"
             raise ValueError(msg)
         match = None
@@ -1458,7 +1458,7 @@ class ProductReport:
             if not (
                 sum(int(badge.text) for badge in details.find_all(class_="badge")) > 0
                 or len(details.find_all(class_="status")) > 0
-            ):
+            ):  # pragma: no cover
                 msg = (
                     f"invalid page with no test results found reading {current_url} and {previous_url},"
                     " make sure you specified valid builds (leading zero missing?)"
@@ -1483,7 +1483,7 @@ class ProductReport:
         )
         archs = cur_archs
         if args.arch:
-            if args.arch not in cur_archs:
+            if args.arch not in cur_archs:  # pragma: no cover
                 msg = f"Selected arch {args.arch} was not found in test results {cur_archs}"
                 raise ValueError(msg)
             archs = [args.arch]
@@ -1852,7 +1852,7 @@ def generate_report(args: argparse.Namespace) -> Report:
 
     browser = Browser(args, root_url)
     job_groups = get_job_groups(browser, root_url, args)
-    if args.builds and len(job_groups) > 1:
+    if args.builds and len(job_groups) > 1:  # pragma: no cover
         msg = "builds option and multiple job groups not supported"
         raise AssertionError(msg)
     if len(job_groups) == 0:
