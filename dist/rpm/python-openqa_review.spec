@@ -31,29 +31,23 @@
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 %define         short_name openqa_review
 %define         binaries openqa-review openqa-review-daily-email openqa-review-sles-ha tumblesle-release openqa-review-functional_yast_concise
-%define         oldpython python
 Name:           python-%{short_name}%{?name_ext}
 Version:        0
 Release:        0
 Summary:        A review helper script for openQA
 License:        MIT
 Group:          Development/Languages/Python
-Source:         https://github.com/okurz/%{short_name}/python-%{short_name}-%{version}.tar.xz
-Url:            https://github.com/okurz/%{short_name}
+Source:         https://github.com/os-autoinst/%{short_name}/archive/refs/tags/%{version}.tar.gz#/%{short_name}-%{version}.tar.gz
+Url:            https://github.com/os-autoinst/%{short_name}
 BuildRequires:  python-rpm-macros
 %if 0%{?_test}
 BuildRequires:  python3-%{short_name}
 %else
 BuildRequires:  %{python_module pip}
 BuildRequires:  %{python_module setuptools}
+BuildRequires:  %{python_module setuptools-scm}
 BuildRequires:  %{python_module wheel}
 BuildRequires:  fdupes
-# workaround because of python-configparser not providing the '__init__.py'
-# file within site-packages/backports
-%if "%{python_flavor}" == "python2"
-Requires:       python-backports.ssl_match_hostname
-Requires:       python-configparser
-%endif
 Requires:       python-PyYAML
 Requires:       python-beautifulsoup4
 Requires:       python-certifi
@@ -67,10 +61,6 @@ Requires(preun): update-alternatives
 %endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-
-%ifpython2
-Obsoletes:      %{oldpython}-%{short_name} < %{version}
-%endif
 
 %if 0%{?_test}
 %else
@@ -105,7 +95,6 @@ tumblesle-release --help
 %define debug_package %{nil}
 %else
 %pyproject_install
-rm %{buildroot}/%{python_sitelib}/version.*
 
 for i in %{binaries}; do
     %python_clone -a %{buildroot}%{_bindir}/$i
