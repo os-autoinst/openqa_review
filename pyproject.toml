@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "openqa-review"
 dynamic = ["version"]
 description = "Tool for generating and reviewing openQA test reports"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = "MIT"
 authors = [
     { name = "SUSE LLC" },
@@ -16,9 +16,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-
 dependencies = [
     "beautifulsoup4",
+    "certifi",
     "humanfriendly>=10.0",
     "pika",
     "pyopenssl",
@@ -27,8 +27,22 @@ dependencies = [
     "sortedcontainers",
 ]
 
+[project.scripts]
+openqa-review = "openqa_review.openqa_review:main"
+tumblesle-release = "openqa_review.tumblesle_release:main"
+
 [project.urls]
-Homepage = "https://gitlab.suse.de/openqa/openqa-review.git"
+Homepage = "https://github.com/os-autoinst/openqa_review"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+packages = ["openqa_review"]
+script-files = [
+    "bin/openqa-review-sles-ha",
+    "bin/openqa-review-daily-email",
+    "bin/openqa-review-functional_yast_concise",
+]
 
 [dependency-groups]
 dev = [
@@ -37,14 +51,16 @@ dev = [
     "pytest-mock",
     "coverage",
     "radon",
+    "tox",
     "ty>=0.0.21",
     "setuptools",
+    "setuptools-scm"
 ]
 
 [tool.ruff]
 line-length = 120
 preview = true
-exclude = [".ropeproject", ".tox", "venv", "version.py", "setup.py", "__init__.py"]
+exclude = [".ropeproject", ".tox", "venv", "__init__.py"]
 
 [tool.ruff.lint]
 # E, F: Standard pycodestyle and Pyflakes (default flake8)

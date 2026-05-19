@@ -97,7 +97,6 @@ import logging
 import re
 import sys
 from collections import OrderedDict, defaultdict
-from datetime import timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, NamedTuple, cast
 
@@ -823,7 +822,7 @@ def issue_report_link(root_url: str, f: dict[str, Any], test_browser: Browser | 
 
 def _parse_issue_timestamp(timestamp: str) -> datetime.datetime:
     """Parse the timestamp of a specified redmine issue timestamp field."""
-    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.UTC)
 
 
 class Issue:
@@ -1508,7 +1507,7 @@ class ProductReport:
 
     def __str__(self) -> str:
         """Return report for product."""
-        now_str = datetime.datetime.now(tz=timezone.utc).strftime("%Y-%m-%d - %H:%M")
+        now_str = datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%d - %H:%M")
         missing_archs_str = (
             f"\n * **Missing architectures**: {', '.join(self.missing_archs)}" if self.missing_archs else ""
         )
@@ -1905,7 +1904,7 @@ def reminder_comment_on_issue(ie: IssueEntry, args: argparse.Namespace) -> None:
         if args.no_exponential_backoff
         else max(2 * issue.last_comment_delay, args.min_days_unchanged)
     )
-    if (datetime.datetime.now(tz=timezone.utc) - last_comment_date).days >= threshold:
+    if (datetime.datetime.now(tz=datetime.UTC) - last_comment_date).days >= threshold:
         f = ie.failures[0]
         link_to_module = (
             f["failedmodules"][0]["href"]
