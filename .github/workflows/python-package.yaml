@@ -12,29 +12,23 @@ jobs:
         - '3.11'
         - '3.12'
         - '3.13'
+        - '3.14'
         include:
           - os: "ubuntu-latest"
 
     steps:
     - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install tox-gh-actions
-
-    - run: env | sort
-
-    - name: Setup test suite
-      run: python -m tox r -vv --notest
+      run: uv python install ${{ matrix.python-version }}
 
     - name: Run test suite
-      run: python -m tox r --skip-pkg-install
+      run: uv run tox -e py$(echo ${{ matrix.python-version }} | tr -d .)
       env:
         PYTEST_ADDOPTS: "-vv --durations=10"
 
@@ -44,20 +38,19 @@ jobs:
       fail-fast: false
       matrix:
         test-type:
-        - flake8
-        - black
+        - ruff
         - doctests
         - cov
 
     steps:
     - uses: actions/checkout@v6
-    - name: Set up Python
-      uses: actions/setup-python@v3
       with:
-        python-version: '3.13'
-    - name: Install dependencies
-      run: python -m pip install tox
-    - run: python -m tox -e ${{ matrix.test-type }}
+        fetch-depth: 0
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+
+    - run: uv run tox -e ${{ matrix.test-type }}
     - run: ./.tox/cov/bin/coverage html
       # Run even if previous step failed but only if we are testing coverage
       if: ${{ always() && matrix.test-type == 'cov' }}

@@ -74,14 +74,14 @@ all environments:
 tox
 ```
 
-It is also possible to run only a special environment, e.g. `tox -e flake8` for
+It is also possible to run only a special environment, e.g. `tox -e ruff` for
 the linter, `tox -e py38` for running tests at the specified Python version (the
 interpreter needs to be installed for this version) or `tox -e cov` for the
 coverage report (see details below). These environments are configured in
 `tox.ini`.
 
-To ensure files are passing the style check, invoke `black .` to apply
-correct formatting.
+To ensure files are passing the style check, invoke `ruff check .` and
+`ruff format .`.
 
 If you are running into issues installing dependencies (resulting in an error
 like "Could not build wheels…"), try to remove the temporary `.tox` directory
@@ -117,7 +117,7 @@ tox -e cov
 * Every commit is checked by a [GitHub Workflow](https://github.com/os-autoinst/openqa_review/actions)
   as soon as you create a pull request but you *should* run `tox` locally,
 
-* Make sure to keep the 100% test coverage, e.g. by adding test reference data
+* Make sure to keep the 90% test coverage, e.g. by adding test reference data
   for new scenarios. TDD is advised :-)
 
 * For git commit messages use the rules stated on
