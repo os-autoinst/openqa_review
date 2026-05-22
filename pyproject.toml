@@ -138,6 +138,8 @@ ignore = [
     "COM812", # missing-trailing-comma
     "TD003",  # missing-todo-link
     "FIX002", # line-contains-todo
+    "PLW0717", # too-many-statements-in-try-clause
+    "RUF075", # fallible-context-manager
 ]
 
 [tool.ruff.lint.mccabe]
