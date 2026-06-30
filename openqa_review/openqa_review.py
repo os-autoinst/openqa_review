@@ -1028,7 +1028,7 @@ class Issue:
 
     @property
     def last_comment(self) -> tuple[datetime.datetime | None, str | None]:
-        """Return datetime object and text of all comments retrieved from an issue."""
+        """Datetime object and text of all comments retrieved from an issue."""
         return (self.last_comment_date, self.last_comment_text)
 
     def __str__(self) -> str:
@@ -1261,7 +1261,7 @@ class ArchReport:
 
     @property
     def total_issues(self) -> int:
-        """Return Number of issue entries for this arch."""
+        """Number of issue entries for this arch."""
         total = 0
         for issue_types in self.issues.values():
             for ies in issue_types.values():
