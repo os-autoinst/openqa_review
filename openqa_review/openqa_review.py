@@ -92,7 +92,7 @@ from __future__ import annotations
 
 import argparse
 import codecs
-import datetime
+import datetime as dt
 import logging
 import re
 import sys
@@ -820,9 +820,9 @@ def issue_report_link(root_url: str, f: dict[str, Any], test_browser: Browser | 
     return f": report [product bug]({product_bug}) / [openQA issue]({test_issue})"
 
 
-def _parse_issue_timestamp(timestamp: str) -> datetime.datetime:
+def _parse_issue_timestamp(timestamp: str) -> dt.datetime:
     """Parse the timestamp of a specified redmine issue timestamp field."""
-    return datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.UTC)
+    return dt.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.UTC)
 
 
 class Issue:
@@ -850,7 +850,7 @@ class Issue:
         self.resolution: str | None = None
         self.priority: str | None = None
         self.queried: bool = False
-        self.last_comment_date: datetime.datetime | None = None
+        self.last_comment_date: dt.datetime | None = None
         self.last_comment_text: str | None = None
         self.last_comment_delay: int = 0
         self.issue_type: str | None = None
@@ -1027,7 +1027,7 @@ class Issue:
         return s not in {"RESOLVED", "REJECTED", "VERIFIED", "CLOSED"}
 
     @property
-    def last_comment(self) -> tuple[datetime.datetime | None, str | None]:
+    def last_comment(self) -> tuple[dt.datetime | None, str | None]:
         """Datetime object and text of all comments retrieved from an issue."""
         return (self.last_comment_date, self.last_comment_text)
 
@@ -1507,7 +1507,7 @@ class ProductReport:
 
     def __str__(self) -> str:
         """Return report for product."""
-        now_str = datetime.datetime.now(tz=datetime.UTC).strftime("%Y-%m-%d - %H:%M")
+        now_str = dt.datetime.now(tz=dt.UTC).strftime("%Y-%m-%d - %H:%M")
         missing_archs_str = (
             f"\n * **Missing architectures**: {', '.join(self.missing_archs)}" if self.missing_archs else ""
         )
@@ -1904,7 +1904,7 @@ def reminder_comment_on_issue(ie: IssueEntry, args: argparse.Namespace) -> None:
         if args.no_exponential_backoff
         else max(2 * issue.last_comment_delay, args.min_days_unchanged)
     )
-    if (datetime.datetime.now(tz=datetime.UTC) - last_comment_date).days >= threshold:
+    if (dt.datetime.now(tz=dt.UTC) - last_comment_date).days >= threshold:
         f = ie.failures[0]
         link_to_module = (
             f["failedmodules"][0]["href"]
