@@ -600,7 +600,7 @@ def get_build_urls_to_compare(
 
     def build_url(build: str) -> str:
         r = get_group_result()
-        b = r.get(build, next(iter(r.values())))
+        b = r[build] if build in r else next(iter(r.values()))
         build = b.get("build", build)
         # openQA introduced multi-distri support for the job groups with openQA#037ffd33
         distri_str = (
