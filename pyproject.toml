@@ -19,12 +19,14 @@ classifiers = [
 dependencies = [
     "beautifulsoup4",
     "certifi",
+    "cryptography",
     "humanfriendly>=10.0",
     "pika",
     "pyopenssl",
     "PyYAML",
     "requests",
     "sortedcontainers",
+    "urllib3",
 ]
 
 [project.scripts]

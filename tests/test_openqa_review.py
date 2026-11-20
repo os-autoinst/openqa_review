@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import contextlib
+import datetime as dt
 import io
 import re
 import shutil
@@ -18,6 +19,11 @@ from unittest.mock import MagicMock, Mock, call
 from urllib.parse import urljoin
 
 import pytest
+import requests
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.x509.oid import NameOID
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -809,3 +815,37 @@ def test_write_report_falls_back_to_utf8_bytes_when_stdout_encoding_is_ascii(mon
     openqa_review.write_report("caf\u00e9")
 
     assert buffer.getvalue() == "caf\u00e9\n".encode()
+
+
+def _self_signed_certificate_pem(organization: str) -> str:
+    key = ec.generate_private_key(ec.SECP256R1())
+    name = x509.Name([
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, organization),
+        x509.NameAttribute(NameOID.COMMON_NAME, "example.com"),
+    ])
+    now = dt.datetime.now(dt.UTC)
+    builder = x509.CertificateBuilder(
+        subject_name=name,
+        issuer_name=name,
+        public_key=key.public_key(),
+        serial_number=x509.random_serial_number(),
+        not_valid_before=now,
+        not_valid_after=now + dt.timedelta(days=1),
+    )
+    certificate = builder.sign(key, hashes.SHA256())
+    return certificate.public_bytes(serialization.Encoding.PEM).decode()
+
+
+def test_ssl_error_names_organization_of_certificate_issuer(mocker: MockerFixture) -> None:
+    mocker.patch(
+        "openqa_review.browser.ssl.get_server_certificate",
+        return_value=_self_signed_certificate_pem("Corp Proxy"),
+    )
+    session = mocker.patch("openqa_review.browser.requests.Session")
+    session.return_value.get.side_effect = requests.exceptions.SSLError("certificate verify failed")
+
+    with pytest.raises(
+        DownloadError,
+        match=r'Certificate for "example.com" from "Corp Proxy" \(sha1: [0-9A-F:]+, sha256 [0-9A-F:]+\) is not trusted',
+    ):
+        browser_factory()._get("https://example.com/file.json")
