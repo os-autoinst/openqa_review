@@ -17,6 +17,10 @@ check-ruff: ## Run ruff linting and formatting checks
 	$(PYTHON_RUN) ruff check .
 	$(PYTHON_RUN) ruff format --check .
 
+.PHONY: check-ty
+check-ty: ## Run ty type checks
+	$(PYTHON_RUN) ty check
+
 .PHONY: tidy
 tidy: ## Format code and fix linting issues
 	$(PYTHON_RUN) ruff format .
