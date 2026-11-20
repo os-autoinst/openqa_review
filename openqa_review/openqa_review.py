@@ -1966,6 +1966,18 @@ def reminder_comment_on_issues(report: Report, args: argparse.Namespace) -> None
         _process_reminder_for_entry(ie, args, processed_issues)
 
 
+def write_report(report: str) -> None:
+    """Write ``report`` to stdout, retrying as UTF-8 bytes when stdout's encoding cannot represent it."""
+    try:
+        sys.stdout.write(report + "\n")
+    except UnicodeEncodeError:
+        log.exception("Encountered UnicodeEncodeError")
+        log.exception("type of 'report': %s", type(report))
+        log.exception("Trying workaround, explicit utf8 writer to stdout")
+        sys.stdout = codecs.getwriter("utf8")(sys.stdout.buffer)
+        sys.stdout.write(report + "\n")
+
+
 def main() -> None:  # pragma: no cover, only interactive
     """Entry point: parse args, generate and print the review report."""
     args = parse_args()
@@ -1983,15 +1995,7 @@ def main() -> None:  # pragma: no cover, only interactive
             sys.exit(1)
         filter_report(report, ie_filters[args.filter])
 
-    try:
-        sys.stdout.write(str(report) + "\n")
-    except UnicodeEncodeError:
-        log.exception("Encountered UnicodeEncodeError")
-        log.exception("type of 'report': %s", type(report))
-        log.exception("Trying workaround, explicit utf8 writer to stdout")
-        utf8writer = codecs.getwriter("utf8")
-        sys.stdout = utf8writer(sys.stdout)
-        sys.stdout.write(str(report) + "\n")
+    write_report(str(report))
 
 
 if __name__ == "__main__":

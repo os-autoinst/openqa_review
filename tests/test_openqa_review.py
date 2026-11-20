@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import contextlib
+import io
 import re
 import shutil
 import sys
@@ -798,3 +799,13 @@ def test_reopening_bugzilla_ticket(mocker: MockerFixture) -> None:
     assert call_args[0] == "/jsonrpc.cgi", "URL for just leaving note on unresolved ticket"
     assert call_args[1] == "Bug.add_comment", "method for just leaving note on unresolved ticket"
     assert call_args[2] == expected_data, "data for just leaving note on unresolved ticket"
+
+
+def test_write_report_falls_back_to_utf8_bytes_when_stdout_encoding_is_ascii(monkeypatch: pytest.MonkeyPatch) -> None:
+    buffer = io.BytesIO()
+    ascii_stdout = io.TextIOWrapper(buffer, encoding="ascii")
+    monkeypatch.setattr(sys, "stdout", ascii_stdout)
+
+    openqa_review.write_report("caf\u00e9")
+
+    assert buffer.getvalue() == "caf\u00e9\n".encode()
