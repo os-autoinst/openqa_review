@@ -24,6 +24,7 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.x509.oid import NameOID
+from sortedcontainers import SortedDict
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -641,12 +642,12 @@ def test_finding_bugrefs_in_softfailures() -> None:
     result_data = {"job": {"testresults": [{"result": "softfailed", "name": "module-name"}]}}
     test_browser.get_json = MagicMock(return_value=result_data)
     report = openqa_review.ArchReport(
-        "x86_64", {"skipped": {}}, args, "root/url", openqa_review.BrowserSet(None, None, test_browser)
+        "x86_64", SortedDict({"skipped": {}}), args, "root/url", openqa_review.BrowserSet(None, None, test_browser)
     )
 
     # searching bugrefs in softfails: no bugref in details
     result = {"href": "job/42", "state": "IMPROVED", "bugref": "not assigned"}
-    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    report._search_for_bugrefs_for_softfailures(SortedDict({"some-result": result}))
     assert result["bugref"] == "missing/unsupported bug reference", ""
     test_browser.get_json.assert_has_calls([
         call("/api/v1/jobs/42/details"),
@@ -656,7 +657,7 @@ def test_finding_bugrefs_in_softfailures() -> None:
     # searching bugrefs in softfails: result structure incomplete
     test_browser.get_json = MagicMock(return_value={})
     result["bugref"] = "not assigned"
-    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    report._search_for_bugrefs_for_softfailures(SortedDict({"some-result": result}))
     assert result["bugref"] == "not assigned", "incomplete test result skipped, no bugref assigned"
     test_browser.get_json.assert_has_calls([call("/api/v1/jobs/42/details")])
 
@@ -680,7 +681,7 @@ def test_browser_decode_content() -> None:
     content = browser._decode_content(url, json)
     assert content == json
     content = browser._decode_content(url, json, as_json=True)
-    assert "spam" in content
+    assert content == {"spam": "eggs"}
 
     with pytest.raises(DownloadError) as e:
         browser._decode_content("http://example.com", "", as_json=True)
