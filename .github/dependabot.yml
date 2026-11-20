@@ -12,3 +12,15 @@ updates:
       all-actions:
         patterns:
           - "*"
+  - package-ecosystem: 'uv'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
