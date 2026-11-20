@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 import contextlib
+import datetime as dt
+import io
 import re
 import shutil
 import sys
@@ -17,6 +19,12 @@ from unittest.mock import MagicMock, Mock, call
 from urllib.parse import urljoin
 
 import pytest
+import requests
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.x509.oid import NameOID
+from sortedcontainers import SortedDict
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -634,12 +642,12 @@ def test_finding_bugrefs_in_softfailures() -> None:
     result_data = {"job": {"testresults": [{"result": "softfailed", "name": "module-name"}]}}
     test_browser.get_json = MagicMock(return_value=result_data)
     report = openqa_review.ArchReport(
-        "x86_64", {"skipped": {}}, args, "root/url", openqa_review.BrowserSet(None, None, test_browser)
+        "x86_64", SortedDict({"skipped": {}}), args, "root/url", openqa_review.BrowserSet(None, None, test_browser)
     )
 
     # searching bugrefs in softfails: no bugref in details
     result = {"href": "job/42", "state": "IMPROVED", "bugref": "not assigned"}
-    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    report._search_for_bugrefs_for_softfailures(SortedDict({"some-result": result}))
     assert result["bugref"] == "missing/unsupported bug reference", ""
     test_browser.get_json.assert_has_calls([
         call("/api/v1/jobs/42/details"),
@@ -649,7 +657,7 @@ def test_finding_bugrefs_in_softfailures() -> None:
     # searching bugrefs in softfails: result structure incomplete
     test_browser.get_json = MagicMock(return_value={})
     result["bugref"] = "not assigned"
-    report._search_for_bugrefs_for_softfailures({"some-result": result})
+    report._search_for_bugrefs_for_softfailures(SortedDict({"some-result": result}))
     assert result["bugref"] == "not assigned", "incomplete test result skipped, no bugref assigned"
     test_browser.get_json.assert_has_calls([call("/api/v1/jobs/42/details")])
 
@@ -673,7 +681,7 @@ def test_browser_decode_content() -> None:
     content = browser._decode_content(url, json)
     assert content == json
     content = browser._decode_content(url, json, as_json=True)
-    assert "spam" in content
+    assert content == {"spam": "eggs"}
 
     with pytest.raises(DownloadError) as e:
         browser._decode_content("http://example.com", "", as_json=True)
@@ -798,3 +806,47 @@ def test_reopening_bugzilla_ticket(mocker: MockerFixture) -> None:
     assert call_args[0] == "/jsonrpc.cgi", "URL for just leaving note on unresolved ticket"
     assert call_args[1] == "Bug.add_comment", "method for just leaving note on unresolved ticket"
     assert call_args[2] == expected_data, "data for just leaving note on unresolved ticket"
+
+
+def test_write_report_falls_back_to_utf8_bytes_when_stdout_encoding_is_ascii(monkeypatch: pytest.MonkeyPatch) -> None:
+    buffer = io.BytesIO()
+    ascii_stdout = io.TextIOWrapper(buffer, encoding="ascii")
+    monkeypatch.setattr(sys, "stdout", ascii_stdout)
+
+    openqa_review.write_report("caf\u00e9")
+
+    assert buffer.getvalue() == "caf\u00e9\n".encode()
+
+
+def _self_signed_certificate_pem(organization: str) -> str:
+    key = ec.generate_private_key(ec.SECP256R1())
+    name = x509.Name([
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, organization),
+        x509.NameAttribute(NameOID.COMMON_NAME, "example.com"),
+    ])
+    now = dt.datetime.now(dt.UTC)
+    builder = x509.CertificateBuilder(
+        subject_name=name,
+        issuer_name=name,
+        public_key=key.public_key(),
+        serial_number=x509.random_serial_number(),
+        not_valid_before=now,
+        not_valid_after=now + dt.timedelta(days=1),
+    )
+    certificate = builder.sign(key, hashes.SHA256())
+    return certificate.public_bytes(serialization.Encoding.PEM).decode()
+
+
+def test_ssl_error_names_organization_of_certificate_issuer(mocker: MockerFixture) -> None:
+    mocker.patch(
+        "openqa_review.browser.ssl.get_server_certificate",
+        return_value=_self_signed_certificate_pem("Corp Proxy"),
+    )
+    session = mocker.patch("openqa_review.browser.requests.Session")
+    session.return_value.get.side_effect = requests.exceptions.SSLError("certificate verify failed")
+
+    with pytest.raises(
+        DownloadError,
+        match=r'Certificate for "example.com" from "Corp Proxy" \(sha1: [0-9A-F:]+, sha256 [0-9A-F:]+\) is not trusted',
+    ):
+        browser_factory()._get("https://example.com/file.json")
