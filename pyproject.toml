@@ -52,7 +52,8 @@ dev = [
     "coverage",
     "radon",
     "tox",
-    "ty>=0.0.21",
+    "ruff==0.17.6",
+    "ty==0.0.104",
     "setuptools",
     "setuptools-scm"
 ]
