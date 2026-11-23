@@ -26,6 +26,7 @@ from urllib3.util.retry import Retry
 
 try:
     import OpenSSL
+    from cryptography.x509.oid import NameOID
 
     _has_openssl = True
 except ImportError:  # pragma: no cover
@@ -248,10 +249,9 @@ class Browser:
             server_name = parsed_url.netloc
             cert = ssl.get_server_certificate((server_name, 443)).encode()
             x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
-            issuer_components = x509.get_issuer().get_components()
-            # we're only interested in the b'O'rganizational unit
-            issuers = filter(lambda component: component[0] == b"O", issuer_components)
-            issuer = next(issuers)[1].decode("utf-8", "ignore")
+            # we're only interested in the Organization (O) of the issuer
+            issuers = x509.to_cryptography().issuer.get_attributes_for_oid(NameOID.ORGANIZATION_NAME)
+            issuer = str(next(iter(issuers)).value)
             sha1digest = x509.digest("sha1").decode("utf-8", "ignore")
             sha256digest = x509.digest("sha256").decode("utf-8", "ignore")
             msg = (
